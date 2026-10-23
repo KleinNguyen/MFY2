@@ -9,6 +9,4 @@ public class PerkData : ScriptableObject
     [field: SerializeField] public bool UseAutoTarget { get; private set; } = true;
     [field: SerializeField] public bool UseActionCasterAsTarget { get; private set; } = false;
 
-
-
 }
