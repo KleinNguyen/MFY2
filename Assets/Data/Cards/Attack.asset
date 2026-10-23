@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
+  m_Name: Attack
+  m_EditorClassIdentifier: 
+  <Description>k__BackingField: Deal 4 damage to enemy
+  <Mana>k__BackingField: 1
+  <ManualTargetEffect>k__BackingField:
+    rid: 286842219161976920
+  <OtherEffects>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 286842219161976920
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 5
