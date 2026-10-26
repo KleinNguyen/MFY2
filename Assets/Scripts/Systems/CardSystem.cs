@@ -1,8 +1,7 @@
-using NUnit.Framework;
+
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using System.Runtime.CompilerServices;
 using DG.Tweening;
 
 public class CardSystem : Singleton<CardSystem>
