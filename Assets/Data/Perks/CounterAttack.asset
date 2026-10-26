@@ -14,13 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 0}
   <PerkCondition>k__BackingField:
-    rid: -2
+    rid: 286842285731872852
   <AutoTargetEffect>k__BackingField:
-    rid: -2
-  <UseAutoTarget>k__BackingField: 1
-  <UseActionCasterAsTarget>k__BackingField: 0
+    rid: 286842285731872853
+  <UseAutoTarget>k__BackingField: 0
+  <UseActionCasterAsTarget>k__BackingField: 1
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 286842285731872852
+      type: {class: OnEnemyAttackCondition, ns: , asm: Assembly-CSharp}
+      data:
+        reactionTiming: 1
+    - rid: 286842285731872853
+      type: {class: AutoTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: -2
+        <Effect>k__BackingField:
+          rid: 286842285731872854
+    - rid: 286842285731872854
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 5
