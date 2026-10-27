@@ -1,14 +1,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Menu : MonoBehaviour
+public class PlayButtonUI: MonoBehaviour
 {
     public void PlayGame()
     {
         SceneManager.LoadScene("SelectHeroScene");
-    }
-    public void QuitGame()
-    {
-        Application.Quit();
     }
 }
