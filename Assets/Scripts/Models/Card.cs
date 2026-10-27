@@ -19,7 +19,7 @@ public class Card
         Mana = cardData.Mana;
     }
 
-//     public void SetMana(int amount)
+//  public void SetMana(int amount)
 // {
 //     if (amount < 0)
 //     {

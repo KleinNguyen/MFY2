@@ -4,10 +4,11 @@ using UnityEngine;
 public class StatusEffecstUI : MonoBehaviour
 {
     [SerializeField] private StatusEffectUI statusEffectUIPrefab;
-    [SerializeField] private Sprite armorSprite, burnSprite;
+    [SerializeField] private Sprite armorSprite, poisonSprite;
     private Dictionary<StatusEffectType, StatusEffectUI> statusEffectUIs = new();
     public void UpdateStatusEffectUI(StatusEffectType statusEffectType, int stackCount)
     {
+        if (stackCount == 0)
         if (stackCount == 0)
         {
             if (statusEffectUIs.ContainsKey(statusEffectType))
@@ -32,7 +33,7 @@ public class StatusEffecstUI : MonoBehaviour
         return statusEffectType switch
         {
             StatusEffectType.ARMOR => armorSprite,
-            StatusEffectType.BURN => burnSprite,
+            StatusEffectType.POISON => poisonSprite,
             _ => null
         };
     }

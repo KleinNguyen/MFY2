@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Armor Up
   m_EditorClassIdentifier: 
+  <Character>k__BackingField: 0
+  <Type>k__BackingField: 0
   <Description>k__BackingField: Add 5 armor
   <Mana>k__BackingField: 1
+  <ExhaustOnPlay>k__BackingField: 0
+  <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
