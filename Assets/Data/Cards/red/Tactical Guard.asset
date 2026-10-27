@@ -10,10 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
-  m_Name: New Card Data
+  m_Name: Tactical Guard
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: 
-  <Mana>k__BackingField: 0
+  <Owner>k__BackingField: 0
+  <Type>k__BackingField: 0
+  <Description>k__BackingField: 'Gain 5 Block. Upgrade a card in your hand for this combat.'
+  <Mana>k__BackingField: 1
+  <ExhaustOnPlay>k__BackingField: 0
+  <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:

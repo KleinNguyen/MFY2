@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
+  m_Name: Relentless Sequence
+  m_EditorClassIdentifier: 
+  <Owner>k__BackingField: 2
+  <Type>k__BackingField: 0
+  <Description>k__BackingField: 'Power: Each turn, after playing your fourth Attack, gain 2 Combo and draw 1 card.'
+  <Mana>k__BackingField: 1
+  <ExhaustOnPlay>k__BackingField: 0
+  <IsSly>k__BackingField: 0
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 286842286307016837
+    <Effect>k__BackingField:
+      rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 286842286307016837
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
