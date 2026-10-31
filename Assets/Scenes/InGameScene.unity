@@ -2788,7 +2788,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da48083727a92294c9a7adb7e1708e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnVFX: {fileID: 8194992990867289339, guid: 99bc28c0d45f51c4fbac01080b73edc7, type: 3}
+  poisonVFX: {fileID: 8194992990867289339, guid: 99bc28c0d45f51c4fbac01080b73edc7, type: 3}
 --- !u!1 &1745309962
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ public class ApplyPoisonGA : GameAction
     public CombatantView Target { get; private set; }
     public ApplyPoisonGA(int poisonDamage, CombatantView target)
     {
-        PoisonDamage = burnDamage;
+        PoisonDamage = poisonDamage;
         Target = target;
     }
 }

@@ -9,12 +9,12 @@ public class StatusEffecstUI : MonoBehaviour
     public void UpdateStatusEffectUI(StatusEffectType statusEffectType, int stackCount)
     {
         if (stackCount == 0)
-        if (stackCount == 0)
         {
             if (statusEffectUIs.ContainsKey(statusEffectType))
             {
                 StatusEffectUI statusEffectUI = statusEffectUIs[statusEffectType];
                 Destroy(statusEffectUI.gameObject);
+                statusEffectUIs.Remove(statusEffectType);
             }
         }
         else
