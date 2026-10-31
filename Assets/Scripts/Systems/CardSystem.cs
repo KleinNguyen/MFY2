@@ -9,6 +9,7 @@ public class CardSystem : Singleton<CardSystem>
     [SerializeField] private HandView handView;
     [SerializeField] private Transform drawPilePoint;
     [SerializeField] private Transform discardPilePoint;
+    [SerializeField] private PileUI pileUI;
     private readonly List<Card> drawPile = new();
     private readonly List<Card> discardPile = new();
     private readonly List<Card> hand = new();
@@ -36,24 +37,24 @@ public class CardSystem : Singleton<CardSystem>
             Card card = new(cardData);
             drawPile.Add(card);
         }
+        pileUI.UpdateDrawPileText(drawPile.Count);
+        pileUI.UpdateDiscardPileText(discardPile.Count);
     }
 
     //performers
     private IEnumerator DrawCardsPerformer(DrawCardsGA drawCardsGA)
     {
-        int actualAmount = Mathf.Min(drawCardsGA.Amount, drawPile.Count);
-        int notDrawnAmount = drawCardsGA.Amount - actualAmount;
-        for (int i = 0; i < actualAmount; i++)
+        for(int i = 0; i < drawCardsGA.Amount; i++)
         {
-            yield return DrawCard();
-        }
-        if (notDrawnAmount > 0)
-        {
-            RefillDeck();
-            for(int i = 0; i < notDrawnAmount; i++)
+            if(drawPile.Count == 0)
             {
-                yield return DrawCard();
-            }   
+                RefillDeck();
+            }
+            if(drawPile.Count == 0)
+            {
+                yield break;
+            }
+            yield return DrawCard();
         }
     }
 
@@ -98,6 +99,9 @@ public class CardSystem : Singleton<CardSystem>
     {
         Card card = drawPile.Draw();
         hand.Add(card);
+
+        pileUI.UpdateDrawPileText(drawPile.Count);
+
         CardView cardView = CardViewCreator.Instance.CreateCardView(card, drawPilePoint.position, drawPilePoint.rotation);
         yield return handView.AddCard(cardView);
     }
@@ -105,10 +109,13 @@ public class CardSystem : Singleton<CardSystem>
     {
         drawPile.AddRange(discardPile);
         discardPile.Clear();
+        pileUI.UpdateDrawPileText(drawPile.Count);
+        pileUI.UpdateDiscardPileText(discardPile.Count);
     }
     private IEnumerator DiscardCard(CardView cardView)
     {
         discardPile.Add(cardView.Card);
+        pileUI.UpdateDiscardPileText(discardPile.Count);
         cardView.transform.DOScale(Vector3.zero, 0.15f);
         Tween tween = cardView.transform.DOMove(discardPilePoint.position, 0.15f);
         yield return tween.WaitForCompletion();
