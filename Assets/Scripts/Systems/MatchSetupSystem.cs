@@ -8,9 +8,12 @@ public class MatchSetupSystem : MonoBehaviour
     [SerializeField] private List<EnemyData> enemyDatas;
     private void Start()
     {
-        HeroSystem.Instance.Setup(heroData);
-        EnemySystem.Instance.Setup(enemyDatas);
-        CardSystem.Instance.Setup(heroData.Deck);
+        if (RunSystem.Instance == null) return;
+        if (RunSystem.Instance.CurrentEncounter == null) return;
+        HeroSystem.Instance.Setup(RunSystem.Instance.HeroData);
+        HeroSystem.Instance.HeroView.SetCurrentHealth(RunSystem.Instance.CurrentHealth);
+        EnemySystem.Instance.Setup(RunSystem.Instance.CurrentEncounter.Enemies);
+        CardSystem.Instance.Setup(RunSystem.Instance.Deck);
         PerkSystem.Instance.AddPerk(new Perk(perkData));
         DrawCardsGA drawCardsGA = new(5);
         ActionSystem.Instance.Perform(drawCardsGA);

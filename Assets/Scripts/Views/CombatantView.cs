@@ -77,4 +77,9 @@ public class CombatantView : MonoBehaviour
         if (statusEffects.ContainsKey(type)) return statusEffects[type];
         else return 0; 
     }
+    public void SetCurrentHealth(int health)
+    {
+        CurrentHealth = Mathf.Clamp(health, 0, MaxHealth);
+        UpdateHealthText();
+    }
 }

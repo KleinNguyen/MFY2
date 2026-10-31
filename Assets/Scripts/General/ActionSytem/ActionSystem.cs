@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using System.Collections;
+using UnityEngine;
 
 
 public class ActionSystem : Singleton<ActionSystem>
@@ -13,6 +14,7 @@ public class ActionSystem : Singleton<ActionSystem>
     private static Dictionary<Type, Func<GameAction, IEnumerator>> performers = new();
     public void Perform(GameAction action, System.Action OnPerformFinished = null)
     {
+        if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver) return;
         if (IsPerforming) return;
         IsPerforming = true;
         StartCoroutine(Flow(action, () =>

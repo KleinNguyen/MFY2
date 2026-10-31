@@ -4,6 +4,7 @@ public class BattleSystem : Singleton<BattleSystem>
 {
     [SerializeField] private GameObject victoryPanel;
     [SerializeField] private GameObject defeatPanel;
+    [SerializeField] private RewardUI rewardUI;
     public bool IsBattleOver { get; private set; } = false;
     private void Start()
     {
@@ -15,7 +16,9 @@ public class BattleSystem : Singleton<BattleSystem>
     {
         if (IsBattleOver) return;
         IsBattleOver = true;
+        RunSystem.Instance.SaveHealth(HeroSystem.Instance.HeroView.CurrentHealth);
         victoryPanel.SetActive(true);
+        rewardUI.Setup();
         Debug.Log("Victory");
     }
     public void Defeat()
