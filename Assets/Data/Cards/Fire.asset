@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Type>k__BackingField: 0
-  <Description>k__BackingField: Apply 3 burn to enemy
+  <Description>k__BackingField: Apply 3 poison to enemy
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 1

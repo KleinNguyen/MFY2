@@ -29,6 +29,10 @@ public class ActionSystem : Singleton<ActionSystem>
     }
     private IEnumerator Flow(GameAction action, Action OnFlowFInished = null)
     {
+        if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+        {
+            yield break;
+        }
         reactions = action.PreReactions;
         PerformSubscribers(action, preSubs);
         yield return PerformReactions();

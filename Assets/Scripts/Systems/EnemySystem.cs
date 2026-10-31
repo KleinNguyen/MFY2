@@ -47,6 +47,7 @@ public class EnemySystem : Singleton<EnemySystem>
     private IEnumerator AttackHeroPerformer(AttackHeroGA attackHeroGA)
     {
         EnemyView attacker = attackHeroGA.Attacker;
+        if (attacker == null || attacker.CurrentHealth <= 0) yield break;
         Tween tween = attacker.transform.DOMoveX(attacker.transform.position.x - 1f, 0.15f);
         yield return tween.WaitForCompletion();
         attacker.transform.DOMoveX(attacker.transform.position.x + 1f, 0.15f);
@@ -56,6 +57,12 @@ public class EnemySystem : Singleton<EnemySystem>
     }
     private IEnumerator KillEnemyPerformer(KillEnemyGA killEnemyGA)
     {
+        EnemyView enemy = killEnemyGA.EnemyView;
+        if (enemy == null || !enemyBoardView.EnemyViews.Contains(enemy)) yield break;
         yield return enemyBoardView.RemoveEnemy(killEnemyGA.EnemyView);
+        if(enemyBoardView.EnemyViews.Count == 0)
+        {
+            BattleSystem.Instance.Victory();
+        }
     }
 }

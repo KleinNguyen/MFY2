@@ -16,6 +16,7 @@ public class DamageSystem : MonoBehaviour
     {
         foreach (var target in dealDamageGA.Targets)
         {
+            if (target == null || target.CurrentHealth <= 0) continue;
             target.Damage(dealDamageGA.Amount);
             Instantiate(damageVFX, target.transform.position, Quaternion.identity);
             yield return new WaitForSeconds(0.5f);
@@ -26,9 +27,9 @@ public class DamageSystem : MonoBehaviour
                     KillEnemyGA killEnemyGA = new(enemyView);
                     ActionSystem.Instance.AddReaction(killEnemyGA);
                 }
-                else
+                else if (target is HeroView)
                 {
-                    // do game over logic
+                    BattleSystem.Instance.Defeat();
                 }
             }
         }
