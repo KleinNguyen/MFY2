@@ -1,6 +1,6 @@
 ﻿<Solution>
-  <Project Path="SRDemo.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="SRDemo.csproj" />
   <Project Path="SREditor-Editor.csproj" />
   <Project Path="CFXRRuntime.csproj" />
   <Project Path="CFXRDemo.csproj" />

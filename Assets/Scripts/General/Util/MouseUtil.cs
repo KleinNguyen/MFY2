@@ -2,7 +2,6 @@ using UnityEngine;
 
 public static class MouseUtil
 {
-    private static Camera camera = Camera.main;
     public static Vector3 GetMousePositionInWorldSpace(float zValue = 0f)
     {
         Camera camera = Camera.main;

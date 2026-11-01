@@ -17,4 +17,15 @@ public class CardData : ScriptableObject
 
     [field: SerializeReference, SR] public Effect ManualTargetEffect { get; private set; } = null;
     [field: SerializeField] public List<AutoTargetEffect> OtherEffects { get; private set; }
+    [field: SerializeField] public bool CanUpgrade { get; private set; }
+
+    [field: SerializeField] public string UpgradedDescription { get; private set; }
+
+    [field: SerializeField] public int UpgradedMana { get; private set; }
+
+    [field: SerializeReference, SR]
+    public Effect UpgradedManualTargetEffect { get; private set; }
+
+    [field: SerializeField]
+    public List<AutoTargetEffect> UpgradedOtherEffects { get; private set; }
 }
