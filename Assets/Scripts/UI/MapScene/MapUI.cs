@@ -8,6 +8,14 @@ using UnityEngine.UI;
 
 public class MapUI : MonoBehaviour
 {
+    private const float MapLayoutWidth = 1200f;
+    private const float MapEdgePadding = 90f;
+    private const float MapHorizontalScale = 0.82f;
+    private const float ConnectionIconClearance = 48f;
+    private const float ConnectionDashLength = 14f;
+    private const float ConnectionDashGap = 9f;
+    private const float ConnectionThickness = 4f;
+
     [SerializeField] private TMP_Text actNameText;
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text goldText;
@@ -20,7 +28,16 @@ public class MapUI : MonoBehaviour
     [SerializeField] private RectTransform mapContent;
     [SerializeField] private Button mapPointPrefab;
 
+    [Header("Map Point Icons")]
+    [SerializeField] private Sprite normalIcon;
+    [SerializeField] private Sprite eliteIcon;
+    [SerializeField] private Sprite shopIcon;
+    [SerializeField] private Sprite restIcon;
+    [SerializeField] private Sprite bossIcon;
+
     private readonly Dictionary<int, Button> pointButtons = new();
+    private float mapMinimumY;
+    private float mapVerticalScale;
 
     private void Start()
     {
@@ -51,11 +68,12 @@ public class MapUI : MonoBehaviour
             actNameText.text = currentAct.ActName;
         }
 
+        Canvas.ForceUpdateCanvases();
         CreateMapUI();
         UpdateMapUI();
 
         Canvas.ForceUpdateCanvases();
-        mapScrollRect.verticalNormalizedPosition = 0f;
+        mapScrollRect.verticalNormalizedPosition = 1f;
     }
 
     private void ConfigureInputModule()
@@ -78,7 +96,23 @@ public class MapUI : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        mapContent.sizeDelta = new Vector2(1200f, 1900f);
+        float mapScale = Mathf.Min(
+            mapScrollRect.viewport.rect.width / MapLayoutWidth,
+            mapScrollRect.viewport.rect.height / 900f
+        );
+        mapMinimumY = float.MaxValue;
+        float mapMaximumY = float.MinValue;
+        foreach (MapPoint point in RunSystem.Instance.MapPoints)
+        {
+            mapMinimumY = Mathf.Min(mapMinimumY, point.Position.y);
+            mapMaximumY = Mathf.Max(mapMaximumY, point.Position.y);
+        }
+
+        float contentHeight = mapScrollRect.viewport.rect.height / mapScale;
+        mapContent.sizeDelta = new Vector2(MapLayoutWidth, contentHeight);
+        mapContent.localScale = Vector3.one * mapScale;
+        mapVerticalScale = (contentHeight - MapEdgePadding * 2f)
+            / Mathf.Max(1f, mapMaximumY - mapMinimumY);
 
         foreach (MapPoint point in RunSystem.Instance.MapPoints)
         {
@@ -88,7 +122,7 @@ public class MapUI : MonoBehaviour
 
                 if (nextPoint == null) continue;
 
-                CreateConnection(point.Position, nextPoint.Position);
+                CreateConnection(GetMapPosition(point), GetMapPosition(nextPoint));
             }
         }
 
@@ -110,13 +144,37 @@ public class MapUI : MonoBehaviour
         rect.anchorMin = Vector2.zero;
         rect.anchorMax = Vector2.zero;
         rect.pivot = new Vector2(0.5f, 0.5f);
-        rect.anchoredPosition = point.Position;
+        rect.anchoredPosition = GetMapPosition(point);
+
+        Image pointImage = pointButton.GetComponent<Image>();
+        if (pointImage == null)
+        {
+            Debug.LogError("MapPointButton prefab must have an Image component.");
+            Destroy(pointButton.gameObject);
+            return;
+        }
+
+        Sprite pointIcon = GetPointIcon(point.Type);
+        pointImage.sprite = pointIcon;
+        pointImage.color = pointIcon == null ? new Color(1f, 1f, 1f, 0f) : Color.white;
+        pointImage.type = Image.Type.Simple;
+        pointImage.preserveAspect = true;
+        pointImage.raycastTarget = true;
+        pointButton.transition = Selectable.Transition.ColorTint;
+
+        ColorBlock colors = pointButton.colors;
+        colors.normalColor = Color.white;
+        colors.highlightedColor = Color.white;
+        colors.pressedColor = Color.white;
+        colors.selectedColor = Color.white;
+        colors.disabledColor = new Color(0.45f, 0.45f, 0.45f, 0.4f);
+        colors.colorMultiplier = 1f;
+        pointButton.colors = colors;
 
         TMP_Text pointText = pointButton.GetComponentInChildren<TMP_Text>(true);
-
         if (pointText != null)
         {
-            pointText.text = GetPointText(point.Type);
+            pointText.gameObject.SetActive(false);
         }
 
         pointButton.onClick.RemoveAllListeners();
@@ -130,44 +188,70 @@ public class MapUI : MonoBehaviour
 
     private void CreateConnection(Vector2 start, Vector2 end)
     {
-        GameObject lineObject = new(
-            "MapConnection",
-            typeof(RectTransform),
-            typeof(CanvasRenderer),
-            typeof(Image)
-        );
-
-        RectTransform lineRect = lineObject.GetComponent<RectTransform>();
-
-        lineRect.SetParent(mapContent, false);
-
-        lineRect.anchorMin = Vector2.zero;
-        lineRect.anchorMax = Vector2.zero;
-        lineRect.pivot = new Vector2(0f, 0.5f);
-
         Vector2 direction = end - start;
+        float distance = direction.magnitude;
+        float drawableLength = distance - ConnectionIconClearance * 2f;
+        if (drawableLength <= 0f)
+        {
+            return;
+        }
 
+        Vector2 directionNormalized = direction / distance;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        float dashStep = ConnectionDashLength + ConnectionDashGap;
 
-        lineRect.anchoredPosition = start;
-        lineRect.sizeDelta = new Vector2(direction.magnitude, 4f);
-        lineRect.localRotation = Quaternion.Euler(0, 0, angle);
+        for (float offset = 0f; offset < drawableLength; offset += dashStep)
+        {
+            float dashLength = Mathf.Min(ConnectionDashLength, drawableLength - offset);
+            Vector2 dashStart = start
+                + directionNormalized * (ConnectionIconClearance + offset);
 
-        Image lineImage = lineObject.GetComponent<Image>();
+            GameObject dashObject = new(
+                "MapConnectionDash",
+                typeof(RectTransform),
+                typeof(CanvasRenderer),
+                typeof(Image)
+            );
 
-        lineImage.color = Color.white;
-        lineImage.raycastTarget = false;
+            RectTransform dashRect = dashObject.GetComponent<RectTransform>();
+            dashRect.SetParent(mapContent, false);
+            dashRect.anchorMin = Vector2.zero;
+            dashRect.anchorMax = Vector2.zero;
+            dashRect.pivot = new Vector2(0f, 0.5f);
+            dashRect.anchoredPosition = dashStart;
+            dashRect.sizeDelta = new Vector2(dashLength, ConnectionThickness);
+            dashRect.localRotation = Quaternion.Euler(0, 0, angle);
+
+            Image dashImage = dashObject.GetComponent<Image>();
+            dashImage.color = new Color(0.08f, 0.16f, 0.25f, 0.9f);
+            dashImage.raycastTarget = false;
+        }
     }
 
-    private string GetPointText(MapPointType type)
+    private Vector2 GetMapPosition(MapPoint point)
     {
-        if (type == MapPointType.Normal) return "Normal";
-        if (type == MapPointType.Elite) return "Elite";
-        if (type == MapPointType.Shop) return "Shop";
-        if (type == MapPointType.Rest) return "Rest";
-        if (type == MapPointType.Boss) return "Boss";
+        float centeredX = (point.Position.x - MapLayoutWidth * 0.5f) * MapHorizontalScale;
+        float mappedY = MapEdgePadding + (point.Position.y - mapMinimumY) * mapVerticalScale;
+        return new Vector2(MapLayoutWidth * 0.5f + centeredX, mappedY);
+    }
 
-        return "";
+    private Sprite GetPointIcon(MapPointType type)
+    {
+        switch (type)
+        {
+            case MapPointType.Normal:
+                return normalIcon;
+            case MapPointType.Elite:
+                return eliteIcon;
+            case MapPointType.Shop:
+                return shopIcon;
+            case MapPointType.Rest:
+                return restIcon;
+            case MapPointType.Boss:
+                return bossIcon;
+            default:
+                return null;
+        }
     }
 
     public void UpdateMapUI()

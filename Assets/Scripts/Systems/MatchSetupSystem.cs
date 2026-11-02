@@ -18,6 +18,7 @@ public class MatchSetupSystem : MonoBehaviour
             battleBackground != null)
         {
             battleBackground.sprite = currentAct.MapBackground;
+            FitBackgroundToCamera();
         }
         else
         {
@@ -33,5 +34,40 @@ public class MatchSetupSystem : MonoBehaviour
         PerkSystem.Instance.AddPerk(new Perk(perkData));
         DrawCardsGA drawCardsGA = new(5);
         ActionSystem.Instance.Perform(drawCardsGA);
+    }
+
+    private void FitBackgroundToCamera()
+    {
+        Camera mainCamera = Camera.main;
+        if (mainCamera == null || !mainCamera.orthographic)
+        {
+            Debug.LogError("A Main Camera in orthographic mode is required to fit the Act background.");
+            return;
+        }
+
+        Vector2 spriteSize = battleBackground.sprite.bounds.size;
+        if (spriteSize.x <= 0f || spriteSize.y <= 0f)
+        {
+            Debug.LogError("The current Act background has invalid dimensions.");
+            return;
+        }
+
+        float cameraHeight = mainCamera.orthographicSize * 2f;
+        float cameraWidth = cameraHeight * mainCamera.aspect;
+        float coverScale = Mathf.Max(cameraWidth / spriteSize.x, cameraHeight / spriteSize.y);
+        Vector3 parentScale = battleBackground.transform.parent != null
+            ? battleBackground.transform.parent.lossyScale
+            : Vector3.one;
+
+        if (Mathf.Approximately(parentScale.x, 0f) || Mathf.Approximately(parentScale.y, 0f))
+        {
+            Debug.LogError("The Act background parent must have a non-zero scale.");
+            return;
+        }
+
+        battleBackground.transform.localScale = new Vector3(
+            coverScale / parentScale.x,
+            coverScale / parentScale.y,
+            battleBackground.transform.localScale.z);
     }
 }
