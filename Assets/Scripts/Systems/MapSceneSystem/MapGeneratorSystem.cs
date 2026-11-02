@@ -51,6 +51,22 @@ public static class MapGeneratorSystem
     private static List<MapPoint> CreateFloor(int floor, ref int nextId)
     {
         List<MapPoint> points = new();
+
+        if (floor == 0)
+        {
+            MapPoint startingPoint = new(
+                nextId,
+                floor,
+                new Vector2(600f, 150f),
+                MapPointType.Battle
+            );
+
+            points.Add(startingPoint);
+            nextId++;
+
+            return points;
+        }
+
         List<int> availableColumns = new();
 
         for (int i = 0; i < COLUMN_COUNT; i++)
@@ -74,11 +90,6 @@ public static class MapGeneratorSystem
 
             MapPointType type = GetRandomPointType();
 
-            if (floor == 0)
-            {
-                type = MapPointType.Battle;
-            }
-
             MapPoint point = new(
                 nextId,
                 floor,
@@ -92,7 +103,6 @@ public static class MapGeneratorSystem
 
         return points;
     }
-
     private static MapPointType GetRandomPointType()
     {
         int randomValue = Random.Range(0, 100);
