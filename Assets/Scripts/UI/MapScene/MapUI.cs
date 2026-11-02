@@ -145,7 +145,8 @@ public class MapUI : MonoBehaviour
 
     private string GetPointText(MapPointType type)
     {
-        if (type == MapPointType.Battle) return "Battle";
+        if (type == MapPointType.Normal) return "Normal";
+        if (type == MapPointType.Elite) return "Elite";
         if (type == MapPointType.Shop) return "Shop";
         if (type == MapPointType.Rest) return "Rest";
         if (type == MapPointType.Boss) return "Boss";
