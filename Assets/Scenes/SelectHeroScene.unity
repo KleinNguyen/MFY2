@@ -1453,7 +1453,7 @@ MonoBehaviour:
   hero1: {fileID: 11400000, guid: 9b9e3b4640f2004439272b8f872ffc08, type: 2}
   hero2: {fileID: 11400000, guid: 845f0aa2ac8906a4caaa0a29a6285025, type: 2}
   hero3: {fileID: 11400000, guid: 7666ac4ae62ba8549bfd25037b354e01, type: 2}
-  selectedHeroText: {fileID: 0}
+  selectedHeroText: {fileID: 984176625}
 --- !u!224 &1568455888
 RectTransform:
   m_ObjectHideFlags: 0
