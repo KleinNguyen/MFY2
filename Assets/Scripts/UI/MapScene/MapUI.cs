@@ -1,11 +1,16 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MapUI : MonoBehaviour
 {
+    [SerializeField] private bool debugInput = true;
+
     [SerializeField] private EncounterData[] encounters;
 
     [SerializeField] private TMP_Text healthText;
@@ -23,6 +28,13 @@ public class MapUI : MonoBehaviour
 
     private void Start()
     {
+        ConfigureInputModule();
+
+        if (debugInput)
+        {
+            StartCoroutine(LogInputSetupNextFrame());
+        }
+
         if (RunSystem.Instance == null)
         {
             Debug.LogError("No RunSystem in MapScene");
@@ -39,6 +51,115 @@ public class MapUI : MonoBehaviour
 
         Canvas.ForceUpdateCanvases();
         mapScrollRect.verticalNormalizedPosition = 0f;
+    }
+
+    private void ConfigureInputModule()
+    {
+        UIInputModuleCompatibility.UseStandaloneInputModule(EventSystem.current, this);
+    }
+
+    private IEnumerator LogInputSetupNextFrame()
+    {
+        yield return null;
+        LogInputSetup();
+    }
+
+    private void Update()
+    {
+        bool inputSystemClick = Mouse.current != null
+            && Mouse.current.leftButton.wasPressedThisFrame;
+        bool legacyInputClick = Input.GetMouseButtonDown(0);
+
+        if (debugInput && (inputSystemClick || legacyInputClick))
+        {
+            LogClick(inputSystemClick, legacyInputClick);
+        }
+    }
+
+    private void LogInputSetup()
+    {
+        EventSystem eventSystem = EventSystem.current;
+        string eventSystemStatus = eventSystem == null
+            ? "missing"
+            : $"active; currentModule={eventSystem.currentInputModule?.GetType().Name ?? "not selected yet"}; " +
+              $"attachedModules={DescribeInputModules(eventSystem)}";
+        string mouseStatus = Mouse.current == null
+            ? "missing"
+            : $"available; position={Mouse.current.position.ReadValue()}";
+
+        Debug.Log(
+            $"[MapInputDebug] MapScene input setup: EventSystem={eventSystemStatus}; " +
+            $"Mouse={mouseStatus}; applicationFocused={Application.isFocused}",
+            this
+        );
+    }
+
+    private static string DescribeInputModules(EventSystem eventSystem)
+    {
+        BaseInputModule[] modules = eventSystem.GetComponents<BaseInputModule>();
+        if (modules.Length == 0) return "none";
+
+        List<string> descriptions = new(modules.Length);
+        foreach (BaseInputModule module in modules)
+        {
+            descriptions.Add(
+                $"{module.GetType().Name}(enabled={module.enabled}, active={module.isActiveAndEnabled})"
+            );
+        }
+
+        return string.Join(", ", descriptions);
+    }
+
+    private void LogClick(bool inputSystemClick, bool legacyInputClick)
+    {
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem == null)
+        {
+            Debug.LogWarning(
+                $"[MapInputDebug] Mouse click detected (Input System={inputSystemClick}, " +
+                $"{nameof(Input)}={legacyInputClick}), but EventSystem.current is missing.",
+                this
+            );
+            return;
+        }
+
+        PointerEventData pointerData = new(eventSystem)
+        {
+            position = inputSystemClick
+                ? Mouse.current.position.ReadValue()
+                : Input.mousePosition,
+        };
+        List<RaycastResult> raycastResults = new();
+        eventSystem.RaycastAll(pointerData, raycastResults);
+
+        List<string> hitDescriptions = new();
+        int resultCount = Mathf.Min(raycastResults.Count, 8);
+        for (int i = 0; i < resultCount; i++)
+        {
+            GameObject hitObject = raycastResults[i].gameObject;
+            Button button = hitObject.GetComponentInParent<Button>();
+            string buttonStatus = button == null
+                ? "no Button"
+                : $"Button={button.name}, interactable={button.interactable}, active={button.isActiveAndEnabled}";
+            hitDescriptions.Add($"{hitObject.name} ({buttonStatus})");
+        }
+
+        string hitSummary = hitDescriptions.Count == 0
+            ? "no UI raycast hits"
+            : string.Join(" -> ", hitDescriptions);
+
+        Debug.Log(
+            $"[MapInputDebug] Mouse click detected (Input System={inputSystemClick}, " +
+            $"{nameof(Input)}={legacyInputClick}); position={pointerData.position}; " +
+            $"inputSystemPosition={(Mouse.current != null ? Mouse.current.position.ReadValue().ToString() : "unavailable")}; " +
+            $"legacyInputPosition={Input.mousePosition}; " +
+            $"applicationFocused={Application.isFocused}; " +
+            $"pointerOverUI={eventSystem.IsPointerOverGameObject()}; " +
+            $"currentModule={eventSystem.currentInputModule?.GetType().Name ?? "missing"}; " +
+            $"attachedModules={DescribeInputModules(eventSystem)}; " +
+            $"raycastHits={raycastResults.Count}; {hitSummary}",
+            this
+        );
     }
 
     private void CreateMapUI()
@@ -95,7 +216,19 @@ public class MapUI : MonoBehaviour
 
         int pointId = point.Id;
 
-        pointButton.onClick.AddListener(() => SelectMapPoint(pointId));
+        pointButton.onClick.AddListener(() =>
+        {
+            if (debugInput)
+            {
+                Debug.Log(
+                    $"[MapInputDebug] Map point button callback received: {pointButton.name}; " +
+                    $"interactable={pointButton.interactable}",
+                    pointButton
+                );
+            }
+
+            SelectMapPoint(pointId);
+        });
 
         pointButtons.Add(point.Id, pointButton);
     }

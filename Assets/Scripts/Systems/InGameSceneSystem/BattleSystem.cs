@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BattleSystem : Singleton<BattleSystem>
 {
@@ -8,6 +9,7 @@ public class BattleSystem : Singleton<BattleSystem>
     public bool IsBattleOver { get; private set; } = false;
     private void Start()
     {
+        UIInputModuleCompatibility.UseStandaloneInputModule(EventSystem.current, this);
         victoryPanel.SetActive(false);
         defeatPanel.SetActive(false);
     }
@@ -29,5 +31,4 @@ public class BattleSystem : Singleton<BattleSystem>
         Debug.Log("Defeat");
     }
 }
-
 
