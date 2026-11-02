@@ -25,6 +25,7 @@ public static class MapGeneratorSystem
         {
             ConnectFloors(floors[floor], floors[floor + 1]);
         }
+        AssignPointTypes(floors);
 
         Vector2 bossPosition = new(
             600f,
@@ -58,7 +59,7 @@ public static class MapGeneratorSystem
                 nextId,
                 floor,
                 new Vector2(600f, 150f),
-                MapPointType.Battle
+                MapPointType.Normal
             );
 
             points.Add(startingPoint);
@@ -88,7 +89,7 @@ public static class MapGeneratorSystem
             float x = 150f + column * 150f + randomOffset;
             float y = 150f + floor * 160f;
 
-            MapPointType type = GetRandomPointType();
+            MapPointType type = MapPointType.Normal;
 
             MapPoint point = new(
                 nextId,
@@ -107,8 +108,9 @@ public static class MapGeneratorSystem
     {
         int randomValue = Random.Range(0, 100);
 
-        if (randomValue < 65) return MapPointType.Battle;
-        if (randomValue < 82) return MapPointType.Shop;
+        if (randomValue < 60) return MapPointType.Normal;
+        if (randomValue < 75) return MapPointType.Elite;
+        if (randomValue < 87) return MapPointType.Shop;
 
         return MapPointType.Rest;
     }
@@ -177,5 +179,34 @@ public static class MapGeneratorSystem
         }
 
         return nearestPoint;
+    }
+    private static void AssignPointTypes(List<List<MapPoint>> floors)
+    {
+        for (int floor = 1; floor < floors.Count; floor++)
+        {
+            List<MapPoint> previousFloor = floors[floor - 1];
+            List<MapPoint> currentFloor = floors[floor];
+
+            foreach (MapPoint currentPoint in currentFloor)
+            {
+                MapPointType pointType = GetRandomPointType();
+
+                if (pointType == MapPointType.Shop)
+                {
+                    foreach (MapPoint previousPoint in previousFloor)
+                    {
+                        if (previousPoint.Type != MapPointType.Shop) continue;
+
+                        if (previousPoint.NextPoints.Contains(currentPoint.Id))
+                        {
+                            pointType = MapPointType.Normal;
+                            break;
+                        }
+                    }
+                }
+
+                currentPoint.SetType(pointType);
+            }
+        }
     }
 }

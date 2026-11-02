@@ -1,6 +1,7 @@
 public enum MapPointType
 {
-    Battle,
+    Normal,
+    Elite,
     Shop,
     Rest,
     Boss

@@ -9,7 +9,6 @@ public static class UIInputModuleCompatibility
     {
         if (eventSystem == null)
         {
-            Debug.LogError("[UIInputDebug] Cannot configure input: EventSystem is missing.", context);
             return;
         }
 
@@ -23,12 +22,6 @@ public static class UIInputModuleCompatibility
 
             if (inputSystemPosition != Vector2.zero || legacyInputPosition == Vector2.zero)
             {
-                Debug.Log(
-                    $"[UIInputDebug] Keeping {inputSystemModule.GetType().Name}; " +
-                    $"Input System mouse position={inputSystemPosition}, " +
-                    $"Legacy mouse position={legacyInputPosition}.",
-                    context
-                );
                 return;
             }
         }
@@ -40,6 +33,7 @@ public static class UIInputModuleCompatibility
 
         StandaloneInputModule standaloneModule =
             eventSystem.GetComponent<StandaloneInputModule>();
+
         if (standaloneModule == null)
         {
             standaloneModule = eventSystem.gameObject.AddComponent<StandaloneInputModule>();
@@ -48,11 +42,5 @@ public static class UIInputModuleCompatibility
         {
             standaloneModule.enabled = true;
         }
-
-        Debug.Log(
-            $"[UIInputDebug] Configured {standaloneModule.GetType().Name}; " +
-            $"disabledInputSystemModule={inputSystemModule != null}",
-            context
-        );
     }
 }
