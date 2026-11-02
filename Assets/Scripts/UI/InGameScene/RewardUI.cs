@@ -33,16 +33,27 @@ public class RewardUI : MonoBehaviour
                 continue;
             }
 
-            availableCards.Add(card);
+            if (card.Rarity == CardRarity.Basic)
+            {
+                continue;
+            }
+
+            if (!availableCards.Contains(card))
+            {
+                availableCards.Add(card);
+            }
         }
         for (int i = 0; i < cardButtons.Length; i++)
         {
             if(i<cardButtonTexts.Length && availableCards.Count > 0)
             {
-                int randomIndex = Random.Range(0, availableCards.Count);
+                CardData card = CardRaritySelector.TakeRandomCard(availableCards);
 
-                CardData card = availableCards[randomIndex];
-                availableCards.RemoveAt(randomIndex);
+                if (card == null)
+                {
+                    cardButtons[i].gameObject.SetActive(false);
+                    continue;
+                }
 
                 currentChoices.Add(card);
 
@@ -51,6 +62,7 @@ public class RewardUI : MonoBehaviour
 
                 cardButtonTexts[i].text =
                     card.name + "\n" +
+                    "Rarity: " + card.Rarity + "\n" +
                     "Mana: " + card.Mana + "\n" +
                     card.Description;
             } else

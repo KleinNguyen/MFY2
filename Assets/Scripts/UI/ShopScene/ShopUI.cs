@@ -8,7 +8,9 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private MapUI mapUI;
 
     [SerializeField] private List<CardData> shopCards;
-    [SerializeField] private int cardPrice = 50;
+    [SerializeField] private int commonPrice = 50;
+    [SerializeField] private int uncommonPrice = 75;
+    [SerializeField] private int rarePrice = 120;
 
     [SerializeField] private TMP_Text goldText;
     [SerializeField] private TMP_Text messageText;
@@ -38,7 +40,15 @@ public class ShopUI : MonoBehaviour
                 continue;
             }
 
-            availableCards.Add(card);
+            if (card.Rarity == CardRarity.Basic)
+            {
+                continue;
+            }
+
+            if (!availableCards.Contains(card))
+            {
+                availableCards.Add(card);
+            }
         }
 
         for (int i = 0; i < cardButtons.Length; i++)
@@ -49,16 +59,19 @@ public class ShopUI : MonoBehaviour
                 continue;
             }
 
-            int randomIndex = Random.Range(0, availableCards.Count);
+            CardData card = CardRaritySelector.TakeRandomCard(availableCards);
 
-            CardData card = availableCards[randomIndex];
-            availableCards.RemoveAt(randomIndex);
+            if (card == null)
+            {
+                cardButtons[i].gameObject.SetActive(false);
+                continue;
+            }
 
-            int price = cardPrice;
+            int price = GetCardPrice(card);
 
             if (i == 0)
             {
-                price = Mathf.RoundToInt(cardPrice * 0.8f);
+                price = Mathf.RoundToInt(price * 0.8f);
             }
 
             currentCards.Add(card);
@@ -77,6 +90,7 @@ public class ShopUI : MonoBehaviour
             cardButtonTexts[i].text =
                 discountText +
                 card.name + "\n" +
+                "Rarity: " + card.Rarity + "\n" +
                 "Mana: " + card.Mana + "\n" +
                 card.Description + "\n" +
                 "Price: " + price + " Gold";
@@ -102,6 +116,25 @@ public class ShopUI : MonoBehaviour
 
         goldText.text = "Gold: " + RunSystem.Instance.Gold;
         messageText.text = "Purchased: " + card.name;
+    }
+    private int GetCardPrice(CardData card)
+    {
+        if (card.Rarity == CardRarity.Common)
+        {
+            return commonPrice;
+        }
+
+        if (card.Rarity == CardRarity.Uncommon)
+        {
+            return uncommonPrice;
+        }
+
+        if (card.Rarity == CardRarity.Rare)
+        {
+            return rarePrice;
+        }
+
+        return 0;
     }
 
     public void LeaveShop()

@@ -10,6 +10,7 @@ public class CardData : ScriptableObject
     // CardData.cs
     [field: SerializeField] public CharacterType Character { get; private set; }
     [field: SerializeField] public CardType Type { get; private set; }
+    [field: SerializeField] public CardRarity Rarity { get; private set; }
     [field: SerializeField] public string Description { get; private set; }
     [field: SerializeField] public int Mana { get; private set; }
     [field: SerializeField] public bool ExhaustOnPlay { get; private set; }
