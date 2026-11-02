@@ -1241,6 +1241,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingHero: {fileID: 11400000, guid: 9b9e3b4640f2004439272b8f872ffc08, type: 2}
+  acts:
+  - {fileID: 11400000, guid: f9140b817206aef4f8407bb39f446d83, type: 2}
+  - {fileID: 11400000, guid: bb614c2e5fdb2fb4c9ff563fa9b5ace3, type: 2}
+  - {fileID: 11400000, guid: d9f350710db207c4eb036c24b6628b44, type: 2}
 --- !u!4 &1157423378
 Transform:
   m_ObjectHideFlags: 0

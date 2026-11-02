@@ -97,9 +97,36 @@ public class RewardUI : MonoBehaviour
     }
     public void ContinueToMap()
     {
-        if (!RunSystem.Instance.RewardClaimed) return;
+        RunSystem run = RunSystem.Instance;
 
-        RunSystem.Instance.CompleteStage();
+        if (!run.RewardClaimed) return;
+
+        MapPoint selectedPoint = run.GetMapPoint(
+            run.SelectedMapPointId
+        );
+
+        if (selectedPoint == null)
+        {
+            Debug.LogError("Selected map point is missing.");
+            return;
+        }
+
+        bool defeatedBoss = selectedPoint.Type == MapPointType.Boss;
+
+        run.CompleteStage();
+
+        if (defeatedBoss)
+        {
+            bool movedToNextAct = run.MoveToNextAct();
+
+            if (movedToNextAct)
+            {
+                SceneManager.LoadScene("MapScene");
+                return;
+            }
+
+            Debug.Log("No next Act. Run complete.");
+        }
 
         SceneManager.LoadScene("MapScene");
     }

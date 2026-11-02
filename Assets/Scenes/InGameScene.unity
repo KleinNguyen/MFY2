@@ -3917,9 +3917,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goldReward: 20
   rewardCards:
+  - {fileID: 11400000, guid: b0b3443180cf93340a2cd7174aaa21ec, type: 2}
   - {fileID: 11400000, guid: 9363cc85898535f4997d8bf20617fdc7, type: 2}
   - {fileID: 11400000, guid: f8599350c1fe63a44bedee6e7c57afb0, type: 2}
-  - {fileID: 11400000, guid: b0b3443180cf93340a2cd7174aaa21ec, type: 2}
   goldRewardText: {fileID: 144175128}
   messageText: {fileID: 948893995}
   cardButtons:
