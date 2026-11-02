@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: encount1
   m_EditorClassIdentifier: 
   <Enemies>k__BackingField:
-  - {fileID: 11400000, guid: b300dba9c18f792449bfeb01a3338119, type: 2}
+  - {fileID: 11400000, guid: 200392e08212bd147ade5e2401ddcf87, type: 2}
