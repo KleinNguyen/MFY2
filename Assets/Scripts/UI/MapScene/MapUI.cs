@@ -8,9 +8,7 @@ using UnityEngine.UI;
 
 public class MapUI : MonoBehaviour
 {
-
-    [SerializeField] private EncounterData[] encounters;
-
+    [SerializeField] private TMP_Text actNameText;
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text goldText;
     [SerializeField] private TMP_Text mapMessageText;
@@ -39,6 +37,19 @@ public class MapUI : MonoBehaviour
         restUI.gameObject.SetActive(false);
 
         RunSystem.Instance.GenerateMap();
+
+        ActData currentAct = RunSystem.Instance.CurrentAct;
+
+        if (currentAct == null)
+        {
+            Debug.LogError("Current Act is missing.");
+            return;
+        }
+
+        if (actNameText != null)
+        {
+            actNameText.text = currentAct.ActName;
+        }
 
         CreateMapUI();
         UpdateMapUI();
@@ -227,17 +238,44 @@ public class MapUI : MonoBehaviour
 
     private EncounterData GetEncounter(MapPointType type)
     {
-        if (encounters == null || encounters.Length == 0) return null;
+        ActData currentAct = RunSystem.Instance.CurrentAct;
+
+        if (currentAct == null)
+        {
+            Debug.LogError("Current Act is missing.");
+            return null;
+        }
 
         if (type == MapPointType.Boss)
         {
-            return encounters[encounters.Length - 1];
+            return currentAct.BossEncounter;
         }
 
-        if (encounters.Length < 2) return null;
+        List<EncounterData> encounterList = null;
 
-        int randomIndex = Random.Range(0, encounters.Length - 1);
+        if (type == MapPointType.Normal)
+        {
+            encounterList = currentAct.NormalEncounters;
+        }
+        else if (type == MapPointType.Elite)
+        {
+            encounterList = currentAct.EliteEncounters;
+        }
 
-        return encounters[randomIndex];
+        if (encounterList == null || encounterList.Count == 0)
+        {
+            Debug.LogError(
+                "No encounter is assigned for " +
+                type +
+                " in " +
+                currentAct.ActName
+            );
+
+            return null;
+        }
+
+        int randomIndex = Random.Range(0, encounterList.Count);
+
+        return encounterList[randomIndex];
     }
 }

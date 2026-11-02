@@ -3,10 +3,11 @@ using UnityEngine;
 
 public static class MapGeneratorSystem
 {
-    private const int FLOOR_COUNT = 10;
+    //private const int FLOOR_COUNT = 10;
+    private const int FLOOR_COUNT = 2;
     private const int COLUMN_COUNT = 7;
 
-    public static List<MapPoint> GenerateMap()
+    public static List<MapPoint> GenerateMap(ActData actData)
     {
         List<MapPoint> mapPoints = new();
         List<List<MapPoint>> floors = new();
@@ -25,7 +26,7 @@ public static class MapGeneratorSystem
         {
             ConnectFloors(floors[floor], floors[floor + 1]);
         }
-        AssignPointTypes(floors);
+        AssignPointTypes(floors, actData);
 
         Vector2 bossPosition = new(
             600f,
@@ -104,13 +105,48 @@ public static class MapGeneratorSystem
 
         return points;
     }
-    private static MapPointType GetRandomPointType()
+    private static MapPointType GetRandomPointType(ActData actData)
     {
-        int randomValue = Random.Range(0, 100);
+        int normalWeight = Mathf.Max(0, actData.NormalWeight);
+        int eliteWeight = Mathf.Max(0, actData.EliteWeight);
+        int shopWeight = Mathf.Max(0, actData.ShopWeight);
+        int restWeight = Mathf.Max(0, actData.RestWeight);
 
-        if (randomValue < 60) return MapPointType.Normal;
-        if (randomValue < 75) return MapPointType.Elite;
-        if (randomValue < 87) return MapPointType.Shop;
+        int totalWeight =
+            normalWeight +
+            eliteWeight +
+            shopWeight +
+            restWeight;
+
+        if (totalWeight <= 0)
+        {
+            Debug.LogWarning(
+                "All map point weights are zero. Using Normal."
+            );
+
+            return MapPointType.Normal;
+        }
+
+        int randomValue = Random.Range(0, totalWeight);
+
+        if (randomValue < normalWeight)
+        {
+            return MapPointType.Normal;
+        }
+
+        randomValue -= normalWeight;
+
+        if (randomValue < eliteWeight)
+        {
+            return MapPointType.Elite;
+        }
+
+        randomValue -= eliteWeight;
+
+        if (randomValue < shopWeight)
+        {
+            return MapPointType.Shop;
+        }
 
         return MapPointType.Rest;
     }
@@ -180,7 +216,8 @@ public static class MapGeneratorSystem
 
         return nearestPoint;
     }
-    private static void AssignPointTypes(List<List<MapPoint>> floors)
+    private static void AssignPointTypes(List<List<MapPoint>> floors, ActData actData
+    )
     {
         for (int floor = 1; floor < floors.Count; floor++)
         {
@@ -189,7 +226,7 @@ public static class MapGeneratorSystem
 
             foreach (MapPoint currentPoint in currentFloor)
             {
-                MapPointType pointType = GetRandomPointType();
+                MapPointType pointType = GetRandomPointType(actData);
 
                 if (pointType == MapPointType.Shop)
                 {

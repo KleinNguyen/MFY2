@@ -3369,6 +3369,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroData: {fileID: 11400000, guid: 9b9e3b4640f2004439272b8f872ffc08, type: 2}
+  battleBackground: {fileID: 1331758225}
   perkData: {fileID: 11400000, guid: 90c0117f4db13354c9fb342cfaa0c4f2, type: 2}
   enemyDatas:
   - {fileID: 11400000, guid: b300dba9c18f792449bfeb01a3338119, type: 2}
@@ -3917,9 +3918,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goldReward: 20
   rewardCards:
+  - {fileID: 11400000, guid: b0b3443180cf93340a2cd7174aaa21ec, type: 2}
   - {fileID: 11400000, guid: 9363cc85898535f4997d8bf20617fdc7, type: 2}
   - {fileID: 11400000, guid: f8599350c1fe63a44bedee6e7c57afb0, type: 2}
-  - {fileID: 11400000, guid: b0b3443180cf93340a2cd7174aaa21ec, type: 2}
   goldRewardText: {fileID: 144175128}
   messageText: {fileID: 948893995}
   cardButtons:

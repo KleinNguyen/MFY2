@@ -4,6 +4,24 @@ using System.Collections.Generic;
 public class RunSystem : PersistentSingleton<RunSystem>
 {
     [SerializeField] private HeroData startingHero;
+    [SerializeField] private ActData[] acts;
+
+    public int CurrentActIndex { get; private set; }
+
+    public ActData CurrentAct
+    {
+        get
+        {
+            if (acts == null) return null;
+
+            if (CurrentActIndex < 0 || CurrentActIndex >= acts.Length)
+            {
+                return null;
+            }
+
+            return acts[CurrentActIndex];
+        }
+    }
     public HeroData HeroData { get; private set; }
     public List<CardData> Deck { get; private set; }
     private readonly HashSet<CardData> upgradedCards = new();
@@ -29,6 +47,7 @@ public class RunSystem : PersistentSingleton<RunSystem>
     }
     public void StartNewRun()
     {
+        CurrentActIndex = 0;
         HeroData = startingHero;
         Deck = new List<CardData>(startingHero.Deck);
         CurrentHealth = startingHero.Health;
@@ -82,6 +101,43 @@ public class RunSystem : PersistentSingleton<RunSystem>
         CurrentStage++;
         CurrentEncounter = null;
         RewardClaimed = false;
+    }
+    public bool MoveToNextAct()
+    {
+        if (acts == null || acts.Length == 0)
+        {
+            Debug.LogError("No Acts are assigned in RunSystem.");
+            return false;
+        }
+
+        int nextActIndex = CurrentActIndex + 1;
+
+        if (nextActIndex >= acts.Length)
+        {
+            return false;
+        }
+
+        if (acts[nextActIndex] == null)
+        {
+            Debug.LogError(
+                "Act at index " + nextActIndex + " is not assigned in RunSystem."
+            );
+
+            return false;
+        }
+
+        CurrentActIndex = nextActIndex;
+
+        MapPoints.Clear();
+
+        CompletedMapPointId = -1;
+        SelectedMapPointId = -1;
+
+        CurrentStage = 0;
+        CurrentEncounter = null;
+        RewardClaimed = false;
+
+        return true;
     }
     public bool BuyCard(CardData card, int price)
     {
@@ -145,7 +201,16 @@ public class RunSystem : PersistentSingleton<RunSystem>
     {
         if (MapPoints.Count > 0) return;
 
-        MapPoints = MapGeneratorSystem.GenerateMap();
+        if (CurrentAct == null)
+        {
+            Debug.LogError(
+                "Current Act is missing. Assign Acts in RunSystem."
+            );
+
+            return;
+        }
+
+        MapPoints = MapGeneratorSystem.GenerateMap(CurrentAct);
     }
 
     public MapPoint GetMapPoint(int pointId)
