@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67a6147af0c4b19479bdfc1d72ae808b, type: 3}
   m_Name: 3rdHero
   m_EditorClassIdentifier: 
-  <Character>k__BackingField: 0
+  <Character>k__BackingField: 2
   <Image>k__BackingField: {fileID: -7344660812612507114, guid: d80d7d0a8fee9a842bd529e4c0f2b7cd, type: 3}
   <Health>k__BackingField: 60
   <Deck>k__BackingField:

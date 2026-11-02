@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Delayed Payday
   m_EditorClassIdentifier: 
-  <Owner>k__BackingField: 1
+  <Character>k__BackingField: 1
   <Type>k__BackingField: 0
-  <Description>k__BackingField: 'Next turn, gain 2 additional mana. Exhaust.'
+  <Rarity>k__BackingField: 2
+  <Description>k__BackingField: Next turn, gain 2 additional mana. Exhaust.
   <Mana>k__BackingField: 0
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
@@ -25,6 +26,12 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: -2
+  <CanUpgrade>k__BackingField: 0
+  <UpgradedDescription>k__BackingField: 
+  <UpgradedMana>k__BackingField: 0
+  <UpgradedManualTargetEffect>k__BackingField:
+    rid: -2
+  <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
