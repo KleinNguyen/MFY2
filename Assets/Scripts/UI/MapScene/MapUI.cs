@@ -8,7 +8,6 @@ using UnityEngine.UI;
 
 public class MapUI : MonoBehaviour
 {
-    [SerializeField] private Image actBackground;
     [SerializeField] private TMP_Text actNameText;
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text goldText;
@@ -45,11 +44,6 @@ public class MapUI : MonoBehaviour
         {
             Debug.LogError("Current Act is missing.");
             return;
-        }
-
-        if (actBackground != null)
-        {
-            actBackground.sprite = currentAct.MapBackground;
         }
 
         if (actNameText != null)

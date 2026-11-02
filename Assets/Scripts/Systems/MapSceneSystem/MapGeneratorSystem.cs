@@ -3,7 +3,8 @@ using UnityEngine;
 
 public static class MapGeneratorSystem
 {
-    private const int FLOOR_COUNT = 10;
+    //private const int FLOOR_COUNT = 10;
+    private const int FLOOR_COUNT = 2;
     private const int COLUMN_COUNT = 7;
 
     public static List<MapPoint> GenerateMap(ActData actData)
