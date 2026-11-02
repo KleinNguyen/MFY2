@@ -12,6 +12,11 @@ public class RunSystem : PersistentSingleton<RunSystem>
     public int CurrentStage { get; private set; }
     public EncounterData CurrentEncounter { get; private set; }
     public bool RewardClaimed { get; private set; }
+    public List<MapPoint> MapPoints { get; private set; } = new();
+
+    public int CompletedMapPointId { get; private set; } = -1;
+
+    public int SelectedMapPointId { get; private set; } = -1;
     protected override void Awake()
     {
         if(Instance != null && Instance != this)
@@ -32,6 +37,9 @@ public class RunSystem : PersistentSingleton<RunSystem>
         CurrentEncounter = null;
         RewardClaimed = false;
         upgradedCards.Clear();
+        MapPoints.Clear();
+        CompletedMapPointId = -1;
+        SelectedMapPointId = -1;
     }
     public void SetEncounter(EncounterData encounter)
     {
@@ -55,6 +63,11 @@ public class RunSystem : PersistentSingleton<RunSystem>
     public void CompleteStage()
     {
         if (!RewardClaimed) return;
+        if (SelectedMapPointId < 0) return;
+
+        CompletedMapPointId = SelectedMapPointId;
+        SelectedMapPointId = -1;
+
         CurrentStage++;
         CurrentEncounter = null;
         RewardClaimed = false;
@@ -93,6 +106,11 @@ public class RunSystem : PersistentSingleton<RunSystem>
 
     public void CompleteMapPoint()
     {
+        if (SelectedMapPointId < 0) return;
+
+        CompletedMapPointId = SelectedMapPointId;
+        SelectedMapPointId = -1;
+
         CurrentStage++;
         CurrentEncounter = null;
     }
@@ -111,5 +129,45 @@ public class RunSystem : PersistentSingleton<RunSystem>
         upgradedCards.Add(cardData);
 
         return true;
+    }
+    public void GenerateMap()
+    {
+        if (MapPoints.Count > 0) return;
+
+        MapPoints = MapGeneratorSystem.GenerateMap();
+    }
+
+    public MapPoint GetMapPoint(int pointId)
+    {
+        foreach (MapPoint point in MapPoints)
+        {
+            if (point.Id == pointId) return point;
+        }
+
+        return null;
+    }
+
+    public bool CanSelectMapPoint(int pointId)
+    {
+        MapPoint point = GetMapPoint(pointId);
+
+        if (point == null) return false;
+        if (SelectedMapPointId != -1) return false;
+
+        if (CompletedMapPointId == -1)
+        {
+            return point.Floor == 0;
+        }
+
+        MapPoint completedPoint = GetMapPoint(CompletedMapPointId);
+
+        if (completedPoint == null) return false;
+
+        return completedPoint.NextPoints.Contains(pointId);
+    }
+
+    public void SelectMapPoint(int pointId)
+    {
+        SelectedMapPointId = pointId;
     }
 }
