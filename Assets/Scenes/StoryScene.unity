@@ -119,6 +119,36 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &402810001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 863632874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8d103bf4f344b2e84f3b2e3c991ae27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundImage: {fileID: 863632876}
+  textTemplate: {fileID: 1607095349}
+  storyImages:
+  - {fileID: 21300000, guid: b42028f648a92c94a943ecfc63793a4e, type: 3}
+  - {fileID: 21300000, guid: 515d996a7551fb848871f17f1eb608ec, type: 3}
+  - {fileID: 21300000, guid: 12e0f243863be9b448b179f50a86eaf4, type: 3}
+  - {fileID: 21300000, guid: 1a8f7f49bfb023d46a2e77fb00cfa5dc, type: 3}
+  storyTexts:
+  - "Sau m\u1ED9t ch\u1EB7ng \u0111\u01B0\u1EDDng d\xE0i, ng\u01B0\u1EDDi l\u1EEF
+    kh\xE1ch \u0111\u1EB7t ch\xE2n \u0111\u1EBFn v\xF9ng \u0111\u1EA5t xa l\u1EA1."
+  - "B\xF3ng t\u1ED1i \u0111ang lan r\u1ED9ng, v\xE0 nh\u1EEFng d\u1EA5u v\u1EBFt
+    k\u1EF3 l\u1EA1 xu\u1EA5t hi\u1EC7n kh\u1EAFp n\u01A1i."
+  - "Kh\xF4ng c\xF2n \u0111\u01B0\u1EDDng lui, h\u1ECD chu\u1EA9n b\u1ECB \u0111\u1ED1i
+    m\u1EB7t v\u1EDBi th\u1EED th\xE1ch ph\xEDa tr\u01B0\u1EDBc."
+  - "Cu\u1ED9c h\xE0nh tr\xECnh b\u1EAFt \u0111\u1EA7u. M\u1ECDi l\u1EF1a ch\u1ECDn
+    s\u1EBD quy\u1EBFt \u0111\u1ECBnh s\u1ED1 ph\u1EADn c\u1EE7a h\u1ECD."
+  secondsPerImage: 3
+  slideDuration: 0.8
 --- !u!1 &539627193
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,6 +192,7 @@ GameObject:
   - component: {fileID: 863632875}
   - component: {fileID: 863632877}
   - component: {fileID: 863632876}
+  - component: {fileID: 402810001}
   m_Layer: 5
   m_Name: BackGround
   m_TagString: Untagged
@@ -208,7 +239,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e926e8dc320042d49bcbedb38bcf753a, type: 3}
+  m_Sprite: {fileID: 3533411556953243733, guid: c08121c4f9078264eabd89660601c279, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -645,6 +676,7 @@ GameObject:
   - component: {fileID: 1641773492}
   - component: {fileID: 1641773491}
   - component: {fileID: 1641773490}
+  - component: {fileID: 1641773493}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -659,7 +691,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1641773489}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
@@ -713,6 +745,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1641773493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641773489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
 --- !u!1 &1882350393
 GameObject:
   m_ObjectHideFlags: 0

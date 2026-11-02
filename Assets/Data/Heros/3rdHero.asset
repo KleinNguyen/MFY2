@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
   <Image>k__BackingField: {fileID: -7344660812612507114, guid: d80d7d0a8fee9a842bd529e4c0f2b7cd, type: 3}
+  <SelectionBackground>k__BackingField: {fileID: 2033960975386372411, guid: d63acb12119d0354381efd364381f2b0, type: 3}
+  <Description>k__BackingField: "Hi\u1EC7p s\u0129 ph\xF2ng th\u1EE7 v\u1EEFng ch\xE3i,
+    c\xF3 s\u1EE9c ch\u1ECB\u1ECBu \u0111\u1EF1ng cao trong giao tranh."
   <Health>k__BackingField: 60
   <Deck>k__BackingField:
   - {fileID: 11400000, guid: 9363cc85898535f4997d8bf20617fdc7, type: 2}
