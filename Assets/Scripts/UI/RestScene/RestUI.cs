@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class RestUI : MonoBehaviour
 {
+    private bool hasRested;
+    private bool hasUpgraded;
     [SerializeField] private MapUI mapUI;
 
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text messageText;
+
     [SerializeField] private TMP_Dropdown cardDropdown;
 
     private readonly List<CardData> upgradeableCards = new();
 
     public void Setup()
     {
+        hasRested = false;
+        hasUpgraded = false;
+
         UpdateRestUI();
         SetupCardDropdown();
     }
@@ -59,16 +65,31 @@ public class RestUI : MonoBehaviour
 
     public void Rest()
     {
+        if (hasRested)
+        {
+            messageText.text = "You have already rested";
+            return;
+        }
+
         int maxHealth = RunSystem.Instance.HeroData.Health;
         int healAmount = Mathf.CeilToInt(maxHealth * 0.3f);
 
         RunSystem.Instance.Heal(healAmount);
 
-        FinishRest();
+        hasRested = true;
+
+        UpdateRestUI();
+        messageText.text = "Health restored";
     }
 
     public void UpgradeCard()
     {
+        if (hasUpgraded)
+        {
+            messageText.text = "You have already upgraded a card";
+            return;
+        }
+
         if (upgradeableCards.Count == 0)
         {
             messageText.text = "No cards available to upgrade";
@@ -89,10 +110,12 @@ public class RestUI : MonoBehaviour
             return;
         }
 
-        FinishRest();
+        hasUpgraded = true;
+
+        messageText.text = "Upgraded: " + cardData.name;
     }
 
-    private void FinishRest()
+    public void LeaveRest()
     {
         RunSystem.Instance.CompleteMapPoint();
 
