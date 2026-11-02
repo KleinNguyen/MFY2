@@ -9,9 +9,14 @@ public class BattleSystem : Singleton<BattleSystem>
     public bool IsBattleOver { get; private set; } = false;
     private void Start()
     {
-        UIInputModuleCompatibility.UseStandaloneInputModule(EventSystem.current, this);
+        UIInputModuleCompatibility.MonitorAndConfigure(EventSystem.current, this);
         victoryPanel.SetActive(false);
         defeatPanel.SetActive(false);
+    }
+
+    private void Update()
+    {
+        UIInputModuleCompatibility.MonitorAndConfigure(EventSystem.current, this);
     }
 
     public void Victory()
@@ -31,4 +36,3 @@ public class BattleSystem : Singleton<BattleSystem>
         Debug.Log("Defeat");
     }
 }
-

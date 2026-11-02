@@ -49,7 +49,12 @@ public class MapUI : MonoBehaviour
 
     private void ConfigureInputModule()
     {
-        UIInputModuleCompatibility.UseStandaloneInputModule(EventSystem.current, this);
+        UIInputModuleCompatibility.MonitorAndConfigure(EventSystem.current, this);
+    }
+
+    private void Update()
+    {
+        ConfigureInputModule();
     }
 
 
