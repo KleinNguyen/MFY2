@@ -41,6 +41,17 @@ public class RunSystem : PersistentSingleton<RunSystem>
         CompletedMapPointId = -1;
         SelectedMapPointId = -1;
     }
+    public void StartNewRun(HeroData selectedHero)
+    {
+        if (selectedHero == null)
+        {
+            Debug.LogError("Selected HeroData is missing.");
+            return;
+        }
+
+        startingHero = selectedHero;
+        StartNewRun();
+    }
     public void SetEncounter(EncounterData encounter)
     {
         CurrentEncounter = encounter;
