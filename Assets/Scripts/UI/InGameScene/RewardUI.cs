@@ -22,8 +22,20 @@ public class RewardUI : MonoBehaviour
 
         continueButton.interactable = false;
         skipButton.interactable = true;
-        List<CardData> availableCards = new(rewardCards);
-        for(int i = 0; i < cardButtons.Length; i++)
+        List<CardData> availableCards = new();
+
+        foreach (CardData card in rewardCards)
+        {
+            if (card == null) continue;
+
+            if (card.Character != RunSystem.Instance.HeroData.Character)
+            {
+                continue;
+            }
+
+            availableCards.Add(card);
+        }
+        for (int i = 0; i < cardButtons.Length; i++)
         {
             if(i<cardButtonTexts.Length && availableCards.Count > 0)
             {

@@ -27,7 +27,19 @@ public class ShopUI : MonoBehaviour
         goldText.text = "Gold: " + RunSystem.Instance.Gold;
         messageText.text = "Choose a card to buy";
 
-        List<CardData> availableCards = new(shopCards);
+        List<CardData> availableCards = new();
+
+        foreach (CardData card in shopCards)
+        {
+            if (card == null) continue;
+
+            if (card.Character != RunSystem.Instance.HeroData.Character)
+            {
+                continue;
+            }
+
+            availableCards.Add(card);
+        }
 
         for (int i = 0; i < cardButtons.Length; i++)
         {
