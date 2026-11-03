@@ -3,8 +3,8 @@ using UnityEngine;
 
 public static class MapGeneratorSystem
 {
-    //private const int FLOOR_COUNT = 10;
-    private const int FLOOR_COUNT = 2;
+    private const int FLOOR_COUNT = 10;
+    private const float FLOOR_SPACING = 300f;
     private const int COLUMN_COUNT = 7;
 
     public static List<MapPoint> GenerateMap(ActData actData)
@@ -30,7 +30,7 @@ public static class MapGeneratorSystem
 
         Vector2 bossPosition = new(
             600f,
-            150f + FLOOR_COUNT * 160f
+            150f + FLOOR_COUNT * FLOOR_SPACING
         );
 
         MapPoint boss = new(
@@ -88,7 +88,7 @@ public static class MapGeneratorSystem
             float randomOffset = Random.Range(-30f, 30f);
 
             float x = 150f + column * 150f + randomOffset;
-            float y = 150f + floor * 160f;
+            float y = 150f + floor * FLOOR_SPACING;
 
             MapPointType type = MapPointType.Normal;
 

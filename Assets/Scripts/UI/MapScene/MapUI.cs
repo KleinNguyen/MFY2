@@ -50,6 +50,11 @@ public class MapUI : MonoBehaviour
             return;
         }
 
+        mapScrollRect.horizontal = true;
+        mapScrollRect.vertical = true;
+        HideScrollbar(mapScrollRect.horizontalScrollbar);
+        HideScrollbar(mapScrollRect.verticalScrollbar);
+
         shopUI.gameObject.SetActive(false);
         restUI.gameObject.SetActive(false);
 
@@ -73,7 +78,22 @@ public class MapUI : MonoBehaviour
         UpdateMapUI();
 
         Canvas.ForceUpdateCanvases();
-        mapScrollRect.verticalNormalizedPosition = 1f;
+        mapScrollRect.verticalNormalizedPosition = 0f;
+    }
+
+    private static void HideScrollbar(Scrollbar scrollbar)
+    {
+        if (scrollbar == null) return;
+
+        CanvasGroup canvasGroup = scrollbar.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = scrollbar.gameObject.AddComponent<CanvasGroup>();
+        }
+
+        canvasGroup.alpha = 0f;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
     }
 
     private void ConfigureInputModule()
@@ -96,10 +116,7 @@ public class MapUI : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        float mapScale = Mathf.Min(
-            mapScrollRect.viewport.rect.width / MapLayoutWidth,
-            mapScrollRect.viewport.rect.height / 900f
-        );
+        float mapScale = mapScrollRect.viewport.rect.width / MapLayoutWidth;
         mapMinimumY = float.MaxValue;
         float mapMaximumY = float.MinValue;
         foreach (MapPoint point in RunSystem.Instance.MapPoints)
@@ -108,11 +125,14 @@ public class MapUI : MonoBehaviour
             mapMaximumY = Mathf.Max(mapMaximumY, point.Position.y);
         }
 
-        float contentHeight = mapScrollRect.viewport.rect.height / mapScale;
+        float mapHeight = mapMaximumY - mapMinimumY + MapEdgePadding * 2f;
+        float contentHeight = Mathf.Max(
+            mapScrollRect.viewport.rect.height / mapScale,
+            mapHeight
+        );
         mapContent.sizeDelta = new Vector2(MapLayoutWidth, contentHeight);
         mapContent.localScale = Vector3.one * mapScale;
-        mapVerticalScale = (contentHeight - MapEdgePadding * 2f)
-            / Mathf.Max(1f, mapMaximumY - mapMinimumY);
+        mapVerticalScale = 1f;
 
         foreach (MapPoint point in RunSystem.Instance.MapPoints)
         {

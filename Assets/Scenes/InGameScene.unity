@@ -1517,7 +1517,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  m_Sprite: {fileID: 8816886408898176165, guid: f25fe2a3b5f28654e99426c31282a791, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2933,6 +2933,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrowHead: {fileID: 466369484}
   lineRenderer: {fileID: 14255780}
+  arrowBodySprites:
+  - {fileID: -765150924802650856, guid: f25fe2a3b5f28654e99426c31282a791, type: 3}
+  - {fileID: -7451953295746623981, guid: f25fe2a3b5f28654e99426c31282a791, type: 3}
+  - {fileID: 4793074969510804509, guid: f25fe2a3b5f28654e99426c31282a791, type: 3}
+  - {fileID: 4397636249099975194, guid: f25fe2a3b5f28654e99426c31282a791, type: 3}
+  arrowBodyWidth: 0.45
+  arrowHeadLength: 0.55
+  arrowHeadRotationOffset: 155
 --- !u!1 &819214011
 GameObject:
   m_ObjectHideFlags: 0
