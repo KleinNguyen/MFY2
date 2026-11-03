@@ -10,7 +10,7 @@ public class StorySlideshowUI : MonoBehaviour
     [SerializeField] private Sprite[] storyImages;
     [SerializeField] private string[] storyTexts;
     [SerializeField] private float secondsPerImage = 3f;
-    [SerializeField] private float slideDuration = 0.8f;
+    [SerializeField] private float slideDuration = 1.5f;
 
     private IEnumerator Start()
     {

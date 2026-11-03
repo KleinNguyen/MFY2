@@ -148,7 +148,7 @@ MonoBehaviour:
   - "Cu\u1ED9c h\xE0nh tr\xECnh b\u1EAFt \u0111\u1EA7u. M\u1ECDi l\u1EF1a ch\u1ECDn
     s\u1EBD quy\u1EBFt \u0111\u1ECBnh s\u1ED1 ph\u1EADn c\u1EE7a h\u1ECD."
   secondsPerImage: 3
-  slideDuration: 0.8
+  slideDuration: 1.5
 --- !u!1 &539627193
 GameObject:
   m_ObjectHideFlags: 0
