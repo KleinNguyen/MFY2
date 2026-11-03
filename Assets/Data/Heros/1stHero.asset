@@ -18,6 +18,7 @@ MonoBehaviour:
   <Description>k__BackingField: "\u0110\u1EA5u s\u0129 nhanh nh\u1EB9n, c\xE2n b\u1EB1ng
     gi\u1EEFa t\u1EA5n c\xF4ng v\xE0 ph\xF2ng th\u1EE7."
   <Health>k__BackingField: 40
+  <StartingMana>k__BackingField: 3
   <Deck>k__BackingField:
   - {fileID: 11400000, guid: 9363cc85898535f4997d8bf20617fdc7, type: 2}
   - {fileID: 11400000, guid: 9363cc85898535f4997d8bf20617fdc7, type: 2}

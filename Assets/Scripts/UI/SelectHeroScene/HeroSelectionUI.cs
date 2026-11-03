@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Sprites;
 using UnityEngine.UI;
 
 public class HeroSelectionUI : MonoBehaviour
@@ -11,13 +13,31 @@ public class HeroSelectionUI : MonoBehaviour
     [SerializeField] private TMP_Text selectedHeroText;
     [SerializeField] private SpriteRenderer backgroundRenderer;
     [SerializeField] private TMP_Text descriptionText;
+    [SerializeField] private Image themePanel;
+    [SerializeField] private Color redPanelColor = new(0.32f, 0.07f, 0.09f, 0.9f);
+    [SerializeField] private Color greenPanelColor = new(0.06f, 0.24f, 0.14f, 0.9f);
+    [SerializeField] private Color yellowPanelColor = new(0.3f, 0.21f, 0.04f, 0.9f);
+    [SerializeField] private Shader roundedCornerShader;
+    [SerializeField, Range(0.01f, 0.5f)] private float cornerRadius = 0.1f;
+    [SerializeField, Range(0f, 0.1f)] private float selectedBorderWidth = 0.035f;
+    [SerializeField] private Color selectedBorderColor = new(1f, 0.9f, 0.05f, 1f);
 
     private Button[] heroButtons;
     private HeroData selectedHero;
+    private readonly List<Material> roundedCornerMaterials = new();
 
     private void Awake()
     {
         heroButtons = GetComponentsInChildren<Button>(true);
+        ApplyRoundedCorners();
+    }
+
+    private void OnDestroy()
+    {
+        foreach (Material material in roundedCornerMaterials)
+        {
+            Destroy(material);
+        }
     }
 
     private void Start()
@@ -55,6 +75,7 @@ public class HeroSelectionUI : MonoBehaviour
 
         selectedHero = hero;
         UpdateSelectionFrame(index);
+        UpdateThemePanel(selectedHero.Character);
 
         if (selectedHeroText != null)
         {
@@ -80,11 +101,92 @@ public class HeroSelectionUI : MonoBehaviour
 
         if (descriptionText != null)
         {
-            descriptionText.text = selectedHero.Description;
+            descriptionText.alignment = TextAlignmentOptions.TopJustified;
+            descriptionText.text = selectedHero.Description +
+                "\n\n<align=left>Health: " + selectedHero.Health +
+                "\nMana: " + selectedHero.StartingMana + "</align>";
         }
         else
         {
             Debug.LogError("Description Text is not assigned in HeroSelectionUI.");
+        }
+    }
+
+    private void UpdateThemePanel(CharacterType character)
+    {
+        if (themePanel == null)
+        {
+            Debug.LogError("Theme Panel is not assigned in HeroSelectionUI.");
+            return;
+        }
+
+        switch (character)
+        {
+            case CharacterType.Red:
+                themePanel.color = redPanelColor;
+                break;
+            case CharacterType.Green:
+                themePanel.color = greenPanelColor;
+                break;
+            case CharacterType.Yellow:
+                themePanel.color = yellowPanelColor;
+                break;
+            default:
+                Debug.LogError("No panel color is configured for character: " + character);
+                break;
+        }
+    }
+
+    private void ApplyRoundedCorners()
+    {
+        Shader shader = roundedCornerShader != null
+            ? roundedCornerShader
+            : Shader.Find("UI/RoundedCorners");
+
+        if (shader == null)
+        {
+            Debug.LogError(
+                "Could not find shader 'UI/RoundedCorners'. Make sure UIRoundedCorners.shader " +
+                "is imported, or assign it to HeroSelectionUI."
+            );
+            return;
+        }
+
+        foreach (Button button in heroButtons)
+        {
+            if (button == null)
+            {
+                Debug.LogError("A hero button is missing in HeroSelectionUI.");
+                continue;
+            }
+
+            Image image = button.targetGraphic as Image;
+            if (image == null)
+            {
+                Debug.LogError("Each hero button must have an Image as its target graphic.");
+                continue;
+            }
+
+            if (image.sprite == null)
+            {
+                Debug.LogError("A hero button Image has no Sprite assigned.");
+                continue;
+            }
+
+            Rect rect = image.rectTransform.rect;
+            if (rect.width <= 0f || rect.height <= 0f)
+            {
+                Debug.LogError("A hero button Image must have a non-zero RectTransform size.");
+                continue;
+            }
+
+            Material material = new(shader);
+            material.SetFloat("_CornerRadius", cornerRadius);
+            material.SetFloat("_Aspect", rect.width / rect.height);
+            material.SetVector("_UVRect", DataUtility.GetOuterUV(image.sprite));
+            material.SetFloat("_OutlineWidth", 0f);
+            image.material = material;
+            roundedCornerMaterials.Add(material);
         }
     }
 
@@ -105,23 +207,30 @@ public class HeroSelectionUI : MonoBehaviour
                 continue;
             }
 
-            Graphic targetGraphic = button.targetGraphic;
-            if (targetGraphic == null)
+            Image image = button.targetGraphic as Image;
+            if (image == null)
             {
-                Debug.LogError("Hero button at index " + i + " has no target graphic.");
+                Debug.LogError("Hero button at index " + i + " must use an Image as its target graphic.");
                 continue;
             }
 
-            Outline outline = targetGraphic.GetComponent<Outline>();
-            if (outline == null)
+            Material material = image.material;
+            if (material == null || !material.HasProperty("_OutlineWidth") ||
+                !material.HasProperty("_OutlineColor"))
             {
-                outline = targetGraphic.gameObject.AddComponent<Outline>();
+                Debug.LogError("Rounded corner material is missing outline properties.");
+                continue;
             }
 
-            outline.effectColor = new Color(1f, 0.8f, 0.1f, 1f);
-            outline.effectDistance = new Vector2(8f, 8f);
-            outline.useGraphicAlpha = false;
-            outline.enabled = i == selectedIndex;
+            Outline existingOutline = image.GetComponent<Outline>();
+            if (existingOutline != null)
+            {
+                existingOutline.enabled = false;
+            }
+
+            bool isSelected = i == selectedIndex;
+            material.SetFloat("_OutlineWidth", isSelected ? selectedBorderWidth : 0f);
+            material.SetColor("_OutlineColor", selectedBorderColor);
         }
     }
 

@@ -1462,6 +1462,12 @@ MonoBehaviour:
   selectedHeroText: {fileID: 984176625}
   backgroundRenderer: {fileID: 1121902321}
   descriptionText: {fileID: 1610515964}
+  themePanel: {fileID: 1879083665}
+  redPanelColor: {r: 0.32, g: 0.07, b: 0.09, a: 0.9}
+  greenPanelColor: {r: 0.06, g: 0.24, b: 0.14, a: 0.9}
+  yellowPanelColor: {r: 0.3, g: 0.21, b: 0.04, a: 0.9}
+  roundedCornerShader: {fileID: 4800000, guid: 6d7f0f915b0840af9a6df9a76b360511, type: 3}
+  cornerRadius: 0.1
 --- !u!224 &1568455888
 RectTransform:
   m_ObjectHideFlags: 0

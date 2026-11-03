@@ -18,6 +18,7 @@ MonoBehaviour:
   <Description>k__BackingField: "Hi\u1EC7p s\u0129 ph\xF2ng th\u1EE7 v\u1EEFng ch\xE3i,
     c\xF3 s\u1EE9c ch\u1ECB\u1ECBu \u0111\u1EF1ng cao trong giao tranh."
   <Health>k__BackingField: 60
+  <StartingMana>k__BackingField: 3
   <Deck>k__BackingField:
   - {fileID: 11400000, guid: 9363cc85898535f4997d8bf20617fdc7, type: 2}
   - {fileID: 11400000, guid: 9363cc85898535f4997d8bf20617fdc7, type: 2}

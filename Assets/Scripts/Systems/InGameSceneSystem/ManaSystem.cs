@@ -4,8 +4,8 @@ using UnityEngine;
 public class ManaSystem : Singleton<ManaSystem>
 {
     [SerializeField] private ManaUI manaUI;
-    private const int MAX_MANA = 3;
-    private int currentMana = MAX_MANA;
+    private int maxMana;
+    private int currentMana;
     private void OnEnable()
     {
         ActionSystem.AttachPerformer<SpendManaGA>(SpendManaPerformer);
@@ -25,6 +25,14 @@ public class ManaSystem : Singleton<ManaSystem>
     }
     private void Start()
     {
+        if (RunSystem.Instance == null || RunSystem.Instance.HeroData == null)
+        {
+            Debug.LogError("Selected hero data is missing; mana cannot be initialized.");
+            return;
+        }
+
+        maxMana = RunSystem.Instance.HeroData.StartingMana;
+        currentMana = maxMana;
         manaUI.UpdateManaText(currentMana);
     }
     private IEnumerator SpendManaPerformer(SpendManaGA spendManaGA)
@@ -35,7 +43,7 @@ public class ManaSystem : Singleton<ManaSystem>
     }
     private IEnumerator RefillManaPerformer(RefillManaGA refillManaGA)
     {
-        currentMana = MAX_MANA;
+        currentMana = maxMana;
         manaUI.UpdateManaText(currentMana);
         yield return null;
     }
