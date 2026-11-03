@@ -98,7 +98,7 @@ public class ShopUI : MonoBehaviour
                 "Price: " + price + " Gold";
         }
     }
-    public void OpenInventoryInventory()
+    public void OpenMerchantInventory()
     {
         shopInventoryPanel.SetActive(true);
     }

@@ -3271,7 +3271,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2087184319}
         m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
-        m_MethodName: OpenShopInventory
+        m_MethodName: OpenMerchantInventory
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8559,7 +8559,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2087184316
 RectTransform:
   m_ObjectHideFlags: 0
