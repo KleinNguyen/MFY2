@@ -48,6 +48,7 @@ MonoBehaviour:
   healthText: {fileID: 2604569719385534052}
   spriteRenderer: {fileID: 5094711625290128492}
   statusEffectsUI: {fileID: 7124695561795464049}
+  inGameSpriteScale: 1
 --- !u!1001 &7929894970834860442
 PrefabInstance:
   m_ObjectHideFlags: 0

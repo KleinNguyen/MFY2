@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 2ndHero
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
-  <Image>k__BackingField: {fileID: -7344660812612507114, guid: d80d7d0a8fee9a842bd529e4c0f2b7cd, type: 3}
+  <Image>k__BackingField: {fileID: 7174477237412048962, guid: 24e7b81c9661e0e4db3686480beff2f5, type: 3}
   <SelectionBackground>k__BackingField: {fileID: 720118652224413485, guid: dab77ce3c03b62242b1ea2891c117606, type: 3}
   <Description>k__BackingField: "\u0110\u1EA5u s\u0129 b\u1EC1n b\u1EC9, c\xF3 l\u01B0\u1EE3ng
     m\xE1u cao v\xE0 ph\xF9 h\u1EE3p v\u1EDBi l\u1ED1i ch\u01A1i ph\xF2ng th\u1EE7."

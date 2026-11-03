@@ -17,6 +17,11 @@ public class CombatantView : MonoBehaviour
         spriteRenderer.sprite = image;
         UpdateHealthText();
     }
+    protected void SetSpriteScale(float scale)
+    {
+        Vector3 currentScale = spriteRenderer.transform.localScale;
+        spriteRenderer.transform.localScale = new Vector3(scale, scale, currentScale.z);
+    }
     private void UpdateHealthText()
     {
         healthText.text = "HP: " + CurrentHealth;

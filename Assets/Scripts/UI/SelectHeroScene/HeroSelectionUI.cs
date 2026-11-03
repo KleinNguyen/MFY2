@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HeroSelectionUI : MonoBehaviour
 {
@@ -11,7 +12,18 @@ public class HeroSelectionUI : MonoBehaviour
     [SerializeField] private SpriteRenderer backgroundRenderer;
     [SerializeField] private TMP_Text descriptionText;
 
+    private Button[] heroButtons;
     private HeroData selectedHero;
+
+    private void Awake()
+    {
+        heroButtons = GetComponentsInChildren<Button>(true);
+    }
+
+    private void Start()
+    {
+        SelectHero(0);
+    }
 
     public void SelectHero(int index)
     {
@@ -42,6 +54,7 @@ public class HeroSelectionUI : MonoBehaviour
         }
 
         selectedHero = hero;
+        UpdateSelectionFrame(index);
 
         if (selectedHeroText != null)
         {
@@ -72,6 +85,43 @@ public class HeroSelectionUI : MonoBehaviour
         else
         {
             Debug.LogError("Description Text is not assigned in HeroSelectionUI.");
+        }
+    }
+
+    private void UpdateSelectionFrame(int selectedIndex)
+    {
+        if (heroButtons == null || heroButtons.Length != 3)
+        {
+            Debug.LogError("Hero Buttons must contain all three hero buttons.");
+            return;
+        }
+
+        for (int i = 0; i < heroButtons.Length; i++)
+        {
+            Button button = heroButtons[i];
+            if (button == null)
+            {
+                Debug.LogError("Hero button at index " + i + " is not assigned.");
+                continue;
+            }
+
+            Graphic targetGraphic = button.targetGraphic;
+            if (targetGraphic == null)
+            {
+                Debug.LogError("Hero button at index " + i + " has no target graphic.");
+                continue;
+            }
+
+            Outline outline = targetGraphic.GetComponent<Outline>();
+            if (outline == null)
+            {
+                outline = targetGraphic.gameObject.AddComponent<Outline>();
+            }
+
+            outline.effectColor = new Color(1f, 0.8f, 0.1f, 1f);
+            outline.effectDistance = new Vector2(8f, 8f);
+            outline.useGraphicAlpha = false;
+            outline.enabled = i == selectedIndex;
         }
     }
 
