@@ -12,6 +12,7 @@ public class RestUI : MonoBehaviour
     [SerializeField] private TMP_Text messageText;
 
     [SerializeField] private TMP_Dropdown cardDropdown;
+    [SerializeField] private GameObject upgradePanel;
 
     private readonly List<CardData> upgradeableCards = new();
 
@@ -19,6 +20,8 @@ public class RestUI : MonoBehaviour
     {
         hasRested = false;
         hasUpgraded = false;
+
+        upgradePanel.SetActive(false);
 
         UpdateRestUI();
         SetupCardDropdown();
@@ -61,6 +64,16 @@ public class RestUI : MonoBehaviour
         cardDropdown.AddOptions(options);
         cardDropdown.value = 0;
         cardDropdown.RefreshShownValue();
+    }
+    public void OpenUpgradePanel()
+    {
+        SetupCardDropdown();
+        upgradePanel.SetActive(true);
+    }
+
+    public void CloseUpgradePanel()
+    {
+        upgradePanel.SetActive(false);
     }
 
     public void Rest()

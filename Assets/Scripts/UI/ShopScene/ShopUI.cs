@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ShopUI : MonoBehaviour
 {
     [SerializeField] private MapUI mapUI;
+    [SerializeField] private GameObject shopInventoryPanel;
 
     [SerializeField] private List<CardData> shopCards;
     [SerializeField] private int commonPrice = 50;
@@ -23,6 +24,7 @@ public class ShopUI : MonoBehaviour
 
     public void Setup()
     {
+        //shopInventoryPanel.SetActive(false);
         currentCards.Clear();
         currentPrices.Clear();
 
@@ -95,6 +97,15 @@ public class ShopUI : MonoBehaviour
                 card.Description + "\n" +
                 "Price: " + price + " Gold";
         }
+    }
+    public void OpenMerchantInventory()
+    {
+        shopInventoryPanel.SetActive(true);
+    }
+
+    public void CloseShopInventory()
+    {
+        shopInventoryPanel.SetActive(false);
     }
 
     public void BuyCard(int index)
