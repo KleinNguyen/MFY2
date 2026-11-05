@@ -11,6 +11,7 @@ public class CardData : ScriptableObject
     [field: SerializeField] public CharacterType Character { get; private set; }
     [field: SerializeField] public CardType Type { get; private set; }
     [field: SerializeField] public CardRarity Rarity { get; private set; }
+    [field: SerializeField] public Sprite CardImage { get; private set; }
     [field: SerializeField] public string Description { get; private set; }
     [field: SerializeField] public int Mana { get; private set; }
     [field: SerializeField] public bool ExhaustOnPlay { get; private set; }
