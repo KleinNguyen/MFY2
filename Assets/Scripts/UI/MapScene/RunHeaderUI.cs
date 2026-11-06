@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class RunHeaderUI : MonoBehaviour
 {
-    [SerializeField] private TMP_Text characterText;
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text goldText;
     [SerializeField] private TMP_Text actText;
@@ -17,11 +16,10 @@ public class RunHeaderUI : MonoBehaviour
 
         if (run == null || run.HeroData == null)
         {
-            SetText(characterText, "Hero: --");
             SetText(healthText, "HP: -- / --");
             SetText(goldText, "Gold: --");
             SetText(actText, "Act: --");
-            SetText(floorText, "Stage: --");
+            SetText(floorText, "Floor: --");
 
             SetText(
                 potionText,
@@ -46,10 +44,6 @@ public class RunHeaderUI : MonoBehaviour
                 HeroSystem.Instance.HeroView.MaxHealth;
         }
 
-        SetText(
-            characterText,
-            "Hero: " + run.HeroData.Character
-        );
 
         SetText(
             healthText,
@@ -75,13 +69,6 @@ public class RunHeaderUI : MonoBehaviour
             SetText(
                 floorText,
                 "Floor: " + (selectedPoint.Floor + 1)
-            );
-        }
-        else
-        {
-            SetText(
-                floorText,
-                "Stage: " + run.CurrentStage
             );
         }
 

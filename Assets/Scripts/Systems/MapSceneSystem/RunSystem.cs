@@ -154,6 +154,29 @@ public class RunSystem : PersistentSingleton<RunSystem>
 
         return true;
     }
+    public bool BuyHealthPotion(int price)
+    {
+        if (price < 0) return false;
+
+        if (Gold < price) return false;
+
+        Gold -= price;
+        HealthPotionCount++;
+
+        return true;
+    }
+
+    public bool BuyManaPotion(int price)
+    {
+        if (price < 0) return false;
+
+        if (Gold < price) return false;
+
+        Gold -= price;
+        ManaPotionCount++;
+
+        return true;
+    }
 
     public void Heal(int amount)
     {

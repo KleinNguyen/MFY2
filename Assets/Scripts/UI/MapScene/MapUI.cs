@@ -16,7 +16,7 @@ public class MapUI : MonoBehaviour
     private const float ConnectionDashGap = 9f;
     private const float ConnectionThickness = 4f;
 
-    [SerializeField] private TMP_Text actNameText;
+    //[SerializeField] private TMP_Text actNameText;
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text goldText;
     [SerializeField] private TMP_Text floorText;
@@ -68,10 +68,10 @@ public class MapUI : MonoBehaviour
             return;
         }
 
-        if (actNameText != null)
-        {
-            actNameText.text = currentAct.ActName;
-        }
+        //if (actNameText != null)
+        //{
+        //    actNameText.text = currentAct.ActName;
+        //}
 
         Canvas.ForceUpdateCanvases();
         CreateMapUI();
@@ -276,25 +276,10 @@ public class MapUI : MonoBehaviour
 
     public void UpdateMapUI()
     {
-        healthText.text = "HP: " + RunSystem.Instance.CurrentHealth;
-        goldText.text = "Gold: " + RunSystem.Instance.Gold;
-
         foreach (KeyValuePair<int, Button> pair in pointButtons)
         {
-            pair.Value.interactable = RunSystem.Instance.CanSelectMapPoint(pair.Key);
-        }
-
-        MapPoint completedPoint = RunSystem.Instance.GetMapPoint(
-            RunSystem.Instance.CompletedMapPointId
-        );
-
-        if (completedPoint != null && completedPoint.Type == MapPointType.Boss)
-        {
-            floorText.text = "Run Complete";
-        }
-        else
-        {
-            floorText.text = "Choose your next point";
+            pair.Value.interactable =
+                RunSystem.Instance.CanSelectMapPoint(pair.Key);
         }
     }
 
