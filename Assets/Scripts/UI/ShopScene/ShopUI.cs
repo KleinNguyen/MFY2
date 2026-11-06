@@ -13,9 +13,6 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private int uncommonPrice = 75;
     [SerializeField] private int rarePrice = 120;
 
-    [SerializeField] private TMP_Text goldText;
-    [SerializeField] private TMP_Text messageText;
-
     [SerializeField] private Button[] cardButtons;
     [SerializeField] private TMP_Text[] cardButtonTexts;
 
@@ -27,9 +24,6 @@ public class ShopUI : MonoBehaviour
         //shopInventoryPanel.SetActive(false);
         currentCards.Clear();
         currentPrices.Clear();
-
-        goldText.text = "Gold: " + RunSystem.Instance.Gold;
-        messageText.text = "Choose a card to buy";
 
         List<CardData> availableCards = new();
 
@@ -117,16 +111,8 @@ public class ShopUI : MonoBehaviour
 
         bool success = RunSystem.Instance.BuyCard(card, price);
 
-        if (!success)
-        {
-            messageText.text = "Not enough gold";
-            return;
-        }
-
         cardButtons[index].interactable = false;
 
-        goldText.text = "Gold: " + RunSystem.Instance.Gold;
-        messageText.text = "Purchased: " + card.name;
     }
     private int GetCardPrice(CardData card)
     {

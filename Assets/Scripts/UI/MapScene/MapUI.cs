@@ -19,7 +19,7 @@ public class MapUI : MonoBehaviour
     [SerializeField] private TMP_Text actNameText;
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text goldText;
-    [SerializeField] private TMP_Text mapMessageText;
+    [SerializeField] private TMP_Text floorText;
 
     [SerializeField] private ShopUI shopUI;
     [SerializeField] private RestUI restUI;
@@ -290,11 +290,11 @@ public class MapUI : MonoBehaviour
 
         if (completedPoint != null && completedPoint.Type == MapPointType.Boss)
         {
-            mapMessageText.text = "Run Complete";
+            floorText.text = "Run Complete";
         }
         else
         {
-            mapMessageText.text = "Choose your next point";
+            floorText.text = "Choose your next point";
         }
     }
 

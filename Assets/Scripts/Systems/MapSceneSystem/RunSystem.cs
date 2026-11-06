@@ -27,6 +27,8 @@ public class RunSystem : PersistentSingleton<RunSystem>
     private readonly HashSet<CardData> upgradedCards = new();
     public int CurrentHealth { get; private set; }
     public int Gold { get; private set; }
+    public int HealthPotionCount { get; private set; }
+    public int ManaPotionCount { get; private set; }
     public int CurrentStage { get; private set; }
     public EncounterData CurrentEncounter { get; private set; }
     public bool RewardClaimed { get; private set; }
@@ -52,6 +54,8 @@ public class RunSystem : PersistentSingleton<RunSystem>
         Deck = new List<CardData>(startingHero.Deck);
         CurrentHealth = startingHero.Health;
         Gold = 0;
+        HealthPotionCount = 0;
+        ManaPotionCount = 0;
         CurrentStage = 0;
         CurrentEncounter = null;
         RewardClaimed = false;
