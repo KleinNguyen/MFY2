@@ -17,9 +17,9 @@ public class MapUI : MonoBehaviour
     private const float ConnectionThickness = 4f;
 
     //[SerializeField] private TMP_Text actNameText;
-    [SerializeField] private TMP_Text healthText;
-    [SerializeField] private TMP_Text goldText;
-    [SerializeField] private TMP_Text floorText;
+    //[SerializeField] private TMP_Text healthText;
+    //[SerializeField] private TMP_Text goldText;
+    //[SerializeField] private TMP_Text floorText;
 
     [SerializeField] private ShopUI shopUI;
     [SerializeField] private RestUI restUI;

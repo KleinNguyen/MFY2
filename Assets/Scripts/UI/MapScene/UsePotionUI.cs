@@ -32,8 +32,8 @@ public class RunPotionUI : MonoBehaviour
 
         if (run == null)
         {
-            SetCountText(healthPotionCountText, 1);
-            SetCountText(manaPotionCountText, 1);
+            SetCountText(healthPotionCountText, 0);
+            SetCountText(manaPotionCountText, 0);
 
             SetInteractable(healthPotionButton, false);
             SetInteractable(manaPotionButton, false);
