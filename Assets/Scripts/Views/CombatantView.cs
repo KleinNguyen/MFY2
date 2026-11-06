@@ -12,6 +12,7 @@ public class CombatantView : MonoBehaviour
     [SerializeField] private StatusEffecstUI statusEffectsUI;
     public int MaxHealth { get; private set; }
     public int CurrentHealth { get; private set; }
+    protected SpriteRenderer CombatantSpriteRenderer => spriteRenderer;
     private Dictionary<StatusEffectType, int> statusEffects = new();
     protected void SetupBase(int health, Sprite image)
     {

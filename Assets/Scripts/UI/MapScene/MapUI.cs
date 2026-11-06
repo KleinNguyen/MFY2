@@ -451,6 +451,8 @@ public class MapUI : MonoBehaviour
 
     public void UpdateMapUI()
     {
+        UpdateCurrentPointGlow();
+
         foreach (KeyValuePair<int, Button> pair in pointButtons)
         {
             pair.Value.interactable = RunSystem.Instance.CanSelectMapPoint(pair.Key);

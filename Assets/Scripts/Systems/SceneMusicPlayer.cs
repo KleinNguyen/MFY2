@@ -31,6 +31,8 @@ public class SceneMusicPlayer : MonoBehaviour
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
         audioSource.spatialBlend = 0f;
+        audioSource.volume = GameAudioSettings.MusicVolume;
+        GameAudioSettings.Changed += ApplyMusicVolume;
 
         settings = Resources.Load<SceneMusicSettings>("SceneMusicSettings");
         if (settings == null)
@@ -55,8 +57,17 @@ public class SceneMusicPlayer : MonoBehaviour
     {
         if (instance == this)
         {
+            GameAudioSettings.Changed -= ApplyMusicVolume;
             SceneManager.sceneLoaded -= OnSceneLoaded;
             instance = null;
+        }
+    }
+
+    private void ApplyMusicVolume()
+    {
+        if (audioSource != null)
+        {
+            audioSource.volume = GameAudioSettings.MusicVolume;
         }
     }
 

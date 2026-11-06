@@ -1,43 +1,43 @@
 fileFormatVersion: 2
-guid: d7891710a1a8f12429830a5f3852f226
+guid: 7f07bf82463b3c34695324925a75eae2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1658958808482352906
-    second: upgradetable_0
+      213: 7618931891350833659
+    second: upgradeee_0
   - first:
-      213: -3931394185062650084
-    second: upgradetable_1
+      213: -8499793104751337989
+    second: upgradeee_1
   - first:
-      213: -5995811931762578417
-    second: upgradetable_2
+      213: 1466556993006859004
+    second: upgradeee_2
   - first:
-      213: -5756600462176299657
-    second: upgradetable_3
+      213: 7683716423852964326
+    second: upgradeee_3
   - first:
-      213: -6050831278139475187
-    second: upgradetable_4
+      213: 264576676367655460
+    second: upgradeee_4
   - first:
-      213: 6961648064439618773
-    second: upgradetable_5
+      213: 7734003994323998999
+    second: upgradeee_5
   - first:
-      213: -978915325953610612
-    second: upgradetable_6
+      213: 8630452126701127880
+    second: upgradeee_6
   - first:
-      213: -5783706286027779277
-    second: upgradetable_7
+      213: -1788440899047953044
+    second: upgradeee_7
   - first:
-      213: -4099414458304577671
-    second: upgradetable_8
+      213: -8541360163707277209
+    second: upgradeee_8
   - first:
-      213: 806761668996429280
-    second: upgradetable_9
+      213: -7459309463824521014
+    second: upgradeee_9
   - first:
-      213: -1251024496600538322
-    second: upgradetable_10
+      213: -1594557718994885109
+    second: upgradeee_10
   - first:
-      213: -7570933294632390821
-    second: upgradetable_11
+      213: 658908508833930701
+    second: upgradeee_11
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -146,7 +146,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: upgradetable_0
+      name: upgradeee_0
       rect:
         serializedVersion: 2
         x: 983
@@ -161,14 +161,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a0f889c2f3ec50710800000000000000
-      internalID: 1658958808482352906
+      spriteID: bf98cd73032ebb960800000000000000
+      internalID: 7618931891350833659
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: upgradetable_1
+      name: upgradeee_1
       rect:
         serializedVersion: 2
         x: 999
@@ -183,14 +183,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c1fed4f61d1e079c0800000000000000
-      internalID: -3931394185062650084
+      spriteID: bfd5bfe743baa0a80800000000000000
+      internalID: -8499793104751337989
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: upgradetable_2
+      name: upgradeee_2
       rect:
         serializedVersion: 2
         x: 1005
@@ -205,14 +205,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f0c2e33b0d89acca0800000000000000
-      internalID: -5995811931762578417
+      spriteID: cf2f903a0d14a5410800000000000000
+      internalID: 1466556993006859004
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: upgradetable_3
+      name: upgradeee_3
       rect:
         serializedVersion: 2
         x: 999
@@ -227,14 +227,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 775d12221627c10b0800000000000000
-      internalID: -5756600462176299657
+      spriteID: 6e9379e906b02aa60800000000000000
+      internalID: 7683716423852964326
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: upgradetable_4
+      name: upgradeee_4
       rect:
         serializedVersion: 2
         x: 1846
@@ -249,14 +249,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d0b7caed201270ca0800000000000000
-      internalID: -6050831278139475187
+      spriteID: 4226fbad517fba300800000000000000
+      internalID: 264576676367655460
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: upgradetable_5
+      name: upgradeee_5
       rect:
         serializedVersion: 2
         x: 931
@@ -271,14 +271,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5dc853cb70ebc9060800000000000000
-      internalID: 6961648064439618773
+      spriteID: 719522508a3b45b60800000000000000
+      internalID: 7734003994323998999
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: upgradetable_6
+      name: upgradeee_6
       rect:
         serializedVersion: 2
         x: 936
@@ -293,14 +293,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c8c695392b13a62f0800000000000000
-      internalID: -978915325953610612
+      spriteID: 8c8090fab7685c770800000000000000
+      internalID: 8630452126701127880
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: upgradetable_7
+      name: upgradeee_7
       rect:
         serializedVersion: 2
         x: 1585
@@ -315,14 +315,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 333de18b6c52cbfa0800000000000000
-      internalID: -5783706286027779277
+      spriteID: c6d67765a7e2e27e0800000000000000
+      internalID: -1788440899047953044
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: upgradetable_8
+      name: upgradeee_8
       rect:
         serializedVersion: 2
         x: 1226
@@ -337,14 +337,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 97fb7a11544fb17c0800000000000000
-      internalID: -4099414458304577671
+      spriteID: 7603e876f2ef67980800000000000000
+      internalID: -8541360163707277209
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: upgradetable_9
+      name: upgradeee_9
       rect:
         serializedVersion: 2
         x: 1436
@@ -359,14 +359,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0e5feeaa671323b00800000000000000
-      internalID: 806761668996429280
+      spriteID: ac8a70350953b7890800000000000000
+      internalID: -7459309463824521014
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: upgradetable_10
+      name: upgradeee_10
       rect:
         serializedVersion: 2
         x: 1578
@@ -381,14 +381,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e2320da39d773aee0800000000000000
-      internalID: -1251024496600538322
+      spriteID: b06e371f33efed9e0800000000000000
+      internalID: -1594557718994885109
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: upgradetable_11
+      name: upgradeee_11
       rect:
         serializedVersion: 2
         x: 1146
@@ -403,8 +403,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b5f2243f744aee690800000000000000
-      internalID: -7570933294632390821
+      spriteID: dcd57883cc9e42900800000000000000
+      internalID: 658908508833930701
       vertices: []
       indices: 
       edges: []
@@ -423,18 +423,18 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      upgradetable_0: 1658958808482352906
-      upgradetable_1: -3931394185062650084
-      upgradetable_10: -1251024496600538322
-      upgradetable_11: -7570933294632390821
-      upgradetable_2: -5995811931762578417
-      upgradetable_3: -5756600462176299657
-      upgradetable_4: -6050831278139475187
-      upgradetable_5: 6961648064439618773
-      upgradetable_6: -978915325953610612
-      upgradetable_7: -5783706286027779277
-      upgradetable_8: -4099414458304577671
-      upgradetable_9: 806761668996429280
+      upgradeee_0: 7618931891350833659
+      upgradeee_1: -8499793104751337989
+      upgradeee_10: -1594557718994885109
+      upgradeee_11: 658908508833930701
+      upgradeee_2: 1466556993006859004
+      upgradeee_3: 7683716423852964326
+      upgradeee_4: 264576676367655460
+      upgradeee_5: 7734003994323998999
+      upgradeee_6: 8630452126701127880
+      upgradeee_7: -1788440899047953044
+      upgradeee_8: -8541360163707277209
+      upgradeee_9: -7459309463824521014
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

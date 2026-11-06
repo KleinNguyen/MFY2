@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 907009d3f7cdc114c80927fe262d70b2
+guid: 48a58482089fc9d4f9d4183c50e6660a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8654233391807914804
-    second: rest_0
+      213: -454744387307650279
+    second: thuongplace2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: rest_0
+      name: thuongplace2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1672
-        height: 941
+        width: 1920
+        height: 1080
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 433e802fa630a1870800000000000000
-      internalID: 8654233391807914804
+      spriteID: 913ccea936c60b9f0800000000000000
+      internalID: -454744387307650279
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      rest_0: 8654233391807914804
+      thuongplace2_0: -454744387307650279
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 47d733f7d974d1f4bad809e4e148f03c
+guid: bd959dc5a2fd01b40bb49999132b2866
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8723735946329424280
-    second: bedtime_0
-  - first:
-      213: 5652706373630466688
-    second: bedtime_1
+      213: 7504582138029679846
+    second: cardex_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -116,35 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: bedtime_0
+      name: cardex_0
       rect:
         serializedVersion: 2
-        x: 10
-        y: 33
-        width: 854
-        height: 463
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 86e7abc80601fe680800000000000000
-      internalID: -8723735946329424280
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bedtime_1
-      rect:
-        serializedVersion: 2
-        x: 483
+        x: 0
         y: 0
-        width: 24
-        height: 19
+        width: 1920
+        height: 1080
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 08a94db5f72727e40800000000000000
-      internalID: 5652706373630466688
+      spriteID: 6e4200d81b1a52860800000000000000
+      internalID: 7504582138029679846
       vertices: []
       indices: 
       edges: []
@@ -173,8 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      bedtime_0: -8723735946329424280
-      bedtime_1: 5652706373630466688
+      cardex_0: 7504582138029679846
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
