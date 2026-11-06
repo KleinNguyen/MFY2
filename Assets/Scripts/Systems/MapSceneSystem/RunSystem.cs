@@ -30,11 +30,15 @@ public class RunSystem : PersistentSingleton<RunSystem>
     public int CurrentStage { get; private set; }
     public EncounterData CurrentEncounter { get; private set; }
     public bool RewardClaimed { get; private set; }
+    public float ElapsedRunTime { get; private set; }
     public List<MapPoint> MapPoints { get; private set; } = new();
 
     public int CompletedMapPointId { get; private set; } = -1;
 
     public int SelectedMapPointId { get; private set; } = -1;
+
+    private bool isRunTimerRunning;
+
     protected override void Awake()
     {
         if(Instance != null && Instance != this)
@@ -55,6 +59,8 @@ public class RunSystem : PersistentSingleton<RunSystem>
         CurrentStage = 0;
         CurrentEncounter = null;
         RewardClaimed = false;
+        ElapsedRunTime = 0f;
+        isRunTimerRunning = false;
         upgradedCards.Clear();
         MapPoints.Clear();
         CompletedMapPointId = -1;
@@ -71,6 +77,26 @@ public class RunSystem : PersistentSingleton<RunSystem>
         startingHero = selectedHero;
         StartNewRun();
     }
+
+    public void StartRunTimer()
+    {
+        if (HeroData == null)
+        {
+            Debug.LogError("Cannot start the run timer before a hero has been selected.");
+            return;
+        }
+
+        isRunTimerRunning = true;
+    }
+
+    private void Update()
+    {
+        if (isRunTimerRunning)
+        {
+            ElapsedRunTime += Time.unscaledDeltaTime;
+        }
+    }
+
     public void SetEncounter(EncounterData encounter)
     {
         CurrentEncounter = encounter;

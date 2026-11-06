@@ -20,6 +20,8 @@ public class MapUI : MonoBehaviour
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text goldText;
     [SerializeField] private TMP_Text mapMessageText;
+    [SerializeField] private RectTransform mapLegend;
+    [SerializeField] private RectTransform runTimerDisplay;
 
     [SerializeField] private ShopUI shopUI;
     [SerializeField] private RestUI restUI;
@@ -38,6 +40,12 @@ public class MapUI : MonoBehaviour
     private readonly Dictionary<int, Button> pointButtons = new();
     private float mapMinimumY;
     private float mapVerticalScale;
+    private GameObject currentPointGlow;
+    private RectTransform currentPointGlowRect;
+    private Image currentPointGlowImage;
+    private Outline currentPointGlowOutline;
+    private int glowingMapPointId = -1;
+    private TMP_Text runTimerText;
 
     private void Start()
     {
@@ -74,6 +82,8 @@ public class MapUI : MonoBehaviour
         }
 
         Canvas.ForceUpdateCanvases();
+        StyleMapLegend();
+        SetupRunTimer();
         CreateMapUI();
         UpdateMapUI();
 
@@ -101,9 +111,174 @@ public class MapUI : MonoBehaviour
         UIInputModuleCompatibility.MonitorAndConfigure(EventSystem.current, this);
     }
 
+    private void StyleMapLegend()
+    {
+        if (mapLegend == null)
+        {
+            Debug.LogError(
+                "Map Legend is not assigned in MapUI."
+            );
+            return;
+        }
+
+        foreach (Button entry in mapLegend.GetComponentsInChildren<Button>(true))
+        {
+            entry.enabled = false;
+
+            Image icon = entry.GetComponent<Image>();
+            if (icon != null)
+            {
+                icon.raycastTarget = false;
+                icon.preserveAspect = true;
+
+                if (entry.gameObject.name == "MapLegend - Title")
+                {
+                    icon.color = new Color(1f, 1f, 1f, 0f);
+                }
+                else
+                {
+                    icon.color = Color.white;
+
+                    Outline iconOutline = icon.GetComponent<Outline>();
+                    if (iconOutline == null)
+                    {
+                        iconOutline = icon.gameObject.AddComponent<Outline>();
+                    }
+
+                    iconOutline.effectColor = new Color(0.96f, 0.72f, 0.3f, 0.8f);
+                    iconOutline.effectDistance = new Vector2(1.5f, 1.5f);
+                }
+            }
+
+            TMP_Text label = entry.GetComponentInChildren<TMP_Text>(true);
+            if (label == null)
+            {
+                Debug.LogError("Map legend entry is missing its label: " + entry.name);
+                continue;
+            }
+
+            label.font = mapMessageText.font;
+            label.fontStyle = FontStyles.Bold;
+            label.fontSize = entry.gameObject.name == "MapLegend - Title" ? 30f : 24f;
+            label.color = new Color(0.96f, 0.93f, 0.85f);
+            label.alignment = entry.gameObject.name == "MapLegend - Title"
+                ? TextAlignmentOptions.Center
+                : TextAlignmentOptions.MidlineLeft;
+            label.raycastTarget = false;
+
+            Shadow labelShadow = label.GetComponent<Shadow>();
+            if (labelShadow == null)
+            {
+                labelShadow = label.gameObject.AddComponent<Shadow>();
+            }
+
+            labelShadow.effectColor = new Color(0f, 0f, 0f, 0.85f);
+            labelShadow.effectDistance = new Vector2(1f, -1f);
+        }
+    }
+
     private void Update()
     {
         ConfigureInputModule();
+        UpdateRunTimer();
+
+        if (currentPointGlowImage == null || currentPointGlowRect == null ||
+            currentPointGlowOutline == null)
+        {
+            return;
+        }
+
+        float pulse = (Mathf.Sin(Time.unscaledTime * 3f) + 1f) * 0.5f;
+        currentPointGlowRect.localScale = Vector3.one * Mathf.Lerp(1.08f, 1.2f, pulse);
+        currentPointGlowImage.color = new Color(1f, 0.78f, 0.12f, Mathf.Lerp(0.16f, 0.34f, pulse));
+        currentPointGlowOutline.effectColor = new Color(
+            1f,
+            0.72f,
+            0.12f,
+            Mathf.Lerp(0.3f, 0.75f, pulse)
+        );
+    }
+
+    private void SetupRunTimer()
+    {
+        if (runTimerDisplay == null)
+        {
+            Debug.LogError("Run Timer Display is not assigned in MapUI.");
+            return;
+        }
+
+        Transform textTransform = runTimerDisplay.Find("RunTimerText");
+        if (textTransform == null)
+        {
+            Debug.LogError("Run Timer Display is missing its RunTimerText object.");
+            return;
+        }
+
+        runTimerText = textTransform.GetComponentInChildren<TMP_Text>(true);
+        if (runTimerText == null)
+        {
+            Debug.LogError("RunTimerText must contain a TextMeshPro text object.");
+            return;
+        }
+
+        runTimerText.font = mapMessageText.font;
+        runTimerText.fontSize = 34f;
+        runTimerText.fontStyle = FontStyles.Bold;
+        runTimerText.color = Color.white;
+        runTimerText.alignment = TextAlignmentOptions.Center;
+        runTimerText.raycastTarget = false;
+
+        Shadow textShadow = runTimerText.GetComponent<Shadow>();
+        if (textShadow == null)
+        {
+            textShadow = runTimerText.gameObject.AddComponent<Shadow>();
+        }
+
+        textShadow.effectColor = new Color(0f, 0f, 0f, 0.85f);
+        textShadow.effectDistance = new Vector2(1f, -1f);
+
+        Transform iconTransform = runTimerDisplay.Find("RunTimerIcon");
+        if (iconTransform == null)
+        {
+            Debug.LogError("Run Timer Display is missing its RunTimerIcon object.");
+            return;
+        }
+
+        Image icon = iconTransform.GetComponent<Image>();
+        if (icon == null)
+        {
+            Debug.LogError("RunTimerIcon must have an Image component.");
+            return;
+        }
+
+        icon.preserveAspect = true;
+        icon.raycastTarget = false;
+
+        Outline iconOutline = icon.GetComponent<Outline>();
+        if (iconOutline == null)
+        {
+            iconOutline = icon.gameObject.AddComponent<Outline>();
+        }
+
+        iconOutline.effectColor = new Color(0.96f, 0.72f, 0.3f, 0.85f);
+        iconOutline.effectDistance = new Vector2(1.5f, 1.5f);
+    }
+
+    private void UpdateRunTimer()
+    {
+        if (runTimerText == null || RunSystem.Instance == null)
+        {
+            return;
+        }
+
+        int elapsedSeconds = Mathf.FloorToInt(RunSystem.Instance.ElapsedRunTime);
+        int hours = elapsedSeconds / 3600;
+        int minutes = (elapsedSeconds / 60) % 60;
+        int seconds = elapsedSeconds % 60;
+
+        runTimerText.text = hours > 0
+            ? $"{hours:00}:{minutes:00}:{seconds:00}"
+            : $"{elapsedSeconds / 60:00}:{seconds:00}";
     }
 
 
@@ -281,8 +456,15 @@ public class MapUI : MonoBehaviour
 
         foreach (KeyValuePair<int, Button> pair in pointButtons)
         {
+            ColorBlock colors = pair.Value.colors;
+            colors.disabledColor = pair.Key == RunSystem.Instance.CompletedMapPointId
+                ? Color.white
+                : new Color(0.45f, 0.45f, 0.45f, 0.4f);
+            pair.Value.colors = colors;
             pair.Value.interactable = RunSystem.Instance.CanSelectMapPoint(pair.Key);
         }
+
+        UpdateCurrentPointGlow();
 
         MapPoint completedPoint = RunSystem.Instance.GetMapPoint(
             RunSystem.Instance.CompletedMapPointId
@@ -296,6 +478,68 @@ public class MapUI : MonoBehaviour
         {
             mapMessageText.text = "Choose your next point";
         }
+    }
+
+    private void UpdateCurrentPointGlow()
+    {
+        int currentPointId = RunSystem.Instance.CompletedMapPointId;
+        if (currentPointId == glowingMapPointId && currentPointGlow != null)
+        {
+            return;
+        }
+
+        if (currentPointGlow != null)
+        {
+            Destroy(currentPointGlow);
+        }
+
+        currentPointGlow = null;
+        currentPointGlowRect = null;
+        currentPointGlowImage = null;
+        currentPointGlowOutline = null;
+        glowingMapPointId = currentPointId;
+
+        if (currentPointId < 0 ||
+            !pointButtons.TryGetValue(currentPointId, out Button pointButton))
+        {
+            return;
+        }
+
+        Image pointImage = pointButton.GetComponent<Image>();
+        if (pointImage == null || pointImage.sprite == null)
+        {
+            return;
+        }
+
+        GameObject glowObject = new(
+            "CurrentMapPointGlow",
+            typeof(RectTransform),
+            typeof(CanvasRenderer),
+            typeof(Image)
+        );
+
+        currentPointGlow = glowObject;
+        currentPointGlowRect = glowObject.GetComponent<RectTransform>();
+        currentPointGlowRect.SetParent(mapContent, false);
+        currentPointGlowRect.anchorMin = Vector2.zero;
+        currentPointGlowRect.anchorMax = Vector2.zero;
+        RectTransform pointRect = pointButton.GetComponent<RectTransform>();
+        currentPointGlowRect.pivot = pointRect.pivot;
+        currentPointGlowRect.anchoredPosition = pointRect.anchoredPosition;
+        currentPointGlowRect.sizeDelta = pointRect.sizeDelta;
+        currentPointGlowRect.localScale = Vector3.one * 1.08f;
+        currentPointGlowRect.SetSiblingIndex(pointButton.transform.GetSiblingIndex());
+
+        currentPointGlowImage = glowObject.GetComponent<Image>();
+        currentPointGlowImage.sprite = pointImage.sprite;
+        currentPointGlowImage.type = Image.Type.Simple;
+        currentPointGlowImage.preserveAspect = pointImage.preserveAspect;
+        currentPointGlowImage.raycastTarget = false;
+
+        currentPointGlowOutline = glowObject.AddComponent<Outline>();
+        currentPointGlowOutline.effectColor = new Color(1f, 0.72f, 0.12f, 0.6f);
+        currentPointGlowOutline.effectDistance = new Vector2(2f, 2f);
+        currentPointGlowOutline.useGraphicAlpha = true;
     }
 
     public void SelectMapPoint(int pointId)
