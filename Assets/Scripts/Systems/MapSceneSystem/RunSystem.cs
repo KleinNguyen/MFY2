@@ -177,6 +177,29 @@ public class RunSystem : PersistentSingleton<RunSystem>
 
         return true;
     }
+    public bool TryConsumeHealthPotion()
+    {
+        if (HealthPotionCount <= 0)
+        {
+            return false;
+        }
+
+        HealthPotionCount--;
+
+        return true;
+    }
+
+    public bool TryConsumeManaPotion()
+    {
+        if (ManaPotionCount <= 0)
+        {
+            return false;
+        }
+
+        ManaPotionCount--;
+
+        return true;
+    }
 
     public void Heal(int amount)
     {

@@ -6,7 +6,7 @@ public class RunHeaderUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text goldText;
-    [SerializeField] private TMP_Text actText;
+    //[SerializeField] private TMP_Text actText;
     [SerializeField] private TMP_Text floorText;
     [SerializeField] private TMP_Text potionText;
 
@@ -18,7 +18,7 @@ public class RunHeaderUI : MonoBehaviour
         {
             SetText(healthText, "HP: -- / --");
             SetText(goldText, "Gold: --");
-            SetText(actText, "Act: --");
+            //SetText(actText, "Act: --");
             SetText(floorText, "Floor: --");
 
             SetText(
@@ -55,10 +55,10 @@ public class RunHeaderUI : MonoBehaviour
             "Gold: " + run.Gold
         );
 
-        SetText(
-            actText,
-            "Act: " + (run.CurrentActIndex + 1)
-        );
+        //SetText(
+        //    actText,
+        //    "Act: " + (run.CurrentActIndex + 1)
+        //);
 
         MapPoint selectedPoint = run.GetMapPoint(
             run.SelectedMapPointId
