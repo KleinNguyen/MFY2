@@ -10,7 +10,7 @@ public class LibraryCardUI : MonoBehaviour
 
     [SerializeField] private Image cardImage;
 
-    public void Setup(CardData data, bool showRunUpgrade)
+    public void Setup(CardData data, bool showUpgrade)
     {
         if (data == null)
         {
@@ -18,13 +18,13 @@ public class LibraryCardUI : MonoBehaviour
             return;
         }
 
-        if (showRunUpgrade)
-        {
-            Card card = new Card(data);
+        bool useUpgrade = showUpgrade && data.CanUpgrade;
 
-            titleText.text = card.Title;
-            manaText.text = card.Mana.ToString();
-            descriptionText.text = card.Description;
+        if (useUpgrade)
+        {
+            titleText.text = data.name + "+";
+            manaText.text = data.UpgradedMana.ToString();
+            descriptionText.text = data.UpgradedDescription;
         }
         else
         {
