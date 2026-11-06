@@ -53,7 +53,7 @@ public class RunSystem : PersistentSingleton<RunSystem>
         HeroData = startingHero;
         Deck = new List<CardData>(startingHero.Deck);
         CurrentHealth = startingHero.Health;
-        Gold = 0;
+        Gold = 200;
         HealthPotionCount = 0;
         ManaPotionCount = 0;
         CurrentStage = 0;
