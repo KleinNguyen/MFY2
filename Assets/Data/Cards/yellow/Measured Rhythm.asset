@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Measured Rhythm
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <Description>k__BackingField: Deal 5 damage, plus 1 for each Combo. Do not spend
     Combo.

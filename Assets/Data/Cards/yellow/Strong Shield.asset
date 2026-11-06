@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
-  m_Name: Brace
+  m_Name: Strong Shield
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 1
   <Description>k__BackingField: Gain 5 Block.
   <Mana>k__BackingField: 1

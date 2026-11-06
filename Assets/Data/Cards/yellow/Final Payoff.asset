@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Final Payoff
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <Description>k__BackingField: Spend all Combo. Deal 10 damage, plus 4 for each
     Combo spent. If this defeats the target, regain 2 Combo.

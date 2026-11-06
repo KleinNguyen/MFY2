@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Tactical Guard
   m_EditorClassIdentifier: 
   <Owner>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Description>k__BackingField: 'Gain 5 Block. Upgrade a card in your hand for this combat.'
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

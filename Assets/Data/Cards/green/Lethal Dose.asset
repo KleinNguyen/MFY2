@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Lethal Dose
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <Description>k__BackingField: Apply 6 Poison to the enemy with the lowest HP.
   <Mana>k__BackingField: 1

@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Adversity's Gift
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <Description>k__BackingField: 'Power: Each turn, the first time you lose HP from
     a card, gain 1 Strength and 1 Dexterity for that turn.'

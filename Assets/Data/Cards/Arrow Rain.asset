@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Arrow Rain
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Description>k__BackingField: 'Deal 10 to enemy '
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

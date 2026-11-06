@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Toxic Opening
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <Description>k__BackingField: Deal 7 damage. If the target has Poison, deal 4 additional
     damage.

@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Escalating Rhythm
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <Description>k__BackingField: Deal 8 damage. Gain 1 Combo for every 2 Combo you
     had before playing this card, up to 3 Combo gained.

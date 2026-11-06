@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Burn the Excess
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <Description>k__BackingField: Exhaust up to 2 cards in your hand. Gain 2 Combo
     for each card exhausted.

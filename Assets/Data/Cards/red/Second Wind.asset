@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: Second Wind
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <Description>k__BackingField: Restore 6 HP. Exhaust.
   <Mana>k__BackingField: 1
-  <ExhaustOnPlay>k__BackingField: 0
+  <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2

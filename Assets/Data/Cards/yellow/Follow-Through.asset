@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Follow-Through
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <Description>k__BackingField: Deal 6 damage. If you have at least 3 Combo, attack
     again for 6 damage.

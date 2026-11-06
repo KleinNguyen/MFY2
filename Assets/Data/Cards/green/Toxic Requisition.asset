@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: Toxic Requisition
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <Description>k__BackingField: Discard up to 3 cards. Deal 5 damage to one enemy
     for each card discarded. Exhaust.
   <Mana>k__BackingField: 1
-  <ExhaustOnPlay>k__BackingField: 0
+  <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2

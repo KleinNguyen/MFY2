@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Hunt the Hobbled
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <Description>k__BackingField: Deal 8 damage. Restore 2 HP for each enemy with Weak,
     up to 6 HP.

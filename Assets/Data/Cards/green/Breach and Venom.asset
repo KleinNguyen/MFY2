@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Breach and Venom
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <Description>k__BackingField: Deal 7 damage. If the target has Poison, apply 2
     Armor Break.

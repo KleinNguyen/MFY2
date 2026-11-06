@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Suppression Wave
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <Description>k__BackingField: Deal 5 damage and apply 1 Weak to all enemies.
   <Mana>k__BackingField: 1

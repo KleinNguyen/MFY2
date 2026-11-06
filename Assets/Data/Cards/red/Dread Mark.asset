@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: Dread Mark
   m_EditorClassIdentifier: 
   <Owner>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Description>k__BackingField: 'Apply 2 Weak to one enemy. Exhaust.'
   <Mana>k__BackingField: 0
-  <ExhaustOnPlay>k__BackingField: 0
+  <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2

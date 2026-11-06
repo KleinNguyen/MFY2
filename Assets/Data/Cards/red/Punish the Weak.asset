@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Punish the Weak
   m_EditorClassIdentifier: 
   <Owner>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Description>k__BackingField: 'Deal 7 damage. If the target has Weak, deal 4 additional damage.'
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

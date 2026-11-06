@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Draw on Momentum
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <Description>k__BackingField: Spend up to 2 Combo. Draw 1 card for each Combo spent.
   <Mana>k__BackingField: 0

@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Marked Opening
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <Description>k__BackingField: Deal 7 damage. If the target has Exposed, gain 2
     Combo.

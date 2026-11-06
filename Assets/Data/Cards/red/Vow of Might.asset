@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: Vow of Might
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <Description>k__BackingField: Lose 3 HP. Gain 2 Strength for this combat. Apply
     1 Weak to one enemy. Exhaust.
   <Mana>k__BackingField: 1
-  <ExhaustOnPlay>k__BackingField: 0
+  <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2

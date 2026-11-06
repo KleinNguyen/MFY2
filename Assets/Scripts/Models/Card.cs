@@ -65,7 +65,6 @@ public class Card
         }
     }
 
-    public CardType Type => data.Type;
     public bool ExhaustOnPlay => data.ExhaustOnPlay;
     public bool IsSly => data.IsSly;
 

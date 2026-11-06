@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Endless Reserves
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <Description>k__BackingField: 'Power: Gain 1 additional mana at the start of each
     turn, starting next turn.'

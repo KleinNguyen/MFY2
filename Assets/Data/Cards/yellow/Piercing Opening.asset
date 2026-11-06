@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Piercing Opening
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <Description>k__BackingField: Deal 10 damage. If the target has Exposed, add 5
     base damage.

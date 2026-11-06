@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: Grand Disappearance
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <Description>k__BackingField: Can only be played with at least 4 other cards in
     your hand. Discard all of them. Next turn, your Attacks deal double damage. Exhaust.
   <Mana>k__BackingField: 1
-  <ExhaustOnPlay>k__BackingField: 0
+  <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2

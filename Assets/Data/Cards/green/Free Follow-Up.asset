@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Free Follow-Up
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <Description>k__BackingField: Deal 12 damage. The next Skill you play this turn
     costs 0 mana.

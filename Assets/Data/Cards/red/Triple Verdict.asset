@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Triple Verdict
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <Description>k__BackingField: Deal 5 damage to all enemies 3 times.
   <Mana>k__BackingField: 2

@@ -13,13 +13,12 @@ MonoBehaviour:
   m_Name: Contagion
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <Description>k__BackingField: Choose the enemy with the most Poison. Add Poison
     to every other enemy equal to half of the chosen target's current Poison, rounded
     down. Exhaust.
   <Mana>k__BackingField: 2
-  <ExhaustOnPlay>k__BackingField: 0
+  <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2

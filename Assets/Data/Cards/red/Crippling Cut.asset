@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Crippling Cut
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 1
   <Description>k__BackingField: Deal 4 damage. Apply 1 Weak.
   <Mana>k__BackingField: 1

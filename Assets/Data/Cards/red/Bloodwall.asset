@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Bloodwall
   m_EditorClassIdentifier: 
   <Owner>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Description>k__BackingField: 'Lose 2 HP. Gain 11 Block.'
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

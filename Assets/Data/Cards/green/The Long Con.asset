@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: The Long Con
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <Description>k__BackingField: 'Deal 1 damage, plus 1 for each card drawn this combat.
     Maximum: 30 base damage.'

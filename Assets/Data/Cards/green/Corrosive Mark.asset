@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Corrosive Mark
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <Description>k__BackingField: Apply 2 Armor Break to one enemy.
   <Mana>k__BackingField: 0

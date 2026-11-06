@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: Burn the Hand
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <Description>k__BackingField: Exhaust the remaining cards in your hand. Deal 7
     damage to one enemy for each card exhausted. Exhaust.
   <Mana>k__BackingField: 1
-  <ExhaustOnPlay>k__BackingField: 0
+  <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2

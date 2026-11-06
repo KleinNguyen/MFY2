@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Fourfold Flourish
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <Description>k__BackingField: Attack 3 times for 4 damage each. Exhaust a card
     of your choice from your hand.

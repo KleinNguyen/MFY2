@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Stored Momentum
   m_EditorClassIdentifier: 
   <Owner>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Description>k__BackingField: 'Deal damage equal to your current Block.'
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Light Guard
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 1
   <Description>k__BackingField: Gain 5 Block.
   <Mana>k__BackingField: 1

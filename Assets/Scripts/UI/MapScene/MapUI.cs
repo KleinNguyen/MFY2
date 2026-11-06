@@ -20,6 +20,8 @@ public class MapUI : MonoBehaviour
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text goldText;
     [SerializeField] private TMP_Text mapMessageText;
+    [SerializeField] private RectTransform mapLegend;
+    [SerializeField] private RectTransform runTimerDisplay;
 
     [SerializeField] private ShopUI shopUI;
     [SerializeField] private RestUI restUI;

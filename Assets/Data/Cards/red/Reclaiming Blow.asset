@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Reclaiming Blow
   m_EditorClassIdentifier: 
   <Owner>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Description>k__BackingField: 'Deal 7 damage. Put a card from your Discard Pile on top of your Draw Pile.'
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

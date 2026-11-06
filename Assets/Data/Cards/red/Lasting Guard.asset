@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Lasting Guard
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <Description>k__BackingField: Keep your Block at the start of your next turn.
   <Mana>k__BackingField: 1

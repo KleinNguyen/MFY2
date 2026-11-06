@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Twin Feint
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 1
   <Description>k__BackingField: Attack twice for 3 damage each. Gain 1 Combo.
   <Mana>k__BackingField: 1

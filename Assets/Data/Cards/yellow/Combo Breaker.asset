@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Combo Breaker
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <Description>k__BackingField: Deal 7 damage. If you have at least 3 Combo, deal
     5 additional damage.

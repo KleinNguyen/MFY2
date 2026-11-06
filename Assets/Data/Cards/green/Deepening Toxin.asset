@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Deepening Toxin
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
-  <Type>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <Description>k__BackingField: Deal 8 damage. If the target has at least 5 Poison,
     deal 6 additional damage.
