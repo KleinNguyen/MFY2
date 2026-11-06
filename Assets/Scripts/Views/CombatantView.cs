@@ -2,10 +2,12 @@ using DG.Tweening;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CombatantView : MonoBehaviour
 {
     [SerializeField] private TMP_Text healthText;
+    [SerializeField] private Image healthFillImage;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private StatusEffecstUI statusEffectsUI;
     public int MaxHealth { get; private set; }
@@ -24,7 +26,23 @@ public class CombatantView : MonoBehaviour
     }
     private void UpdateHealthText()
     {
-        healthText.text = "HP: " + CurrentHealth;
+        if (healthText != null)
+        {
+            healthText.text = CurrentHealth + " / " + MaxHealth;
+        }
+
+        if (healthFillImage != null)
+        {
+            if (MaxHealth > 0)
+            {
+                healthFillImage.fillAmount =
+                    (float)CurrentHealth / MaxHealth;
+            }
+            else
+            {
+                healthFillImage.fillAmount = 0f;
+            }
+        }
     }
     public void Damage(int damageAmount)
     {

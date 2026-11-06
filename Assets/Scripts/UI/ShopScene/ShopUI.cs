@@ -13,23 +13,38 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private int uncommonPrice = 75;
     [SerializeField] private int rarePrice = 120;
 
-    [SerializeField] private TMP_Text goldText;
-    [SerializeField] private TMP_Text messageText;
-
     [SerializeField] private Button[] cardButtons;
     [SerializeField] private TMP_Text[] cardButtonTexts;
+
+    [SerializeField] private int healthPotionPrice = 50;
+    [SerializeField] private int manaPotionPrice = 50;
+
+    [SerializeField] private Button healthButton;
+    [SerializeField] private Button manaButton;
+
+    private bool healthPotionPurchased;
+    private bool manaPotionPurchased;
 
     private readonly List<CardData> currentCards = new();
     private readonly List<int> currentPrices = new();
 
     public void Setup()
     {
-        //shopInventoryPanel.SetActive(false);
+        shopInventoryPanel.SetActive(false);
         currentCards.Clear();
         currentPrices.Clear();
+        healthPotionPurchased = false;
+        manaPotionPurchased = false;
 
-        goldText.text = "Gold: " + RunSystem.Instance.Gold;
-        messageText.text = "Choose a card to buy";
+        if (healthButton != null)
+        {
+            healthButton.interactable = true;
+        }
+
+        if (manaButton != null)
+        {
+            manaButton.interactable = true;
+        }
 
         List<CardData> availableCards = new();
 
@@ -110,7 +125,15 @@ public class ShopUI : MonoBehaviour
 
     public void BuyCard(int index)
     {
-        if (index < 0 || index >= currentCards.Count) return;
+        if (index < 0 || index >= currentCards.Count)
+        {
+            return;
+        }
+
+        if (!cardButtons[index].interactable)
+        {
+            return;
+        }
 
         CardData card = currentCards[index];
         int price = currentPrices[index];
@@ -119,14 +142,60 @@ public class ShopUI : MonoBehaviour
 
         if (!success)
         {
-            messageText.text = "Not enough gold";
+            Debug.Log("Not enough gold to buy " + card.name);
             return;
         }
 
         cardButtons[index].interactable = false;
 
-        goldText.text = "Gold: " + RunSystem.Instance.Gold;
-        messageText.text = "Purchased: " + card.name;
+        Debug.Log("Purchased: " + card.name);
+    }
+    public void BuyHealthPotion()
+    {
+        if (healthPotionPurchased) return;
+
+        bool success = RunSystem.Instance.BuyHealthPotion(
+            healthPotionPrice
+        );
+
+        if (!success)
+        {
+            Debug.Log("Not enough gold to buy Health Potion.");
+            return;
+        }
+
+        healthPotionPurchased = true;
+
+        if (healthButton != null)
+        {
+            healthButton.interactable = false;
+        }
+
+        Debug.Log("Purchased: Health Potion");
+    }
+
+    public void BuyManaPotion()
+    {
+        if (manaPotionPurchased) return;
+
+        bool success = RunSystem.Instance.BuyManaPotion(
+            manaPotionPrice
+        );
+
+        if (!success)
+        {
+            Debug.Log("Not enough gold to buy Mana Potion.");
+            return;
+        }
+
+        manaPotionPurchased = true;
+
+        if (manaButton != null)
+        {
+            manaButton.interactable = false;
+        }
+
+        Debug.Log("Purchased: Mana Potion");
     }
     private int GetCardPrice(CardData card)
     {

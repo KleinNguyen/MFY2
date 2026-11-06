@@ -27,6 +27,8 @@ public class RunSystem : PersistentSingleton<RunSystem>
     private readonly HashSet<CardData> upgradedCards = new();
     public int CurrentHealth { get; private set; }
     public int Gold { get; private set; }
+    public int HealthPotionCount { get; private set; }
+    public int ManaPotionCount { get; private set; }
     public int CurrentStage { get; private set; }
     public EncounterData CurrentEncounter { get; private set; }
     public bool RewardClaimed { get; private set; }
@@ -55,7 +57,9 @@ public class RunSystem : PersistentSingleton<RunSystem>
         HeroData = startingHero;
         Deck = new List<CardData>(startingHero.Deck);
         CurrentHealth = startingHero.Health;
-        Gold = 0;
+        Gold = 200;
+        HealthPotionCount = 0;
+        ManaPotionCount = 0;
         CurrentStage = 0;
         CurrentEncounter = null;
         RewardClaimed = false;
@@ -173,6 +177,52 @@ public class RunSystem : PersistentSingleton<RunSystem>
 
         Gold -= price;
         Deck.Add(card);
+
+        return true;
+    }
+    public bool BuyHealthPotion(int price)
+    {
+        if (price < 0) return false;
+
+        if (Gold < price) return false;
+
+        Gold -= price;
+        HealthPotionCount++;
+
+        return true;
+    }
+
+    public bool BuyManaPotion(int price)
+    {
+        if (price < 0) return false;
+
+        if (Gold < price) return false;
+
+        Gold -= price;
+        ManaPotionCount++;
+
+        return true;
+    }
+    public bool TryConsumeHealthPotion()
+    {
+        if (HealthPotionCount <= 0)
+        {
+            return false;
+        }
+
+        HealthPotionCount--;
+
+        return true;
+    }
+
+    public bool TryConsumeManaPotion()
+    {
+        if (ManaPotionCount <= 0)
+        {
+            return false;
+        }
+
+        ManaPotionCount--;
 
         return true;
     }

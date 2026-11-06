@@ -20,8 +20,6 @@ public class MapUI : MonoBehaviour
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text goldText;
     [SerializeField] private TMP_Text mapMessageText;
-    [SerializeField] private RectTransform mapLegend;
-    [SerializeField] private RectTransform runTimerDisplay;
 
     [SerializeField] private ShopUI shopUI;
     [SerializeField] private RestUI restUI;
@@ -76,10 +74,10 @@ public class MapUI : MonoBehaviour
             return;
         }
 
-        if (actNameText != null)
-        {
-            actNameText.text = currentAct.ActName;
-        }
+        //if (actNameText != null)
+        //{
+        //    actNameText.text = currentAct.ActName;
+        //}
 
         Canvas.ForceUpdateCanvases();
         StyleMapLegend();
@@ -451,20 +449,10 @@ public class MapUI : MonoBehaviour
 
     public void UpdateMapUI()
     {
-        healthText.text = "HP: " + RunSystem.Instance.CurrentHealth;
-        goldText.text = "Gold: " + RunSystem.Instance.Gold;
-
         foreach (KeyValuePair<int, Button> pair in pointButtons)
         {
-            ColorBlock colors = pair.Value.colors;
-            colors.disabledColor = pair.Key == RunSystem.Instance.CompletedMapPointId
-                ? Color.white
-                : new Color(0.45f, 0.45f, 0.45f, 0.4f);
-            pair.Value.colors = colors;
             pair.Value.interactable = RunSystem.Instance.CanSelectMapPoint(pair.Key);
         }
-
-        UpdateCurrentPointGlow();
 
         MapPoint completedPoint = RunSystem.Instance.GetMapPoint(
             RunSystem.Instance.CompletedMapPointId
