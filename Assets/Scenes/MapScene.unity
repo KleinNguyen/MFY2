@@ -760,7 +760,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &9600002
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4237,6 +4237,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 756402398}
+--- !u!114 &735342917 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5560099163883834676, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+  m_PrefabInstance: {fileID: 4236822085929050693}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &754040440
 GameObject:
   m_ObjectHideFlags: 0
@@ -10394,6 +10405,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 59514101}
     m_Modifications:
+    - target: {fileID: 2018914849804043186, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: timeText
+      value: 
+      objectReference: {fileID: 735342917}
     - target: {fileID: 4355656110695361894, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -10473,6 +10488,10 @@ PrefabInstance:
     - target: {fileID: 4355656110695361894, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5560099163883834676, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_text
+      value: 'Time: '
       objectReference: {fileID: 0}
     - target: {fileID: 7465856796702064686, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
       propertyPath: m_Name

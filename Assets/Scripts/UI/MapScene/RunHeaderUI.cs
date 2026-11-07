@@ -6,9 +6,9 @@ public class RunHeaderUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text goldText;
-    //[SerializeField] private TMP_Text actText;
     [SerializeField] private TMP_Text floorText;
     [SerializeField] private TMP_Text potionText;
+    [SerializeField] private TMP_Text timeText;
 
     private void Update()
     {
@@ -18,8 +18,8 @@ public class RunHeaderUI : MonoBehaviour
         {
             SetText(healthText, "HP: -- / --");
             SetText(goldText, "Gold: --");
-            //SetText(actText, "Act: --");
             SetText(floorText, "Floor: --");
+            SetText(timeText, "Time: 00:00");
 
             SetText(
                 potionText,
@@ -55,21 +55,40 @@ public class RunHeaderUI : MonoBehaviour
             "Gold: " + run.Gold
         );
 
-        //SetText(
-        //    actText,
-        //    "Act: " + (run.CurrentActIndex + 1)
-        //);
+        int elapsedSeconds = Mathf.FloorToInt(run.ElapsedRunTime);
 
-        MapPoint selectedPoint = run.GetMapPoint(
+        int hours = elapsedSeconds / 3600;
+        int minutes = (elapsedSeconds / 60) % 60;
+        int seconds = elapsedSeconds % 60;
+
+        string formattedTime = hours > 0
+            ? $"{hours:00}:{minutes:00}:{seconds:00}"
+            : $"{minutes:00}:{seconds:00}";
+
+        SetText(timeText, "Time: " + formattedTime);
+
+
+        MapPoint currentPoint = run.GetMapPoint(
             run.SelectedMapPointId
         );
 
-        if (selectedPoint != null)
+        if (currentPoint == null)
+        {
+            currentPoint = run.GetMapPoint(
+                run.CompletedMapPointId
+            );
+        }
+
+        if (currentPoint != null)
         {
             SetText(
                 floorText,
-                "Floor: " + (selectedPoint.Floor + 1)
+                "Floor: " + (currentPoint.Floor + 1)
             );
+        }
+        else
+        {
+            SetText(floorText, "Floor: 1");
         }
 
         SetText(

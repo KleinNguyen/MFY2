@@ -57,6 +57,7 @@ public class MapUI : MonoBehaviour
             Debug.LogError("No RunSystem in MapScene");
             return;
         }
+        RunSystem.Instance.StartRunTimer();
 
         mapScrollRect.horizontal = true;
         mapScrollRect.vertical = true;
@@ -75,11 +76,6 @@ public class MapUI : MonoBehaviour
             Debug.LogError("Current Act is missing.");
             return;
         }
-
-        //if (actNameText != null)
-        //{
-        //    actNameText.text = currentAct.ActName;
-        //}
 
         Canvas.ForceUpdateCanvases();
         StyleMapLegend();
