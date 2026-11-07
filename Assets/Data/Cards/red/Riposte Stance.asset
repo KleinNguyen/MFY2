@@ -12,23 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Riposte Stance
   m_EditorClassIdentifier: 
-  <Owner>k__BackingField: 0
-  <Description>k__BackingField: 'Gain 4 Block. Deal 5 damage.'
+  <Character>k__BackingField: 0
+  <Rarity>k__BackingField: 0
+  <CardImage>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: Gain 4 Block. Deal 5 damage.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
+    rid: 1468093377958117525
+  <OtherEffects>k__BackingField: []
+  <CanUpgrade>k__BackingField: 0
+  <UpgradedDescription>k__BackingField: 
+  <UpgradedMana>k__BackingField: 0
+  <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <OtherEffects>k__BackingField:
-  - <TargetMode>k__BackingField:
-      rid: 286842286307016837
-    <Effect>k__BackingField:
-      rid: -2
+  <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 286842286307016837
-      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
-      data: 
+    - rid: 1468093377958117525
+      type: {class: BlockThenDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        blockAmount: 4
+        damageAmount: 5
