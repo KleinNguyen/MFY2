@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
+  <CardImage>k__BackingField: {fileID: 0}
   <Description>k__BackingField: Deal 5 damage and apply 1 Weak to all enemies.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
@@ -22,9 +23,13 @@ MonoBehaviour:
     rid: -2
   <OtherEffects>k__BackingField:
   - <TargetMode>k__BackingField:
-      rid: 286842286307016837
+      rid: 1468093377958117593
     <Effect>k__BackingField:
-      rid: -2
+      rid: 1468093377958117594
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117593
+    <Effect>k__BackingField:
+      rid: 1468093377958117595
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -36,6 +41,15 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 286842286307016837
-      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+    - rid: 1468093377958117593
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1468093377958117594
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 5
+    - rid: 1468093377958117595
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 1
+        stackCount: 1
