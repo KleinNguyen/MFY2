@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 2
+  <CardImage>k__BackingField: {fileID: -1540426309290004842, guid: f5ac3b68ca02acf47af8227a89546f9b, type: 3}
   <Description>k__BackingField: 'Deal 1 damage, plus 1 for each card drawn this combat.
     Maximum: 30 base damage.'
   <Mana>k__BackingField: 2

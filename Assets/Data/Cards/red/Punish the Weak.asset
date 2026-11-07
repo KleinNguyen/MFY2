@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
-  <CardImage>k__BackingField: {fileID: 0}
+  <CardImage>k__BackingField: {fileID: 7028616704906629411, guid: 38ed76bc1eff29b488c00b94f3ff0c39, type: 3}
   <Description>k__BackingField: Deal 7 damage. If the target has Weak, deal 4 additional
     damage.
   <Mana>k__BackingField: 1

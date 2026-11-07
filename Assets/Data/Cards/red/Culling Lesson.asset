@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
+  <CardImage>k__BackingField: {fileID: -1045133410153605164, guid: c81fdc5568707994da9fbd6494ce8603, type: 3}
   <Description>k__BackingField: Exhaust a card of your choice from your hand, then
     draw 2 cards.
   <Mana>k__BackingField: 1

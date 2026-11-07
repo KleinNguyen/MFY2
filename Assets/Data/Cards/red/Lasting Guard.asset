@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 3
+  <CardImage>k__BackingField: {fileID: 8102358098348255977, guid: 12fb12a37f496954baedb31902fe8f4b, type: 3}
   <Description>k__BackingField: Keep your Block at the start of your next turn.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

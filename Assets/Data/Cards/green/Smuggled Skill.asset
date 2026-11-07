@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
+  <CardImage>k__BackingField: {fileID: -5622901713081898559, guid: 2f4d6b99cbb0a62489a87e130139f7f9, type: 3}
   <Description>k__BackingField: Gain 7 Block. Give a Skill in your hand Sly for this
     turn.
   <Mana>k__BackingField: 1

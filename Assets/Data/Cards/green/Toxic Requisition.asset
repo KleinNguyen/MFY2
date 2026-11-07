@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
+  <CardImage>k__BackingField: {fileID: 4349915267927364619, guid: 194893b855d02ec46aae65980462f9fb, type: 3}
   <Description>k__BackingField: Discard up to 3 cards. Deal 5 damage to one enemy
     for each card discarded. Exhaust.
   <Mana>k__BackingField: 1

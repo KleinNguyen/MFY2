@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 2
+  <CardImage>k__BackingField: {fileID: 6660783624410144326, guid: 90f174aafd726ce46b4bf113308dc39f, type: 3}
   <Description>k__BackingField: Discard the remaining cards in your hand, then draw
     the same number of cards. Exhaust.
   <Mana>k__BackingField: 1

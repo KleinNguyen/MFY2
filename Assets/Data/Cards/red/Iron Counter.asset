@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
-  <CardImage>k__BackingField: {fileID: 0}
+  <CardImage>k__BackingField: {fileID: 5181654206020448988, guid: 1aff27431bec728499571116244a78d9, type: 3}
   <Description>k__BackingField: Gain 10 Block. Deal 12 damage.
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 0

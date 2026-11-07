@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 3
+  <CardImage>k__BackingField: {fileID: -7371509505491802261, guid: 6dbf29e6adea3bc49b72d058e32e66d8, type: 3}
   <Description>k__BackingField: Deal 5 damage to all enemies 3 times.
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 0

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
+  <CardImage>k__BackingField: {fileID: -855298285791758126, guid: b8295a678c8329f44bb86e0274df9e55, type: 3}
   <Description>k__BackingField: Deal 7 damage. If the target has Poison, apply 2
     Armor Break.
   <Mana>k__BackingField: 1

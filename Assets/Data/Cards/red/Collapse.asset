@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
-  <CardImage>k__BackingField: {fileID: 0}
+  <CardImage>k__BackingField: {fileID: 4349915267927364619, guid: 391bab6e66472d44088bed8b316ffdde, type: 3}
   <Description>k__BackingField: 'Deal 6 damage, plus 3 for each Weak on the target.
     Maximum bonus: 12 damage.'
   <Mana>k__BackingField: 1

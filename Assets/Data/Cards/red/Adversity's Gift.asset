@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 3
-  <CardImage>k__BackingField: {fileID: -855298285791758126, guid: 40ec1e7fd4751a94fabc80c2125df2ba, type: 3}
+  <CardImage>k__BackingField: {fileID: 7680820834086852892, guid: 05870de64e1e99c4aa5e8a5fe8cfebef, type: 3}
   <Description>k__BackingField: 'Power: Each turn, the first time you lose HP from
     a card, gain 1 Strength and 1 Dexterity for that turn.'
   <Mana>k__BackingField: 1

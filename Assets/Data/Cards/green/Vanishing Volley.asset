@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
+  <CardImage>k__BackingField: {fileID: 7680820834086852892, guid: 1df0bb9fa5a3b4e4bbda3a93c93bde60, type: 3}
   <Description>k__BackingField: Deal 5 damage to all enemies. Sly.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

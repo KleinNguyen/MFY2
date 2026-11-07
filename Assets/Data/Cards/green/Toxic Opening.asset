@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 2
+  <CardImage>k__BackingField: {fileID: 7028616704906629411, guid: 1f167ce3314cc654492a9348f9e74af4, type: 3}
   <Description>k__BackingField: Deal 7 damage. If the target has Poison, deal 4 additional
     damage.
   <Mana>k__BackingField: 1

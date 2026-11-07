@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
+  <CardImage>k__BackingField: {fileID: 8102358098348255977, guid: 3be53c459f05a414d8edbd1f68cb41bf, type: 3}
   <Description>k__BackingField: Choose a card in your hand. At the start of your
     next turn, add 2 temporary copies of it to your hand. Exhaust.
   <Mana>k__BackingField: 1

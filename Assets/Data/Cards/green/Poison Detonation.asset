@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
+  <CardImage>k__BackingField: {fileID: 2720535173406242035, guid: b3997bcd8bedd094cbf928acc401db80, type: 3}
   <Description>k__BackingField: Deal 10 damage to all enemies, plus half of each
     target's current Poison, rounded down.
   <Mana>k__BackingField: 2

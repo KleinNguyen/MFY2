@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
+  <CardImage>k__BackingField: {fileID: -796155573255488767, guid: 60826e7ed7795ee48ae0981cedaa129f, type: 3}
   <Description>k__BackingField: Choose the enemy with the most Poison. Add Poison
     to every other enemy equal to half of the chosen target's current Poison, rounded
     down. Exhaust.

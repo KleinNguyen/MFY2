@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
+  <CardImage>k__BackingField: {fileID: 2960402581040015946, guid: 409ecab6567c5e84e99ade51c9c0342e, type: 3}
   <Description>k__BackingField: Double the Block you gain from cards for the rest
     of this turn. Exhaust.
   <Mana>k__BackingField: 1

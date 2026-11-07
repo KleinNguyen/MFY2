@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
+  <CardImage>k__BackingField: {fileID: -2966200626249415253, guid: 31758fd0a2fd38943b4856c4d97e103d, type: 3}
   <Description>k__BackingField: Apply 6 Poison to the enemy with the lowest HP.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

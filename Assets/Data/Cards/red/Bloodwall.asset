@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
-  <CardImage>k__BackingField: {fileID: 0}
+  <CardImage>k__BackingField: {fileID: -4178046375966092550, guid: 239da17d52b0ef647a65a575c70e5e5a, type: 3}
   <Description>k__BackingField: Lose 2 HP. Gain 5 Block.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

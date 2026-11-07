@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
+  <CardImage>k__BackingField: {fileID: 8389134475083476877, guid: 9c6d19ea615fa694696be291547cea11, type: 3}
   <Description>k__BackingField: Draw 3 cards. You cannot draw any more cards this
     turn.
   <Mana>k__BackingField: 1

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 3
+  <CardImage>k__BackingField: {fileID: 7157561037332017152, guid: 02a52d49e55c69849bc8dd63a9b214de, type: 3}
   <Description>k__BackingField: Exhaust the remaining cards in your hand. Deal 7
     damage to one enemy for each card exhausted. Exhaust.
   <Mana>k__BackingField: 1

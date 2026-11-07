@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
-  <CardImage>k__BackingField: {fileID: 0}
+  <CardImage>k__BackingField: {fileID: 6660783624410144326, guid: 4b72c2f1c7b3e5f4e97d6c4ff62321d4, type: 3}
   <Description>k__BackingField: Lose 3 HP. Gain 1 mana. Exhaust.
   <Mana>k__BackingField: 0
   <ExhaustOnPlay>k__BackingField: 1

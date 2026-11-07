@@ -323,6 +323,14 @@ PrefabInstance:
       propertyPath: m_HorizontalAlignment
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 2560948232649493585, guid: 1bf15d8f4e240224c9d85086b17048cf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2954410900054902191, guid: 1bf15d8f4e240224c9d85086b17048cf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3948734840877134396, guid: 1bf15d8f4e240224c9d85086b17048cf, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -87.7
@@ -334,7 +342,7 @@ PrefabInstance:
     - target: {fileID: 4961531158311147680, guid: 1bf15d8f4e240224c9d85086b17048cf, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -6470460504253458178, guid: 29aa78480c60e5345b1f5a0854a6ce18, type: 3}
+      objectReference: {fileID: 4607304968088078734, guid: a01a5a779c9cb1e43857137e0c3fd312, type: 3}
     - target: {fileID: 4961531158311147680, guid: 1bf15d8f4e240224c9d85086b17048cf, type: 3}
       propertyPath: m_Color.a
       value: 1

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
-  <CardImage>k__BackingField: {fileID: 0}
+  <CardImage>k__BackingField: {fileID: 8288426215254106694, guid: 568328ec7b0061342a052e65f73baec6, type: 3}
   <Description>k__BackingField: Apply 2 Weak to one enemy. Exhaust.
   <Mana>k__BackingField: 0
   <ExhaustOnPlay>k__BackingField: 1

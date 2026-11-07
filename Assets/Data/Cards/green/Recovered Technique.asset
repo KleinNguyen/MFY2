@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 2
+  <CardImage>k__BackingField: {fileID: -6270953770400647376, guid: 4bd67c258820e004a9ecb951599547e7, type: 3}
   <Description>k__BackingField: Return a random card from your Discard Pile to your
     hand. It costs 1 additional mana this turn. Exhaust.
   <Mana>k__BackingField: 0
