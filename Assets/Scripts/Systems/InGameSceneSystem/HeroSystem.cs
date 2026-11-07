@@ -10,6 +10,7 @@ public class HeroSystem : Singleton<HeroSystem>
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
         ActionSystem.AttachPerformer<HealGA>(HealPerformer);
         ActionSystem.AttachPerformer<LoseHealthGA>(LoseHealthPerformer);
+        ActionSystem.AttachPerformer<LoseHealthThenStatusGA>(LoseHealthThenStatusPerformer);
     }
     private void OnDisable()
     {
@@ -17,6 +18,7 @@ public class HeroSystem : Singleton<HeroSystem>
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
         ActionSystem.DetachPerformer<HealGA>();
         ActionSystem.DetachPerformer<LoseHealthGA>();
+        ActionSystem.DetachPerformer<LoseHealthThenStatusGA>();
     }
     public void Setup(HeroData heroData)
     {
@@ -89,6 +91,32 @@ public class HeroSystem : Singleton<HeroSystem>
         {
             BattleSystem.Instance.Defeat();
         }
+
+        yield return null;
+    }
+    private IEnumerator LoseHealthThenStatusPerformer(
+    LoseHealthThenStatusGA action
+)
+    {
+        if (action.Targets == null || action.Targets.Count == 0)
+        {
+            yield break;
+        }
+
+        LoseHealthGA loseHealthGA = new(
+            action.HealthAmount,
+            true
+        );
+
+        ActionSystem.Instance.AddReaction(loseHealthGA);
+
+        AddStatusEffectGA addStatusEffectGA = new(
+            action.StatusEffectType,
+            action.StackCount,
+            action.Targets
+        );
+
+        ActionSystem.Instance.AddReaction(addStatusEffectGA);
 
         yield return null;
     }

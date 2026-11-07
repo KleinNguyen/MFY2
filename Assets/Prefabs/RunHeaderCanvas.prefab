@@ -2751,7 +2751,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deckPanel: {fileID: 7551896274630665704}
   cardContent: {fileID: 1824228697566407509}
-  cardPrefab: {fileID: 4980713684234764979, guid: 1bf15d8f4e240224c9d85086b17048cf, type: 3}
+  cardPrefab: {fileID: 7171852290959586651, guid: bdcfe10473c2bb24dae7fb137c2f5503, type: 3}
   scrollRect: {fileID: 2027338696498567721}
   removeControls: {fileID: 2223338182297763693}
   confirmRemoveButton: {fileID: 135143808042185793}

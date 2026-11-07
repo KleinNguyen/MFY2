@@ -54,4 +54,4 @@ MonoBehaviour:
     - rid: 1468093377958117583
       type: {class: GainManaEffect, ns: , asm: Assembly-CSharp}
       data:
-        manaAmount: 2
+        manaAmount: 1
