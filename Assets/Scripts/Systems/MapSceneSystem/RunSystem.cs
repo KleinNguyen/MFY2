@@ -180,6 +180,33 @@ public class RunSystem : PersistentSingleton<RunSystem>
 
         return true;
     }
+    public bool RemoveCardFromDeck(int cardIndex, int price)
+    {
+        if (price < 0)
+        {
+            return false;
+        }
+
+        if (Deck == null)
+        {
+            return false;
+        }
+
+        if (cardIndex < 0 || cardIndex >= Deck.Count)
+        {
+            return false;
+        }
+
+        if (Gold < price)
+        {
+            return false;
+        }
+
+        Gold -= price;
+        Deck.RemoveAt(cardIndex);
+
+        return true;
+    }
     public bool BuyHealthPotion(int price)
     {
         if (price < 0) return false;
