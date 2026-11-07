@@ -13,6 +13,7 @@ public class CardSystem : Singleton<CardSystem>
     private readonly List<Card> drawPile = new();
     private readonly List<Card> discardPile = new();
     private readonly List<Card> hand = new();
+    private readonly List<Card> exhaustPile = new();
 
     private void OnEnable()
     {
@@ -32,6 +33,7 @@ public class CardSystem : Singleton<CardSystem>
     //public
     public void Setup(List<CardData> deckData)
     {
+        exhaustPile.Clear();
         foreach (var cardData in deckData)
         {
             Card card = new(cardData);
@@ -73,11 +75,29 @@ public class CardSystem : Singleton<CardSystem>
     private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
     {
         hand.Remove(playCardGA.Card);
+
         CardView cardView = handView.RemoveCard(playCardGA.Card);
-        yield return DiscardCard(cardView);
+
+        if (cardView == null)
+        {
+            Debug.LogError(
+                "Cannot play card: CardView was not found in hand."
+            );
+
+            yield break;
+        }
+
+        if (playCardGA.Card.ExhaustOnPlay)
+        {
+            yield return ExhaustCard(cardView);
+        }
+        else
+        {
+            yield return DiscardCard(cardView);
+        }
+
         SpendManaGA spendManaGA = new(playCardGA.Card.Mana);
         ActionSystem.Instance.AddReaction(spendManaGA);
-        //effects
 
         if(playCardGA.Card.ManualTargetEffect != null)
         {
@@ -119,6 +139,25 @@ public class CardSystem : Singleton<CardSystem>
         cardView.transform.DOScale(Vector3.zero, 0.15f);
         Tween tween = cardView.transform.DOMove(discardPilePoint.position, 0.15f);
         yield return tween.WaitForCompletion();
+        Destroy(cardView.gameObject);
+    }
+    private IEnumerator ExhaustCard(CardView cardView)
+    {
+        exhaustPile.Add(cardView.Card);
+
+        Debug.Log(
+            "Exhausted: " + cardView.Card.Title +
+            " | Exhaust pile: " + exhaustPile.Count
+        );
+        cardView.transform.DOScale(Vector3.zero, 0.15f);
+
+        Tween tween = cardView.transform.DOMove(
+            discardPilePoint.position,
+            0.15f
+        );
+
+        yield return tween.WaitForCompletion();
+
         Destroy(cardView.gameObject);
     }
 }

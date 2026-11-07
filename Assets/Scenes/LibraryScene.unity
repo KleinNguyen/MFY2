@@ -3447,7 +3447,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f883189d391a99348b9393da9e1316e3, type: 2}
   - {fileID: 11400000, guid: 6e38b497f0d994742af9902dbd8ebcf0, type: 2}
   cardContent: {fileID: 1008921766}
-  cardPrefab: {fileID: 4980713684234764979, guid: 1bf15d8f4e240224c9d85086b17048cf, type: 3}
+  cardPrefab: {fileID: 7171852290959586651, guid: bdcfe10473c2bb24dae7fb137c2f5503, type: 3}
   cardScrollView: {fileID: 2039000931}
   searchInput: {fileID: 1319314314}
   basicToggle: {fileID: 1286029796}

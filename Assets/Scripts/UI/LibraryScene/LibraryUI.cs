@@ -12,7 +12,7 @@ public class LibraryUI : MonoBehaviour
 
     [SerializeField] private Transform cardContent;
 
-    [SerializeField] private LibraryCardUI cardPrefab;
+    [SerializeField] private CardView cardPrefab;
 
     [SerializeField] private ScrollRect cardScrollView;
 
@@ -351,12 +351,23 @@ public class LibraryUI : MonoBehaviour
             Destroy(oldCard);
         }
 
+        if (cardPrefab.LibraryTemplate == null)
+        {
+            Debug.LogError(
+                "Library Template is not assigned on CardView prefab."
+            );
+
+            return;
+        }
+
         foreach (CardData card in cards)
         {
             LibraryCardUI cardUI = Instantiate(
-                cardPrefab,
+                cardPrefab.LibraryTemplate,
                 cardContent
             );
+
+            cardUI.gameObject.SetActive(true);
 
             cardUI.Setup(
                 card,
