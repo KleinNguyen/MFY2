@@ -8,11 +8,15 @@ public class EnemySystem : Singleton<EnemySystem>
 {
     [SerializeField] private EnemyBoardView enemyBoardView;
     public List<EnemyView> Enemies => enemyBoardView.EnemyViews;
+    private int thornsDamage;
     private void OnEnable()
     {
         ActionSystem.AttachPerformer<EnemyTurnGA>(EnemyTurnPerformer);
         ActionSystem.AttachPerformer<AttackHeroGA>(AttackHeroPerformer);
         ActionSystem.AttachPerformer<KillEnemyGA>(KillEnemyPerformer);
+        ActionSystem.AttachPerformer<GainThornsGA>(GainThornsPerformer);
+        ActionSystem.SubscribeReaction<AttackHeroGA>(AttackHeroPostReaction,ReactionTiming.POST);
+        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction,ReactionTiming.POST);
     }
 
     private void OnDisable()
@@ -20,10 +24,14 @@ public class EnemySystem : Singleton<EnemySystem>
         ActionSystem.DetachPerformer<EnemyTurnGA>();
         ActionSystem.DetachPerformer<AttackHeroGA>();
         ActionSystem.DetachPerformer<KillEnemyGA>();
+        ActionSystem.DetachPerformer<GainThornsGA>();
+        ActionSystem.UnsubscribeReaction<AttackHeroGA>(AttackHeroPostReaction,ReactionTiming.POST);
+        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction,ReactionTiming.POST);
     }
 
     public void Setup(EncounterData encounter)
     {
+        thornsDamage = 0;
         enemyBoardView.AddEnemies(encounter.Enemies);
     }
     private IEnumerator EnemyTurnPerformer(EnemyTurnGA enemyTurnGA)
@@ -104,5 +112,49 @@ public class EnemySystem : Singleton<EnemySystem>
         {
             BattleSystem.Instance.Victory();
         }
+    }
+    private IEnumerator GainThornsPerformer(GainThornsGA action)
+    {
+        if (action.Amount > 0)
+        {
+            thornsDamage += action.Amount;
+        }
+
+        yield return null;
+    }
+    private void AttackHeroPostReaction(AttackHeroGA action)
+    {
+        if (thornsDamage <= 0)
+        {
+            return;
+        }
+
+        EnemyView attacker = action.Attacker;
+
+        if (attacker == null || attacker.CurrentHealth <= 0)
+        {
+            return;
+        }
+
+        if (
+            HeroSystem.Instance == null ||
+            HeroSystem.Instance.HeroView == null
+        )
+        {
+            return;
+        }
+
+        DealDamageGA dealDamageGA = new(
+            thornsDamage,
+            new List<CombatantView> { attacker },
+            HeroSystem.Instance.HeroView,
+            false
+        );
+
+        ActionSystem.Instance.AddReaction(dealDamageGA);
+    }
+    private void EnemyTurnPostReaction(EnemyTurnGA action)
+    {
+        thornsDamage = 0;
     }
 }

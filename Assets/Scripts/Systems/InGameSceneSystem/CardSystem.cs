@@ -14,12 +14,25 @@ public class CardSystem : Singleton<CardSystem>
     private readonly List<Card> discardPile = new();
     private readonly List<Card> hand = new();
     private readonly List<Card> exhaustPile = new();
+    public bool IsChoosingCardToExhaust { get; private set; }
+    public bool IsChoosingCardToUpgrade { get; private set; }
+
+    private CardView chosenCardViewToUpgrade;
+    private Card chosenCardToExhaust;
+    private bool drawLocked;
 
     private void OnEnable()
     {
         ActionSystem.AttachPerformer<DrawCardsGA>(DrawCardsPerformer);
         ActionSystem.AttachPerformer<DiscardAllCardsGA>(DiscardAllCardsPerformer);
         ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
+        ActionSystem.AttachPerformer<ExhaustRandomCardGA>(ExhaustRandomCardPerformer);
+        ActionSystem.AttachPerformer<FocusedStudyGA>(FocusedStudyPerformer);
+        ActionSystem.AttachPerformer<LockDrawGA>(LockDrawPerformer); 
+        ActionSystem.AttachPerformer<ExhaustHandAndDamageGA>(ExhaustHandAndDamagePerformer);
+        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction,ReactionTiming.POST);
+        ActionSystem.AttachPerformer<ChooseCardToExhaustGA>(ChooseCardToExhaustPerformer); 
+        ActionSystem.AttachPerformer<ChooseCardToUpgradeGA>(ChooseCardToUpgradePerformer);
 
     }
 
@@ -28,11 +41,22 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.DetachPerformer<DrawCardsGA>();
         ActionSystem.DetachPerformer<DiscardAllCardsGA>();
         ActionSystem.DetachPerformer<PlayCardGA>();
-
+        ActionSystem.DetachPerformer<ExhaustRandomCardGA>();
+        ActionSystem.DetachPerformer<FocusedStudyGA>();
+        ActionSystem.DetachPerformer<LockDrawGA>();
+        ActionSystem.DetachPerformer<ExhaustHandAndDamageGA>();
+        ActionSystem.DetachPerformer<ChooseCardToExhaustGA>();
+        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
+        ActionSystem.DetachPerformer<ChooseCardToUpgradeGA>();
     }
     //public
     public void Setup(List<CardData> deckData)
     {
+        IsChoosingCardToUpgrade = false;
+        chosenCardViewToUpgrade = null;
+        IsChoosingCardToExhaust = false;
+        chosenCardToExhaust = null;
+        drawLocked = false;
         exhaustPile.Clear();
         foreach (var cardData in deckData)
         {
@@ -46,7 +70,13 @@ public class CardSystem : Singleton<CardSystem>
     //performers
     private IEnumerator DrawCardsPerformer(DrawCardsGA drawCardsGA)
     {
-        for(int i = 0; i < drawCardsGA.Amount; i++)
+        if (drawLocked)
+        {
+            Debug.Log("Cannot draw more cards this turn.");
+
+            yield break;
+        }
+        for (int i = 0; i < drawCardsGA.Amount; i++)
         {
             if(drawPile.Count == 0)
             {
@@ -159,6 +189,227 @@ public class CardSystem : Singleton<CardSystem>
         yield return tween.WaitForCompletion();
 
         Destroy(cardView.gameObject);
+    }
+    private IEnumerator ExhaustRandomCardPerformer(
+    ExhaustRandomCardGA action
+)
+    {
+        if (hand.Count == 0)
+        {
+            yield break;
+        }
+
+        int randomIndex = Random.Range(0, hand.Count);
+
+        Card selectedCard = hand[randomIndex];
+
+        CardView selectedCardView = handView.RemoveCard(selectedCard);
+
+        if (selectedCardView == null)
+        {
+            Debug.LogError(
+                "Cannot exhaust card: CardView was not found in hand."
+            );
+
+            yield break;
+        }
+
+        hand.RemoveAt(randomIndex);
+
+        yield return ExhaustCard(selectedCardView);
+    }
+    private IEnumerator FocusedStudyPerformer(FocusedStudyGA action)
+    {
+        DrawCardsGA drawCardsGA = new(action.DrawAmount);
+
+        ActionSystem.Instance.AddReaction(drawCardsGA);
+        LockDrawGA lockDrawGA = new();
+
+        ActionSystem.Instance.AddReaction(lockDrawGA);
+
+        yield return null;
+    }
+    private IEnumerator LockDrawPerformer(LockDrawGA action)
+    {
+        drawLocked = true;
+
+        Debug.Log("Card drawing is locked for this turn.");
+
+        yield return null;
+    }
+    private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
+    {
+        drawLocked = false;
+    }
+    private IEnumerator ExhaustHandAndDamagePerformer(
+    ExhaustHandAndDamageGA action
+)
+    {
+        if (action.Targets == null || action.Targets.Count == 0)
+        {
+            yield break;
+        }
+
+        int exhaustedCount = 0;
+
+        List<Card> cardsToExhaust = new(hand);
+
+        foreach (Card card in cardsToExhaust)
+        {
+            CardView cardView = handView.RemoveCard(card);
+
+            if (cardView == null)
+            {
+                Debug.LogError(
+                    "Cannot exhaust card: CardView was not found in hand."
+                );
+
+                continue;
+            }
+
+            hand.Remove(card);
+
+            yield return ExhaustCard(cardView);
+
+            exhaustedCount++;
+        }
+
+        for (int i = 0; i < exhaustedCount; i++)
+        {
+            DealDamageGA dealDamageGA = new(
+                action.DamagePerCard,
+                action.Targets,
+                action.Caster
+            );
+
+            ActionSystem.Instance.AddReaction(dealDamageGA);
+        }
+    }
+    public void ChooseCardToExhaust(Card card)
+    {
+        if (!IsChoosingCardToExhaust)
+        {
+            return;
+        }
+
+        if (card == null || !hand.Contains(card))
+        {
+            return;
+        }
+
+        chosenCardToExhaust = card;
+    }
+    private IEnumerator ChooseCardToExhaustPerformer(
+    ChooseCardToExhaustGA action
+)
+    {
+        if (hand.Count > 0)
+        {
+            chosenCardToExhaust = null;
+            IsChoosingCardToExhaust = true;
+
+            Debug.Log("Choose a card in your hand to exhaust.");
+
+            yield return new WaitUntil(
+                () => chosenCardToExhaust != null
+            );
+
+            IsChoosingCardToExhaust = false;
+
+            Card selectedCard = chosenCardToExhaust;
+            chosenCardToExhaust = null;
+
+            CardView cardView = handView.RemoveCard(selectedCard);
+
+            if (cardView == null)
+            {
+                Debug.LogError(
+                    "Cannot exhaust selected card: CardView was not found."
+                );
+
+                yield break;
+            }
+
+            hand.Remove(selectedCard);
+
+            yield return ExhaustCard(cardView);
+        }
+
+        if (action.DrawAmount > 0)
+        {
+            DrawCardsGA drawCardsGA = new(action.DrawAmount);
+
+            ActionSystem.Instance.AddReaction(drawCardsGA);
+        }
+    }
+    public void ChooseCardToUpgrade(CardView cardView)
+    {
+        if (!IsChoosingCardToUpgrade || cardView == null)
+        {
+            return;
+        }
+
+        Card card = cardView.Card;
+
+        if (card == null || !hand.Contains(card))
+        {
+            return;
+        }
+
+        if (!card.CanUpgradeForCombat())
+        {
+            Debug.Log("This card cannot be upgraded.");
+
+            return;
+        }
+
+        chosenCardViewToUpgrade = cardView;
+    }
+    private IEnumerator ChooseCardToUpgradePerformer(
+    ChooseCardToUpgradeGA action
+)
+    {
+        bool hasUpgradeableCard = false;
+
+        foreach (Card card in hand)
+        {
+            if (card.CanUpgradeForCombat())
+            {
+                hasUpgradeableCard = true;
+                break;
+            }
+        }
+
+        if (!hasUpgradeableCard)
+        {
+            Debug.Log("There are no cards to upgrade.");
+
+            yield break;
+        }
+
+        chosenCardViewToUpgrade = null;
+        IsChoosingCardToUpgrade = true;
+
+        Debug.Log("Choose a card in your hand to upgrade.");
+
+        yield return new WaitUntil(
+            () => chosenCardViewToUpgrade != null
+        );
+
+        IsChoosingCardToUpgrade = false;
+
+        CardView cardView = chosenCardViewToUpgrade;
+
+        chosenCardViewToUpgrade = null;
+
+        Card selectedCard = cardView.Card;
+
+        selectedCard.UpgradeForCombat();
+
+
+        cardView.Setup(selectedCard);
+
+        yield return null;
     }
 }
 

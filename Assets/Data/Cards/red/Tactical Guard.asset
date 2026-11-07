@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
-  <CardImage>k__BackingField: {fileID: -5750353039905602045, guid: 55e14b8f422a4494a950e0cbf69ad18c, type: 3}
+  <CardImage>k__BackingField: {fileID: -5622901713081898559, guid: de4b25f2c4736e34a995cda4dcac03cd, type: 3}
   <Description>k__BackingField: Gain 5 Block. Upgrade a card in your hand for this
     combat.
   <Mana>k__BackingField: 1
@@ -26,7 +26,11 @@ MonoBehaviour:
   - <TargetMode>k__BackingField:
       rid: 286842286307016837
     <Effect>k__BackingField:
-      rid: -2
+      rid: 1468093377958117711
+  - <TargetMode>k__BackingField:
+      rid: 286842286307016837
+    <Effect>k__BackingField:
+      rid: 1468093377958117712
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -40,4 +44,12 @@ MonoBehaviour:
       type: {class: , ns: , asm: }
     - rid: 286842286307016837
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093377958117711
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 5
+    - rid: 1468093377958117712
+      type: {class: ChooseCardToUpgradeEffect, ns: , asm: Assembly-CSharp}
       data: 

@@ -14,6 +14,8 @@ public class CardView : MonoBehaviour
     [SerializeField] private Image cardImage;
     [SerializeField] private LayerMask dropLayer;
     public Card Card { get; private set; }
+    private bool selectedForExhaust;
+
     private Vector3 dragStartPosition;
     private Quaternion dragStartRotation;
     public void Setup(Card card)
@@ -65,7 +67,27 @@ public class CardView : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if(!InteractionSystem.Instance.PlayerCanInteract()) return;
+        if (
+            CardSystem.Instance != null &&
+            CardSystem.Instance.IsChoosingCardToUpgrade
+        )
+        {
+            selectedForExhaust = true;
+
+            CardSystem.Instance.ChooseCardToUpgrade(this);
+
+            return;
+        }
+        
+        if ( CardSystem.Instance != null &&CardSystem.Instance.IsChoosingCardToExhaust)
+        {
+            selectedForExhaust = true;
+
+            CardSystem.Instance.ChooseCardToExhaust(Card);
+
+            return;
+        }
+        if (!InteractionSystem.Instance.PlayerCanInteract()) return;
         if(Card.ManualTargetEffect != null)
         {
             ManualTargetSystem.Instance.StartTargeting(transform.position);
@@ -84,13 +106,19 @@ public class CardView : MonoBehaviour
     }
     private void OnMouseDrag()
     {
-        if(!InteractionSystem.Instance.PlayerCanInteract()) return;
+        if (selectedForExhaust) return;
+        if (!InteractionSystem.Instance.PlayerCanInteract()) return;
         if (Card.ManualTargetEffect != null) return;
         transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
     }
     private void OnMouseUp()
     {
-        if(!InteractionSystem.Instance.PlayerCanInteract()) return;
+        if (selectedForExhaust)
+        {
+            selectedForExhaust = false;
+            return;
+        }
+        if (!InteractionSystem.Instance.PlayerCanInteract()) return;
         if(Card.ManualTargetEffect != null)
         {
             EnemyView target = ManualTargetSystem.Instance.EndTargeting(MouseUtil.GetMousePositionInWorldSpace(-1));

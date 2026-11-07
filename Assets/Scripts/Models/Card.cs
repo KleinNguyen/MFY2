@@ -5,11 +5,20 @@ public class Card
 {
     private readonly CardData data;
 
+    private bool upgradedForCombat;
     public bool IsUpgraded
     {
         get
         {
-            if (RunSystem.Instance == null) return false;
+            if (upgradedForCombat)
+            {
+                return true;
+            }
+
+            if (RunSystem.Instance == null)
+            {
+                return false;
+            }
 
             return RunSystem.Instance.IsCardUpgraded(data);
         }
@@ -63,6 +72,20 @@ public class Card
 
             return data.OtherEffects;
         }
+    }
+    public bool CanUpgradeForCombat()
+    {
+        return data.CanUpgrade && !IsUpgraded;
+    }
+
+    public void UpgradeForCombat()
+    {
+        if (!CanUpgradeForCombat())
+        {
+            return;
+        }
+
+        upgradedForCombat = true;
     }
     public Sprite Image => data.CardImage;
 

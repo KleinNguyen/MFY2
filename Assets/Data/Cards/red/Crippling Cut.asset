@@ -20,12 +20,8 @@ MonoBehaviour:
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
-    rid: -2
-  <OtherEffects>k__BackingField:
-  - <TargetMode>k__BackingField:
-      rid: 286842286307016837
-    <Effect>k__BackingField:
-      rid: -2
+    rid: 1468093377958117654
+  <OtherEffects>k__BackingField: []
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -37,6 +33,9 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 286842286307016837
-      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
-      data: 
+    - rid: 1468093377958117654
+      type: {class: DamageThenStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 4
+        statusEffectType: 1
+        stackCount: 1
