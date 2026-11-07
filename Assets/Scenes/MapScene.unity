@@ -1410,6 +1410,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: -17
       objectReference: {fileID: 0}
+    - target: {fileID: 6102044993106117961, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: cardPrefab
+      value: 
+      objectReference: {fileID: 7171852290959586651, guid: bdcfe10473c2bb24dae7fb137c2f5503, type: 3}
     - target: {fileID: 7465856796702064686, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
       propertyPath: m_Name
       value: RunHeaderCanvas

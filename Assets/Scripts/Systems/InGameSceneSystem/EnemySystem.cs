@@ -41,16 +41,59 @@ public class EnemySystem : Singleton<EnemySystem>
         }
         yield return null;
     }
-    private IEnumerator AttackHeroPerformer(AttackHeroGA attackHeroGA)
+    private IEnumerator AttackHeroPerformer(
+        AttackHeroGA attackHeroGA
+    )
     {
         EnemyView attacker = attackHeroGA.Attacker;
-        if (attacker == null || attacker.CurrentHealth <= 0) yield break;
-        Tween tween = attacker.transform.DOMoveX(attacker.transform.position.x - 1f, 0.15f);
-        yield return tween.WaitForCompletion();
-        attacker.transform.DOMoveX(attacker.transform.position.x + 1f, 0.15f);
 
-        DealDamageGA dealDamageGA = new(attacker.AttackPower, new() { HeroSystem.Instance.HeroView }, attackHeroGA.Caster);
+        if (attacker == null || attacker.CurrentHealth <= 0)
+        {
+            yield break;
+        }
+
+        Tween tween = attacker.transform.DOMoveX(
+            attacker.transform.position.x - 1f,
+            0.15f
+        );
+
+        yield return tween.WaitForCompletion();
+
+        attacker.transform.DOMoveX(
+            attacker.transform.position.x + 1f,
+            0.15f
+        );
+
+        int damage = attacker.AttackPower;
+
+        int weakStacks = attacker.GetStatusEffectStacks(
+            StatusEffectType.WEAK
+        );
+
+        //change weak dmg
+        if (weakStacks > 0)
+        {
+            damage = Mathf.FloorToInt(damage * 0.75f);
+        }
+
+        DealDamageGA dealDamageGA = new(
+            damage,
+            new() { HeroSystem.Instance.HeroView },
+            attackHeroGA.Caster
+        );
+
         ActionSystem.Instance.AddReaction(dealDamageGA);
+
+        if (weakStacks > 0)
+        {
+            RemoveStatusEffectGA removeWeakGA = new(
+                StatusEffectType.WEAK,
+                1,
+                new() { attacker }
+            );
+
+            ActionSystem.Instance.AddReaction(removeWeakGA);
+        }
     }
     private IEnumerator KillEnemyPerformer(KillEnemyGA killEnemyGA)
     {
