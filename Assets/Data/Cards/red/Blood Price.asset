@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Blood Price
   m_EditorClassIdentifier: 
-  <Owner>k__BackingField: 0
-  <Description>k__BackingField: 'Lose 3 HP. Gain 1 mana. Exhaust.'
+  <Character>k__BackingField: 0
+  <Rarity>k__BackingField: 0
+  <CardImage>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: Lose 3 HP. Gain 1 mana. Exhaust.
   <Mana>k__BackingField: 0
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
@@ -23,7 +25,17 @@ MonoBehaviour:
   - <TargetMode>k__BackingField:
       rid: 286842286307016837
     <Effect>k__BackingField:
-      rid: -2
+      rid: 1468093377958117582
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117580
+    <Effect>k__BackingField:
+      rid: 1468093377958117583
+  <CanUpgrade>k__BackingField: 0
+  <UpgradedDescription>k__BackingField: 
+  <UpgradedMana>k__BackingField: 0
+  <UpgradedManualTargetEffect>k__BackingField:
+    rid: -2
+  <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
@@ -32,3 +44,14 @@ MonoBehaviour:
     - rid: 286842286307016837
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1468093377958117580
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093377958117582
+      type: {class: LoseHealthEffect, ns: , asm: Assembly-CSharp}
+      data:
+        healthAmount: 3
+    - rid: 1468093377958117583
+      type: {class: GainManaEffect, ns: , asm: Assembly-CSharp}
+      data:
+        manaAmount: 2
