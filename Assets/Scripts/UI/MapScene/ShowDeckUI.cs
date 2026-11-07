@@ -9,7 +9,7 @@ public class ShowDeckUI : MonoBehaviour
     //[SerializeField] private TMP_Text messageText;
 
     [SerializeField] private Transform cardContent;
-    [SerializeField] private LibraryCardUI cardPrefab;
+    [SerializeField] private CardView cardPrefab;
     [SerializeField] private ScrollRect scrollRect;
 
     [SerializeField] private GameObject removeControls;
@@ -104,6 +104,14 @@ public class ShowDeckUI : MonoBehaviour
 
     private void RefreshCards()
     {
+        if (cardPrefab == null || cardPrefab.LibraryTemplate == null)
+        {
+            Debug.LogError(
+                "CardView prefab or its Library Template is missing."
+            );
+
+            return;
+        }
         for (int i = cardContent.childCount - 1; i >= 0; i--)
         {
             GameObject oldCard = cardContent.GetChild(i).gameObject;
@@ -131,9 +139,11 @@ public class ShowDeckUI : MonoBehaviour
             int cardIndex = i;
 
             LibraryCardUI cardUI = Instantiate(
-                cardPrefab,
+                cardPrefab.LibraryTemplate,
                 cardContent
             );
+
+            cardUI.gameObject.SetActive(true);
 
             bool isUpgraded = RunSystem.Instance.IsCardUpgraded(cardData);
 

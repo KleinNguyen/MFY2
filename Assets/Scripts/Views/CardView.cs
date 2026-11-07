@@ -1,13 +1,17 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class CardView : MonoBehaviour
 {
     [SerializeField] private TMP_Text title;
     [SerializeField] private TMP_Text description;
     [SerializeField] private TMP_Text mana;
+    [SerializeField] private LibraryCardUI libraryTemplate;
+
+    public LibraryCardUI LibraryTemplate => libraryTemplate;
     [SerializeField] private GameObject wrapper;
-    [SerializeField] private SpriteRenderer cardImageRenderer;
+    [SerializeField] private Image cardImage;
     [SerializeField] private LayerMask dropLayer;
     public Card Card { get; private set; }
     private Vector3 dragStartPosition;
@@ -26,39 +30,23 @@ public class CardView : MonoBehaviour
         description.text = card.Description;
         mana.text = card.Mana.ToString();
 
-        if (cardImageRenderer == null)
+        if (cardImage == null)
         {
             Debug.LogError(
-                "Card Image Renderer is not assigned on CardView."
+                "Card Image is not assigned on CardView."
             );
 
             return;
         }
 
-        cardImageRenderer.sprite = card.Image;
+        cardImage.sprite = card.Image;
 
-        cardImageRenderer.enabled = card.Image != null;
+        cardImage.enabled = card.Image != null;
 
         if (card.Image == null)
         {
             Debug.LogWarning(
                 "Card Image is missing for card: " + card.Title
-            );
-
-            return;
-        }
-
-        Vector2 spriteSize = card.Image.bounds.size;
-
-        if (spriteSize.x > 0f && spriteSize.y > 0f)
-        {
-            float cardWidth = 2.3f;
-            float cardHeight = 3.0f;
-
-            cardImageRenderer.transform.localScale = new Vector3(
-                cardWidth / spriteSize.x,
-                cardHeight / spriteSize.y,
-                1f
             );
         }
     }
