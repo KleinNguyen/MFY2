@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class HeroSystem : Singleton<HeroSystem>
 {
@@ -7,11 +8,13 @@ public class HeroSystem : Singleton<HeroSystem>
     {
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
+        ActionSystem.AttachPerformer<HealGA>(HealPerformer);
     }
     private void OnDisable()
     {
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
+        ActionSystem.DetachPerformer<HealGA>();
     }
     public void Setup(HeroData heroData)
     {
@@ -32,5 +35,31 @@ public class HeroSystem : Singleton<HeroSystem>
         }
         DrawCardsGA drawCardsGA = new(5);
         ActionSystem.Instance.AddReaction(drawCardsGA);
+    }
+    private IEnumerator HealPerformer(HealGA healGA)
+    {
+        if (healGA.Amount <= 0)
+        {
+            yield break;
+        }
+
+        foreach (CombatantView target in healGA.Targets)
+        {
+            if (target == null || target.CurrentHealth <= 0)
+            {
+                continue;
+            }
+
+            int newHealth = target.CurrentHealth + healGA.Amount;
+
+            target.SetCurrentHealth(newHealth);
+
+            if (target is HeroView && RunSystem.Instance != null)
+            {
+                RunSystem.Instance.SaveHealth(target.CurrentHealth);
+            }
+
+            yield return null;
+        }
     }
 }
