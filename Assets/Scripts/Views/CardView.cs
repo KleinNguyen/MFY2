@@ -7,16 +7,60 @@ public class CardView : MonoBehaviour
     [SerializeField] private TMP_Text description;
     [SerializeField] private TMP_Text mana;
     [SerializeField] private GameObject wrapper;
+    [SerializeField] private SpriteRenderer cardImageRenderer;
     [SerializeField] private LayerMask dropLayer;
     public Card Card { get; private set; }
     private Vector3 dragStartPosition;
     private Quaternion dragStartRotation;
     public void Setup(Card card)
     {
+        if (card == null)
+        {
+            Debug.LogError("CardView received a null card.");
+            return;
+        }
+
         Card = card;
+
         title.text = card.Title;
         description.text = card.Description;
         mana.text = card.Mana.ToString();
+
+        if (cardImageRenderer == null)
+        {
+            Debug.LogError(
+                "Card Image Renderer is not assigned on CardView."
+            );
+
+            return;
+        }
+
+        cardImageRenderer.sprite = card.Image;
+
+        cardImageRenderer.enabled = card.Image != null;
+
+        if (card.Image == null)
+        {
+            Debug.LogWarning(
+                "Card Image is missing for card: " + card.Title
+            );
+
+            return;
+        }
+
+        Vector2 spriteSize = card.Image.bounds.size;
+
+        if (spriteSize.x > 0f && spriteSize.y > 0f)
+        {
+            float cardWidth = 2.3f;
+            float cardHeight = 3.0f;
+
+            cardImageRenderer.transform.localScale = new Vector3(
+                cardWidth / spriteSize.x,
+                cardHeight / spriteSize.y,
+                1f
+            );
+        }
     }
     private void OnMouseEnter()
     {

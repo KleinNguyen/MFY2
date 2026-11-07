@@ -64,6 +64,7 @@ public class Card
             return data.OtherEffects;
         }
     }
+    public Sprite Image => data.CardImage;
 
     public bool ExhaustOnPlay => data.ExhaustOnPlay;
     public bool IsSly => data.IsSly;
