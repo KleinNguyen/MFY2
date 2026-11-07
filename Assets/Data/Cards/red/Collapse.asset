@@ -14,13 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
+  <CardImage>k__BackingField: {fileID: 0}
   <Description>k__BackingField: 'Deal 6 damage, plus 3 for each Weak on the target.
     Maximum bonus: 12 damage.'
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093377958117559
   <OtherEffects>k__BackingField:
   - <TargetMode>k__BackingField:
       rid: 286842286307016837
@@ -40,3 +41,9 @@ MonoBehaviour:
     - rid: 286842286307016837
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1468093377958117559
+      type: {class: DamageFromWeakEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage: 6
+        damagePerWeak: 3
+        maxBonusDamage: 12
