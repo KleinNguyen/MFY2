@@ -22,12 +22,9 @@ public class EnemySystem : Singleton<EnemySystem>
         ActionSystem.DetachPerformer<KillEnemyGA>();
     }
 
-    public void Setup(List<EnemyData> enemyDatas)
+    public void Setup(EncounterData encounter)
     {
-        foreach(var enemyData in enemyDatas)
-        {
-            enemyBoardView.AddEnemy(enemyData);
-        }
+        enemyBoardView.AddEnemies(encounter.Enemies);
     }
     private IEnumerator EnemyTurnPerformer(EnemyTurnGA enemyTurnGA)
     {
