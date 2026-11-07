@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 3
+  <CardImage>k__BackingField: {fileID: 4164744761163438241, guid: 95ef56a40f356ad4ab56c3dadad08f25, type: 3}
   <Description>k__BackingField: Attack 4 times for 4 damage each. If the target has
     Exposed, each hit deals 2 additional damage.
   <Mana>k__BackingField: 2

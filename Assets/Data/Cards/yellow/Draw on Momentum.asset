@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
+  <CardImage>k__BackingField: {fileID: 6660783624410144326, guid: 2d078d01ceee2b64db737d151e620f96, type: 3}
   <Description>k__BackingField: Spend up to 2 Combo. Draw 1 card for each Combo spent.
   <Mana>k__BackingField: 0
   <ExhaustOnPlay>k__BackingField: 0

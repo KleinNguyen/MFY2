@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
+  <CardImage>k__BackingField: {fileID: 8288426215254106694, guid: 963030adfb6f9e547a87ee325c480d64, type: 3}
   <Description>k__BackingField: Spend all Combo. Deal 3 damage to all enemies for
     each Combo spent.
   <Mana>k__BackingField: 1

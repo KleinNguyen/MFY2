@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
+  <CardImage>k__BackingField: {fileID: 7157561037332017152, guid: e534f3f8a2ce74444a909706d83a6dc5, type: 3}
   <Description>k__BackingField: Gain 2 Combo. If the target has Exposed, draw 1 card.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

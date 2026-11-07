@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
+  <CardImage>k__BackingField: {fileID: 8389134475083476877, guid: ef8bc87a30b997f4b82c957954aee8e1, type: 3}
   <Description>k__BackingField: Deal 6 damage. If you have at least 3 Combo, attack
     again for 6 damage.
   <Mana>k__BackingField: 1

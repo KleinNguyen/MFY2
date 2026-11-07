@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
+  <CardImage>k__BackingField: {fileID: 3465286685962602723, guid: 287fa5503a9154b4195b71741c5d8c52, type: 3}
   <Description>k__BackingField: Attack 3 times for 4 damage each. Exhaust a card
     of your choice from your hand.
   <Mana>k__BackingField: 1

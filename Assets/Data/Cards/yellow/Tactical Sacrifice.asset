@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
+  <CardImage>k__BackingField: {fileID: -7371509505491802261, guid: 39b6320970c3a4f41af1910e5807c058, type: 3}
   <Description>k__BackingField: Gain 9 Block. Exhaust a card of your choice from
     your hand.
   <Mana>k__BackingField: 1
