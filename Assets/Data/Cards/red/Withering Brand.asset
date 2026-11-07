@@ -14,17 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
+  <CardImage>k__BackingField: {fileID: 0}
   <Description>k__BackingField: Lose 2 HP. Apply 2 Weak to one enemy.
   <Mana>k__BackingField: 0
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
-    rid: -2
-  <OtherEffects>k__BackingField:
-  - <TargetMode>k__BackingField:
-      rid: 286842286307016837
-    <Effect>k__BackingField:
-      rid: -2
+    rid: 1468093377958117620
+  <OtherEffects>k__BackingField: []
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -36,6 +33,9 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 286842286307016837
-      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
-      data: 
+    - rid: 1468093377958117620
+      type: {class: LoseHealthThenStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        healthAmount: 2
+        statusEffectType: 1
+        stackCount: 2

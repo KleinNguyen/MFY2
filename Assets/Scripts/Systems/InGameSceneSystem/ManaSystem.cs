@@ -7,12 +7,14 @@ public class ManaSystem : Singleton<ManaSystem>
     private int maxMana;
     private int currentMana;
     public int CurrentMana => currentMana;
+    private int bonusManaPerTurn;
     public int MaxMana => maxMana;
     private void OnEnable()
     {
         ActionSystem.AttachPerformer<SpendManaGA>(SpendManaPerformer);
         ActionSystem.AttachPerformer<RefillManaGA>(RefillManaPerformer);
         ActionSystem.AttachPerformer<GainManaGA>(GainManaPerformer);
+        ActionSystem.AttachPerformer<IncreaseTurnManaGA>(IncreaseTurnManaPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
     private void OnDisable()
@@ -20,6 +22,7 @@ public class ManaSystem : Singleton<ManaSystem>
         ActionSystem.DetachPerformer<SpendManaGA>();
         ActionSystem.DetachPerformer<RefillManaGA>();
         ActionSystem.DetachPerformer<GainManaGA>();
+        ActionSystem.DetachPerformer<IncreaseTurnManaGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
 
     }
@@ -29,11 +32,15 @@ public class ManaSystem : Singleton<ManaSystem>
     }
     public void RestoreMana(int amount)
     {
-        if (amount <= 0) return;
+        if (amount <= 0)
+        {
+            return;
+        }
+        int restoreLimit = Mathf.Max(maxMana, currentMana);
 
         currentMana = Mathf.Min(
             currentMana + amount,
-            maxMana
+            restoreLimit
         );
 
         manaUI.UpdateManaText(currentMana);
@@ -56,10 +63,14 @@ public class ManaSystem : Singleton<ManaSystem>
         manaUI.UpdateManaText(currentMana);
         yield return null;
     }
-    private IEnumerator RefillManaPerformer(RefillManaGA refillManaGA)
+    private IEnumerator RefillManaPerformer(
+        RefillManaGA refillManaGA
+    )
     {
-        currentMana = maxMana;
+        currentMana = maxMana + bonusManaPerTurn;
+
         manaUI.UpdateManaText(currentMana);
+
         yield return null;
     }
     private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
@@ -70,6 +81,15 @@ public class ManaSystem : Singleton<ManaSystem>
     private IEnumerator GainManaPerformer(GainManaGA action)
     {
         RestoreMana(action.Amount);
+
+        yield return null;
+    }
+    private IEnumerator IncreaseTurnManaPerformer(IncreaseTurnManaGA action)
+    {
+        if (action.Amount > 0)
+        {
+            bonusManaPerTurn += action.Amount;
+        }
 
         yield return null;
     }

@@ -11,6 +11,7 @@ public class DamageSystem : MonoBehaviour
         ActionSystem.AttachPerformer<BlockThenDamageGA>(BlockThenDamagePerformer);
         ActionSystem.AttachPerformer<DamageThenWeakBonusGA>(DamageThenWeakBonusPerformer);
         ActionSystem.AttachPerformer<BonusDamageIfWeakGA>(BonusDamageIfWeakPerformer);
+        ActionSystem.AttachPerformer<DamageThenStatusGA>(DamageThenStatusPerformer);
     }
     private void OnDisable()
     {
@@ -18,6 +19,7 @@ public class DamageSystem : MonoBehaviour
         ActionSystem.DetachPerformer<BlockThenDamageGA>();
         ActionSystem.DetachPerformer<DamageThenWeakBonusGA>();
         ActionSystem.DetachPerformer<BonusDamageIfWeakGA>();
+        ActionSystem.DetachPerformer<DamageThenStatusGA>();
     }
     private IEnumerator DealDamagePerformer(DealDamageGA dealDamageGA)
     {
@@ -31,7 +33,19 @@ public class DamageSystem : MonoBehaviour
             bool targetHasWeak =
                 target.GetStatusEffectStacks(StatusEffectType.WEAK) > 0;
 
-            target.Damage(dealDamageGA.Amount);
+            int finalDamage = dealDamageGA.Amount;
+
+            if (
+                dealDamageGA.IsAttack &&
+                dealDamageGA.Caster is HeroView heroCaster
+            )
+            {
+                finalDamage += heroCaster.GetStatusEffectStacks(
+                    StatusEffectType.STRENGTH
+                );
+            }
+
+            target.Damage(Mathf.Max(0, finalDamage));
 
             Instantiate(
                 damageVFX,
@@ -40,14 +54,16 @@ public class DamageSystem : MonoBehaviour
             );
 
             yield return new WaitForSeconds(0.5f);
-            if (
-                dealDamageGA.HealIfTargetWeak > 0 &&
-                targetHasWeak &&
-                dealDamageGA.Caster is HeroView hero
-            )
+            int healAmount = dealDamageGA.HealAfterDamage;
+            if (targetHasWeak)
+            {
+                healAmount += dealDamageGA.HealIfTargetWeak;
+            }
+
+            if (healAmount > 0 && dealDamageGA.Caster is HeroView hero)
             {
                 HealGA healGA = new(
-                    dealDamageGA.HealIfTargetWeak,
+                    healAmount,
                     new List<CombatantView> { hero },
                     hero
                 );
@@ -171,6 +187,32 @@ public class DamageSystem : MonoBehaviour
         );
 
         ActionSystem.Instance.AddReaction(bonusDamageGA);
+
+        yield return null;
+    }
+    private IEnumerator DamageThenStatusPerformer(
+    DamageThenStatusGA action
+)
+    {
+        if (action.Targets == null || action.Targets.Count == 0)
+        {
+            yield break;
+        }
+        DealDamageGA dealDamageGA = new(
+            action.DamageAmount,
+            action.Targets,
+            action.Caster
+        );
+
+        ActionSystem.Instance.AddReaction(dealDamageGA);
+
+        AddStatusEffectGA addStatusEffectGA = new(
+            action.StatusEffectType,
+            action.StackCount,
+            action.Targets
+        );
+
+        ActionSystem.Instance.AddReaction(addStatusEffectGA);
 
         yield return null;
     }

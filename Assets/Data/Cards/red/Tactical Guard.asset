@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Tactical Guard
   m_EditorClassIdentifier: 
-  <Owner>k__BackingField: 0
-  <Description>k__BackingField: 'Gain 5 Block. Upgrade a card in your hand for this combat.'
+  <Character>k__BackingField: 0
+  <Rarity>k__BackingField: 0
+  <CardImage>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: Gain 5 Block. Upgrade a card in your hand for this
+    combat.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
@@ -23,7 +26,17 @@ MonoBehaviour:
   - <TargetMode>k__BackingField:
       rid: 286842286307016837
     <Effect>k__BackingField:
-      rid: -2
+      rid: 1468093377958117711
+  - <TargetMode>k__BackingField:
+      rid: 286842286307016837
+    <Effect>k__BackingField:
+      rid: 1468093377958117712
+  <CanUpgrade>k__BackingField: 0
+  <UpgradedDescription>k__BackingField: 
+  <UpgradedMana>k__BackingField: 0
+  <UpgradedManualTargetEffect>k__BackingField:
+    rid: -2
+  <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
@@ -31,4 +44,12 @@ MonoBehaviour:
       type: {class: , ns: , asm: }
     - rid: 286842286307016837
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093377958117711
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 5
+    - rid: 1468093377958117712
+      type: {class: ChooseCardToUpgradeEffect, ns: , asm: Assembly-CSharp}
       data: 
