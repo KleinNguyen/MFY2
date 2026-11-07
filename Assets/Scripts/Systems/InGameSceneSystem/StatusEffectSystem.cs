@@ -17,7 +17,16 @@ public class StatusEffectSystem : MonoBehaviour
     {
         foreach (var target in addStatusEffectGA.Targets)
         {
-            target.AddStatusEffect(addStatusEffectGA.StatusEffectType, addStatusEffectGA.StackCount);
+            if (target == null || target.CurrentHealth <= 0)
+            {
+                continue;
+            }
+
+            target.AddStatusEffect(
+                addStatusEffectGA.StatusEffectType,
+                addStatusEffectGA.StackCount
+            );
+
             yield return null;
         }
     }

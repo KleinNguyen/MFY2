@@ -23,15 +23,44 @@ public class DamageSystem : MonoBehaviour
     {
         foreach (var target in dealDamageGA.Targets)
         {
-            if (target == null || target.CurrentHealth <= 0) continue;
+            if (target == null || target.CurrentHealth <= 0)
+            {
+                continue;
+            }
+
+            bool targetHasWeak =
+                target.GetStatusEffectStacks(StatusEffectType.WEAK) > 0;
+
             target.Damage(dealDamageGA.Amount);
-            Instantiate(damageVFX, target.transform.position, Quaternion.identity);
+
+            Instantiate(
+                damageVFX,
+                target.transform.position,
+                Quaternion.identity
+            );
+
             yield return new WaitForSeconds(0.5f);
+            if (
+                dealDamageGA.HealIfTargetWeak > 0 &&
+                targetHasWeak &&
+                dealDamageGA.Caster is HeroView hero
+            )
+            {
+                HealGA healGA = new(
+                    dealDamageGA.HealIfTargetWeak,
+                    new List<CombatantView> { hero },
+                    hero
+                );
+
+                ActionSystem.Instance.AddReaction(healGA);
+            }
+
             if (target.CurrentHealth <= 0)
             {
                 if (target is EnemyView enemyView)
                 {
                     KillEnemyGA killEnemyGA = new(enemyView);
+
                     ActionSystem.Instance.AddReaction(killEnemyGA);
                 }
                 else if (target is HeroView)

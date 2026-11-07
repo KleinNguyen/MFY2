@@ -11,6 +11,6 @@ public class LoseHealthEffect : Effect
         CombatantView caster
     )
     {
-        return new LoseHealthGA(healthAmount);
+        return new LoseHealthGA(healthAmount, true);
     }
 }

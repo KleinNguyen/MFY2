@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
+<<<<<<< HEAD
   <CardImage>k__BackingField: {fileID: 2960402581040015946, guid: 3f667c7cfa6d8854db781ddde44711cf, type: 3}
+=======
+  <CardImage>k__BackingField: {fileID: 0}
+>>>>>>> a4b5e7f045c7c31d47724387467cb0074ba698c2
   <Description>k__BackingField: Lose 3 HP. Deal 9 damage to all enemies.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
@@ -23,9 +27,17 @@ MonoBehaviour:
     rid: -2
   <OtherEffects>k__BackingField:
   - <TargetMode>k__BackingField:
-      rid: 286842286307016837
+      rid: 1468093377958117587
     <Effect>k__BackingField:
+<<<<<<< HEAD
       rid: -2
+=======
+      rid: 1468093377958117588
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117589
+    <Effect>k__BackingField:
+      rid: 1468093377958117590
+>>>>>>> a4b5e7f045c7c31d47724387467cb0074ba698c2
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -37,6 +49,17 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 286842286307016837
+    - rid: 1468093377958117587
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1468093377958117588
+      type: {class: LoseHealthEffect, ns: , asm: Assembly-CSharp}
+      data:
+        healthAmount: 3
+    - rid: 1468093377958117589
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093377958117590
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 9
