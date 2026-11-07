@@ -15,10 +15,16 @@ MonoBehaviour:
   <ActName>k__BackingField: act2
   <MapBackground>k__BackingField: {fileID: -8860827843204355718, guid: e1ba69caeaea89a43b6da93ac7f511e3, type: 3}
   <NormalEncounters>k__BackingField:
-  - {fileID: 11400000, guid: a5d9c0f10b5ac1345afb3bea324385f9, type: 2}
+  - {fileID: 11400000, guid: 2fba65984f0f48b09ec2a0d43346ada6, type: 2}
+  - {fileID: 11400000, guid: e4c76770d504439b9fb6db3ac274b79a, type: 2}
+  - {fileID: 11400000, guid: 97ccbb4d6db349bf9f5a227c07124cd5, type: 2}
+  - {fileID: 11400000, guid: d203be49607f4541a0171168b959e718, type: 2}
+  - {fileID: 11400000, guid: bce710e310d44e6b8937025a65d6c09c, type: 2}
   <EliteEncounters>k__BackingField:
-  - {fileID: 11400000, guid: 9db48049f8acf1444b2c4408f1dcbbb3, type: 2}
-  <BossEncounter>k__BackingField: {fileID: 11400000, guid: 751fbfa8385d6a64d919b8d6a1c964b6, type: 2}
+  - {fileID: 11400000, guid: 3cbad38dccb24213abdced1bd689b532, type: 2}
+  - {fileID: 11400000, guid: 68bb43a81fbc4a6ab815e6cc5e7e04bd, type: 2}
+  - {fileID: 11400000, guid: a7b64ec21a244d6f808d4a8de452c290, type: 2}
+  <BossEncounter>k__BackingField: {fileID: 11400000, guid: 9f011bf73b994416891118eb908a95e6, type: 2}
   <NormalWeight>k__BackingField: 45
   <EliteWeight>k__BackingField: 25
   <ShopWeight>k__BackingField: 15

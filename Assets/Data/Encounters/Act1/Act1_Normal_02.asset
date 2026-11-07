@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 048e654e30d2ec24d8660a267c633f51, type: 3}
-  m_Name: encount3
+  m_Name: Act1_Normal_02
+  <Type>k__BackingField: 0
   m_EditorClassIdentifier: 
   <Enemies>k__BackingField:
-  - {fileID: 11400000, guid: b300dba9c18f792449bfeb01a3338119, type: 2}
-  - {fileID: 11400000, guid: b300dba9c18f792449bfeb01a3338119, type: 2}
-  - {fileID: 11400000, guid: b300dba9c18f792449bfeb01a3338119, type: 2}
+  - {fileID: 11400000, guid: fcfa9bf2c0344ba49b4b020ccfd9447a, type: 2}
+  - {fileID: 11400000, guid: efce2b4b185a31143b696e0143f6094b, type: 2}

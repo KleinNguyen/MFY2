@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e8d1097038068468fdd361ecdfe485, type: 3}
   m_Name: Slim 9
   m_EditorClassIdentifier: 
-  <Image>k__BackingField: {fileID: -1580047927005938367, guid: 66415346555e5a7429f154da8a98b8c7, type: 3}
+  <Image>k__BackingField: {fileID: 4113829005332862926, guid: 7f2d133f9dd376f48aefc698330627b4, type: 3}
   <Health>k__BackingField: 15
   <AttackPower>k__BackingField: 5
+  <Rank>k__BackingField: 0
