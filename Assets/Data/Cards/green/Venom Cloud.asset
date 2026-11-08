@@ -23,9 +23,9 @@ MonoBehaviour:
     rid: -2
   <OtherEffects>k__BackingField:
   - <TargetMode>k__BackingField:
-      rid: 286842286307016837
+      rid: 1468093405773430910
     <Effect>k__BackingField:
-      rid: -2
+      rid: 1468093405773430911
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -37,6 +37,11 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 286842286307016837
-      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+    - rid: 1468093405773430910
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1468093405773430911
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 2
+        stackCount: 3

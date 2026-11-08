@@ -15,12 +15,12 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -5099292496197868168, guid: 014790d81a6f28241b9671d09a2c0c89, type: 3}
-  <Description>k__BackingField: Deal 5 damage. Apply 3 Poison.
+  <Description>k__BackingField: Deal 3 damage. Apply 3 Poison.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093405773430907
   <OtherEffects>k__BackingField:
   - <TargetMode>k__BackingField:
       rid: 286842286307016837
@@ -40,3 +40,9 @@ MonoBehaviour:
     - rid: 286842286307016837
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1468093405773430907
+      type: {class: DamageThenStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 3
+        statusEffectType: 2
+        stackCount: 3

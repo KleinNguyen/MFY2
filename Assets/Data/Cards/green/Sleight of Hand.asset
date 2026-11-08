@@ -23,9 +23,13 @@ MonoBehaviour:
     rid: -2
   <OtherEffects>k__BackingField:
   - <TargetMode>k__BackingField:
-      rid: 286842286307016837
+      rid: 1468093405773430926
     <Effect>k__BackingField:
-      rid: -2
+      rid: 1468093405773430928
+  - <TargetMode>k__BackingField:
+      rid: 1468093405773430927
+    <Effect>k__BackingField:
+      rid: 1468093405773430929
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -37,6 +41,18 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 286842286307016837
+    - rid: 1468093405773430926
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1468093405773430927
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093405773430928
+      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 1
+    - rid: 1468093405773430929
+      type: {class: DiscardCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        discardAmount: 1
+        drawAfterDiscard: 0
