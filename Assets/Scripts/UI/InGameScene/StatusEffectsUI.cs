@@ -7,6 +7,10 @@ public class StatusEffecstUI : MonoBehaviour
     [SerializeField] private Sprite armorSprite;
     [SerializeField] private Sprite poisonSprite;
     [SerializeField] private Sprite weakSprite;
+    [SerializeField] private Sprite strengthSprite;
+    [SerializeField] private Sprite dexteritySprite;
+    [SerializeField] private Sprite exposedSprite;
+    [SerializeField] private Sprite armorBreakSprite;
     private Dictionary<StatusEffectType, StatusEffectUI> statusEffectUIs = new();
     public void UpdateStatusEffectUI(StatusEffectType statusEffectType, int stackCount)
     {
@@ -35,8 +39,19 @@ public class StatusEffecstUI : MonoBehaviour
         return statusEffectType switch
         {
             StatusEffectType.ARMOR => armorSprite,
+
             StatusEffectType.POISON => poisonSprite,
+
             StatusEffectType.WEAK => weakSprite,
+
+            StatusEffectType.STRENGTH => strengthSprite,
+
+            StatusEffectType.DEXTERITY => dexteritySprite,
+
+            StatusEffectType.EXPOSED => exposedSprite,
+
+            StatusEffectType.ARMOR_BREAK => armorBreakSprite,
+
             _ => null
         };
     }
