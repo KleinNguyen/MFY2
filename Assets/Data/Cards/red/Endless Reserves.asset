@@ -15,8 +15,8 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 2720535173406242035, guid: 1bc24532d32b9fb4ca9edf62abd5c04f, type: 3}
-  <Description>k__BackingField: 'Power: Gain 1 additional mana at the start of each
-    turn, starting next turn.'
+  <Description>k__BackingField: Gain 1 additional mana at the start of each turn,
+    starting next turn.
   <Mana>k__BackingField: 3
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0

@@ -34,6 +34,7 @@ public class RunSystem : PersistentSingleton<RunSystem>
     public bool RewardClaimed { get; private set; }
     public float ElapsedRunTime { get; private set; }
     public List<MapPoint> MapPoints { get; private set; } = new();
+    private readonly List<CardData> runtimeUpgradedCards = new();
 
     public int CompletedMapPointId { get; private set; } = -1;
 
@@ -53,6 +54,12 @@ public class RunSystem : PersistentSingleton<RunSystem>
     }
     public void StartNewRun()
     {
+        foreach (CardData cardData in runtimeUpgradedCards)
+        {
+            if (cardData != null) Destroy(cardData);
+        }
+
+        runtimeUpgradedCards.Clear();
         CurrentActIndex = 0;
         HeroData = startingHero;
         Deck = new List<CardData>(startingHero.Deck);
@@ -291,14 +298,11 @@ public class RunSystem : PersistentSingleton<RunSystem>
 
     public bool UpgradeCard(CardData cardData)
     {
-        if (cardData == null) return false;
-        if (!cardData.CanUpgrade) return false;
-        if (!Deck.Contains(cardData)) return false;
-        if (upgradedCards.Contains(cardData)) return false;
+        if (cardData == null || Deck == null) return false;
 
-        upgradedCards.Add(cardData);
+        int cardIndex = Deck.IndexOf(cardData);
 
-        return true;
+        return UpgradeDeckCard(cardIndex);
     }
     public void GenerateMap()
     {
@@ -343,6 +347,27 @@ public class RunSystem : PersistentSingleton<RunSystem>
         if (completedPoint == null) return false;
 
         return completedPoint.NextPoints.Contains(pointId);
+    }
+    public bool UpgradeDeckCard(int cardIndex)
+    {
+        if (Deck == null) return false;
+        if (cardIndex < 0 || cardIndex >= Deck.Count) return false;
+
+        CardData originalCard = Deck[cardIndex];
+
+        if (originalCard == null) return false;
+        if (!originalCard.CanUpgrade) return false;
+        if (IsCardUpgraded(originalCard)) return false;
+
+        CardData upgradedInstance = Instantiate(originalCard);
+        upgradedInstance.name = originalCard.name;
+
+        runtimeUpgradedCards.Add(upgradedInstance);
+        upgradedCards.Add(upgradedInstance);
+
+        Deck[cardIndex] = upgradedInstance;
+
+        return true;
     }
 
     public void SelectMapPoint(int pointId)
