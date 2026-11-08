@@ -12,17 +12,20 @@ public class RewardUI : MonoBehaviour
     [SerializeField] private TMP_Text goldRewardText;
     [SerializeField] private TMP_Text messageText;
 
-    [Header("Reward Cards")]
+
     [SerializeField] private Transform cardContent;
     [SerializeField] private CardView cardPrefab;
     [SerializeField, Range(1, 3)] private int choiceCount = 3;
 
-    [Header("Buttons")]
+
     [SerializeField] private Button skipButton;
     [SerializeField] private Button continueButton;
 
     private readonly List<CardData> currentChoices = new();
-    private readonly List<Button> choiceButtons = new();
+    private readonly List<RewardCardHoverUI> choiceViews = new();
+    [SerializeField, Min(1f)] private float hoverScale = 1.12f;
+    [SerializeField, Min(0f)] private float hoverLift = 35f;
+    [SerializeField, Min(0.01f)] private float hoverDuration = 0.12f;
 
     private bool selectionFinished;
 
@@ -93,45 +96,55 @@ public class RewardUI : MonoBehaviour
 
     private void CreateRewardCard(CardData cardData, int choiceIndex)
     {
-        LibraryCardUI cardUI = Instantiate(cardPrefab.LibraryTemplate, cardContent);
+        GameObject slot = new("RewardSlot_" + choiceIndex, typeof(RectTransform), typeof(Image), typeof(Button), typeof(RewardCardHoverUI));
+
+        slot.layer = cardContent.gameObject.layer;
+        slot.transform.SetParent(cardContent, false);
+
+        Image slotImage = slot.GetComponent<Image>();
+        slotImage.color = new Color(1f, 1f, 1f, 0f);
+        slotImage.raycastTarget = true;
+
+        Button button = slot.GetComponent<Button>();
+        button.targetGraphic = slotImage;
+        button.transition = Selectable.Transition.None;
+        button.interactable = true;
+
+        LibraryCardUI cardUI = Instantiate(cardPrefab.LibraryTemplate, slot.transform);
 
         cardUI.gameObject.SetActive(true);
         cardUI.Setup(cardData, false);
 
-        Button button = cardUI.GetComponent<Button>();
+        RectTransform cardRect = cardUI.GetComponent<RectTransform>();
 
-        if (button == null) button = cardUI.gameObject.AddComponent<Button>();
-
-        Graphic graphic = cardUI.GetComponent<Graphic>();
-
-        if (graphic == null) graphic = cardUI.GetComponentInChildren<Image>(true);
-
-        if (graphic != null)
-        {
-            graphic.raycastTarget = true;
-            button.targetGraphic = graphic;
-        }
+        cardRect.anchorMin = Vector2.zero;
+        cardRect.anchorMax = Vector2.one;
+        cardRect.pivot = new Vector2(0.5f, 0.5f);
+        cardRect.offsetMin = Vector2.zero;
+        cardRect.offsetMax = Vector2.zero;
+        cardRect.localScale = Vector3.one;
+        cardRect.localRotation = Quaternion.identity;
 
         CanvasGroup canvasGroup = cardUI.GetComponent<CanvasGroup>();
 
         if (canvasGroup == null) canvasGroup = cardUI.gameObject.AddComponent<CanvasGroup>();
 
         canvasGroup.alpha = 1f;
-        canvasGroup.interactable = true;
-        canvasGroup.blocksRaycasts = true;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
 
-        button.transition = Selectable.Transition.None;
-        button.interactable = true;
+        RewardCardHoverUI hoverUI = slot.GetComponent<RewardCardHoverUI>();
+        hoverUI.Initialize(cardRect, hoverScale, hoverLift, hoverDuration);
 
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(() => SelectCard(choiceIndex));
 
-        choiceButtons.Add(button);
+        choiceViews.Add(hoverUI);
     }
 
     private void ClearCardViews()
     {
-        choiceButtons.Clear();
+        choiceViews.Clear();
 
         for (int i = cardContent.childCount - 1; i >= 0; i--)
         {
@@ -153,7 +166,7 @@ public class RewardUI : MonoBehaviour
 
         run.ClaimReward(goldReward, selectedCard);
 
-        FinishSelection("Selected: " + selectedCard.name);
+        FinishSelection("Received: " + selectedCard.name, index);
     }
 
     public void SkipCard()
@@ -167,14 +180,16 @@ public class RewardUI : MonoBehaviour
         FinishSelection("Card skipped. Gold received.");
     }
 
-    private void FinishSelection(string message)
+    private void FinishSelection(string message, int selectedIndex = -1)
     {
         selectionFinished = true;
         messageText.text = message;
 
-        foreach (Button button in choiceButtons)
+        for (int i = 0; i < choiceViews.Count; i++)
         {
-            if (button != null) button.interactable = false;
+            if (choiceViews[i] == null) continue;
+
+            choiceViews[i].Finish(i == selectedIndex);
         }
 
         skipButton.interactable = false;

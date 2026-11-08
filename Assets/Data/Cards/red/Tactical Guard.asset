@@ -16,9 +16,9 @@ MonoBehaviour:
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -5622901713081898559, guid: de4b25f2c4736e34a995cda4dcac03cd, type: 3}
   <Description>k__BackingField: Gain 5 Block. Upgrade a card in your hand for this
-    combat.
+    combat.Exhaust
   <Mana>k__BackingField: 1
-  <ExhaustOnPlay>k__BackingField: 0
+  <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
