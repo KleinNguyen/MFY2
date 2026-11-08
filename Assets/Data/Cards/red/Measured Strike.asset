@@ -18,7 +18,7 @@ MonoBehaviour:
   <Description>k__BackingField: Deal 6 damage.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
-  <IsSly>k__BackingField: 1
+  <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: 1468093377958117517
   <OtherEffects>k__BackingField: []

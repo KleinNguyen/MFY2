@@ -23,6 +23,7 @@ public class CardSystem : Singleton<CardSystem>
     private CardView chosenCardViewToUpgrade;
     private Card chosenCardToExhaust;
     private bool drawLocked;
+    private bool isPlayerTurn = true;
 
     private void OnEnable()
     {
@@ -38,7 +39,9 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.AttachPerformer<ChooseCardToUpgradeGA>(ChooseCardToUpgradePerformer);
         ActionSystem.AttachPerformer<ReclaimingBlowGA>(ReclaimingBlowPerformer);
         ActionSystem.AttachPerformer<RecoverDiscardCardGA>(RecoverDiscardCardPerformer);
-
+        ActionSystem.AttachPerformer<DiscardCardsGA>(DiscardCardsPerformer);
+        ActionSystem.AttachPerformer<PlayDiscardedSlyCardsGA>(PlayDiscardedSlyCardsPerformer);
+        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
     }
 
     private void OnDisable()
@@ -55,10 +58,14 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.DetachPerformer<ChooseCardToUpgradeGA>();
         ActionSystem.DetachPerformer<ReclaimingBlowGA>();
         ActionSystem.DetachPerformer<RecoverDiscardCardGA>();
+        ActionSystem.DetachPerformer<DiscardCardsGA>();
+        ActionSystem.DetachPerformer<PlayDiscardedSlyCardsGA>();
+        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
     }
     //public
     public void Setup(List<CardData> deckData)
     {
+        isPlayerTurn = true;
         priorityDrawCards.Clear();
         IsChoosingCardToUpgrade = false;
         chosenCardViewToUpgrade = null;
@@ -112,14 +119,50 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator PlayCardPerformer(PlayCardGA action)
     {
-        if (action.Card == null || !hand.Contains(action.Card))
+        if (action.Card == null || !isPlayerTurn)
         {
             yield break;
         }
 
-        if (!ManaSystem.Instance.HasEnoughMana(action.Card.Mana))
+        bool cardIsInHand = hand.Contains(action.Card);
+
+        if (action.IsSlyPlay)
         {
-            yield break;
+
+            if (!action.Card.IsSly || (!cardIsInHand && !discardPile.Contains(action.Card)))
+            {
+                yield break;
+            }
+
+            if (action.Card.ManualTargetEffect != null)
+            {
+                List<EnemyView> validTargets = new();
+
+                if (EnemySystem.Instance != null)
+                {
+                    foreach (EnemyView enemy in EnemySystem.Instance.Enemies)
+                    {
+                        if (enemy != null && enemy.CurrentHealth > 0)
+                        {
+                            validTargets.Add(enemy);
+                        }
+                    }
+                }
+                if (validTargets.Count == 0)
+                {
+                    yield break;
+                }
+
+                int randomIndex = Random.Range(0, validTargets.Count);
+                action.SetManualTarget(validTargets[randomIndex]);
+            }
+        }
+        else
+        {
+            if (!cardIsInHand || !ManaSystem.Instance.HasEnoughMana(action.Card.Mana))
+            {
+                yield break;
+            }
         }
 
         if (action.Card.ManualTargetEffect != null && (action.ManualTarget == null || action.ManualTarget.CurrentHealth <= 0))
@@ -127,32 +170,52 @@ public class CardSystem : Singleton<CardSystem>
             yield break;
         }
 
-        CardView cardView = handView.RemoveCard(action.Card);
-
-        if (cardView == null)
-        {
-            Debug.LogError("Cannot play card: CardView was not found in hand.");
-            yield break;
-        }
-
-        hand.Remove(action.Card);
-
         if (CardViewHoverSystem.Instance != null)
         {
             CardViewHoverSystem.Instance.Hide();
         }
 
-        if (action.Card.ExhaustOnPlay)
+        if (cardIsInHand)
         {
-            yield return ExhaustCard(cardView);
+            CardView cardView = handView.RemoveCard(action.Card);
+
+            if (cardView == null)
+            {
+                Debug.LogError("Cannot play card: CardView was not found in hand.");
+                yield break;
+            }
+
+            hand.Remove(action.Card);
+
+            if (action.Card.ExhaustOnPlay)
+            {
+                yield return ExhaustCard(cardView);
+            }
+            else
+            {
+                yield return DiscardCard(cardView);
+            }
         }
         else
         {
-            yield return DiscardCard(cardView);
+            if (action.Card.ExhaustOnPlay)
+            {
+                discardPile.Remove(action.Card);
+                exhaustPile.Add(action.Card);
+
+                pileUI.UpdateDiscardPileText(discardPile.Count);
+            }
         }
 
-        SpendManaGA spendManaGA = new(action.Card.Mana);
-        ActionSystem.Instance.AddReaction(spendManaGA);
+        if (action.IsSlyPlay)
+        {
+            Debug.Log("Sly auto-play: " + action.Card.Title);
+        }
+        else
+        {
+            SpendManaGA spendManaGA = new(action.Card.Mana);
+            ActionSystem.Instance.AddReaction(spendManaGA);
+        }
 
         if (action.Card.ManualTargetEffect != null)
         {
@@ -301,6 +364,7 @@ public class CardSystem : Singleton<CardSystem>
     private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
     {
         drawLocked = false;
+        isPlayerTurn = true;
     }
     private IEnumerator ExhaustHandAndDamagePerformer(
     ExhaustHandAndDamageGA action
@@ -549,6 +613,108 @@ public class CardSystem : Singleton<CardSystem>
 
         pileUI.UpdateDrawPileText(drawPile.Count);
         pileUI.UpdateDiscardPileText(discardPile.Count);
+    }
+    private IEnumerator DiscardCardsPerformer(DiscardCardsGA action)
+    {
+        int discardCount = Mathf.Clamp(action.Amount, 0, hand.Count);
+
+        if (discardCount > 0 && cardSelectionUI == null)
+        {
+            Debug.LogError("Card Selection UI is not assigned in CardSystem.");
+            yield break;
+        }
+
+        List<Card> discardedCards = new();
+
+        for (int i = 0; i < discardCount; i++)
+        {
+            List<Card> choices = new(hand);
+            Card selectedCard = null;
+
+            bool opened = cardSelectionUI.Open(choices, "Choose a card to discard", card => selectedCard = card);
+
+            if (!opened)
+            {
+                yield break;
+            }
+
+            while (selectedCard == null && cardSelectionUI != null && cardSelectionUI.IsOpen)
+            {
+                if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+                {
+                    cardSelectionUI.Close();
+                    yield break;
+                }
+
+                yield return null;
+            }
+
+            if (cardSelectionUI != null)
+            {
+                cardSelectionUI.Close();
+            }
+
+            if (selectedCard == null || !hand.Contains(selectedCard))
+            {
+                yield break;
+            }
+
+            if (CardViewHoverSystem.Instance != null)
+            {
+                CardViewHoverSystem.Instance.Hide();
+            }
+
+            CardView cardView = handView.RemoveCard(selectedCard);
+
+            if (cardView == null)
+            {
+                Debug.LogError("Cannot discard card: CardView was not found in hand.");
+                yield break;
+            }
+
+            hand.Remove(selectedCard);
+
+            yield return DiscardCard(cardView);
+
+            discardedCards.Add(selectedCard);
+        }
+
+        if (action.DrawAfterDiscard > 0)
+        {
+            DrawCardsGA drawCardsGA = new(action.DrawAfterDiscard);
+            ActionSystem.Instance.AddReaction(drawCardsGA);
+        }
+
+        if (isPlayerTurn && discardedCards.Count > 0)
+        {
+            PlayDiscardedSlyCardsGA slyGA = new(discardedCards);
+            ActionSystem.Instance.AddReaction(slyGA);
+        }
+    }
+    private IEnumerator PlayDiscardedSlyCardsPerformer(PlayDiscardedSlyCardsGA action)
+    {
+        if (!isPlayerTurn || action.Cards == null)
+        {
+            yield break;
+        }
+
+        foreach (Card card in action.Cards)
+        {
+            if (card == null || !card.IsSly)
+            {
+                continue;
+            }
+
+            PlayCardGA playCardGA = new(card, null, true);
+
+            ActionSystem.Instance.AddReaction(playCardGA);
+        }
+
+        yield return null;
+    }
+    private void EnemyTurnPreReaction(EnemyTurnGA action)
+    {
+        isPlayerTurn = false;
     }
 }
 
