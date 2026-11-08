@@ -5656,6 +5656,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardViewHover: {fileID: 1524289325}
+  hoverSortingOrder: 100
+  hoverZ: -1
 --- !u!1 &1515524563
 GameObject:
   m_ObjectHideFlags: 0
@@ -5815,6 +5817,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2444777264537484012, guid: bdcfe10473c2bb24dae7fb137c2f5503, type: 3}
       propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2705747200683562794, guid: bdcfe10473c2bb24dae7fb137c2f5503, type: 3}
+      propertyPath: m_SortingOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3774465050116976973, guid: bdcfe10473c2bb24dae7fb137c2f5503, type: 3}
