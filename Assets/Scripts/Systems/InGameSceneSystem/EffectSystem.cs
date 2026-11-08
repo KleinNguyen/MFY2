@@ -30,6 +30,7 @@ public class EffectSystem : MonoBehaviour
             yield break;
         }
         effectAction.CardCaster = caster;
+        effectAction.SourceCard = performEffectGA.SourceCard;
 
         ActionSystem.Instance.AddReaction(effectAction);
 

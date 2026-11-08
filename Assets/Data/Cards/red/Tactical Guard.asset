@@ -31,7 +31,7 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093377958117712
-  <CanUpgrade>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
   <UpgradedManualTargetEffect>k__BackingField:
