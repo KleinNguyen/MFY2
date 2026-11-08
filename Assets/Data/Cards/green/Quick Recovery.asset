@@ -25,7 +25,11 @@ MonoBehaviour:
   - <TargetMode>k__BackingField:
       rid: 286842286307016837
     <Effect>k__BackingField:
-      rid: -2
+      rid: 1468093405773430917
+  - <TargetMode>k__BackingField:
+      rid: 286842286307016837
+    <Effect>k__BackingField:
+      rid: 1468093405773430918
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -40,3 +44,12 @@ MonoBehaviour:
     - rid: 286842286307016837
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1468093405773430917
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 5
+    - rid: 1468093405773430918
+      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 1

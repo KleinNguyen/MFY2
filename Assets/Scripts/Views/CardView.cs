@@ -73,7 +73,12 @@ public class CardView : MonoBehaviour
         )
         {
             selectedForExhaust = true;
+            wrapper.SetActive(true);
 
+            if (CardViewHoverSystem.Instance != null)
+            {
+                CardViewHoverSystem.Instance.Hide();
+            }
             CardSystem.Instance.ChooseCardToUpgrade(this);
 
             return;
@@ -82,7 +87,12 @@ public class CardView : MonoBehaviour
         if ( CardSystem.Instance != null &&CardSystem.Instance.IsChoosingCardToExhaust)
         {
             selectedForExhaust = true;
+            wrapper.SetActive(true);
 
+            if (CardViewHoverSystem.Instance != null)
+            {
+                CardViewHoverSystem.Instance.Hide();
+            }
             CardSystem.Instance.ChooseCardToExhaust(Card);
 
             return;

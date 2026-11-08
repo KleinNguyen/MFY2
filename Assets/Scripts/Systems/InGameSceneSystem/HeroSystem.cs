@@ -201,6 +201,7 @@ public class HeroSystem : Singleton<HeroSystem>
             action.StackCount,
             action.Targets
         );
+        addStatusEffectGA.CardCaster = action.CardCaster;
 
         ActionSystem.Instance.AddReaction(addStatusEffectGA);
 

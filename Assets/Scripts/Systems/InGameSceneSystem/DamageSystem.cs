@@ -34,7 +34,6 @@ public class DamageSystem : MonoBehaviour
                 target.GetStatusEffectStacks(StatusEffectType.WEAK) > 0;
 
             int finalDamage = dealDamageGA.Amount;
-
             if (
                 dealDamageGA.IsAttack &&
                 dealDamageGA.Caster is HeroView heroCaster
@@ -45,7 +44,17 @@ public class DamageSystem : MonoBehaviour
                 );
             }
 
-            target.Damage(Mathf.Max(0, finalDamage));
+            finalDamage = Mathf.Max(0, finalDamage);
+
+            if (
+                dealDamageGA.IsAttack &&
+                target.GetStatusEffectStacks(StatusEffectType.EXPOSED) > 0
+            )
+            {
+                finalDamage = Mathf.FloorToInt(finalDamage * 1.5f);
+            }
+
+            target.Damage(finalDamage);
 
             Instantiate(
                 damageVFX,
@@ -109,6 +118,7 @@ public class DamageSystem : MonoBehaviour
             action.BlockAmount,
             blockTargets
         );
+        addBlockGA.CardCaster = action.CardCaster;
 
         ActionSystem.Instance.AddReaction(addBlockGA);
 
@@ -211,6 +221,7 @@ public class DamageSystem : MonoBehaviour
             action.StackCount,
             action.Targets
         );
+        addStatusEffectGA.CardCaster = action.CardCaster;
 
         ActionSystem.Instance.AddReaction(addStatusEffectGA);
 

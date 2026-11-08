@@ -12,10 +12,28 @@ public class EffectSystem : MonoBehaviour
         ActionSystem.DetachPerformer<PerformEffectGA>();
     }
     //performer
-    private IEnumerator PerformEffectPerformer(PerformEffectGA performEffectGA)
+    private IEnumerator PerformEffectPerformer(
+        PerformEffectGA performEffectGA
+    )
     {
-        GameAction effectAction = performEffectGA.Effect.GetGameAction(performEffectGA.Targets, HeroSystem.Instance.HeroView);
+        CombatantView caster = HeroSystem.Instance.HeroView;
+
+        GameAction effectAction = performEffectGA.Effect.GetGameAction(
+            performEffectGA.Targets,
+            caster
+        );
+
+        if (effectAction == null)
+        {
+            Debug.LogError("The card effect did not create a GameAction.");
+
+            yield break;
+        }
+        effectAction.CardCaster = caster;
+        effectAction.SourceCard = performEffectGA.SourceCard;
+
         ActionSystem.Instance.AddReaction(effectAction);
+
         yield return null;
     }
 }

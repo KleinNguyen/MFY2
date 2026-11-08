@@ -1,4 +1,4 @@
-using UnityEditor;
+
 using System.Collections.Generic;
 using UnityEngine;
 [CreateAssetMenu(menuName = "Data/Hero")]

@@ -36,4 +36,19 @@ public class LibraryCardUI : MonoBehaviour
         cardImage.sprite = data.CardImage;
         cardImage.enabled = data.CardImage != null;
     }
+    public void Setup(Card card)
+    {
+        if (card == null)
+        {
+            Debug.LogError("Library card received a null Card.");
+            return;
+        }
+
+        titleText.text = card.Title;
+        manaText.text = card.Mana.ToString();
+        descriptionText.text = card.Description;
+
+        cardImage.sprite = card.Image;
+        cardImage.enabled = card.Image != null;
+    }
 }
