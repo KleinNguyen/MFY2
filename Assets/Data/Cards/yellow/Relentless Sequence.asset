@@ -15,8 +15,8 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -796155573255488767, guid: 261158a2b316bf5408870e7b60b13fa4, type: 3}
-  <Description>k__BackingField: 'Power: Each turn, after playing your fourth Attack,
-    gain 2 Combo and draw 1 card.'
+  <Description>k__BackingField: Each turn, after playing your fourth Attack, gain
+    2 Combo and draw 1 card.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0

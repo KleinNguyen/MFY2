@@ -15,8 +15,8 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -7371509505491802261, guid: 32e18698894aee14b948ae2a98eab4f8, type: 3}
-  <Description>k__BackingField: Exhaust a card in your hand to draw 2 cards. If that
-    card is a Skill, gain 6 Block.
+  <Description>k__BackingField: Exhaust a card in your hand to draw 2 cards. Gain
+    6 Block.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
