@@ -1490,6 +1490,18 @@ PrefabInstance:
       propertyPath: cardPrefab
       value: 
       objectReference: {fileID: 7171852290959586651, guid: bdcfe10473c2bb24dae7fb137c2f5503, type: 3}
+    - target: {fileID: 6102044993106117961, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: upgradeControls
+      value: 
+      objectReference: {fileID: 1377860758}
+    - target: {fileID: 6102044993106117961, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: upgradeInfoText
+      value: 
+      objectReference: {fileID: 2025478150}
+    - target: {fileID: 6102044993106117961, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: confirmUpgradeButton
+      value: 
+      objectReference: {fileID: 568691124}
     - target: {fileID: 6418590450342997720, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
       propertyPath: m_text
       value: 'Floor : --'
@@ -1506,18 +1518,6 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6102044993106117961, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
-      propertyPath: upgradeControls
-      value: 
-      objectReference: {fileID: 1377860758}
-    - target: {fileID: 6102044993106117961, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
-      propertyPath: upgradeInfoText
-      value: 
-      objectReference: {fileID: 2025478150}
-    - target: {fileID: 6102044993106117961, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
-      propertyPath: confirmUpgradeButton
-      value: 
-      objectReference: {fileID: 568691124}
     - target: {fileID: 6951722924054899857, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
       propertyPath: m_Type
       value: 0
@@ -8394,7 +8394,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1924963677
 RectTransform:
   m_ObjectHideFlags: 0
