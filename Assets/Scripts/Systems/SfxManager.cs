@@ -91,7 +91,6 @@ public class SfxManager : MonoBehaviour
     {
         if (Instance == null)
         {
-            Debug.LogError("Cannot play SFX: no SfxManager exists in the loaded scenes.");
             return;
         }
 
@@ -102,7 +101,6 @@ public class SfxManager : MonoBehaviour
     {
         if (Instance == null)
         {
-            Debug.LogError("Cannot hook button SFX: no SfxManager exists in the loaded scenes.");
             return;
         }
 
