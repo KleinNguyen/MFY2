@@ -45,6 +45,8 @@ public class CardSelectionUI : MonoBehaviour
             return false;
         }
 
+        cardContent.gameObject.SetActive(true);
+
         ClearCards();
 
         onCardSelected = onSelected;
@@ -68,6 +70,8 @@ public class CardSelectionUI : MonoBehaviour
 
             LibraryCardUI cardUI = Instantiate(cardViewPrefab.LibraryTemplate, cardContent);
             cardUI.gameObject.SetActive(true);
+            cardUI.transform.localScale = Vector3.one;
+            cardUI.transform.localRotation = Quaternion.identity;
             cardUI.Setup(selectedCard);
 
             Button button = cardUI.GetComponent<Button>();
