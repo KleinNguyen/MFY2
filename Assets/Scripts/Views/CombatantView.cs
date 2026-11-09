@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class CombatantView : MonoBehaviour
 {
+    private const float IdleCycleDuration = 2.4f;
+    private const float IdleSquashAmount = 0.045f;
+    private const float IdleWidthAmount = 0.018f;
+
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private Image healthFillImage;
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -14,17 +18,112 @@ public class CombatantView : MonoBehaviour
     public int CurrentHealth { get; private set; }
     protected SpriteRenderer CombatantSpriteRenderer => spriteRenderer;
     private Dictionary<StatusEffectType, int> statusEffects = new();
+    private bool hasSpriteAnchor;
+    private Vector3 spriteAnchorInCombatantSpace;
+    private Vector3 idleBaseScale;
+    private Vector3 idleAnchorInCombatantSpace;
+    private bool idleAnimationInitialized;
+
     protected void SetupBase(int health, Sprite image)
     {
         MaxHealth = CurrentHealth = health;
         spriteRenderer.sprite = image;
+        hasSpriteAnchor = false;
+        idleAnimationInitialized = false;
         UpdateHealthText();
     }
+
     protected void SetSpriteScale(float scale)
     {
         Vector3 currentScale = spriteRenderer.transform.localScale;
         spriteRenderer.transform.localScale = new Vector3(scale, scale, currentScale.z);
     }
+
+    protected void SetSpriteKeepingFeetPosition(Sprite sprite)
+    {
+        if (sprite == null)
+        {
+            return;
+        }
+
+        Transform spriteTransform = spriteRenderer.transform;
+        spriteRenderer.sprite = sprite;
+
+        Vector3 spriteAnchor = GetSpriteBottomCenter(sprite);
+        Vector3 anchorInCombatantSpace =
+            transform.InverseTransformPoint(spriteTransform.TransformPoint(spriteAnchor));
+
+        if (!hasSpriteAnchor)
+        {
+            spriteAnchorInCombatantSpace = anchorInCombatantSpace;
+            hasSpriteAnchor = true;
+            return;
+        }
+
+        Vector3 targetAnchorWorld = transform.TransformPoint(spriteAnchorInCombatantSpace);
+        Vector3 currentAnchorWorld = spriteTransform.TransformPoint(spriteAnchor);
+        Vector3 positionOffset = targetAnchorWorld - currentAnchorWorld;
+        Transform spriteParent = spriteTransform.parent;
+
+        spriteTransform.localPosition += spriteParent != null
+            ? spriteParent.InverseTransformVector(positionOffset)
+            : positionOffset;
+    }
+
+    protected void InitializeIdleAnimation()
+    {
+        Transform spriteTransform = spriteRenderer.transform;
+        idleBaseScale = spriteTransform.localScale;
+        idleAnchorInCombatantSpace =
+            transform.InverseTransformPoint(spriteTransform.TransformPoint(GetSpriteBottomCenter(spriteRenderer.sprite)));
+        idleAnimationInitialized = true;
+    }
+
+    protected void UpdateIdleAnimation()
+    {
+        if (!idleAnimationInitialized || spriteRenderer.sprite == null)
+        {
+            return;
+        }
+
+        float phase = Time.unscaledTime * (2f * Mathf.PI / IdleCycleDuration);
+        float crouch = (1f - Mathf.Cos(phase)) * 0.5f;
+        Transform spriteTransform = spriteRenderer.transform;
+        spriteTransform.localScale = new Vector3(
+            idleBaseScale.x * (1f + IdleWidthAmount * crouch),
+            idleBaseScale.y * (1f - IdleSquashAmount * crouch),
+            idleBaseScale.z);
+
+        Vector3 targetAnchorWorld = transform.TransformPoint(idleAnchorInCombatantSpace);
+        Vector3 currentAnchorWorld =
+            spriteTransform.TransformPoint(GetSpriteBottomCenter(spriteRenderer.sprite));
+        spriteTransform.position += targetAnchorWorld - currentAnchorWorld;
+    }
+
+    private static Vector3 GetSpriteBottomCenter(Sprite sprite)
+    {
+        Vector2[] vertices = sprite.vertices;
+        if (vertices.Length == 0)
+        {
+            Bounds bounds = sprite.bounds;
+            return new Vector3(bounds.center.x, bounds.min.y);
+        }
+
+        float minX = vertices[0].x;
+        float maxX = vertices[0].x;
+        float minY = vertices[0].y;
+
+        for (int i = 1; i < vertices.Length; i++)
+        {
+            Vector2 vertex = vertices[i];
+            minX = Mathf.Min(minX, vertex.x);
+            maxX = Mathf.Max(maxX, vertex.x);
+            minY = Mathf.Min(minY, vertex.y);
+        }
+
+        return new Vector3((minX + maxX) * 0.5f, minY);
+    }
+
     private void UpdateHealthText()
     {
         if (healthText != null)
