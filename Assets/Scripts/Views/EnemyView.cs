@@ -54,5 +54,22 @@ public class EnemyView : CombatantView
     {
         attackText.text = "ATK: " + AttackPower;
     }
+    public Vector3 GetTargetArrowPosition()
+    {
+        SpriteRenderer enemySprite = CombatantSpriteRenderer;
+
+        if (enemySprite == null)
+        {
+            return transform.position;
+        }
+
+        Bounds bounds = enemySprite.bounds;
+
+        return new Vector3(
+            bounds.center.x,
+            bounds.max.y,
+            bounds.center.z
+        );
+    }
 
 }
