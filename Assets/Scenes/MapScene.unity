@@ -1607,12 +1607,32 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 268c7fa345ded0641bea7010c03c816d, type: 3}
     - target: {fileID: 5815616126536644976, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_Spacing.x
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815616126536644976, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
       propertyPath: m_Spacing.y
       value: -300
       objectReference: {fileID: 0}
     - target: {fileID: 5815616126536644976, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
       propertyPath: m_CellSize.y
       value: 650
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815616126536644976, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_Padding.m_Top
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815616126536644976, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_Padding.m_Left
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815616126536644976, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_Padding.m_Right
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815616126536644976, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_Padding.m_Bottom
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5975292580272480879, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
       propertyPath: m_IsActive
@@ -3454,7 +3474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &591981238
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10242,13 +10262,21 @@ MonoBehaviour:
   mapUI: {fileID: 754040442}
   shopInventoryPanel: {fileID: 591981237}
   shopCards:
-  - {fileID: 11400000, guid: f8599350c1fe63a44bedee6e7c57afb0, type: 2}
-  - {fileID: 11400000, guid: b0b3443180cf93340a2cd7174aaa21ec, type: 2}
-  - {fileID: 11400000, guid: 9363cc85898535f4997d8bf20617fdc7, type: 2}
-  - {fileID: 11400000, guid: 9363cc85898535f4997d8bf20617fdc7, type: 2}
-  - {fileID: 11400000, guid: 9363cc85898535f4997d8bf20617fdc7, type: 2}
-  - {fileID: 11400000, guid: 9363cc85898535f4997d8bf20617fdc7, type: 2}
-  - {fileID: 11400000, guid: 9363cc85898535f4997d8bf20617fdc7, type: 2}
+  - {fileID: 11400000, guid: 9bf412e2526a8c54ea898b25d8397a1e, type: 2}
+  - {fileID: 11400000, guid: 9038e06a7cf3c1740bba1b650cc371a4, type: 2}
+  - {fileID: 11400000, guid: b44c46ad387c281488e589f6ec74645b, type: 2}
+  - {fileID: 11400000, guid: 0fbe77b1ab063f64bb609b5ad64d44ee, type: 2}
+  - {fileID: 11400000, guid: f883189d391a99348b9393da9e1316e3, type: 2}
+  - {fileID: 11400000, guid: b2a3916decb1aa64198238114f3a0067, type: 2}
+  - {fileID: 11400000, guid: f883189d391a99348b9393da9e1316e3, type: 2}
+  - {fileID: 11400000, guid: cbff6786240d2ba49962f4ccee5848f2, type: 2}
+  - {fileID: 11400000, guid: cbff6786240d2ba49962f4ccee5848f2, type: 2}
+  - {fileID: 11400000, guid: cbff6786240d2ba49962f4ccee5848f2, type: 2}
+  - {fileID: 11400000, guid: cbff6786240d2ba49962f4ccee5848f2, type: 2}
+  - {fileID: 11400000, guid: cbff6786240d2ba49962f4ccee5848f2, type: 2}
+  - {fileID: 11400000, guid: cbff6786240d2ba49962f4ccee5848f2, type: 2}
+  - {fileID: 11400000, guid: cbff6786240d2ba49962f4ccee5848f2, type: 2}
+  - {fileID: 11400000, guid: cbff6786240d2ba49962f4ccee5848f2, type: 2}
   commonPrice: 25
   uncommonPrice: 75
   rarePrice: 120
@@ -10268,6 +10296,10 @@ MonoBehaviour:
   - {fileID: 1006614453}
   - {fileID: 1374778509}
   - {fileID: 415871890}
+  cardPrefab: {fileID: 7171852290959586651, guid: bdcfe10473c2bb24dae7fb137c2f5503, type: 3}
+  hoverScale: 1.12
+  hoverLift: 20
+  hoverDuration: 0.12
   healthPotionPrice: 50
   manaPotionPrice: 50
   healthButton: {fileID: 1768610683}
