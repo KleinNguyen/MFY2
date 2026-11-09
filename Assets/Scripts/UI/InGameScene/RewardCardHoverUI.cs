@@ -24,7 +24,13 @@ public class RewardCardHoverUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     private bool locked;
 
-    public void Initialize(RectTransform cardVisual, float scale, float lift, float duration)
+    public void Initialize(
+        RectTransform cardVisual,
+        float scale,
+        float lift,
+        float duration,
+        bool useSortingCanvas = true
+    )
     {
         visual = cardVisual;
         slotButton = GetComponent<Button>();
@@ -37,13 +43,21 @@ public class RewardCardHoverUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
         normalPosition = visual.anchoredPosition;
         normalScale = visual.localScale;
 
-        visualCanvas = visual.GetComponent<Canvas>();
+        visualCanvas = useSortingCanvas
+            ? visual.GetComponent<Canvas>()
+            : null;
 
-        if (visualCanvas == null) visualCanvas = visual.gameObject.AddComponent<Canvas>();
+        if (useSortingCanvas && visualCanvas == null)
+        {
+            visualCanvas = visual.gameObject.AddComponent<Canvas>();
+        }
 
-        normalOverrideSorting = visualCanvas.overrideSorting;
-        normalSortingOrder = visualCanvas.sortingOrder;
-        normalSortingLayer = visualCanvas.sortingLayerID;
+        if (visualCanvas != null)
+        {
+            normalOverrideSorting = visualCanvas.overrideSorting;
+            normalSortingOrder = visualCanvas.sortingOrder;
+            normalSortingLayer = visualCanvas.sortingLayerID;
+        }
 
         locked = false;
     }
@@ -66,7 +80,7 @@ public class RewardCardHoverUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         visual.DOKill();
 
-        if (hovered)
+        if (hovered && visualCanvas != null)
         {
             Canvas parentCanvas = GetComponentInParent<Canvas>();
 
