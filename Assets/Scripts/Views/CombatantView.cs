@@ -18,8 +18,6 @@ public class CombatantView : MonoBehaviour
     public int CurrentHealth { get; private set; }
     protected SpriteRenderer CombatantSpriteRenderer => spriteRenderer;
     private Dictionary<StatusEffectType, int> statusEffects = new();
-    private bool hasSpriteAnchor;
-    private Vector3 spriteAnchorInCombatantSpace;
     private Vector3 idleBaseScale;
     private Vector3 idleAnchorInCombatantSpace;
     private bool idleAnimationInitialized;
@@ -28,7 +26,6 @@ public class CombatantView : MonoBehaviour
     {
         MaxHealth = CurrentHealth = health;
         spriteRenderer.sprite = image;
-        hasSpriteAnchor = false;
         idleAnimationInitialized = false;
         UpdateHealthText();
     }
@@ -37,37 +34,6 @@ public class CombatantView : MonoBehaviour
     {
         Vector3 currentScale = spriteRenderer.transform.localScale;
         spriteRenderer.transform.localScale = new Vector3(scale, scale, currentScale.z);
-    }
-
-    protected void SetSpriteKeepingFeetPosition(Sprite sprite)
-    {
-        if (sprite == null)
-        {
-            return;
-        }
-
-        Transform spriteTransform = spriteRenderer.transform;
-        spriteRenderer.sprite = sprite;
-
-        Vector3 spriteAnchor = GetSpriteBottomCenter(sprite);
-        Vector3 anchorInCombatantSpace =
-            transform.InverseTransformPoint(spriteTransform.TransformPoint(spriteAnchor));
-
-        if (!hasSpriteAnchor)
-        {
-            spriteAnchorInCombatantSpace = anchorInCombatantSpace;
-            hasSpriteAnchor = true;
-            return;
-        }
-
-        Vector3 targetAnchorWorld = transform.TransformPoint(spriteAnchorInCombatantSpace);
-        Vector3 currentAnchorWorld = spriteTransform.TransformPoint(spriteAnchor);
-        Vector3 positionOffset = targetAnchorWorld - currentAnchorWorld;
-        Transform spriteParent = spriteTransform.parent;
-
-        spriteTransform.localPosition += spriteParent != null
-            ? spriteParent.InverseTransformVector(positionOffset)
-            : positionOffset;
     }
 
     protected void InitializeIdleAnimation()

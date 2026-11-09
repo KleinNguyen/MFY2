@@ -147,8 +147,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statusEffectUIPrefab: {fileID: 7619104928818413054, guid: 3de4e29eb76d04942ba15534dd73d4ae, type: 3}
-  armorSprite: {fileID: 0}
-  burnSprite: {fileID: 0}
+  armorSprite: {fileID: 2094613803747778399, guid: 9d9b89a61d5f362439cf53c25427c370, type: 3}
+  poisonSprite: {fileID: 1755839632569004712, guid: a534301c1462fdd4d9dccd34e4d60be3, type: 3}
+  weakSprite: {fileID: 7164604968993897275, guid: c51550a6159e60848a7e964a534b0169, type: 3}
+  strengthSprite: {fileID: 5742873555092445960, guid: 08174a8465d939f4f8e0339582a171aa, type: 3}
+  dexteritySprite: {fileID: -7970918616379683773, guid: aff185a62e73cbc4d96b8249cdad7899, type: 3}
+  exposedSprite: {fileID: -5754475345937512655, guid: 46c481e72fa238b4fb27be462eba8112, type: 3}
+  armorBreakSprite: {fileID: -7174787612386221633, guid: ecf54430462b8654d88ca96aea6f0297, type: 3}
 --- !u!114 &4123165889703333067
 MonoBehaviour:
   m_ObjectHideFlags: 0

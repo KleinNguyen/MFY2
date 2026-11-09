@@ -14,10 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
   <Image>k__BackingField: {fileID: -1868591669631162887, guid: 9151f22c7e1aacb4eb49893ceb0803e4, type: 3}
-  <IdleFrames>k__BackingField:
-  - {fileID: -1868591669631162887, guid: 9151f22c7e1aacb4eb49893ceb0803e4, type: 3}
-  - {fileID: 2574884693854608604, guid: 9151f22c7e1aacb4eb49893ceb0803e4, type: 3}
-  - {fileID: -1868591669631162887, guid: 9151f22c7e1aacb4eb49893ceb0803e4, type: 3}
   <SelectionBackground>k__BackingField: {fileID: 2033960975386372411, guid: d63acb12119d0354381efd364381f2b0, type: 3}
   <Description>k__BackingField: 'A relentless experimental subject equipped with
     razor-sharp mechanical claws on both hands. Specializing in swift, consecutive

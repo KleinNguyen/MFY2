@@ -14,10 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Image>k__BackingField: {fileID: 3584940629993556120, guid: 229ff0ca5b197ab4486d04868d14fc28, type: 3}
-  <IdleFrames>k__BackingField:
-  - {fileID: 3584940629993556120, guid: 229ff0ca5b197ab4486d04868d14fc28, type: 3}
-  - {fileID: -2829158769466642002, guid: 229ff0ca5b197ab4486d04868d14fc28, type: 3}
-  - {fileID: 3584940629993556120, guid: 229ff0ca5b197ab4486d04868d14fc28, type: 3}
   <SelectionBackground>k__BackingField: {fileID: 7199705072138568028, guid: 92f085e3d9f1c6844900db811d558657, type: 3}
   <Description>k__BackingField: A twisted experimental subject with a monstrous mutated
     fist. He dominates close combat with brutal punches and harnesses his own blood
