@@ -84,6 +84,7 @@ public class ShopUI : MonoBehaviour
                 if (card == null) continue;
                 if (card.Character != run.HeroData.Character) continue;
                 if (card.Rarity == CardRarity.Basic) continue;
+                if (run.HasCardInDeck(card)) continue;
                 if (availableCards.Contains(card)) continue;
 
                 availableCards.Add(card);
@@ -92,10 +93,8 @@ public class ShopUI : MonoBehaviour
 
         if (availableCards.Count == 0)
         {
-            Debug.LogError(
-                "Shop has no valid cards for " +
-                run.HeroData.Character +
-                ". Check Shop Cards in the Inspector.",
+            Debug.Log(
+                "No new cards are available for this character.",
                 this
             );
         }

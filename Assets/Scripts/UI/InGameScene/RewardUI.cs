@@ -71,6 +71,7 @@ public class RewardUI : MonoBehaviour
                 if (card == null) continue;
                 if (card.Character != run.HeroData.Character) continue;
                 if (card.Rarity == CardRarity.Basic) continue;
+                if (run.HasCardInDeck(card)) continue;
                 if (availableCards.Contains(card)) continue;
 
                 availableCards.Add(card);

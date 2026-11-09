@@ -374,4 +374,26 @@ public class RunSystem : PersistentSingleton<RunSystem>
     {
         SelectedMapPointId = pointId;
     }
+    public bool HasCardInDeck(CardData cardData)
+    {
+        if (cardData == null || Deck == null) return false;
+
+        foreach (CardData ownedCard in Deck)
+        {
+            if (ownedCard == null) continue;
+
+            if (ownedCard == cardData)
+            {
+                return true;
+            }
+
+            if (ownedCard.Character == cardData.Character &&
+                ownedCard.name == cardData.name)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
