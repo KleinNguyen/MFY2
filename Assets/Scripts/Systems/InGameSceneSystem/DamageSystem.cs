@@ -23,6 +23,11 @@ public class DamageSystem : MonoBehaviour
     }
     private IEnumerator DealDamagePerformer(DealDamageGA dealDamageGA)
     {
+        if (dealDamageGA.IsAttack && HasLivingTarget(dealDamageGA.Targets))
+        {
+            PlayHeroAttackSfx(dealDamageGA.Caster);
+        }
+
         foreach (var target in dealDamageGA.Targets)
         {
             if (target == null || target.CurrentHealth <= 0)
@@ -95,6 +100,52 @@ public class DamageSystem : MonoBehaviour
             }
         }
     }
+
+    private bool HasLivingTarget(List<CombatantView> targets)
+    {
+        if (targets == null)
+        {
+            return false;
+        }
+
+        foreach (CombatantView target in targets)
+        {
+            if (target != null && target.CurrentHealth > 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void PlayHeroAttackSfx(CombatantView caster)
+    {
+        if (caster is not HeroView || HeroSystem.Instance == null)
+        {
+            return;
+        }
+
+        switch (HeroSystem.Instance.CurrentCharacter)
+        {
+            case CharacterType.Red:
+                SfxManager.PlaySfx(SfxId.HeroAttackRed);
+                break;
+            case CharacterType.Green:
+                SfxManager.PlaySfx(SfxId.HeroAttackGreen);
+                break;
+            case CharacterType.Yellow:
+                SfxManager.PlaySfx(SfxId.HeroAttackYellow);
+                break;
+            default:
+                Debug.LogError(
+                    "Cannot play hero attack SFX: the selected character is not supported.",
+                    this
+                );
+                break;
+        }
+    }
+
     private IEnumerator BlockThenDamagePerformer(
     BlockThenDamageGA action
 )

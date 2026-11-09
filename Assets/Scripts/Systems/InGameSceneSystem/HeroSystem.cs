@@ -4,6 +4,7 @@ using System.Collections;
 public class HeroSystem : Singleton<HeroSystem>
 {
     [field: SerializeField] public HeroView HeroView { get; private set; }
+    public CharacterType CurrentCharacter { get; private set; }
     public bool LostHealthFromCardThisTurn { get; private set; }
     private int adversityPower;
 
@@ -39,6 +40,13 @@ public class HeroSystem : Singleton<HeroSystem>
     }
     public void Setup(HeroData heroData)
     {
+        if (heroData == null)
+        {
+            Debug.LogError("Cannot set up hero system: HeroData is null.", this);
+            return;
+        }
+
+        CurrentCharacter = heroData.Character;
         adversityPower = 0;
         adversityTriggeredThisTurn = false;
         temporaryAdversityStats = 0;
