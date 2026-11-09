@@ -12,27 +12,43 @@ public class StatusEffecstUI : MonoBehaviour
     [SerializeField] private Sprite exposedSprite;
     [SerializeField] private Sprite armorBreakSprite;
     private Dictionary<StatusEffectType, StatusEffectUI> statusEffectUIs = new();
-    public void UpdateStatusEffectUI(StatusEffectType statusEffectType, int stackCount)
+    public void UpdateStatusEffectUI(
+        StatusEffectType statusEffectType,
+        int stackCount
+    )
     {
-        if (stackCount == 0)
+        if (stackCount <= 0)
         {
-            if (statusEffectUIs.ContainsKey(statusEffectType))
+            if (statusEffectUIs.TryGetValue(
+                statusEffectType,
+                out StatusEffectUI statusEffectUI
+            ))
             {
-                StatusEffectUI statusEffectUI = statusEffectUIs[statusEffectType];
+                statusEffectUI.gameObject.SetActive(false);
                 Destroy(statusEffectUI.gameObject);
                 statusEffectUIs.Remove(statusEffectType);
             }
+
+            return;
         }
-        else
+
+        if (!statusEffectUIs.ContainsKey(statusEffectType))
         {
-            if (!statusEffectUIs.ContainsKey(statusEffectType))
-            {
-                StatusEffectUI statusEffectUI = Instantiate(statusEffectUIPrefab, transform);
-                statusEffectUIs.Add(statusEffectType, statusEffectUI);
-            }
-            Sprite sprite = GetSpriteByType(statusEffectType);
-            statusEffectUIs[statusEffectType].Set(sprite, stackCount);
+            StatusEffectUI statusEffectUI = Instantiate(
+                statusEffectUIPrefab,
+                transform
+            );
+
+            statusEffectUIs.Add(statusEffectType, statusEffectUI);
         }
+
+        Sprite sprite = GetSpriteByType(statusEffectType);
+
+        statusEffectUIs[statusEffectType].Set(
+            statusEffectType,
+            sprite,
+            stackCount
+        );
     }
     private Sprite GetSpriteByType(StatusEffectType statusEffectType)
     {
