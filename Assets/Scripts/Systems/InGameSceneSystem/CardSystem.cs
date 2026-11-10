@@ -643,7 +643,7 @@ public class CardSystem : Singleton<CardSystem>
         {
             cardSelectionUI.Close();
         }
-
+        inter
         if (selectedCard == null || !discardPile.Remove(selectedCard))
         {
             yield break;
