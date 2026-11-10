@@ -11,13 +11,14 @@ public class CardSelectionUI : MonoBehaviour
     [SerializeField] private Transform cardContent;
     [SerializeField] private CardView cardViewPrefab;
     [SerializeField] private ScrollRect scrollRect;
-
+    [SerializeField] private GameObject closeButton;
     [SerializeField, Range(1, 5)] private int maxColumns = 5;
     [SerializeField, Min(1f)] private float hoverScale = 1.12f;
     [SerializeField, Min(0f)] private float hoverLift = 24f;
     [SerializeField, Min(0.01f)] private float hoverDuration = 0.12f;
 
     public bool IsOpen { get; private set; }
+    public bool IsReadOnly { get; private set; }
 
     private Action<Card> onCardSelected;
     private GridLayoutGroup cardGrid;
@@ -37,17 +38,22 @@ public class CardSelectionUI : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (IsOpen && IsReadOnly &&
+            ((ActionSystem.Instance != null && ActionSystem.Instance.IsPerforming) ||
+             (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)))
+        {
+            Close();
+            return;
+        }
+
         if (IsOpen && scrollRect.viewport.rect.size != viewportSize)
         {
             RefreshLayout();
         }
     }
 
-    public bool Open(
-        List<Card> cards,
-        string message,
-        Action<Card> onSelected
-    )
+    public bool Open(List<Card> cards, string message, Action<Card> onSelected,
+        bool readOnly = false)
     {
         if (IsOpen)
         {
@@ -55,28 +61,27 @@ public class CardSelectionUI : MonoBehaviour
             return false;
         }
 
-        if (panel == null ||
-            cardContent is not RectTransform ||
-            cardViewPrefab == null ||
-            cardViewPrefab.LibraryTemplate == null ||
-            scrollRect == null ||
-            scrollRect.viewport == null)
+        if (panel == null || cardContent is not RectTransform || cardViewPrefab == null ||
+            cardViewPrefab.LibraryTemplate == null || scrollRect == null || scrollRect.viewport == null)
         {
-            Debug.LogError(
-                "CardSelectionUI is missing references in the Inspector."
-            );
-
+            Debug.LogError("CardSelectionUI is missing references in the Inspector.");
             return false;
         }
 
-        if (cards == null || onSelected == null)
+        if (cards == null || (!readOnly && onSelected == null))
         {
+            return false;
+        }
+
+        if (readOnly && closeButton == null)
+        {
+            Debug.LogError("Assign the Close Button in CardSelectionUI before viewing a pile.", this);
             return false;
         }
 
         List<Card> choices = cards.FindAll(card => card != null);
 
-        if (choices.Count == 0)
+        if (choices.Count == 0 && !readOnly)
         {
             return false;
         }
@@ -85,10 +90,7 @@ public class CardSelectionUI : MonoBehaviour
 
         if (cardGrid == null)
         {
-            Debug.LogError(
-                "CardSelectionUI needs a GridLayoutGroup on Card Content."
-            );
-
+            Debug.LogError("CardSelectionUI needs a GridLayoutGroup on Card Content.");
             return false;
         }
 
@@ -102,10 +104,13 @@ public class CardSelectionUI : MonoBehaviour
         ClearCards();
 
         onCardSelected = onSelected;
-        choiceCount = choices.Count;
+        IsReadOnly = readOnly;
         IsOpen = true;
+        choiceCount = choices.Count;
 
         panel.SetActive(true);
+        panel.transform.SetAsLastSibling();
+        if (closeButton != null) closeButton.SetActive(readOnly);
         cardContent.gameObject.SetActive(true);
 
         if (titleText != null)
@@ -119,13 +124,8 @@ public class CardSelectionUI : MonoBehaviour
         }
 
         Canvas.ForceUpdateCanvases();
-
         RefreshLayout();
-
-        LayoutRebuilder.ForceRebuildLayoutImmediate(
-            (RectTransform)cardContent
-        );
-
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)cardContent);
         scrollRect.StopMovement();
         scrollRect.verticalNormalizedPosition = 1f;
 
@@ -134,13 +134,8 @@ public class CardSelectionUI : MonoBehaviour
 
     private void CreateCardChoice(Card card, int index)
     {
-        GameObject slot = new(
-            "CardSelectionSlot_" + index,
-            typeof(RectTransform),
-            typeof(Image),
-            typeof(Button),
-            typeof(RewardCardHoverUI)
-        );
+        GameObject slot = new("CardSelectionSlot_" + index,
+            typeof(RectTransform), typeof(Image), typeof(Button), typeof(RewardCardHoverUI));
 
         slot.layer = cardContent.gameObject.layer;
         slot.transform.SetParent(cardContent, false);
@@ -153,27 +148,17 @@ public class CardSelectionUI : MonoBehaviour
         button.targetGraphic = slotImage;
         button.transition = Selectable.Transition.None;
 
-        LibraryCardUI cardUI = Instantiate(
-            cardViewPrefab.LibraryTemplate,
-            slot.transform
-        );
-
+        LibraryCardUI cardUI = Instantiate(cardViewPrefab.LibraryTemplate, slot.transform);
         cardUI.gameObject.SetActive(true);
         cardUI.Setup(card);
 
         RectTransform cardRect = cardUI.GetComponent<RectTransform>();
-
-        cardRect.anchorMin = new Vector2(0.5f, 0.5f);
-        cardRect.anchorMax = new Vector2(0.5f, 0.5f);
+        cardRect.anchorMin = cardRect.anchorMax = new Vector2(0.5f, 0.5f);
         cardRect.pivot = new Vector2(0.5f, 0.5f);
         cardRect.anchoredPosition3D = Vector3.zero;
         cardRect.localRotation = Quaternion.identity;
-
-        float scale = Mathf.Min(
-            cardGrid.cellSize.x / cardRect.rect.width,
-            cardGrid.cellSize.y / cardRect.rect.height
-        );
-
+        float scale = Mathf.Min(cardGrid.cellSize.x / cardRect.rect.width,
+            cardGrid.cellSize.y / cardRect.rect.height);
         cardRect.localScale = Vector3.one * scale;
 
         CanvasGroup canvasGroup = cardUI.GetComponent<CanvasGroup>();
@@ -186,48 +171,28 @@ public class CardSelectionUI : MonoBehaviour
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
 
-        RewardCardHoverUI hoverUI = slot.GetComponent<RewardCardHoverUI>();
-
-        hoverUI.Initialize(
-            cardRect,
-            hoverScale,
-            hoverLift,
-            hoverDuration,
-            useSortingCanvas: false
-        );
-
+        slot.GetComponent<RewardCardHoverUI>().Initialize(
+            cardRect, hoverScale, hoverLift, hoverDuration, useSortingCanvas: false);
         button.onClick.AddListener(() => SelectCard(card));
     }
 
     private void RefreshLayout()
     {
         viewportSize = scrollRect.viewport.rect.size;
-
-        float availableWidth =
-            viewportSize.x - cardGrid.padding.horizontal;
-
-        int columns = Mathf.FloorToInt(
-            (availableWidth + cardGrid.spacing.x) /
-            (cardGrid.cellSize.x + cardGrid.spacing.x)
-        );
+        float availableWidth = viewportSize.x - cardGrid.padding.horizontal;
+        int columns = Mathf.FloorToInt((availableWidth + cardGrid.spacing.x) /
+            (cardGrid.cellSize.x + cardGrid.spacing.x));
 
         cardGrid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-
-        cardGrid.constraintCount = Mathf.Max(
-            1,
-            Mathf.Min(maxColumns, choiceCount, columns)
-        );
-
+        cardGrid.constraintCount = Mathf.Max(1, Mathf.Min(maxColumns, choiceCount, columns));
         contentLayout.minHeight = viewportSize.y;
 
-        LayoutRebuilder.MarkLayoutForRebuild(
-            (RectTransform)cardContent
-        );
+        LayoutRebuilder.MarkLayoutForRebuild((RectTransform)cardContent);
     }
 
     private void SelectCard(Card card)
     {
-        if (!IsOpen)
+        if (!IsOpen || IsReadOnly)
         {
             return;
         }
@@ -242,7 +207,9 @@ public class CardSelectionUI : MonoBehaviour
     public void Close()
     {
         IsOpen = false;
+        IsReadOnly = false;
         onCardSelected = null;
+        if (closeButton != null) closeButton.SetActive(false);
 
         if (scrollRect != null)
         {

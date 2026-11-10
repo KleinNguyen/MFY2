@@ -19,6 +19,47 @@ public class CardSystem : Singleton<CardSystem>
     private readonly List<Card> exhaustPile = new();
     public bool IsChoosingCardToExhaust { get; private set; }
     public bool IsChoosingCardToUpgrade { get; private set; }
+    public bool IsViewingPile => cardSelectionUI != null &&
+        cardSelectionUI.IsOpen && cardSelectionUI.IsReadOnly;
+
+    public void OpenDrawPile()
+    {
+        OpenPile(drawPile, "Draw Pile");
+    }
+
+    public void OpenDiscardPile()
+    {
+        OpenPile(discardPile, "Discard Pile");
+    }
+
+    private void OpenPile(List<Card> pile, string title)
+    {
+        if (!isPlayerTurn || IsChoosingCardToExhaust || IsChoosingCardToUpgrade) return;
+        if (BattleSystem.Instance == null || BattleSystem.Instance.IsBattleOver) return;
+        if (ActionSystem.Instance == null || ActionSystem.Instance.IsPerforming) return;
+        if (InteractionSystem.Instance == null || InteractionSystem.Instance.PlayerIsDragging) return;
+
+        if (cardSelectionUI == null)
+        {
+            Debug.LogError("Card Selection UI is not assigned in CardSystem.", this);
+            return;
+        }
+
+        if (cardSelectionUI.IsOpen) return;
+
+        List<Card> cards = pile.FindAll(card => card != null);
+        cards.Sort((left, right) => string.Compare(
+            left.Title, right.Title, System.StringComparison.OrdinalIgnoreCase));
+
+        string message = title + " (" + cards.Count + ")";
+        if (cards.Count == 0) message += "\nNo cards in this pile.";
+
+        if (cardSelectionUI.Open(cards, message, null, readOnly: true))
+        {
+            if (CardViewHoverSystem.Instance != null) CardViewHoverSystem.Instance.Hide();
+            if (ManualTargetSystem.Instance != null) ManualTargetSystem.Instance.CancelTargeting();
+        }
+    }
 
     private CardView chosenCardViewToUpgrade;
     private Card chosenCardToExhaust;
@@ -32,10 +73,10 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
         ActionSystem.AttachPerformer<ExhaustRandomCardGA>(ExhaustRandomCardPerformer);
         ActionSystem.AttachPerformer<FocusedStudyGA>(FocusedStudyPerformer);
-        ActionSystem.AttachPerformer<LockDrawGA>(LockDrawPerformer); 
+        ActionSystem.AttachPerformer<LockDrawGA>(LockDrawPerformer);
         ActionSystem.AttachPerformer<ExhaustHandAndDamageGA>(ExhaustHandAndDamagePerformer);
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction,ReactionTiming.POST);
-        ActionSystem.AttachPerformer<ChooseCardToExhaustGA>(ChooseCardToExhaustPerformer); 
+        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
+        ActionSystem.AttachPerformer<ChooseCardToExhaustGA>(ChooseCardToExhaustPerformer);
         ActionSystem.AttachPerformer<ChooseCardToUpgradeGA>(ChooseCardToUpgradePerformer);
         ActionSystem.AttachPerformer<ReclaimingBlowGA>(ReclaimingBlowPerformer);
         ActionSystem.AttachPerformer<RecoverDiscardCardGA>(RecoverDiscardCardPerformer);
@@ -93,11 +134,11 @@ public class CardSystem : Singleton<CardSystem>
         }
         for (int i = 0; i < drawCardsGA.Amount; i++)
         {
-            if(drawPile.Count == 0)
+            if (drawPile.Count == 0)
             {
                 RefillDeck();
             }
-            if(drawPile.Count == 0)
+            if (drawPile.Count == 0)
             {
                 yield break;
             }
