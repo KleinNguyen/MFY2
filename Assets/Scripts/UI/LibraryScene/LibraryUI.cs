@@ -184,14 +184,14 @@ public class LibraryUI : MonoBehaviour
 
     private void OnAscendingChanged(bool isOn)
     {
-        descendingToggle.SetIsOnWithoutNotify(!isOn);
+        if (!isOn) return;
 
         RefreshLibrary();
     }
 
     private void OnDescendingChanged(bool isOn)
     {
-        ascendingToggle.SetIsOnWithoutNotify(!isOn);
+        if (!isOn) return;
 
         RefreshLibrary();
     }
