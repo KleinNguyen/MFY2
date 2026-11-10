@@ -62,6 +62,25 @@ public class StatusEffectSystem : MonoBehaviour
             }
 
             target.AddStatusEffect(action.StatusEffectType, finalStackCount);
+            if (finalStackCount > 0)
+            {
+                SfxId? sfxId = action.StatusEffectType switch
+                {
+                    StatusEffectType.ARMOR => SfxId.ArmorGained,
+                    StatusEffectType.WEAK => SfxId.WeakApplied,
+                    StatusEffectType.POISON => SfxId.PoisonApplied,
+                    StatusEffectType.EXPOSED or StatusEffectType.ARMOR_BREAK =>
+                        SfxId.DebuffApplied,
+                    StatusEffectType.STRENGTH or StatusEffectType.DEXTERITY =>
+                        SfxId.BuffApplied,
+                    _ => null
+                };
+
+                if (sfxId.HasValue)
+                {
+                    SfxManager.PlayCombatEffectSfx(sfxId.Value);
+                }
+            }
 
             yield return null;
         }

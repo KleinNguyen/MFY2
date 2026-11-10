@@ -643,7 +643,6 @@ public class CardSystem : Singleton<CardSystem>
         {
             cardSelectionUI.Close();
         }
-        inter
         if (selectedCard == null || !discardPile.Remove(selectedCard))
         {
             yield break;
@@ -758,4 +757,3 @@ public class CardSystem : Singleton<CardSystem>
         isPlayerTurn = false;
     }
 }
-

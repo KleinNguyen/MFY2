@@ -16,7 +16,12 @@ public enum SfxId
     ItemPurchased,
     HeroAttackRed,
     HeroAttackGreen,
-    HeroAttackYellow
+    HeroAttackYellow,
+    ArmorGained,
+    WeakApplied,
+    PoisonApplied,
+    DebuffApplied,
+    BuffApplied
 }
 
 public class SfxManager : MonoBehaviour
@@ -95,6 +100,27 @@ public class SfxManager : MonoBehaviour
         }
 
         Instance.Play(id);
+    }
+
+    public static void PlayCombatEffectSfx(SfxId id)
+    {
+        if (Instance == null || Instance.audioSource == null)
+        {
+            return;
+        }
+
+        if (
+            !Instance.clips.TryGetValue(id, out AudioClip clip) ||
+            clip == null
+        )
+        {
+            Instance.clips.TryGetValue(SfxId.HeroAttackRed, out clip);
+        }
+
+        if (clip != null)
+        {
+            Instance.audioSource.PlayOneShot(clip);
+        }
     }
 
     public static void RefreshSceneButtons()

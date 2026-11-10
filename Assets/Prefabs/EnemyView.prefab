@@ -228,6 +228,14 @@ MonoBehaviour:
   healthFillImage: {fileID: 5979216187519236394}
   spriteRenderer: {fileID: 568738881411387129}
   statusEffectsUI: {fileID: 2571728115170343396}
+  statusEffectOverlaySprites:
+  - {fileID: -5100347770901024118, guid: 0c7c0331767fba741812e0fa3cc28a29, type: 3}
+  - {fileID: -7072185010670663497, guid: 0c7c0331767fba741812e0fa3cc28a29, type: 3}
+  - {fileID: 8498467086387953480, guid: 0c7c0331767fba741812e0fa3cc28a29, type: 3}
+  - {fileID: 6279237305185450571, guid: 0c7c0331767fba741812e0fa3cc28a29, type: 3}
+  - {fileID: -6783754002330019195, guid: 0c7c0331767fba741812e0fa3cc28a29, type: 3}
+  - {fileID: 5414751689539882796, guid: 0c7c0331767fba741812e0fa3cc28a29, type: 3}
+  - {fileID: 2755900030101616435, guid: 0c7c0331767fba741812e0fa3cc28a29, type: 3}
   attackText: {fileID: 3146364943246529455}
 --- !u!65 &1650120507743887676
 BoxCollider:

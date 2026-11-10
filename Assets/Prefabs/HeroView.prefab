@@ -50,6 +50,14 @@ MonoBehaviour:
   healthFillImage: {fileID: 5947357459574286700}
   spriteRenderer: {fileID: 5094711625290128492}
   statusEffectsUI: {fileID: 7124695561795464049}
+  statusEffectOverlaySprites:
+  - {fileID: -5100347770901024118, guid: 0c7c0331767fba741812e0fa3cc28a29, type: 3}
+  - {fileID: -7072185010670663497, guid: 0c7c0331767fba741812e0fa3cc28a29, type: 3}
+  - {fileID: 8498467086387953480, guid: 0c7c0331767fba741812e0fa3cc28a29, type: 3}
+  - {fileID: 6279237305185450571, guid: 0c7c0331767fba741812e0fa3cc28a29, type: 3}
+  - {fileID: -6783754002330019195, guid: 0c7c0331767fba741812e0fa3cc28a29, type: 3}
+  - {fileID: 5414751689539882796, guid: 0c7c0331767fba741812e0fa3cc28a29, type: 3}
+  - {fileID: 2755900030101616435, guid: 0c7c0331767fba741812e0fa3cc28a29, type: 3}
   inGameSpriteScale: 1
 --- !u!1001 &7929894970834860442
 PrefabInstance:

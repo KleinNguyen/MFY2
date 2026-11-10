@@ -16,6 +16,7 @@ public class PoisonSystem : MonoBehaviour
     {
         CombatantView target = applyPoisonGA.Target;
         if (target == null || target.CurrentHealth <= 0) yield break;
+        SfxManager.PlayCombatEffectSfx(SfxId.PoisonApplied);
         Instantiate(poisonVFX, target.transform.position, Quaternion.identity);
         target.Damage(applyPoisonGA.PoisonDamage);
         target.RemoveStatusEffect(StatusEffectType.POISON, 1);

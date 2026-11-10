@@ -5,6 +5,10 @@ using System.Collections.Generic;
 public class DamageSystem : MonoBehaviour
 {
     [SerializeField] private GameObject damageVFX;
+    [SerializeField] private Sprite heroOneHitSprite;
+    [SerializeField] private Sprite heroTwoHitSprite;
+    [SerializeField] private Sprite heroThreeHitSprite;
+
     private void OnEnable()
     {
         ActionSystem.AttachPerformer<DealDamageGA>(DealDamagePerformer); 
@@ -25,7 +29,16 @@ public class DamageSystem : MonoBehaviour
     {
         if (dealDamageGA.IsAttack && HasLivingTarget(dealDamageGA.Targets))
         {
-            PlayHeroAttackSfx(dealDamageGA.Caster);
+            PlayCombatAttackSfx(dealDamageGA.Caster);
+
+            if (
+                dealDamageGA.Caster is HeroView heroCaster &&
+                HeroSystem.Instance != null &&
+                HeroSystem.Instance.CurrentCharacter == CharacterType.Red
+            )
+            {
+                yield return heroCaster.PlayPunchAnimation();
+            }
         }
 
         foreach (var target in dealDamageGA.Targets)
@@ -61,13 +74,23 @@ public class DamageSystem : MonoBehaviour
 
             target.Damage(finalDamage);
 
-            Instantiate(
-                damageVFX,
-                target.transform.position,
-                Quaternion.identity
-            );
+            if (
+                target is EnemyView &&
+                TryGetHeroHitSprite(dealDamageGA, out Sprite hitSprite)
+            )
+            {
+                yield return target.PlayHitOverlay(hitSprite);
+            }
+            else
+            {
+                Instantiate(
+                    damageVFX,
+                    target.transform.position,
+                    Quaternion.identity
+                );
+                yield return new WaitForSeconds(0.5f);
+            }
 
-            yield return new WaitForSeconds(0.5f);
             int healAmount = dealDamageGA.HealAfterDamage;
             if (targetHasWeak)
             {
@@ -119,31 +142,60 @@ public class DamageSystem : MonoBehaviour
         return false;
     }
 
-    private void PlayHeroAttackSfx(CombatantView caster)
+    private void PlayCombatAttackSfx(CombatantView caster)
     {
-        if (caster is not HeroView || HeroSystem.Instance == null)
+        if (caster is HeroView)
         {
-            return;
+            if (HeroSystem.Instance == null)
+            {
+                return;
+            }
+
+            SfxId heroAttackSfx = HeroSystem.Instance.CurrentCharacter switch
+            {
+                CharacterType.Red => SfxId.HeroAttackRed,
+                CharacterType.Green => SfxId.HeroAttackGreen,
+                CharacterType.Yellow => SfxId.HeroAttackYellow,
+                _ => SfxId.HeroAttack
+            };
+            SfxManager.PlayCombatEffectSfx(heroAttackSfx);
+        }
+        else if (caster is EnemyView)
+        {
+            SfxManager.PlayCombatEffectSfx(SfxId.EnemyAttack);
+        }
+    }
+
+    private bool TryGetHeroHitSprite(DealDamageGA action, out Sprite hitSprite)
+    {
+        hitSprite = null;
+        if (
+            !action.IsAttack ||
+            action.Caster is not HeroView ||
+            HeroSystem.Instance == null
+        )
+        {
+            return false;
         }
 
-        switch (HeroSystem.Instance.CurrentCharacter)
+        hitSprite = HeroSystem.Instance.CurrentCharacter switch
         {
-            case CharacterType.Red:
-                SfxManager.PlaySfx(SfxId.HeroAttackRed);
-                break;
-            case CharacterType.Green:
-                SfxManager.PlaySfx(SfxId.HeroAttackGreen);
-                break;
-            case CharacterType.Yellow:
-                SfxManager.PlaySfx(SfxId.HeroAttackYellow);
-                break;
-            default:
-                Debug.LogError(
-                    "Cannot play hero attack SFX: the selected character is not supported.",
-                    this
-                );
-                break;
+            CharacterType.Red => heroOneHitSprite,
+            CharacterType.Green => heroTwoHitSprite,
+            CharacterType.Yellow => heroThreeHitSprite,
+            _ => null
+        };
+
+        if (hitSprite == null)
+        {
+            Debug.LogError(
+                "The hit overlay sprite is not assigned for the selected hero.",
+                this
+            );
+            return false;
         }
+
+        return true;
     }
 
     private IEnumerator BlockThenDamagePerformer(

@@ -6878,6 +6878,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageVFX: {fileID: 4021103657954561961, guid: 5c755f9bc5253ea418e919994537dcc7, type: 3}
+  heroOneHitSprite: {fileID: 4505764762537584597, guid: 2ac88f5e9281546489b7a293659dfae3, type: 3}
+  heroTwoHitSprite: {fileID: -9068514008697261693, guid: 52c56d041c4b6a04e903241c98679169, type: 3}
+  heroThreeHitSprite: {fileID: 5792233493864853039, guid: e812302c3f38dcc49a29833d5b24939f, type: 3}
 --- !u!1 &1731332016
 GameObject:
   m_ObjectHideFlags: 0
