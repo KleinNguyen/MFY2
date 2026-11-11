@@ -11,7 +11,7 @@ public class DamageSystem : MonoBehaviour
 
     private void OnEnable()
     {
-        ActionSystem.AttachPerformer<DealDamageGA>(DealDamagePerformer); 
+        ActionSystem.AttachPerformer<DealDamageGA>(DealDamagePerformer);
         ActionSystem.AttachPerformer<BlockThenDamageGA>(BlockThenDamagePerformer);
         ActionSystem.AttachPerformer<DamageThenWeakBonusGA>(DamageThenWeakBonusPerformer);
         ActionSystem.AttachPerformer<BonusDamageIfWeakGA>(BonusDamageIfWeakPerformer);
@@ -60,6 +60,12 @@ public class DamageSystem : MonoBehaviour
                 finalDamage += heroCaster.GetStatusEffectStacks(
                     StatusEffectType.STRENGTH
                 );
+            }
+
+            if (dealDamageGA.IsAttack && dealDamageGA.Caster is HeroView &&
+                CardSystem.Instance != null)
+            {
+                finalDamage *= CardSystem.Instance.AttackDamageMultiplier;
             }
 
             finalDamage = Mathf.Max(0, finalDamage);

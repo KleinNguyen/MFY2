@@ -8,6 +8,7 @@ public class ManaSystem : Singleton<ManaSystem>
     private int currentMana;
     public int CurrentMana => currentMana;
     private int bonusManaPerTurn;
+    private int nextTurnBonusMana;
     public int MaxMana => maxMana;
     private void OnEnable()
     {
@@ -63,11 +64,10 @@ public class ManaSystem : Singleton<ManaSystem>
         manaUI.UpdateManaText(currentMana);
         yield return null;
     }
-    private IEnumerator RefillManaPerformer(
-        RefillManaGA refillManaGA
-    )
+    private IEnumerator RefillManaPerformer(RefillManaGA refillManaGA)
     {
-        currentMana = maxMana + bonusManaPerTurn;
+        currentMana = maxMana + bonusManaPerTurn + nextTurnBonusMana;
+        nextTurnBonusMana = 0;
 
         manaUI.UpdateManaText(currentMana);
 
@@ -88,7 +88,14 @@ public class ManaSystem : Singleton<ManaSystem>
     {
         if (action.Amount > 0)
         {
-            bonusManaPerTurn += action.Amount;
+            if (action.NextTurnOnly)
+            {
+                nextTurnBonusMana += action.Amount;
+            }
+            else
+            {
+                bonusManaPerTurn += action.Amount;
+            }
         }
 
         yield return null;

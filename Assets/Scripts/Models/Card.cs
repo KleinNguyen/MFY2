@@ -6,6 +6,7 @@ public class Card
     private readonly CardData data;
 
     private bool upgradedForCombat;
+    public bool HasTemporarySly { get; private set; }
     public bool IsUpgraded
     {
         get
@@ -38,9 +39,16 @@ public class Card
     {
         get
         {
-            if (IsUpgraded) return data.UpgradedDescription;
+            string cardDescription = IsUpgraded
+                ? data.UpgradedDescription
+                : data.Description;
 
-            return data.Description;
+            if (HasTemporarySly && !data.IsSly)
+            {
+                return cardDescription + "\nSly (this turn).";
+            }
+
+            return cardDescription;
         }
     }
 
@@ -90,7 +98,24 @@ public class Card
     public Sprite Image => data.CardImage;
 
     public bool ExhaustOnPlay => data.ExhaustOnPlay;
-    public bool IsSly => data.IsSly;
+    public bool IsSly => data.IsSly || HasTemporarySly;
+
+    public void GrantTemporarySly()
+    {
+        HasTemporarySly = true;
+    }
+
+    public void ClearTemporarySly()
+    {
+        HasTemporarySly = false;
+    }
+
+    public Card CreateCombatCopy()
+    {
+        Card copy = new(data);
+        copy.upgradedForCombat = IsUpgraded;
+        return copy;
+    }
 
     public Card(CardData cardData)
     {

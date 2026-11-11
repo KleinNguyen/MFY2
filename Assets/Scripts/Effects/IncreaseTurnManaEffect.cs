@@ -5,12 +5,13 @@ using UnityEngine;
 public class IncreaseTurnManaEffect : Effect
 {
     [SerializeField] private int amount;
+    [SerializeField] private bool nextTurnOnly;
 
     public override GameAction GetGameAction(
         List<CombatantView> targets,
         CombatantView caster
     )
     {
-        return new IncreaseTurnManaGA(amount);
+        return new IncreaseTurnManaGA(amount, nextTurnOnly);
     }
 }

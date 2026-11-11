@@ -21,6 +21,10 @@ public class CardSelectionUI : MonoBehaviour
     public bool IsReadOnly { get; private set; }
 
     private Action<Card> onCardSelected;
+    private Action onSelectionFinished;
+    private Button optionalFinishButton;
+    private TMP_Text optionalFinishLabel;
+    private string originalCloseButtonLabel;
     private GridLayoutGroup cardGrid;
     private LayoutElement contentLayout;
     private Vector2 viewportSize;
@@ -53,7 +57,7 @@ public class CardSelectionUI : MonoBehaviour
     }
 
     public bool Open(List<Card> cards, string message, Action<Card> onSelected,
-        bool readOnly = false)
+        bool readOnly = false, Action onFinished = null)
     {
         if (IsOpen)
         {
@@ -73,9 +77,15 @@ public class CardSelectionUI : MonoBehaviour
             return false;
         }
 
-        if (readOnly && closeButton == null)
+        if ((readOnly || onFinished != null) && closeButton == null)
         {
-            Debug.LogError("Assign the Close Button in CardSelectionUI before viewing a pile.", this);
+            Debug.LogError("Assign the Close Button in CardSelectionUI before viewing a pile or allowing Done.", this);
+            return false;
+        }
+
+        if (onFinished != null && closeButton.GetComponent<Button>() == null)
+        {
+            Debug.LogError("The Close Button needs a Button component to finish card selection.", this);
             return false;
         }
 
@@ -104,13 +114,26 @@ public class CardSelectionUI : MonoBehaviour
         ClearCards();
 
         onCardSelected = onSelected;
+        onSelectionFinished = onFinished;
         IsReadOnly = readOnly;
         IsOpen = true;
         choiceCount = choices.Count;
 
         panel.SetActive(true);
         panel.transform.SetAsLastSibling();
-        if (closeButton != null) closeButton.SetActive(readOnly);
+        if (closeButton != null) closeButton.SetActive(readOnly || onFinished != null);
+        if (onFinished != null)
+        {
+            optionalFinishButton = closeButton.GetComponent<Button>();
+            optionalFinishButton.onClick.AddListener(FinishOptionalSelection);
+            optionalFinishLabel = closeButton.GetComponentInChildren<TMP_Text>(true);
+
+            if (optionalFinishLabel != null)
+            {
+                originalCloseButtonLabel = optionalFinishLabel.text;
+                optionalFinishLabel.text = "Done";
+            }
+        }
         cardContent.gameObject.SetActive(true);
 
         if (titleText != null)
@@ -198,14 +221,38 @@ public class CardSelectionUI : MonoBehaviour
         }
 
         Action<Card> callback = onCardSelected;
+        onSelectionFinished = null;
 
         Close();
 
         callback?.Invoke(card);
     }
 
+    private void FinishOptionalSelection()
+    {
+        if (IsOpen && onSelectionFinished != null)
+        {
+            Close();
+        }
+    }
+
     public void Close()
     {
+        Action finishedCallback = onSelectionFinished;
+        onSelectionFinished = null;
+
+        if (optionalFinishButton != null)
+        {
+            optionalFinishButton.onClick.RemoveListener(FinishOptionalSelection);
+            optionalFinishButton = null;
+        }
+
+        if (optionalFinishLabel != null)
+        {
+            optionalFinishLabel.text = originalCloseButtonLabel;
+            optionalFinishLabel = null;
+        }
+
         IsOpen = false;
         IsReadOnly = false;
         onCardSelected = null;
@@ -220,6 +267,8 @@ public class CardSelectionUI : MonoBehaviour
         {
             panel.SetActive(false);
         }
+
+        finishedCallback?.Invoke();
     }
 
     private void ClearCards()

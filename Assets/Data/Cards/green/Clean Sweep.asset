@@ -17,7 +17,7 @@ MonoBehaviour:
   <CardImage>k__BackingField: {fileID: 6660783624410144326, guid: 90f174aafd726ce46b4bf113308dc39f, type: 3}
   <Description>k__BackingField: Discard the remaining cards in your hand, then draw
     the same number of cards. Exhaust.
-  <Mana>k__BackingField: 1
+  <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
@@ -26,7 +26,7 @@ MonoBehaviour:
   - <TargetMode>k__BackingField:
       rid: 286842286307016837
     <Effect>k__BackingField:
-      rid: -2
+      rid: 1468093466301694064
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -40,4 +40,7 @@ MonoBehaviour:
       type: {class: , ns: , asm: }
     - rid: 286842286307016837
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093466301694064
+      type: {class: CleanSweepEffect, ns: , asm: Assembly-CSharp}
       data: 
