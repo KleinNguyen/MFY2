@@ -16,7 +16,7 @@ MonoBehaviour:
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 6937817954938267909, guid: c71f06ff456d99f4dbccf8667b8d6c6f, type: 3}
   <Description>k__BackingField: Apply 2 Armor Break to one enemy.
-  <Mana>k__BackingField: 0
+  <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:

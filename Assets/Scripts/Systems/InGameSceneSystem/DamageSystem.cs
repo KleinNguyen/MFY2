@@ -51,7 +51,7 @@ public class DamageSystem : MonoBehaviour
             bool targetHasWeak =
                 target.GetStatusEffectStacks(StatusEffectType.WEAK) > 0;
 
-            int finalDamage = dealDamageGA.Amount;
+            int finalDamage = dealDamageGA.GetDamageForTarget(target);
             if (
                 dealDamageGA.IsAttack &&
                 dealDamageGA.Caster is HeroView heroCaster

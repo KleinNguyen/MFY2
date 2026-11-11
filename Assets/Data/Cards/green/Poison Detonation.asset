@@ -24,9 +24,9 @@ MonoBehaviour:
     rid: -2
   <OtherEffects>k__BackingField:
   - <TargetMode>k__BackingField:
-      rid: 286842286307016837
+      rid: 1468093466301694045
     <Effect>k__BackingField:
-      rid: -2
+      rid: 1468093466301694046
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -38,6 +38,11 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 286842286307016837
-      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+    - rid: 1468093466301694045
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1468093466301694046
+      type: {class: PoisonDetonationEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage: 10
+        poisonDivisor: 2
