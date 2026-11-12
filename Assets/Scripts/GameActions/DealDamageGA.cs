@@ -9,6 +9,7 @@ public class DealDamageGA : GameAction, IHaveCaster
     public CombatantView Caster { get; private set; }
     public int HealIfTargetWeak { get; set; }
     public int HealAfterDamage { get; set; }
+    public int ComboOnKill { get; set; }
     private readonly Dictionary<CombatantView, int> bonusDamageByTarget = new();
     public DealDamageGA(int amount, List<CombatantView> targets, CombatantView caster, bool isAttack = true)
     {

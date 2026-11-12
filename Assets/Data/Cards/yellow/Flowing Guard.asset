@@ -15,18 +15,19 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -8038976213705442086, guid: b7d309a50f2d8094a942d4247830ed73, type: 3}
-  <Description>k__BackingField: Gain 9 Block. If you have at least 3 Combo, draw
+  <Description>k__BackingField: Gain 7 Block. If you have at least 3 Combo, draw
     1 card.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
   - <TargetMode>k__BackingField:
       rid: 286842286307016837
     <Effect>k__BackingField:
-      rid: -2
+      rid: 1468093488209330294
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -41,3 +42,9 @@ MonoBehaviour:
     - rid: 286842286307016837
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1468093488209330294
+      type: {class: FlowingGuardEffect, ns: , asm: Assembly-CSharp}
+      data:
+        blockAmount: 7
+        requiredCombo: 3
+        drawAmount: 1

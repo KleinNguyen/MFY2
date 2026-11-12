@@ -19,6 +19,7 @@ MonoBehaviour:
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
     rid: 1468093488209330176
   <OtherEffects>k__BackingField: []

@@ -15,18 +15,15 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 7680820834086852892, guid: 625c7872bed857642aa986f116e8d1f1, type: 3}
-  <Description>k__BackingField: Deal 10 damage. If the target has Exposed, add 5
-    base damage.
+  <Description>k__BackingField: Deal 5 damage. If the target has Exposed, add 5 base
+    damage.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
-    rid: -2
-  <OtherEffects>k__BackingField:
-  - <TargetMode>k__BackingField:
-      rid: 286842286307016837
-    <Effect>k__BackingField:
-      rid: -2
+    rid: 1468093488209330286
+  <OtherEffects>k__BackingField: []
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -38,6 +35,8 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 286842286307016837
-      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
-      data: 
+    - rid: 1468093488209330286
+      type: {class: DamageIfExposedEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage: 5
+        bonusDamage: 5

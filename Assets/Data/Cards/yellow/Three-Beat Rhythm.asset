@@ -16,17 +16,18 @@ MonoBehaviour:
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -6270953770400647376, guid: 40ec9a52361b6f144ab0b5d48dd6df2c, type: 3}
   <Description>k__BackingField: Each turn, after playing your third Attack, gain
-    2 Combo.
+    2 Combo.Exhaust
   <Mana>k__BackingField: 1
-  <ExhaustOnPlay>k__BackingField: 0
+  <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
   - <TargetMode>k__BackingField:
       rid: 286842286307016837
     <Effect>k__BackingField:
-      rid: -2
+      rid: 1468093488209330325
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -41,3 +42,9 @@ MonoBehaviour:
     - rid: 286842286307016837
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1468093488209330325
+      type: {class: AttackMilestonePowerEffect, ns: , asm: Assembly-CSharp}
+      data:
+        requiredAttacks: 3
+        comboGain: 2
+        drawAmount: 0

@@ -118,6 +118,22 @@ public class DamageSystem : MonoBehaviour
             {
                 if (target is EnemyView enemyView)
                 {
+                    if (dealDamageGA.ComboOnKill > 0 &&
+                        dealDamageGA.Caster is HeroView comboHero &&
+                        comboHero.CurrentHealth > 0)
+                    {
+                        AddStatusEffectGA gainComboGA = new(
+                            StatusEffectType.COMBO,
+                            dealDamageGA.ComboOnKill,
+                            new List<CombatantView> { comboHero }
+                        );
+
+                        gainComboGA.CardCaster = dealDamageGA.CardCaster;
+                        gainComboGA.SourceCard = dealDamageGA.SourceCard;
+
+                        ActionSystem.Instance.AddReaction(gainComboGA);
+                    }
+
                     KillEnemyGA killEnemyGA = new(enemyView);
 
                     ActionSystem.Instance.AddReaction(killEnemyGA);

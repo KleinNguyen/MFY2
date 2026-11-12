@@ -19,13 +19,14 @@ MonoBehaviour:
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093488209330279
   <OtherEffects>k__BackingField:
   - <TargetMode>k__BackingField:
       rid: 286842286307016837
     <Effect>k__BackingField:
-      rid: -2
+      rid: 1468093488209330280
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -40,3 +41,13 @@ MonoBehaviour:
     - rid: 286842286307016837
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1468093488209330279
+      type: {class: FollowThroughEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 3
+        requiredCombo: 0
+    - rid: 1468093488209330280
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 7
+        stackCount: 1
