@@ -41,6 +41,32 @@ public class RunSystem : PersistentSingleton<RunSystem>
     public int SelectedMapPointId { get; private set; } = -1;
 
     private bool isRunTimerRunning;
+    public RunResult Result { get; private set; }
+
+    public bool IsRunFinished => Result != RunResult.None;
+
+    public bool IsLastAct =>
+        acts != null &&
+        acts.Length > 0 &&
+        CurrentAct != null &&
+        CurrentActIndex == acts.Length - 1;
+
+    public bool CanMoveToNextAct =>
+        acts != null &&
+        CurrentAct != null &&
+        CurrentActIndex + 1 < acts.Length &&
+        acts[CurrentActIndex + 1] != null;
+
+    public void FinishRun(RunResult result)
+    {
+        if (result == RunResult.None || IsRunFinished)
+        {
+            return;
+        }
+
+        Result = result;
+        isRunTimerRunning = false;
+    }
 
     protected override void Awake()
     {
@@ -54,11 +80,11 @@ public class RunSystem : PersistentSingleton<RunSystem>
     }
     public void StartNewRun()
     {
+        Result = RunResult.None;
         foreach (CardData cardData in runtimeUpgradedCards)
         {
             if (cardData != null) Destroy(cardData);
         }
-
         runtimeUpgradedCards.Clear();
         CurrentActIndex = 0;
         HeroData = startingHero;
@@ -91,9 +117,13 @@ public class RunSystem : PersistentSingleton<RunSystem>
 
     public void StartRunTimer()
     {
+        if (IsRunFinished) return;
+
         if (HeroData == null)
         {
-            Debug.LogError("Cannot start the run timer before a hero has been selected.");
+            Debug.LogError(
+                "Cannot start the run timer before a hero has been selected."
+            );
             return;
         }
 
@@ -332,6 +362,7 @@ public class RunSystem : PersistentSingleton<RunSystem>
 
     public bool CanSelectMapPoint(int pointId)
     {
+        if (IsRunFinished) return false;
         MapPoint point = GetMapPoint(pointId);
 
         if (point == null) return false;

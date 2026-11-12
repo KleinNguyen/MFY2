@@ -20,6 +20,7 @@ public class RewardUI : MonoBehaviour
 
     [SerializeField] private Button skipButton;
     [SerializeField] private Button continueButton;
+    [SerializeField] private RunResultUI runResultUI;
 
     private readonly List<CardData> currentChoices = new();
     private readonly List<RewardCardHoverUI> choiceViews = new();
@@ -200,11 +201,9 @@ public class RewardUI : MonoBehaviour
     public void ContinueToMap()
     {
         RunSystem run = RunSystem.Instance;
-
-        if (run == null || !run.RewardClaimed) return;
+        if (run == null || run.IsRunFinished || !run.RewardClaimed) return;
 
         MapPoint selectedPoint = run.GetMapPoint(run.SelectedMapPointId);
-
         if (selectedPoint == null)
         {
             Debug.LogError("Selected map point is missing.");
@@ -212,20 +211,31 @@ public class RewardUI : MonoBehaviour
         }
 
         bool defeatedBoss = selectedPoint.Type == MapPointType.Boss;
+        bool finishedRun = defeatedBoss && run.IsLastAct;
+
+        if (finishedRun && runResultUI == null)
+        {
+            Debug.LogError("Assign Run Result UI in RewardUI.");
+            return;
+        }
+        if (defeatedBoss && !finishedRun && !run.CanMoveToNextAct)
+        {
+            Debug.LogError("The next Act is missing in RunSystem.");
+            return;
+        }
 
         run.CompleteStage();
-
-        if (defeatedBoss)
+        if (finishedRun)
         {
-            bool movedToNextAct = run.MoveToNextAct();
-
-            if (movedToNextAct)
-            {
-                SceneManager.LoadScene("MapScene");
-                return;
-            }
-
-            Debug.Log("No next Act. Run complete.");
+            run.FinishRun(RunResult.Won);
+            gameObject.SetActive(false);
+            runResultUI.Show();
+            return;
+        }
+        if (defeatedBoss && !run.MoveToNextAct())
+        {
+            Debug.LogError("Could not advance to the next Act.");
+            return;
         }
 
         SceneManager.LoadScene("MapScene");
