@@ -9,5 +9,6 @@ public enum StatusEffectType
     EXPOSED, // quái nhận thêm 50% sát thương từ đòn đánh
     ARMOR_BREAK, // quái sẽ giảm % nhận giáp đi
     STRENGTH, // tăng sát thương gây ra
-    DEXTERITY // tăng giáp được nhận
+    DEXTERITY, // tăng giáp được nhận
+    COMBO
 }

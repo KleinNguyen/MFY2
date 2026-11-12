@@ -97,6 +97,7 @@ public class Card
     }
     public Sprite Image => data.CardImage;
 
+    public bool IsAttack => data.IsAttack;
     public bool ExhaustOnPlay => data.ExhaustOnPlay;
     public bool IsSly => data.IsSly || HasTemporarySly;
 

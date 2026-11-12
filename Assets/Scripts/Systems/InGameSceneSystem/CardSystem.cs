@@ -21,6 +21,7 @@ public class CardSystem : Singleton<CardSystem>
     private readonly HashSet<Card> temporarySlyCards = new();
     private readonly List<Card> pendingCopiesForNextTurn = new();
     public int CardsDrawnThisCombat { get; private set; }
+    public ComboSystem Combo { get; private set; }
     public bool IsChoosingCardToExhaust { get; private set; }
     public bool IsChoosingCardToUpgrade { get; private set; }
     public bool IsViewingPile => cardSelectionUI != null &&
@@ -141,10 +142,15 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.AttachPerformer<NextCardFreeGA>(NextCardFreePerformer);
         ActionSystem.AttachPerformer<PlayDiscardedSlyCardsGA>(PlayDiscardedSlyCardsPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
+
+        Combo = GetComponent<ComboSystem>();
+        if (Combo == null) Combo = gameObject.AddComponent<ComboSystem>();
+        Combo.enabled = true;
     }
 
     private void OnDisable()
     {
+        if (Combo != null) Combo.enabled = false;
         activeAttackDamageMultiplier = 1;
         nextTurnAttackDamageMultiplier = 1;
         ResetTemporarySlyCards();
@@ -178,6 +184,7 @@ public class CardSystem : Singleton<CardSystem>
     //public
     public void Setup(List<CardData> deckData)
     {
+        if (Combo != null) Combo.ResetCombat();
         activeAttackDamageMultiplier = 1;
         nextTurnAttackDamageMultiplier = 1;
         ResetTemporarySlyCards();
@@ -239,6 +246,7 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator PlayCardPerformer(PlayCardGA action)
     {
+        action.ResetPlayResult();
         if (action.Card == null || !isPlayerTurn)
         {
             yield break;
@@ -333,6 +341,8 @@ public class CardSystem : Singleton<CardSystem>
                 pileUI.UpdateDiscardPileText(discardPile.Count);
             }
         }
+
+        if (Combo != null) Combo.RecordCardPlay(action);
 
         if (action.IsSlyPlay)
         {
@@ -1274,4 +1284,3 @@ public class CardSystem : Singleton<CardSystem>
         isPlayerTurn = false;
     }
 }
-
