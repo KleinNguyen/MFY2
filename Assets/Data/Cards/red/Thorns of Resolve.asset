@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 4113829005332862926, guid: 0db560e76ee6eeb44bd7d981ece786d6, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -2.5, y: 2}
+  <CardVisualScale>k__BackingField: {x: 1.005291, y: 1.008772}
+  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: -0.5}
+  <TitleTextOffset>k__BackingField: {x: -1.5, y: 0.5}
   <Description>k__BackingField: Gain 14 Block. Whenever you are attacked this turn,
     deal 4 damage to the attacker.
   <Mana>k__BackingField: 2

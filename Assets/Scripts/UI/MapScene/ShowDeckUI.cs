@@ -84,6 +84,10 @@ public class ShowDeckUI : MonoBehaviour
         CloseDeck();
 
         mode = newMode;
+        if (scrollRect != null)
+        {
+            scrollRect.movementType = ScrollRect.MovementType.Clamped;
+        }
 
         if (removeControls != null) removeControls.SetActive(mode == DeckMode.Remove);
         if (upgradeControls != null) upgradeControls.SetActive(mode == DeckMode.Upgrade);

@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 2720535173406242035, guid: b3997bcd8bedd094cbf928acc401db80, type: 3}
+  <ManaTextOffset>k__BackingField: {x: 3.5, y: -5}
+  <CardVisualScale>k__BackingField: {x: 0.995025, y: 1.030702}
+  <DescriptionTextOffset>k__BackingField: {x: 2.5, y: 2.5}
+  <TitleTextOffset>k__BackingField: {x: 3.5, y: -1.5}
   <Description>k__BackingField: Deal 10 damage to all enemies, plus half of each
     target's current Poison, rounded down.
   <Mana>k__BackingField: 2

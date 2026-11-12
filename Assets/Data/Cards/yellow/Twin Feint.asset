@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 1
   <CardImage>k__BackingField: {fileID: 4113829005332862926, guid: bbbbd35be6e50fd4eaac1607d89dcfbc, type: 3}
+  <ManaTextOffset>k__BackingField: {x: 2.5, y: 5}
+  <CardVisualScale>k__BackingField: {x: 1.021505, y: 0.995392}
+  <DescriptionTextOffset>k__BackingField: {x: 2, y: 0.5}
+  <TitleTextOffset>k__BackingField: {x: 0.5, y: 3.5}
   <Description>k__BackingField: Attack twice for 3 damage each. Gain 1 Combo.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

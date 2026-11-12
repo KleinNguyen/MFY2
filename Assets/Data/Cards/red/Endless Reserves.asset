@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 2720535173406242035, guid: 1bc24532d32b9fb4ca9edf62abd5c04f, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -1.5, y: -1}
+  <CardVisualScale>k__BackingField: {x: 0.990526, y: 1.013773}
+  <DescriptionTextOffset>k__BackingField: {x: 1, y: -0.5}
+  <TitleTextOffset>k__BackingField: {x: 2, y: -1}
   <Description>k__BackingField: Gain 1 additional mana at the start of each turn,
     starting next turn.
   <Mana>k__BackingField: 3

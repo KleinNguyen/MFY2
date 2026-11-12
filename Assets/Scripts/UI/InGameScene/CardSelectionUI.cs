@@ -149,6 +149,7 @@ public class CardSelectionUI : MonoBehaviour
         Canvas.ForceUpdateCanvases();
         RefreshLayout();
         LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)cardContent);
+        scrollRect.movementType = ScrollRect.MovementType.Clamped;
         scrollRect.StopMovement();
         scrollRect.verticalNormalizedPosition = 1f;
 
@@ -182,7 +183,7 @@ public class CardSelectionUI : MonoBehaviour
         cardRect.localRotation = Quaternion.identity;
         float scale = Mathf.Min(cardGrid.cellSize.x / cardRect.rect.width,
             cardGrid.cellSize.y / cardRect.rect.height);
-        cardRect.localScale = Vector3.one * scale;
+        cardUI.SetLayoutScale(Vector3.one * scale);
 
         CanvasGroup canvasGroup = cardUI.GetComponent<CanvasGroup>();
 

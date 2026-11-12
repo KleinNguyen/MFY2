@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -6470460504253458178, guid: d89c02546da4e764e96730002911832a, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -0.5, y: -4}
+  <CardVisualScale>k__BackingField: {x: 1.011341, y: 1.017544}
+  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: -2}
+  <TitleTextOffset>k__BackingField: {x: 0.5, y: -2.5}
   <Description>k__BackingField: Deal 8 damage. Gain 1 Combo for every 2 Combo you
     had before playing this card, up to 3 Combo gained.
   <Mana>k__BackingField: 1

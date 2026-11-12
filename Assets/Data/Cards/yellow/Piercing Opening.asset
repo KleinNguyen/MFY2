@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 7680820834086852892, guid: 625c7872bed857642aa986f116e8d1f1, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -3.5, y: -2}
+  <CardVisualScale>k__BackingField: {x: 1.001177, y: 1.012855}
+  <DescriptionTextOffset>k__BackingField: {x: -1, y: 1.5}
+  <TitleTextOffset>k__BackingField: {x: -2, y: -1.5}
   <Description>k__BackingField: Deal 5 damage. If the target has Exposed, add 5 base
     damage.
   <Mana>k__BackingField: 1

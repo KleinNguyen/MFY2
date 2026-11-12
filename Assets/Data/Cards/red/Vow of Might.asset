@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -5750353039905602045, guid: 55e14b8f422a4494a950e0cbf69ad18c, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -4.5, y: 0}
+  <CardVisualScale>k__BackingField: {x: 0.994764, y: 1.004651}
+  <DescriptionTextOffset>k__BackingField: {x: 0, y: -1}
+  <TitleTextOffset>k__BackingField: {x: -1, y: -0.5}
   <Description>k__BackingField: Lose 3 HP. Gain 2 Strength for this combat. Apply
     1 Weak to one enemy. Exhaust.
   <Mana>k__BackingField: 1

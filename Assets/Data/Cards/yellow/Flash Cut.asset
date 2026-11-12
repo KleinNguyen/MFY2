@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 8102358098348255977, guid: 92eb068d2dd38ab479ed24e321d11829, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -5.5, y: -2}
+  <CardVisualScale>k__BackingField: {x: 1.017590, y: 1.026683}
+  <DescriptionTextOffset>k__BackingField: {x: -5.5, y: 3.5}
+  <TitleTextOffset>k__BackingField: {x: -4.5, y: -1.5}
   <Description>k__BackingField: Deal 8 damage. Exhaust.
   <Mana>k__BackingField: 0
   <ExhaustOnPlay>k__BackingField: 1

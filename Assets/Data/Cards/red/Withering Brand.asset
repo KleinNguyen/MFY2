@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 7680820834086852892, guid: 05870de64e1e99c4aa5e8a5fe8cfebef, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -4.5, y: 6}
+  <CardVisualScale>k__BackingField: {x: 1.000000, y: 1.000000}
+  <DescriptionTextOffset>k__BackingField: {x: 0, y: 2}
+  <TitleTextOffset>k__BackingField: {x: -1.5, y: 4.5}
   <Description>k__BackingField: Lose 2 HP. Apply 2 Weak to one enemy.
   <Mana>k__BackingField: 0
   <ExhaustOnPlay>k__BackingField: 0

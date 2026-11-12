@@ -14,11 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
-  <CardImage>k__BackingField: {fileID: -4178046375966092550, guid: 239da17d52b0ef647a65a575c70e5e5a, type: 3}
+  <CardImage>k__BackingField: {fileID: -8803318502494350906, guid: 5b4c7832abed95844a87f3036e740e3c, type: 3}
+  <TitleTextOffset>k__BackingField: {x: -1, y: 6}
+  <DescriptionTextOffset>k__BackingField: {x: -1, y: 4}
+  <ManaTextOffset>k__BackingField: {x: -1.5, y: 5}
+  <CardVisualScale>k__BackingField: {x: 0.980100, y: 0.964593}
   <Description>k__BackingField: Lose 2 HP. Gain 5 Block.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:

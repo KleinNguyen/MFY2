@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 5181654206020448988, guid: e1835a87936569e488f9e7ae83125d1c, type: 3}
+  <ManaTextOffset>k__BackingField: {x: 5.5, y: -3}
+  <CardVisualScale>k__BackingField: {x: 1.009612, y: 1.004651}
+  <DescriptionTextOffset>k__BackingField: {x: 2.5, y: 2}
+  <TitleTextOffset>k__BackingField: {x: 0, y: 0}
   <Description>k__BackingField: Deal 12 damage. The next card you play this turn
     costs 0 mana.
   <Mana>k__BackingField: 2

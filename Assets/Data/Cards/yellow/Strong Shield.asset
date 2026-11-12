@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 1
   <CardImage>k__BackingField: {fileID: 4349915267927364619, guid: 5d8793f621ab8e54c925b0df4afdbb9f, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -4.5, y: 0}
+  <CardVisualScale>k__BackingField: {x: 1.012059, y: 1.008772}
+  <DescriptionTextOffset>k__BackingField: {x: -5, y: 0}
+  <TitleTextOffset>k__BackingField: {x: -5, y: 0}
   <Description>k__BackingField: Gain 5 Block.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

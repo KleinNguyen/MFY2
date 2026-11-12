@@ -176,7 +176,7 @@ public class ShopUI : MonoBehaviour
         cardRect.pivot = new Vector2(0.5f, 0.5f);
         cardRect.anchoredPosition3D = Vector3.zero;
         cardRect.sizeDelta = new Vector2(260f, 340f);
-        cardRect.localScale = Vector3.one;
+        cardUI.SetLayoutScale(Vector3.one);
         cardRect.localRotation = Quaternion.identity;
 
         CanvasGroup canvasGroup = cardUI.GetComponent<CanvasGroup>();

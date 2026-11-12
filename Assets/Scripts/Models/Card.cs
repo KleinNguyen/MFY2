@@ -96,6 +96,10 @@ public class Card
         upgradedForCombat = true;
     }
     public Sprite Image => data.CardImage;
+    public Vector2 TitleTextOffset => data.TitleTextOffset;
+    public Vector2 DescriptionTextOffset => data.DescriptionTextOffset;
+    public Vector2 ManaTextOffset => data.ManaTextOffset;
+    public Vector2 CardVisualScale => data.CardVisualScale;
 
     public bool IsAttack => data.IsAttack;
     public bool ExhaustOnPlay => data.ExhaustOnPlay;

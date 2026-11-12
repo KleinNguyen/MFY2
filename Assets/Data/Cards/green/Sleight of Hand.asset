@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 7157561037332017152, guid: 24ea8e2bcc1c6bb459cec3aeab6372a1, type: 3}
+  <ManaTextOffset>k__BackingField: {x: 0.5, y: -2}
+  <CardVisualScale>k__BackingField: {x: 0.989815, y: 0.999517}
+  <DescriptionTextOffset>k__BackingField: {x: 0.5, y: -2}
+  <TitleTextOffset>k__BackingField: {x: 0, y: 0}
   <Description>k__BackingField: Draw 1 card, then discard 1 card.
   <Mana>k__BackingField: 0
   <ExhaustOnPlay>k__BackingField: 0

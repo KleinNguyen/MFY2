@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 8288426215254106694, guid: 568328ec7b0061342a052e65f73baec6, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -1.5, y: 4}
+  <CardVisualScale>k__BackingField: {x: 1.000290, y: 0.991228}
+  <DescriptionTextOffset>k__BackingField: {x: 1.5, y: -1.5}
+  <TitleTextOffset>k__BackingField: {x: 0.5, y: 2}
   <Description>k__BackingField: Apply 2 Weak to one enemy. Exhaust.
   <Mana>k__BackingField: 0
   <ExhaustOnPlay>k__BackingField: 1

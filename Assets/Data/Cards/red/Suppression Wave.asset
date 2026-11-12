@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 3465286685962602723, guid: 0dd99ffe245106f46a59a7c5ed75a784, type: 3}
+  <ManaTextOffset>k__BackingField: {x: 0.5, y: 5}
+  <CardVisualScale>k__BackingField: {x: 1.019510, y: 1.004651}
+  <DescriptionTextOffset>k__BackingField: {x: 3, y: 0.5}
+  <TitleTextOffset>k__BackingField: {x: 1, y: 2.5}
   <Description>k__BackingField: Deal 5 damage and apply 1 Weak to all enemies.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 6894999169920593895, guid: 207b465de2a21494fa7a4b556570a5f0, type: 3}
+  <ManaTextOffset>k__BackingField: {x: 5.5, y: -7}
+  <CardVisualScale>k__BackingField: {x: 1.011341, y: 1.026316}
+  <DescriptionTextOffset>k__BackingField: {x: 3, y: -1}
+  <TitleTextOffset>k__BackingField: {x: 4, y: -2.5}
   <Description>k__BackingField: Gain Block equal to the total Poison on all enemies,
     up to 30 Block. Exhaust.
   <Mana>k__BackingField: 1

@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class CardView : MonoBehaviour
 {
+    private const float StandardCardWidth = 260f;
+    private const float StandardCardHeight = 340f;
+
     [SerializeField] private TMP_Text title;
     [SerializeField] private TMP_Text description;
     [SerializeField] private TMP_Text mana;
@@ -20,6 +23,13 @@ public class CardView : MonoBehaviour
 
     private Vector3 dragStartPosition;
     private Quaternion dragStartRotation;
+    private Vector2 titleBasePosition;
+    private Vector2 descriptionBasePosition;
+    private Vector2 manaBasePosition;
+    private bool textBasePositionsInitialized;
+    private Vector2 cardVisualScale = Vector2.one;
+    public Vector3 DisplayScale => new(cardVisualScale.x, cardVisualScale.y, 1f);
+
     public void Setup(Card card)
     {
         if (card == null)
@@ -33,6 +43,11 @@ public class CardView : MonoBehaviour
         title.text = card.Title;
         RefreshDescription();
         RefreshManaCost();
+        ApplyTextOffsets(
+            card.TitleTextOffset,
+            card.DescriptionTextOffset,
+            card.ManaTextOffset);
+        cardVisualScale = card.CardVisualScale;
 
         if (cardImage == null)
         {
@@ -43,8 +58,9 @@ public class CardView : MonoBehaviour
             return;
         }
 
+        cardImage.rectTransform.sizeDelta = new Vector2(StandardCardWidth, StandardCardHeight);
+        cardImage.preserveAspect = false;
         cardImage.sprite = card.Image;
-
         cardImage.enabled = card.Image != null;
 
         if (card.Image == null)
@@ -54,6 +70,22 @@ public class CardView : MonoBehaviour
             );
         }
     }
+
+    private void ApplyTextOffsets(Vector2 titleOffset, Vector2 descriptionOffset, Vector2 manaOffset)
+    {
+        if (!textBasePositionsInitialized)
+        {
+            titleBasePosition = title.rectTransform.anchoredPosition;
+            descriptionBasePosition = description.rectTransform.anchoredPosition;
+            manaBasePosition = mana.rectTransform.anchoredPosition;
+            textBasePositionsInitialized = true;
+        }
+
+        title.rectTransform.anchoredPosition = titleBasePosition + titleOffset;
+        description.rectTransform.anchoredPosition = descriptionBasePosition + descriptionOffset;
+        mana.rectTransform.anchoredPosition = manaBasePosition + manaOffset;
+    }
+
     private void LateUpdate()
     {
         RefreshManaCost();

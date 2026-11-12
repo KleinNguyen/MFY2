@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 8389134475083476877, guid: 9c6d19ea615fa694696be291547cea11, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -0.5, y: 5}
+  <CardVisualScale>k__BackingField: {x: 1.000582, y: 1.000000}
+  <DescriptionTextOffset>k__BackingField: {x: 3, y: 0}
+  <TitleTextOffset>k__BackingField: {x: 2.5, y: 2.5}
   <Description>k__BackingField: Draw 3 cards. You cannot draw any more cards this
     turn.
   <Mana>k__BackingField: 1

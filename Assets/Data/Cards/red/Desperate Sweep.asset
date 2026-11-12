@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 2960402581040015946, guid: 3f667c7cfa6d8854db781ddde44711cf, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -1.5, y: 2}
+  <CardVisualScale>k__BackingField: {x: 0.995823, y: 1.013464}
+  <DescriptionTextOffset>k__BackingField: {x: 0.5, y: 3}
+  <TitleTextOffset>k__BackingField: {x: 1.5, y: 1}
   <Description>k__BackingField: Lose 3 HP. Deal 9 damage to all enemies.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

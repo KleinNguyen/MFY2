@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 7680820834086852892, guid: 1df0bb9fa5a3b4e4bbda3a93c93bde60, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -0.5, y: -3}
+  <CardVisualScale>k__BackingField: {x: 1.004663, y: 1.017220}
+  <DescriptionTextOffset>k__BackingField: {x: -1, y: 0}
+  <TitleTextOffset>k__BackingField: {x: -0.5, y: -1}
   <Description>k__BackingField: Deal 5 damage to all enemies. Sly.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

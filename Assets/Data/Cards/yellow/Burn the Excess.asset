@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -1045133410153605164, guid: 2d9cefa90aa978141b664e67f0927db2, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -4.5, y: -2}
+  <CardVisualScale>k__BackingField: {x: 1.017197, y: 1.009637}
+  <DescriptionTextOffset>k__BackingField: {x: -3, y: 3}
+  <TitleTextOffset>k__BackingField: {x: -4.5, y: -1}
   <Description>k__BackingField: Exhaust up to 2 cards in your hand. Gain 2 Combo
     for each card exhausted.
   <Mana>k__BackingField: 0

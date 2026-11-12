@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 6660783624410144326, guid: 2d078d01ceee2b64db737d151e620f96, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -2.5, y: 0}
+  <CardVisualScale>k__BackingField: {x: 1.006259, y: 0.982134}
+  <DescriptionTextOffset>k__BackingField: {x: -2, y: -4.5}
+  <TitleTextOffset>k__BackingField: {x: -2, y: 0}
   <Description>k__BackingField: Spend up to 2 Combo. Draw 1 card for each Combo spent.
   <Mana>k__BackingField: 0
   <ExhaustOnPlay>k__BackingField: 0

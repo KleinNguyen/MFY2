@@ -11,6 +11,14 @@ public class CardData : ScriptableObject
     [field: SerializeField] public CharacterType Character { get; private set; }
     [field: SerializeField] public CardRarity Rarity { get; private set; }
     [field: SerializeField] public Sprite CardImage { get; private set; }
+    [field: SerializeField, Tooltip("Position offset from the prefab layout. Applied to gameplay and library cards.")]
+    public Vector2 TitleTextOffset { get; private set; }
+    [field: SerializeField, Tooltip("Position offset from the prefab layout. Applied to gameplay and library cards.")]
+    public Vector2 DescriptionTextOffset { get; private set; }
+    [field: SerializeField, Tooltip("Position offset from the prefab layout. Applied to gameplay and library cards.")]
+    public Vector2 ManaTextOffset { get; private set; }
+    [field: SerializeField, Tooltip("Per-card scale correction to keep the visible card frame the same size.")]
+    public Vector2 CardVisualScale { get; private set; } = Vector2.one;
     [field: SerializeField] public string Description { get; private set; }
     [field: SerializeField] public int Mana { get; private set; }
     [field: SerializeField] public bool ExhaustOnPlay { get; private set; }

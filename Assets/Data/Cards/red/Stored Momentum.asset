@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -5099292496197868168, guid: 2fce65a13e2a3244d83c17657b195f01, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -1.5, y: 2}
+  <CardVisualScale>k__BackingField: {x: 0.999430, y: 1.000000}
+  <DescriptionTextOffset>k__BackingField: {x: 1.5, y: -3.5}
+  <TitleTextOffset>k__BackingField: {x: 1, y: 0.5}
   <Description>k__BackingField: Deal damage equal to your current Block.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

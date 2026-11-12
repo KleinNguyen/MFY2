@@ -124,7 +124,7 @@ public class RewardUI : MonoBehaviour
         cardRect.pivot = new Vector2(0.5f, 0.5f);
         cardRect.offsetMin = Vector2.zero;
         cardRect.offsetMax = Vector2.zero;
-        cardRect.localScale = Vector3.one;
+        cardUI.SetLayoutScale(Vector3.one);
         cardRect.localRotation = Quaternion.identity;
 
         CanvasGroup canvasGroup = cardUI.GetComponent<CanvasGroup>();

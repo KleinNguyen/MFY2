@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -796155573255488767, guid: 261158a2b316bf5408870e7b60b13fa4, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -0.5, y: -2}
+  <CardVisualScale>k__BackingField: {x: 1.083982, y: 1.014085}
+  <DescriptionTextOffset>k__BackingField: {x: -5.5, y: 5}
+  <TitleTextOffset>k__BackingField: {x: -7, y: -1}
   <Description>k__BackingField: Each turn, after playing your fourth Attack, gain
     2 Combo and draw 1 card.
   <Mana>k__BackingField: 1

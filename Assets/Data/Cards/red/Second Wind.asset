@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 4164744761163438241, guid: da8b736055027f84287c3db11ac4222e, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -2.5, y: -5}
+  <CardVisualScale>k__BackingField: {x: 0.990050, y: 1.021246}
+  <DescriptionTextOffset>k__BackingField: {x: 2, y: -3.5}
+  <TitleTextOffset>k__BackingField: {x: 0, y: -3}
   <Description>k__BackingField: Restore 6 HP. Exhaust.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 1

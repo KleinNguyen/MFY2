@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -1540426309290004842, guid: d7ab7dc557cb67b4b971af7bcdaab8ab, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -2.5, y: 2}
+  <CardVisualScale>k__BackingField: {x: 1.010292, y: 0.991026}
+  <DescriptionTextOffset>k__BackingField: {x: 0.5, y: -5}
+  <TitleTextOffset>k__BackingField: {x: 1, y: 0.5}
   <Description>k__BackingField: Gain 9 Block. Exhaust a random card in your hand.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0

@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -8038976213705442086, guid: b9f05f600d939024a80269b5f2f449a5, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -2.5, y: -1}
+  <CardVisualScale>k__BackingField: {x: 0.994764, y: 0.990826}
+  <DescriptionTextOffset>k__BackingField: {x: 1, y: 0.5}
+  <TitleTextOffset>k__BackingField: {x: 0, y: 0.5}
   <Description>k__BackingField: Deal 8 damage. Restore 2 HP for each enemy with Weak,
     up to 6 HP.
   <Mana>k__BackingField: 1

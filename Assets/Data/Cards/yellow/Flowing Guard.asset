@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -8038976213705442086, guid: b7d309a50f2d8094a942d4247830ed73, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -0.5, y: 0}
+  <CardVisualScale>k__BackingField: {x: 1.032609, y: 1.008489}
+  <DescriptionTextOffset>k__BackingField: {x: -2, y: 5}
+  <TitleTextOffset>k__BackingField: {x: -4, y: 0}
   <Description>k__BackingField: Gain 7 Block. If you have at least 3 Combo, draw
     1 card.
   <Mana>k__BackingField: 1

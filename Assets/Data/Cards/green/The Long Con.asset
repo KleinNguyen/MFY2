@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -1540426309290004842, guid: f5ac3b68ca02acf47af8227a89546f9b, type: 3}
+  <ManaTextOffset>k__BackingField: {x: 1.5, y: -1}
+  <CardVisualScale>k__BackingField: {x: 1.004975, y: 1.019589}
+  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: 2}
+  <TitleTextOffset>k__BackingField: {x: 1.5, y: 0}
   <Description>k__BackingField: 'Deal 1 damage, plus 1 for each card drawn this combat.
     Maximum: 30 base damage.'
   <Mana>k__BackingField: 2

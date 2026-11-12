@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -6270953770400647376, guid: 40ec9a52361b6f144ab0b5d48dd6df2c, type: 3}
+  <ManaTextOffset>k__BackingField: {x: 1.5, y: 2}
+  <CardVisualScale>k__BackingField: {x: 1.021917, y: 1.004386}
+  <DescriptionTextOffset>k__BackingField: {x: 1, y: 1.5}
+  <TitleTextOffset>k__BackingField: {x: 0.5, y: 1}
   <Description>k__BackingField: Each turn, after playing your third Attack, gain
     2 Combo.Exhaust
   <Mana>k__BackingField: 1

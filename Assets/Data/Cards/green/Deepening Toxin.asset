@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 8288426215254106694, guid: 4468cbb3fd1234047b3e89eb1c7d5144, type: 3}
+  <ManaTextOffset>k__BackingField: {x: 1.5, y: 1}
+  <CardVisualScale>k__BackingField: {x: 0.989815, y: 1.003863}
+  <DescriptionTextOffset>k__BackingField: {x: 1, y: -1.5}
+  <TitleTextOffset>k__BackingField: {x: 2.5, y: 1}
   <Description>k__BackingField: Deal 8 damage. If the target has at least 5 Poison,
     deal 6 additional damage.
   <Mana>k__BackingField: 1

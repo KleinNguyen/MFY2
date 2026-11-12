@@ -15,6 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 8389134475083476877, guid: ef8bc87a30b997f4b82c957954aee8e1, type: 3}
+  <ManaTextOffset>k__BackingField: {x: -2.5, y: -1}
+  <CardVisualScale>k__BackingField: {x: 1.046916, y: 1.012855}
+  <DescriptionTextOffset>k__BackingField: {x: -5.5, y: 0.5}
+  <TitleTextOffset>k__BackingField: {x: -6, y: -1}
   <Description>k__BackingField: Deal 6 damage. If you have at least 3 Combo, attack
     again for 6 damage.
   <Mana>k__BackingField: 1
