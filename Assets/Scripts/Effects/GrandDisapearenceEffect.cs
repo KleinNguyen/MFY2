@@ -4,7 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class GrandDisappearanceEffect : Effect, ICardPlayCondition
 {
-    [SerializeField] private int requiredOtherCards = 4;
+    [SerializeField] private int requiredOtherCards = 2;
 
     public bool CanPlay(int otherCardsInHand)
     {
