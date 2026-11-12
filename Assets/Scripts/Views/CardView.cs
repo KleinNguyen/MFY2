@@ -15,6 +15,8 @@ public class CardView : MonoBehaviour
     [SerializeField] private LayerMask dropLayer;
     public Card Card { get; private set; }
     private bool selectedForExhaust;
+    private int lastDisplayedManaCost = -1;
+    private string lastDisplayedDescription;
 
     private Vector3 dragStartPosition;
     private Quaternion dragStartRotation;
@@ -29,8 +31,8 @@ public class CardView : MonoBehaviour
         Card = card;
 
         title.text = card.Title;
-        description.text = card.Description;
-        mana.text = card.Mana.ToString();
+        RefreshDescription();
+        RefreshManaCost();
 
         if (cardImage == null)
         {
@@ -52,9 +54,44 @@ public class CardView : MonoBehaviour
             );
         }
     }
+    private void LateUpdate()
+    {
+        RefreshManaCost();
+        RefreshDescription();
+    }
+
+    private void RefreshDescription()
+    {
+        if (Card == null || description == null) return;
+
+        string currentDescription = Card.Description ?? string.Empty;
+        if (lastDisplayedDescription == currentDescription) return;
+
+        lastDisplayedDescription = currentDescription;
+        description.text = currentDescription;
+    }
+
+    private int GetManaCost()
+    {
+        return CardSystem.Instance != null
+            ? CardSystem.Instance.GetManaCost(Card)
+            : Card.Mana;
+    }
+
+    private void RefreshManaCost()
+    {
+        if (Card == null || mana == null) return;
+
+        int manaCost = GetManaCost();
+        if (lastDisplayedManaCost == manaCost) return;
+
+        lastDisplayedManaCost = manaCost;
+        mana.text = manaCost.ToString();
+    }
+
     private void OnMouseEnter()
     {
-        if(!InteractionSystem.Instance.PlayerCanHover()) return;
+        if (!InteractionSystem.Instance.PlayerCanHover()) return;
         wrapper.SetActive(false);
         Vector3 pos = new(transform.position.x, -2, 0);
         CardViewHoverSystem.Instance.Show(Card, pos);
@@ -83,8 +120,8 @@ public class CardView : MonoBehaviour
 
             return;
         }
-        
-        if ( CardSystem.Instance != null &&CardSystem.Instance.IsChoosingCardToExhaust)
+
+        if (CardSystem.Instance != null && CardSystem.Instance.IsChoosingCardToExhaust)
         {
             selectedForExhaust = true;
             wrapper.SetActive(true);
@@ -98,7 +135,7 @@ public class CardView : MonoBehaviour
             return;
         }
         if (!InteractionSystem.Instance.PlayerCanInteract()) return;
-        if(Card.ManualTargetEffect != null)
+        if (Card.ManualTargetEffect != null)
         {
             ManualTargetSystem.Instance.StartTargeting(transform.position);
         }
@@ -129,10 +166,10 @@ public class CardView : MonoBehaviour
             return;
         }
         if (!InteractionSystem.Instance.PlayerCanInteract()) return;
-        if(Card.ManualTargetEffect != null)
+        if (Card.ManualTargetEffect != null)
         {
             EnemyView target = ManualTargetSystem.Instance.EndTargeting(MouseUtil.GetMousePositionInWorldSpace(-1));
-            if(target != null && ManaSystem.Instance.HasEnoughMana(Card.Mana))
+            if (target != null && CardSystem.Instance.CanPlayCard(Card))
             {
                 PlayCardGA playCardGA = new(Card, target);
                 ActionSystem.Instance.Perform(playCardGA);
@@ -140,7 +177,7 @@ public class CardView : MonoBehaviour
         }
         else
         {
-            if (ManaSystem.Instance.HasEnoughMana(Card.Mana) && Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, dropLayer))
+            if (CardSystem.Instance.CanPlayCard(Card) && Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, dropLayer))
             {
                 PlayCardGA playCardGA = new(Card);
                 ActionSystem.Instance.Perform(playCardGA);

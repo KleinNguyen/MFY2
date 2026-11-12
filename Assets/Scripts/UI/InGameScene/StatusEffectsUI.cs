@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatusEffecstUI : MonoBehaviour
+public class StatusEffectsUI : MonoBehaviour
 {
     [SerializeField] private StatusEffectUI statusEffectUIPrefab;
     [SerializeField] private Sprite armorSprite;
@@ -11,6 +11,7 @@ public class StatusEffecstUI : MonoBehaviour
     [SerializeField] private Sprite dexteritySprite;
     [SerializeField] private Sprite exposedSprite;
     [SerializeField] private Sprite armorBreakSprite;
+    [SerializeField] private Sprite comboSprite;
     private Dictionary<StatusEffectType, StatusEffectUI> statusEffectUIs = new();
     public void UpdateStatusEffectUI(
         StatusEffectType statusEffectType,
@@ -67,6 +68,8 @@ public class StatusEffecstUI : MonoBehaviour
             StatusEffectType.EXPOSED => exposedSprite,
 
             StatusEffectType.ARMOR_BREAK => armorBreakSprite,
+
+            StatusEffectType.COMBO => comboSprite,
 
             _ => null
         };

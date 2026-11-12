@@ -21,12 +21,8 @@ MonoBehaviour:
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
-    rid: -2
-  <OtherEffects>k__BackingField:
-  - <TargetMode>k__BackingField:
-      rid: 286842286307016837
-    <Effect>k__BackingField:
-      rid: -2
+    rid: 1468093466301694033
+  <OtherEffects>k__BackingField: []
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -38,6 +34,9 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 286842286307016837
-      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
-      data: 
+    - rid: 1468093466301694033
+      type: {class: DamageIfPoisonedEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage: 7
+        bonusDamage: 4
+        requiredPoisonStacks: 1

@@ -3,8 +3,8 @@ using UnityEngine;
 
 public static class MapGeneratorSystem
 {
-    // private const int FLOOR_COUNT = 2;
-    private const int FLOOR_COUNT = 10;
+     private const int FLOOR_COUNT = 2;
+    //private const int FLOOR_COUNT = 10;
     private const float FLOOR_SPACING = 300f;
     private const int COLUMN_COUNT = 7;
 

@@ -160,6 +160,9 @@ public class StatusEffectTooltipUI : Singleton<StatusEffectTooltipUI>
             StatusEffectType.DEXTERITY =>
                 "Each stack adds 1 Armor to Armor gained from cards.",
 
+            StatusEffectType.COMBO =>
+                "Resource used by Yellow cards. Kept between turns and spent by card effects. Resets each combat.",
+
             _ => "No description available."
         };
     }

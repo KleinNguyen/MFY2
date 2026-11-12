@@ -15,7 +15,7 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -1045133410153605164, guid: 05d44d5317d1c37449f486b4b667fe87, type: 3}
-  <Description>k__BackingField: Can only be played with at least 4 other cards in
+  <Description>k__BackingField: Can only be played with at least 3 other cards in
     your hand. Discard all of them. Next turn, your Attacks deal double damage. Exhaust.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 1
@@ -26,7 +26,7 @@ MonoBehaviour:
   - <TargetMode>k__BackingField:
       rid: 286842286307016837
     <Effect>k__BackingField:
-      rid: -2
+      rid: 1468093466301694110
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -41,3 +41,7 @@ MonoBehaviour:
     - rid: 286842286307016837
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1468093466301694110
+      type: {class: GrandDisappearanceEffect, ns: , asm: Assembly-CSharp}
+      data:
+        requiredOtherCards: 3

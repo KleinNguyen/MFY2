@@ -17,6 +17,11 @@ public class CardSystem : Singleton<CardSystem>
     private readonly List<Card> discardPile = new();
     private readonly List<Card> hand = new();
     private readonly List<Card> exhaustPile = new();
+    private readonly Dictionary<Card, int> additionalManaCostsThisTurn = new();
+    private readonly HashSet<Card> temporarySlyCards = new();
+    private readonly List<Card> pendingCopiesForNextTurn = new();
+    public int CardsDrawnThisCombat { get; private set; }
+    public ComboSystem Combo { get; private set; }
     public bool IsChoosingCardToExhaust { get; private set; }
     public bool IsChoosingCardToUpgrade { get; private set; }
     public bool IsViewingPile => cardSelectionUI != null &&
@@ -65,6 +70,52 @@ public class CardSystem : Singleton<CardSystem>
     private Card chosenCardToExhaust;
     private bool drawLocked;
     private bool isPlayerTurn = true;
+    private bool nextCardFree;
+    private int activeAttackDamageMultiplier = 1;
+    private int nextTurnAttackDamageMultiplier = 1;
+
+    public int AttackDamageMultiplier => isPlayerTurn ? activeAttackDamageMultiplier : 1;
+
+    public bool CanPlayCard(Card card)
+    {
+        return card != null && isPlayerTurn && hand.Contains(card) &&
+            MeetsCardPlayConditions(card) &&
+            ManaSystem.Instance != null && ManaSystem.Instance.HasEnoughMana(GetManaCost(card));
+    }
+
+    private bool MeetsCardPlayConditions(Card card)
+    {
+        int otherCardsInHand = hand.Count - (hand.Contains(card) ? 1 : 0);
+
+        if (card.ManualTargetEffect is ICardPlayCondition manualCondition &&
+            !manualCondition.CanPlay(otherCardsInHand))
+        {
+            return false;
+        }
+
+        if (card.OtherEffects != null)
+        {
+            foreach (AutoTargetEffect effectWrapper in card.OtherEffects)
+            {
+                if (effectWrapper != null && effectWrapper.Effect is ICardPlayCondition condition &&
+                    !condition.CanPlay(otherCardsInHand))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public int GetManaCost(Card card)
+    {
+        if (card == null) return 0;
+        if (nextCardFree && isPlayerTurn && hand.Contains(card)) return 0;
+
+        additionalManaCostsThisTurn.TryGetValue(card, out int additionalManaCost);
+        return Mathf.Max(0, card.Mana + additionalManaCost);
+    }
 
     private void OnEnable()
     {
@@ -77,16 +128,36 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.AttachPerformer<ExhaustHandAndDamageGA>(ExhaustHandAndDamagePerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
         ActionSystem.AttachPerformer<ChooseCardToExhaustGA>(ChooseCardToExhaustPerformer);
+        ActionSystem.AttachPerformer<ChooseCardToGrantSlyGA>(ChooseCardToGrantSlyPerformer);
+        ActionSystem.AttachPerformer<PocketedDoubleGA>(PocketedDoublePerformer);
+        ActionSystem.AttachPerformer<AddCardsToHandGA>(AddCardsToHandPerformer);
         ActionSystem.AttachPerformer<ChooseCardToUpgradeGA>(ChooseCardToUpgradePerformer);
         ActionSystem.AttachPerformer<ReclaimingBlowGA>(ReclaimingBlowPerformer);
         ActionSystem.AttachPerformer<RecoverDiscardCardGA>(RecoverDiscardCardPerformer);
+        ActionSystem.AttachPerformer<RecoveredTechniqueGA>(RecoveredTechniquePerformer);
         ActionSystem.AttachPerformer<DiscardCardsGA>(DiscardCardsPerformer);
+        ActionSystem.AttachPerformer<ToxicRequisitionGA>(ToxicRequisitionPerformer);
+        ActionSystem.AttachPerformer<CleanSweepGA>(CleanSweepPerformer);
+        ActionSystem.AttachPerformer<GrandDisappearanceGA>(GrandDisappearancePerformer);
+        ActionSystem.AttachPerformer<NextCardFreeGA>(NextCardFreePerformer);
         ActionSystem.AttachPerformer<PlayDiscardedSlyCardsGA>(PlayDiscardedSlyCardsPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
+        ActionSystem.AttachPerformer<ExhaustCardsForComboGA>(ExhaustCardsForComboPerformer);
+
+        Combo = GetComponent<ComboSystem>();
+        if (Combo == null) Combo = gameObject.AddComponent<ComboSystem>();
+        Combo.enabled = true;
     }
 
     private void OnDisable()
     {
+        if (Combo != null) Combo.enabled = false;
+        activeAttackDamageMultiplier = 1;
+        nextTurnAttackDamageMultiplier = 1;
+        ResetTemporarySlyCards();
+        pendingCopiesForNextTurn.Clear();
+        nextCardFree = false;
+        additionalManaCostsThisTurn.Clear();
         ActionSystem.DetachPerformer<DrawCardsGA>();
         ActionSystem.DetachPerformer<DiscardAllCardsGA>();
         ActionSystem.DetachPerformer<PlayCardGA>();
@@ -95,17 +166,34 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.DetachPerformer<LockDrawGA>();
         ActionSystem.DetachPerformer<ExhaustHandAndDamageGA>();
         ActionSystem.DetachPerformer<ChooseCardToExhaustGA>();
+        ActionSystem.DetachPerformer<ChooseCardToGrantSlyGA>();
+        ActionSystem.DetachPerformer<PocketedDoubleGA>();
+        ActionSystem.DetachPerformer<AddCardsToHandGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
         ActionSystem.DetachPerformer<ChooseCardToUpgradeGA>();
         ActionSystem.DetachPerformer<ReclaimingBlowGA>();
         ActionSystem.DetachPerformer<RecoverDiscardCardGA>();
+        ActionSystem.DetachPerformer<RecoveredTechniqueGA>();
         ActionSystem.DetachPerformer<DiscardCardsGA>();
+        ActionSystem.DetachPerformer<ToxicRequisitionGA>();
+        ActionSystem.DetachPerformer<CleanSweepGA>();
+        ActionSystem.DetachPerformer<GrandDisappearanceGA>();
+        ActionSystem.DetachPerformer<NextCardFreeGA>();
         ActionSystem.DetachPerformer<PlayDiscardedSlyCardsGA>();
+        ActionSystem.DetachPerformer<ExhaustCardsForComboGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
     }
     //public
     public void Setup(List<CardData> deckData)
     {
+        if (Combo != null) Combo.ResetCombat();
+        activeAttackDamageMultiplier = 1;
+        nextTurnAttackDamageMultiplier = 1;
+        ResetTemporarySlyCards();
+        pendingCopiesForNextTurn.Clear();
+        CardsDrawnThisCombat = 0;
+        nextCardFree = false;
+        additionalManaCostsThisTurn.Clear();
         isPlayerTurn = true;
         priorityDrawCards.Clear();
         IsChoosingCardToUpgrade = false;
@@ -160,17 +248,20 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator PlayCardPerformer(PlayCardGA action)
     {
+        action.ResetPlayResult();
         if (action.Card == null || !isPlayerTurn)
         {
             yield break;
         }
 
         bool cardIsInHand = hand.Contains(action.Card);
+        int manaCost = GetManaCost(action.Card);
 
         if (action.IsSlyPlay)
         {
 
-            if (!action.Card.IsSly || (!cardIsInHand && !discardPile.Contains(action.Card)))
+            if (!action.Card.IsSly || (!cardIsInHand && !discardPile.Contains(action.Card)) ||
+                !MeetsCardPlayConditions(action.Card))
             {
                 yield break;
             }
@@ -200,7 +291,7 @@ public class CardSystem : Singleton<CardSystem>
         }
         else
         {
-            if (!cardIsInHand || !ManaSystem.Instance.HasEnoughMana(action.Card.Mana))
+            if (!CanPlayCard(action.Card))
             {
                 yield break;
             }
@@ -226,6 +317,11 @@ public class CardSystem : Singleton<CardSystem>
                 yield break;
             }
 
+            if (!action.IsSlyPlay)
+            {
+                nextCardFree = false;
+            }
+
             hand.Remove(action.Card);
 
             if (action.Card.ExhaustOnPlay)
@@ -248,13 +344,15 @@ public class CardSystem : Singleton<CardSystem>
             }
         }
 
+        if (Combo != null) Combo.RecordCardPlay(action);
+
         if (action.IsSlyPlay)
         {
             Debug.Log("Sly auto-play: " + action.Card.Title);
         }
         else
         {
-            SpendManaGA spendManaGA = new(action.Card.Mana);
+            SpendManaGA spendManaGA = new(manaCost);
             ActionSystem.Instance.AddReaction(spendManaGA);
         }
 
@@ -313,6 +411,7 @@ public class CardSystem : Singleton<CardSystem>
         }
 
         hand.Add(card);
+        CardsDrawnThisCombat++;
 
         pileUI.UpdateDrawPileText(drawPile.Count);
 
@@ -404,8 +503,17 @@ public class CardSystem : Singleton<CardSystem>
     }
     private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
     {
+        activeAttackDamageMultiplier = nextTurnAttackDamageMultiplier;
+        nextTurnAttackDamageMultiplier = 1;
         drawLocked = false;
         isPlayerTurn = true;
+
+        if (pendingCopiesForNextTurn.Count > 0)
+        {
+            AddCardsToHandGA addCopiesGA = new(pendingCopiesForNextTurn);
+            pendingCopiesForNextTurn.Clear();
+            ActionSystem.Instance.AddReaction(addCopiesGA);
+        }
     }
     private IEnumerator ExhaustHandAndDamagePerformer(
     ExhaustHandAndDamageGA action
@@ -469,6 +577,11 @@ public class CardSystem : Singleton<CardSystem>
     ChooseCardToExhaustGA action
 )
     {
+        if (action.RequireExhaust && hand.Count == 0)
+        {
+            yield break;
+        }
+
         if (hand.Count > 0)
         {
             chosenCardToExhaust = null;
@@ -476,9 +589,16 @@ public class CardSystem : Singleton<CardSystem>
 
             Debug.Log("Choose a card in your hand to exhaust.");
 
-            yield return new WaitUntil(
-                () => chosenCardToExhaust != null
-            );
+            while (chosenCardToExhaust == null)
+            {
+                if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+                {
+                    IsChoosingCardToExhaust = false;
+                    yield break;
+                }
+
+                yield return null;
+            }
 
             IsChoosingCardToExhaust = false;
 
@@ -504,10 +624,171 @@ public class CardSystem : Singleton<CardSystem>
         if (action.DrawAmount > 0)
         {
             DrawCardsGA drawCardsGA = new(action.DrawAmount);
+            drawCardsGA.CardCaster = action.CardCaster;
+            drawCardsGA.SourceCard = action.SourceCard;
 
             ActionSystem.Instance.AddReaction(drawCardsGA);
         }
+
+        if (action.BlockAmount > 0 && action.CardCaster != null)
+        {
+            AddStatusEffectGA blockGA = new(
+                StatusEffectType.ARMOR,
+                action.BlockAmount,
+                new List<CombatantView> { action.CardCaster }
+            );
+            blockGA.CardCaster = action.CardCaster;
+            blockGA.SourceCard = action.SourceCard;
+            ActionSystem.Instance.AddReaction(blockGA);
+        }
     }
+    private IEnumerator ChooseCardToGrantSlyPerformer(ChooseCardToGrantSlyGA action)
+    {
+        if (!isPlayerTurn || hand.Count == 0)
+        {
+            yield break;
+        }
+
+        if (cardSelectionUI == null)
+        {
+            Debug.LogError("Card Selection UI is not assigned in CardSystem.");
+            yield break;
+        }
+
+        Card selectedCard = null;
+        List<Card> choices = new(hand);
+
+        bool opened = cardSelectionUI.Open(
+            choices,
+            "Choose a card to gain Sly this turn",
+            card => selectedCard = card
+        );
+
+        if (!opened)
+        {
+            yield break;
+        }
+
+        while (selectedCard == null && cardSelectionUI != null && cardSelectionUI.IsOpen)
+        {
+            if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+            {
+                cardSelectionUI.Close();
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        if (cardSelectionUI != null)
+        {
+            cardSelectionUI.Close();
+        }
+
+        if (selectedCard == null || !hand.Contains(selectedCard))
+        {
+            yield break;
+        }
+
+        selectedCard.GrantTemporarySly();
+        temporarySlyCards.Add(selectedCard);
+    }
+
+    private IEnumerator PocketedDoublePerformer(PocketedDoubleGA action)
+    {
+        if (!isPlayerTurn || hand.Count == 0 || action.CopyAmount <= 0)
+        {
+            yield break;
+        }
+
+        if (cardSelectionUI == null)
+        {
+            Debug.LogError("Card Selection UI is not assigned in CardSystem.");
+            yield break;
+        }
+
+        Card selectedCard = null;
+        List<Card> choices = new(hand);
+
+        bool opened = cardSelectionUI.Open(
+            choices,
+            "Choose a card to copy next turn",
+            card => selectedCard = card
+        );
+
+        if (!opened)
+        {
+            yield break;
+        }
+
+        while (selectedCard == null && cardSelectionUI != null && cardSelectionUI.IsOpen)
+        {
+            if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+            {
+                cardSelectionUI.Close();
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        if (cardSelectionUI != null)
+        {
+            cardSelectionUI.Close();
+        }
+
+        if (selectedCard == null || !hand.Contains(selectedCard))
+        {
+            yield break;
+        }
+
+        for (int i = 0; i < action.CopyAmount; i++)
+        {
+            pendingCopiesForNextTurn.Add(selectedCard.CreateCombatCopy());
+        }
+    }
+
+    private IEnumerator AddCardsToHandPerformer(AddCardsToHandGA action)
+    {
+        if (!isPlayerTurn || action.Cards == null)
+        {
+            yield break;
+        }
+
+        foreach (Card card in action.Cards)
+        {
+            if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+            {
+                yield break;
+            }
+
+            if (card == null)
+            {
+                continue;
+            }
+
+            hand.Add(card);
+
+            CardView cardView = CardViewCreator.Instance.CreateCardView(
+                card,
+                drawPilePoint.position,
+                drawPilePoint.rotation
+            );
+
+            yield return handView.AddCard(cardView);
+        }
+    }
+
+    private void ResetTemporarySlyCards()
+    {
+        foreach (Card card in temporarySlyCards)
+        {
+            card.ClearTemporarySly();
+        }
+
+        temporarySlyCards.Clear();
+    }
+
     public void ChooseCardToUpgrade(CardView cardView)
     {
         if (!IsChoosingCardToUpgrade || cardView == null)
@@ -596,6 +877,43 @@ public class CardSystem : Singleton<CardSystem>
 
         yield return null;
     }
+    private IEnumerator RecoveredTechniquePerformer(RecoveredTechniqueGA action)
+    {
+        if (!isPlayerTurn)
+        {
+            yield break;
+        }
+
+        List<Card> choices = discardPile.FindAll(
+            card => card != null && card != action.SourceCard
+        );
+
+        if (choices.Count == 0)
+        {
+            yield break;
+        }
+
+        Card recoveredCard = choices[Random.Range(0, choices.Count)];
+        discardPile.Remove(recoveredCard);
+
+        if (action.AdditionalManaCost > 0)
+        {
+            additionalManaCostsThisTurn.TryGetValue(recoveredCard, out int currentAdditionalCost);
+            additionalManaCostsThisTurn[recoveredCard] = currentAdditionalCost + action.AdditionalManaCost;
+        }
+
+        hand.Add(recoveredCard);
+        pileUI.UpdateDiscardPileText(discardPile.Count);
+
+        CardView cardView = CardViewCreator.Instance.CreateCardView(
+            recoveredCard,
+            discardPilePoint.position,
+            discardPilePoint.rotation
+        );
+
+        yield return handView.AddCard(cardView);
+    }
+
     private IEnumerator RecoverDiscardCardPerformer(RecoverDiscardCardGA action)
     {
         List<Card> choices = new();
@@ -643,6 +961,7 @@ public class CardSystem : Singleton<CardSystem>
         {
             cardSelectionUI.Close();
         }
+
         if (selectedCard == null || !discardPile.Remove(selectedCard))
         {
             yield break;
@@ -731,6 +1050,202 @@ public class CardSystem : Singleton<CardSystem>
             ActionSystem.Instance.AddReaction(slyGA);
         }
     }
+    private IEnumerator ToxicRequisitionPerformer(ToxicRequisitionGA action)
+    {
+        if (!isPlayerTurn || action.Caster == null || action.Targets == null ||
+            !action.Targets.Exists(target => target != null && target.CurrentHealth > 0))
+        {
+            yield break;
+        }
+
+        int discardLimit = Mathf.Clamp(action.MaxDiscard, 0, hand.Count);
+
+        if (discardLimit > 0 && cardSelectionUI == null)
+        {
+            Debug.LogError("Card Selection UI is not assigned in CardSystem.");
+            yield break;
+        }
+
+        List<Card> discardedCards = new();
+        bool finished = false;
+
+        for (int i = 0; i < discardLimit; i++)
+        {
+            Card selectedCard = null;
+            List<Card> choices = new(hand);
+
+            bool opened = cardSelectionUI.Open(
+                choices,
+                "Discard up to " + discardLimit + " cards (" + discardedCards.Count + " discarded). Done to finish.",
+                card => selectedCard = card,
+                onFinished: () => finished = true
+            );
+
+            if (!opened)
+            {
+                break;
+            }
+
+            while (!finished && selectedCard == null && cardSelectionUI != null && cardSelectionUI.IsOpen)
+            {
+                if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+                {
+                    cardSelectionUI.Close();
+                    yield break;
+                }
+
+                yield return null;
+            }
+
+            if (cardSelectionUI != null && cardSelectionUI.IsOpen)
+            {
+                cardSelectionUI.Close();
+            }
+
+            if (finished || selectedCard == null || !hand.Contains(selectedCard))
+            {
+                break;
+            }
+
+            if (CardViewHoverSystem.Instance != null)
+            {
+                CardViewHoverSystem.Instance.Hide();
+            }
+
+            CardView cardView = handView.RemoveCard(selectedCard);
+
+            if (cardView == null)
+            {
+                Debug.LogError("Cannot discard card: CardView was not found in hand.");
+                break;
+            }
+
+            hand.Remove(selectedCard);
+            yield return DiscardCard(cardView);
+            discardedCards.Add(selectedCard);
+        }
+
+        if (discardedCards.Count == 0 ||
+            (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver))
+        {
+            yield break;
+        }
+
+        DealDamageGA damageGA = new(
+            Mathf.Max(0, action.DamagePerCard * discardedCards.Count),
+            action.Targets,
+            action.Caster
+        );
+        damageGA.CardCaster = action.CardCaster;
+        damageGA.SourceCard = action.SourceCard;
+        ActionSystem.Instance.AddReaction(damageGA);
+
+        PlayDiscardedSlyCardsGA slyGA = new(discardedCards);
+        slyGA.CardCaster = action.CardCaster;
+        slyGA.SourceCard = action.SourceCard;
+        ActionSystem.Instance.AddReaction(slyGA);
+    }
+
+    private IEnumerator GrandDisappearancePerformer(GrandDisappearanceGA action)
+    {
+        if (!isPlayerTurn || hand.Count < action.RequiredOtherCards)
+        {
+            yield break;
+        }
+
+        if (CardViewHoverSystem.Instance != null)
+        {
+            CardViewHoverSystem.Instance.Hide();
+        }
+
+        List<Card> cardsToDiscard = new(hand);
+        List<Card> discardedCards = new();
+
+        foreach (Card card in cardsToDiscard)
+        {
+            if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+            {
+                yield break;
+            }
+
+            CardView cardView = handView.RemoveCard(card);
+
+            if (cardView == null)
+            {
+                Debug.LogError("Cannot discard card: CardView was not found in hand.");
+                continue;
+            }
+
+            hand.Remove(card);
+            yield return DiscardCard(cardView);
+            discardedCards.Add(card);
+        }
+
+        if (discardedCards.Count >= action.RequiredOtherCards)
+        {
+            nextTurnAttackDamageMultiplier *= 2;
+        }
+
+        if (discardedCards.Count > 0)
+        {
+            PlayDiscardedSlyCardsGA slyGA = new(discardedCards);
+            slyGA.CardCaster = action.CardCaster;
+            slyGA.SourceCard = action.SourceCard;
+            ActionSystem.Instance.AddReaction(slyGA);
+        }
+    }
+
+    private IEnumerator CleanSweepPerformer(CleanSweepGA action)
+    {
+        if (!isPlayerTurn)
+        {
+            yield break;
+        }
+
+        if (CardViewHoverSystem.Instance != null)
+        {
+            CardViewHoverSystem.Instance.Hide();
+        }
+
+        List<Card> cardsToDiscard = new(hand);
+        List<Card> discardedCards = new();
+
+        foreach (Card card in cardsToDiscard)
+        {
+            if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+            {
+                yield break;
+            }
+
+            CardView cardView = handView.RemoveCard(card);
+
+            if (cardView == null)
+            {
+                Debug.LogError("Cannot discard card: CardView was not found in hand.");
+                continue;
+            }
+
+            hand.Remove(card);
+            yield return DiscardCard(cardView);
+            discardedCards.Add(card);
+        }
+
+        if (discardedCards.Count == 0)
+        {
+            yield break;
+        }
+
+        PlayDiscardedSlyCardsGA slyGA = new(discardedCards);
+        slyGA.CardCaster = action.CardCaster;
+        slyGA.SourceCard = action.SourceCard;
+        ActionSystem.Instance.AddReaction(slyGA);
+
+        DrawCardsGA drawCardsGA = new(discardedCards.Count);
+        drawCardsGA.CardCaster = action.CardCaster;
+        drawCardsGA.SourceCard = action.SourceCard;
+        ActionSystem.Instance.AddReaction(drawCardsGA);
+    }
+
     private IEnumerator PlayDiscardedSlyCardsPerformer(PlayDiscardedSlyCardsGA action)
     {
         if (!isPlayerTurn || action.Cards == null)
@@ -752,8 +1267,136 @@ public class CardSystem : Singleton<CardSystem>
 
         yield return null;
     }
+    private IEnumerator NextCardFreePerformer(NextCardFreeGA action)
+    {
+        if (isPlayerTurn)
+        {
+            nextCardFree = true;
+        }
+
+        yield return null;
+    }
+
     private void EnemyTurnPreReaction(EnemyTurnGA action)
     {
+        activeAttackDamageMultiplier = 1;
+        ResetTemporarySlyCards();
+        nextCardFree = false;
+        additionalManaCostsThisTurn.Clear();
         isPlayerTurn = false;
+    }
+    private IEnumerator ExhaustCardsForComboPerformer(
+    ExhaustCardsForComboGA action
+)
+    {
+        action.ActualExhausted = 0;
+
+        if (!isPlayerTurn ||
+            action.CardCaster == null ||
+            action.CardCaster.CurrentHealth <= 0)
+        {
+            yield break;
+        }
+
+        int exhaustLimit = Mathf.Clamp(action.MaxExhaust, 0, hand.Count);
+
+        if (exhaustLimit == 0)
+        {
+            yield break;
+        }
+
+        if (cardSelectionUI == null)
+        {
+            Debug.LogError("Card Selection UI is not assigned in CardSystem.");
+            yield break;
+        }
+
+        bool finished = false;
+
+        for (int i = 0; i < exhaustLimit; i++)
+        {
+            Card selectedCard = null;
+
+            bool opened = cardSelectionUI.Open(
+                new List<Card>(hand),
+                "Exhaust up to " + exhaustLimit + " cards (" +
+                    action.ActualExhausted + " exhausted). Done to finish.",
+                card => selectedCard = card,
+                onFinished: () => finished = true
+            );
+
+            if (!opened)
+            {
+                break;
+            }
+
+            while (!finished &&
+                   selectedCard == null &&
+                   cardSelectionUI != null &&
+                   cardSelectionUI.IsOpen)
+            {
+                if (BattleSystem.Instance != null &&
+                    BattleSystem.Instance.IsBattleOver)
+                {
+                    cardSelectionUI.Close();
+                    yield break;
+                }
+
+                yield return null;
+            }
+
+            if (cardSelectionUI != null && cardSelectionUI.IsOpen)
+            {
+                cardSelectionUI.Close();
+            }
+
+            if (finished ||
+                selectedCard == null ||
+                !hand.Contains(selectedCard))
+            {
+                break;
+            }
+
+            if (CardViewHoverSystem.Instance != null)
+            {
+                CardViewHoverSystem.Instance.Hide();
+            }
+
+            CardView cardView = handView.RemoveCard(selectedCard);
+
+            if (cardView == null)
+            {
+                Debug.LogError(
+                    "Cannot exhaust selected card: CardView was not found in hand."
+                );
+
+                break;
+            }
+
+            hand.Remove(selectedCard);
+
+            yield return ExhaustCard(cardView);
+
+            action.ActualExhausted++;
+        }
+
+        if (action.ActualExhausted <= 0 ||
+            action.ComboPerCard <= 0 ||
+            (BattleSystem.Instance != null &&
+             BattleSystem.Instance.IsBattleOver))
+        {
+            yield break;
+        }
+
+        AddStatusEffectGA gain = new(
+            StatusEffectType.COMBO,
+            action.ActualExhausted * action.ComboPerCard,
+            new List<CombatantView> { action.CardCaster }
+        );
+
+        gain.CardCaster = action.CardCaster;
+        gain.SourceCard = action.SourceCard;
+
+        ActionSystem.Instance.AddReaction(gain);
     }
 }

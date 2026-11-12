@@ -11,7 +11,7 @@ public class DamageSystem : MonoBehaviour
 
     private void OnEnable()
     {
-        ActionSystem.AttachPerformer<DealDamageGA>(DealDamagePerformer); 
+        ActionSystem.AttachPerformer<DealDamageGA>(DealDamagePerformer);
         ActionSystem.AttachPerformer<BlockThenDamageGA>(BlockThenDamagePerformer);
         ActionSystem.AttachPerformer<DamageThenWeakBonusGA>(DamageThenWeakBonusPerformer);
         ActionSystem.AttachPerformer<BonusDamageIfWeakGA>(BonusDamageIfWeakPerformer);
@@ -51,7 +51,7 @@ public class DamageSystem : MonoBehaviour
             bool targetHasWeak =
                 target.GetStatusEffectStacks(StatusEffectType.WEAK) > 0;
 
-            int finalDamage = dealDamageGA.Amount;
+            int finalDamage = dealDamageGA.GetDamageForTarget(target);
             if (
                 dealDamageGA.IsAttack &&
                 dealDamageGA.Caster is HeroView heroCaster
@@ -60,6 +60,12 @@ public class DamageSystem : MonoBehaviour
                 finalDamage += heroCaster.GetStatusEffectStacks(
                     StatusEffectType.STRENGTH
                 );
+            }
+
+            if (dealDamageGA.IsAttack && dealDamageGA.Caster is HeroView &&
+                CardSystem.Instance != null)
+            {
+                finalDamage *= CardSystem.Instance.AttackDamageMultiplier;
             }
 
             finalDamage = Mathf.Max(0, finalDamage);
@@ -112,6 +118,22 @@ public class DamageSystem : MonoBehaviour
             {
                 if (target is EnemyView enemyView)
                 {
+                    if (dealDamageGA.ComboOnKill > 0 &&
+                        dealDamageGA.Caster is HeroView comboHero &&
+                        comboHero.CurrentHealth > 0)
+                    {
+                        AddStatusEffectGA gainComboGA = new(
+                            StatusEffectType.COMBO,
+                            dealDamageGA.ComboOnKill,
+                            new List<CombatantView> { comboHero }
+                        );
+
+                        gainComboGA.CardCaster = dealDamageGA.CardCaster;
+                        gainComboGA.SourceCard = dealDamageGA.SourceCard;
+
+                        ActionSystem.Instance.AddReaction(gainComboGA);
+                    }
+
                     KillEnemyGA killEnemyGA = new(enemyView);
 
                     ActionSystem.Instance.AddReaction(killEnemyGA);
@@ -236,28 +258,39 @@ public class DamageSystem : MonoBehaviour
         yield return null;
     }
     private IEnumerator DamageThenWeakBonusPerformer(
-    DamageThenWeakBonusGA action
-)
+    DamageThenWeakBonusGA action)
     {
         if (action.Targets == null || action.Targets.Count == 0)
         {
             yield break;
         }
-        DealDamageGA baseDamageGA = new(
+
+        DealDamageGA damage = new(
             action.BaseDamage,
             action.Targets,
             action.Caster
         );
 
-        ActionSystem.Instance.AddReaction(baseDamageGA);
-        BonusDamageIfWeakGA bonusDamageGA = new(
-            action.BonusDamage,
-            action.Targets,
-            action.Caster
-        );
+        damage.CardCaster = action.CardCaster;
+        damage.SourceCard = action.SourceCard;
 
-        ActionSystem.Instance.AddReaction(bonusDamageGA);
+        foreach (CombatantView target in action.Targets)
+        {
+            if (target == null || target.CurrentHealth <= 0)
+            {
+                continue;
+            }
 
+            if (target.GetStatusEffectStacks(StatusEffectType.WEAK) > 0)
+            {
+                damage.SetBonusDamageForTarget(
+                    target,
+                    action.BonusDamage
+                );
+            }
+        }
+
+        ActionSystem.Instance.AddReaction(damage);
         yield return null;
     }
     private IEnumerator BonusDamageIfWeakPerformer(

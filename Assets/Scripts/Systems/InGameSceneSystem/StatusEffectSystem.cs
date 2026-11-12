@@ -5,9 +5,12 @@ using UnityEngine;
 public class StatusEffectSystem : MonoBehaviour
 {
     private const float ARMOR_BREAK_REDUCTION = 0.25f;
+    private int cardBlockMultiplier = 1;
 
     private void OnEnable()
     {
+        cardBlockMultiplier = 1;
+        ActionSystem.AttachPerformer<FortifiedTrapGA>(FortifiedTrapPerformer);
         ActionSystem.AttachPerformer<AddStatusEffectGA>(AddStatusEffectPerformer);
         ActionSystem.AttachPerformer<RemoveStatusEffectGA>(RemoveStatusEffectPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EndPlayerTurnReaction, ReactionTiming.PRE);
@@ -16,6 +19,8 @@ public class StatusEffectSystem : MonoBehaviour
 
     private void OnDisable()
     {
+        cardBlockMultiplier = 1;
+        ActionSystem.DetachPerformer<FortifiedTrapGA>();
         ActionSystem.DetachPerformer<AddStatusEffectGA>();
         ActionSystem.DetachPerformer<RemoveStatusEffectGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EndPlayerTurnReaction, ReactionTiming.PRE);
@@ -48,6 +53,11 @@ public class StatusEffectSystem : MonoBehaviour
 
                 finalStackCount = Mathf.Max(0, finalStackCount);
 
+                if (action.CardCaster is HeroView && target == action.CardCaster)
+                {
+                    finalStackCount *= cardBlockMultiplier;
+                }
+
                 int armorBreak = target.GetStatusEffectStacks(StatusEffectType.ARMOR_BREAK);
 
                 if (armorBreak > 0)
@@ -71,7 +81,7 @@ public class StatusEffectSystem : MonoBehaviour
                     StatusEffectType.POISON => SfxId.PoisonApplied,
                     StatusEffectType.EXPOSED or StatusEffectType.ARMOR_BREAK =>
                         SfxId.DebuffApplied,
-                    StatusEffectType.STRENGTH or StatusEffectType.DEXTERITY =>
+                    StatusEffectType.STRENGTH or StatusEffectType.DEXTERITY or StatusEffectType.COMBO =>
                         SfxId.BuffApplied,
                     _ => null
                 };
@@ -84,6 +94,12 @@ public class StatusEffectSystem : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    private IEnumerator FortifiedTrapPerformer(FortifiedTrapGA action)
+    {
+        cardBlockMultiplier *= 2;
+        yield return null;
     }
 
     private IEnumerator RemoveStatusEffectPerformer(RemoveStatusEffectGA action)
@@ -108,6 +124,8 @@ public class StatusEffectSystem : MonoBehaviour
 
     private void EndPlayerTurnReaction(EnemyTurnGA action)
     {
+        cardBlockMultiplier = 1;
+
         if (HeroSystem.Instance == null || HeroSystem.Instance.HeroView == null)
         {
             return;

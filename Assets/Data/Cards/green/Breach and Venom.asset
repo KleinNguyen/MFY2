@@ -21,7 +21,7 @@ MonoBehaviour:
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093466301694028
   <OtherEffects>k__BackingField: []
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
@@ -34,3 +34,8 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1468093466301694028
+      type: {class: BreachAndVenomEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 7
+        armorBreakStacks: 2

@@ -14,8 +14,8 @@ public class CombatantView : MonoBehaviour
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private Image healthFillImage;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private StatusEffecstUI statusEffectsUI;
-    [SerializeField] private Sprite[] statusEffectOverlaySprites = new Sprite[7];
+    [SerializeField] private StatusEffectsUI statusEffectsUI;
+    [SerializeField] private Sprite[] statusEffectOverlaySprites = new Sprite[8];
     public int MaxHealth { get; private set; }
     public int CurrentHealth { get; private set; }
     protected SpriteRenderer CombatantSpriteRenderer => spriteRenderer;
@@ -130,19 +130,20 @@ public class CombatantView : MonoBehaviour
     {
         int remainingDamge = damageAmount;
         int currentArmor = GetStatusEffectStacks(StatusEffectType.ARMOR);
-        if(currentArmor > 0)
+        if (currentArmor > 0)
         {
-            if(currentArmor>= damageAmount)
+            if (currentArmor >= damageAmount)
             {
                 RemoveStatusEffect(StatusEffectType.ARMOR, remainingDamge);
                 remainingDamge = 0;
-            } else if(currentArmor < damageAmount)
+            }
+            else if (currentArmor < damageAmount)
             {
                 RemoveStatusEffect(StatusEffectType.ARMOR, currentArmor);
                 remainingDamge -= currentArmor;
             }
         }
-        if(remainingDamge > 0)
+        if (remainingDamge > 0)
         {
             CurrentHealth -= remainingDamge;
             if (CurrentHealth < 0)
@@ -155,6 +156,11 @@ public class CombatantView : MonoBehaviour
     }
     public void AddStatusEffect(StatusEffectType type, int stackCount)
     {
+        if (type == StatusEffectType.COMBO)
+        {
+            stackCount = Mathf.Max(0, stackCount);
+            if (stackCount == 0) return;
+        }
         if (statusEffects.ContainsKey(type))
         {
             statusEffects[type] += stackCount;
@@ -173,6 +179,12 @@ public class CombatantView : MonoBehaviour
     private void ShowStatusEffectOverlay(StatusEffectType type)
     {
         int spriteIndex = (int)type;
+        if (type == StatusEffectType.COMBO &&
+            (statusEffectOverlaySprites == null || spriteIndex >= statusEffectOverlaySprites.Length ||
+             statusEffectOverlaySprites[spriteIndex] == null))
+        {
+            return;
+        }
         if (
             statusEffectOverlaySprites == null ||
             spriteIndex < 0 ||
@@ -311,10 +323,19 @@ public class CombatantView : MonoBehaviour
         sequence.Append(hitRenderer.DOFade(0f, 0.3f));
         sequence.SetLink(hitObject);
         yield return sequence.WaitForCompletion();
+        if (hitObject != null)
+        {
+            Destroy(hitObject);
+        }
     }
 
     public void RemoveStatusEffect(StatusEffectType type, int stackCount)
     {
+        if (type == StatusEffectType.COMBO)
+        {
+            stackCount = Mathf.Max(0, stackCount);
+            if (stackCount == 0) return;
+        }
         if (statusEffects.ContainsKey(type))
         {
             statusEffects[type] -= stackCount;
@@ -328,7 +349,7 @@ public class CombatantView : MonoBehaviour
     public int GetStatusEffectStacks(StatusEffectType type)
     {
         if (statusEffects.ContainsKey(type)) return statusEffects[type];
-        else return 0; 
+        else return 0;
     }
     public void SetCurrentHealth(int health)
     {

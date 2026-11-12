@@ -25,7 +25,7 @@ MonoBehaviour:
   - <TargetMode>k__BackingField:
       rid: 286842286307016837
     <Effect>k__BackingField:
-      rid: -2
+      rid: 1468093466301694060
   <CanUpgrade>k__BackingField: 0
   <UpgradedDescription>k__BackingField: 
   <UpgradedMana>k__BackingField: 0
@@ -40,3 +40,8 @@ MonoBehaviour:
     - rid: 286842286307016837
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1468093466301694060
+      type: {class: IncreaseTurnManaEffect, ns: , asm: Assembly-CSharp}
+      data:
+        amount: 2
+        nextTurnOnly: 1
