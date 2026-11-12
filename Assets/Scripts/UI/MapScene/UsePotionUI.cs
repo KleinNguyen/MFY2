@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class RunPotionUI : MonoBehaviour
+public class UsePotionUI : MonoBehaviour
 {
 
     [SerializeField] private Button healthPotionButton;

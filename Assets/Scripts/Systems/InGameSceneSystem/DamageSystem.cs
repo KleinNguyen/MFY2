@@ -258,28 +258,39 @@ public class DamageSystem : MonoBehaviour
         yield return null;
     }
     private IEnumerator DamageThenWeakBonusPerformer(
-    DamageThenWeakBonusGA action
-)
+    DamageThenWeakBonusGA action)
     {
         if (action.Targets == null || action.Targets.Count == 0)
         {
             yield break;
         }
-        DealDamageGA baseDamageGA = new(
+
+        DealDamageGA damage = new(
             action.BaseDamage,
             action.Targets,
             action.Caster
         );
 
-        ActionSystem.Instance.AddReaction(baseDamageGA);
-        BonusDamageIfWeakGA bonusDamageGA = new(
-            action.BonusDamage,
-            action.Targets,
-            action.Caster
-        );
+        damage.CardCaster = action.CardCaster;
+        damage.SourceCard = action.SourceCard;
 
-        ActionSystem.Instance.AddReaction(bonusDamageGA);
+        foreach (CombatantView target in action.Targets)
+        {
+            if (target == null || target.CurrentHealth <= 0)
+            {
+                continue;
+            }
 
+            if (target.GetStatusEffectStacks(StatusEffectType.WEAK) > 0)
+            {
+                damage.SetBonusDamageForTarget(
+                    target,
+                    action.BonusDamage
+                );
+            }
+        }
+
+        ActionSystem.Instance.AddReaction(damage);
         yield return null;
     }
     private IEnumerator BonusDamageIfWeakPerformer(

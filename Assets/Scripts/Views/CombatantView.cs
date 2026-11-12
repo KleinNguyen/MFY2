@@ -14,7 +14,7 @@ public class CombatantView : MonoBehaviour
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private Image healthFillImage;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private StatusEffecstUI statusEffectsUI;
+    [SerializeField] private StatusEffectsUI statusEffectsUI;
     [SerializeField] private Sprite[] statusEffectOverlaySprites = new Sprite[8];
     public int MaxHealth { get; private set; }
     public int CurrentHealth { get; private set; }
@@ -323,6 +323,10 @@ public class CombatantView : MonoBehaviour
         sequence.Append(hitRenderer.DOFade(0f, 0.3f));
         sequence.SetLink(hitObject);
         yield return sequence.WaitForCompletion();
+        if (hitObject != null)
+        {
+            Destroy(hitObject);
+        }
     }
 
     public void RemoveStatusEffect(StatusEffectType type, int stackCount)

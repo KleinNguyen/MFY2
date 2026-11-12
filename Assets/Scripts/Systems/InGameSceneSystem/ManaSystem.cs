@@ -78,10 +78,16 @@ public class ManaSystem : Singleton<ManaSystem>
         RefillManaGA refillManaGA = new();
         ActionSystem.Instance.AddReaction(refillManaGA);
     }
+    public void GainMana(int amount)
+    {
+        if (amount <= 0) return;
+
+        currentMana += amount;
+        manaUI.UpdateManaText(currentMana);
+    }
     private IEnumerator GainManaPerformer(GainManaGA action)
     {
-        RestoreMana(action.Amount);
-
+        GainMana(action.Amount);
         yield return null;
     }
     private IEnumerator IncreaseTurnManaPerformer(IncreaseTurnManaGA action)

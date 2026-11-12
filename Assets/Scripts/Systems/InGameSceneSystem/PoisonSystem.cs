@@ -21,10 +21,25 @@ public class PoisonSystem : MonoBehaviour
         target.Damage(applyPoisonGA.PoisonDamage);
         target.RemoveStatusEffect(StatusEffectType.POISON, 1);
         yield return new WaitForSeconds(1f);
-        if(target.CurrentHealth <= 0 && target is EnemyView enemyView)
+        if (target.CurrentHealth <= 0)
         {
-            KillEnemyGA killEnemyGA = new(enemyView);
-            ActionSystem.Instance.AddReaction(killEnemyGA);
+            if (target is EnemyView enemyView)
+            {
+                KillEnemyGA killEnemyGA = new(enemyView);
+                ActionSystem.Instance.AddReaction(killEnemyGA);
+            }
+            else if (target is HeroView)
+            {
+                if (RunSystem.Instance != null)
+                {
+                    RunSystem.Instance.SaveHealth(0);
+                }
+
+                if (BattleSystem.Instance != null)
+                {
+                    BattleSystem.Instance.Defeat();
+                }
+            }
         }
     }
 }
