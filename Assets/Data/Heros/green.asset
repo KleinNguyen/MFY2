@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67a6147af0c4b19479bdfc1d72ae808b, type: 3}
-  m_Name: 2ndHero
+  m_Name: green
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
   <Image>k__BackingField: {fileID: -7065721614544851415, guid: 081ed05436c2a194fb6b23da02eedd49, type: 3}
@@ -31,3 +31,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 05529845a6487374bb1b4c7308a5d9bd, type: 2}
   - {fileID: 11400000, guid: 05529845a6487374bb1b4c7308a5d9bd, type: 2}
   - {fileID: 11400000, guid: 05529845a6487374bb1b4c7308a5d9bd, type: 2}
+  <StartingPerk>k__BackingField: {fileID: 11400000, guid: 75f69fb3dbc7c7344a05bbacd2a78569, type: 2}
