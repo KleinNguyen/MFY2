@@ -34,7 +34,7 @@ MonoBehaviour:
       rid: 1468093377958117644
   <CanUpgrade>k__BackingField: 1
   <UpgradedDescription>k__BackingField: Draw 5 cards. You cannot draw any more cards
-    this turn.
+    this turn.Exhaust.
   <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
@@ -61,4 +61,4 @@ MonoBehaviour:
     - rid: 1468093514728341672
       type: {class: FocusedStudyEffect, ns: , asm: Assembly-CSharp}
       data:
-        drawAmount: 3
+        drawAmount: 5

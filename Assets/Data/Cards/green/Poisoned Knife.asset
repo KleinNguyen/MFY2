@@ -41,7 +41,7 @@ MonoBehaviour:
       data:
         damageAmount: 3
         statusEffectType: 2
-        stackCount: 3
+        stackCount: 2
     - rid: 1468093514728341622
       type: {class: DamageThenStatusEffect, ns: , asm: Assembly-CSharp}
       data:

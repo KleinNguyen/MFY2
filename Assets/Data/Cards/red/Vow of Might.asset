@@ -41,7 +41,7 @@ MonoBehaviour:
     - rid: 1468093377958117698
       type: {class: VowOfMightEffect, ns: , asm: Assembly-CSharp}
       data:
-        healthAmount: 3
+        healthAmount: 2
         strengthAmount: 2
         weakAmount: 1
     - rid: 1468093514728341704

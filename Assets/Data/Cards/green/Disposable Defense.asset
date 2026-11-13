@@ -32,7 +32,7 @@ MonoBehaviour:
     <Effect>k__BackingField:
       rid: 1468093405773430912
   <CanUpgrade>k__BackingField: 1
-  <UpgradedDescription>k__BackingField: Gain 12 Block. Exhaust.
+  <UpgradedDescription>k__BackingField: Gain 15 Block. Exhaust.
   <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2

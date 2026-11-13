@@ -19,7 +19,7 @@ MonoBehaviour:
   <DescriptionTextOffset>k__BackingField: {x: -0.5, y: -2.5}
   <ManaTextOffset>k__BackingField: {x: -3.5, y: -2}
   <CardVisualScale>k__BackingField: {x: 1.00561, y: 1.008489}
-  <Description>k__BackingField: Lose 3 HP. Gain 1 mana. Exhaust.
+  <Description>k__BackingField: Lose 3 HP. Gain 2 mana. Exhaust.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
@@ -36,7 +36,7 @@ MonoBehaviour:
     <Effect>k__BackingField:
       rid: 1468093377958117583
   <CanUpgrade>k__BackingField: 1
-  <UpgradedDescription>k__BackingField: Lose 2 HP. Gain 2 mana. Exhaust.
+  <UpgradedDescription>k__BackingField: Lose 2 HP. Gain 3 mana. Exhaust.
   <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
@@ -67,7 +67,7 @@ MonoBehaviour:
     - rid: 1468093377958117583
       type: {class: GainManaEffect, ns: , asm: Assembly-CSharp}
       data:
-        manaAmount: 1
+        manaAmount: 2
     - rid: 1468093514728341650
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
@@ -81,4 +81,4 @@ MonoBehaviour:
     - rid: 1468093514728341654
       type: {class: GainManaEffect, ns: , asm: Assembly-CSharp}
       data:
-        manaAmount: 2
+        manaAmount: 3

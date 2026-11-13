@@ -21,7 +21,7 @@ MonoBehaviour:
   <CardVisualScale>k__BackingField: {x: 0.990526, y: 1.013773}
   <Description>k__BackingField: Gain 1 additional mana at the start of each turn,
     starting next turn.Exhaust.
-  <Mana>k__BackingField: 3
+  <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
   <IsAttack>k__BackingField: 0
@@ -34,15 +34,15 @@ MonoBehaviour:
       rid: 1468093377958117668
   <CanUpgrade>k__BackingField: 1
   <UpgradedDescription>k__BackingField: Gain 2 additional mana at the start of each
-    turn, starting next turn.
-  <UpgradedMana>k__BackingField: 3
+    turn, starting next turn.Exhaust.
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
   <UpgradedOtherEffects>k__BackingField:
   - <TargetMode>k__BackingField:
-      rid: -2
+      rid: 1468093514728341816
     <Effect>k__BackingField:
-      rid: -2
+      rid: 1468093514728341817
   references:
     version: 2
     RefIds:
@@ -55,4 +55,12 @@ MonoBehaviour:
       type: {class: IncreaseTurnManaEffect, ns: , asm: Assembly-CSharp}
       data:
         amount: 1
+        nextTurnOnly: 0
+    - rid: 1468093514728341816
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341817
+      type: {class: IncreaseTurnManaEffect, ns: , asm: Assembly-CSharp}
+      data:
+        amount: 2
         nextTurnOnly: 0

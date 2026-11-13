@@ -30,7 +30,7 @@ MonoBehaviour:
   <OtherEffects>k__BackingField: []
   <CanUpgrade>k__BackingField: 1
   <UpgradedDescription>k__BackingField: Spend all Combo. Deal 10 damage, plus 4 for
-    each Combo spent. If this defeats the target, regain 2 Combo.
+    each Combo spent. If this defeats the target, regain 5 Combo.
   <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: 1468093514728341724
