@@ -15,15 +15,16 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 2720535173406242035, guid: 1bc24532d32b9fb4ca9edf62abd5c04f, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 2, y: -1}
+  <DescriptionTextOffset>k__BackingField: {x: 1, y: -0.5}
   <ManaTextOffset>k__BackingField: {x: -1.5, y: -1}
   <CardVisualScale>k__BackingField: {x: 0.990526, y: 1.013773}
-  <DescriptionTextOffset>k__BackingField: {x: 1, y: -0.5}
-  <TitleTextOffset>k__BackingField: {x: 2, y: -1}
   <Description>k__BackingField: Gain 1 additional mana at the start of each turn,
-    starting next turn.
+    starting next turn.Exhaust.
   <Mana>k__BackingField: 3
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -31,12 +32,17 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093377958117668
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Gain 2 additional mana at the start of each
+    turn, starting next turn.
+  <UpgradedMana>k__BackingField: 3
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: -2
+    <Effect>k__BackingField:
+      rid: -2
   references:
     version: 2
     RefIds:
@@ -49,3 +55,4 @@ MonoBehaviour:
       type: {class: IncreaseTurnManaEffect, ns: , asm: Assembly-CSharp}
       data:
         amount: 1
+        nextTurnOnly: 0

@@ -15,28 +15,30 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -5099292496197868168, guid: 2fce65a13e2a3244d83c17657b195f01, type: 3}
-  <ManaTextOffset>k__BackingField: {x: -1.5, y: 2}
-  <CardVisualScale>k__BackingField: {x: 0.999430, y: 1.000000}
-  <DescriptionTextOffset>k__BackingField: {x: 1.5, y: -3.5}
   <TitleTextOffset>k__BackingField: {x: 1, y: 0.5}
+  <DescriptionTextOffset>k__BackingField: {x: 1.5, y: -3.5}
+  <ManaTextOffset>k__BackingField: {x: -1.5, y: 2}
+  <CardVisualScale>k__BackingField: {x: 0.99943, y: 1}
   <Description>k__BackingField: Deal damage equal to your current Block.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: 1468093377958117556
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Deal damage equal to your current Block.
   <UpgradedMana>k__BackingField: 0
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341689
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093377958117556
+      type: {class: DamageFromBlockEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341689
       type: {class: DamageFromBlockEffect, ns: , asm: Assembly-CSharp}
       data: 

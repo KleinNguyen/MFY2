@@ -15,15 +15,16 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 6937817954938267909, guid: 7e6254df078fed2479288d1dc3ed049f, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 1, y: -1.5}
+  <DescriptionTextOffset>k__BackingField: {x: 1, y: -4.5}
   <ManaTextOffset>k__BackingField: {x: 1.5, y: -2}
   <CardVisualScale>k__BackingField: {x: 1.038816, y: 1.003863}
-  <DescriptionTextOffset>k__BackingField: {x: 1, y: -4.5}
-  <TitleTextOffset>k__BackingField: {x: 1, y: -1.5}
   <Description>k__BackingField: Gain 6 Block. If you have lost HP from a card this
     turn, gain 4 additional Block.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -31,12 +32,17 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093377958117627
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Gain 8 Block. If you have lost HP from a
+    card this turn, gain 6 additional Block.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341678
+    <Effect>k__BackingField:
+      rid: 1468093514728341679
   references:
     version: 2
     RefIds:
@@ -50,3 +56,11 @@ MonoBehaviour:
       data:
         baseBlock: 6
         bonusBlock: 4
+    - rid: 1468093514728341678
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341679
+      type: {class: BlockIfLostHealthEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseBlock: 8
+        bonusBlock: 6

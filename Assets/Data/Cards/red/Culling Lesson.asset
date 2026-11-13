@@ -15,15 +15,16 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -1045133410153605164, guid: c81fdc5568707994da9fbd6494ce8603, type: 3}
+  <TitleTextOffset>k__BackingField: {x: -1, y: -2.5}
+  <DescriptionTextOffset>k__BackingField: {x: 0.5, y: 0.5}
   <ManaTextOffset>k__BackingField: {x: -2.5, y: -5}
   <CardVisualScale>k__BackingField: {x: 1.009612, y: 1.013464}
-  <DescriptionTextOffset>k__BackingField: {x: 0.5, y: 0.5}
-  <TitleTextOffset>k__BackingField: {x: -1, y: -2.5}
   <Description>k__BackingField: Exhaust a card of your choice from your hand, then
     draw 2 cards.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -31,12 +32,17 @@ MonoBehaviour:
       rid: 1468093377958117689
     <Effect>k__BackingField:
       rid: 1468093377958117690
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Exhaust a card of your choice from your hand,
+    then draw 3 cards.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341662
+    <Effect>k__BackingField:
+      rid: 1468093514728341663
   references:
     version: 2
     RefIds:
@@ -49,3 +55,10 @@ MonoBehaviour:
       type: {class: ChooseCardToExhaustEffect, ns: , asm: Assembly-CSharp}
       data:
         drawAmount: 2
+    - rid: 1468093514728341662
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341663
+      type: {class: ChooseCardToExhaustEffect, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 3

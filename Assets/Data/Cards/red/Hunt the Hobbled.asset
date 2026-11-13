@@ -15,32 +15,38 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -8038976213705442086, guid: b9f05f600d939024a80269b5f2f449a5, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 0, y: 0.5}
+  <DescriptionTextOffset>k__BackingField: {x: 1, y: 0.5}
   <ManaTextOffset>k__BackingField: {x: -2.5, y: -1}
   <CardVisualScale>k__BackingField: {x: 0.994764, y: 0.990826}
-  <DescriptionTextOffset>k__BackingField: {x: 1, y: 0.5}
-  <TitleTextOffset>k__BackingField: {x: 0, y: 0.5}
   <Description>k__BackingField: Deal 8 damage. Restore 2 HP for each enemy with Weak,
     up to 6 HP.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: 1468093377958117649
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Deal 10 damage. Restore 2 HP for each enemy
+    with Weak, up to 10 HP.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341673
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093377958117649
       type: {class: DamageHealPerWeakEnemyEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 8
         healPerWeakEnemy: 2
         maxHeal: 6
+    - rid: 1468093514728341673
+      type: {class: DamageHealPerWeakEnemyEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 10
+        healPerWeakEnemy: 2
+        maxHeal: 10

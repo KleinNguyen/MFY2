@@ -15,30 +15,34 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 7157561037332017152, guid: 02a52d49e55c69849bc8dd63a9b214de, type: 3}
+  <TitleTextOffset>k__BackingField: {x: -1.5, y: -1.5}
+  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: -1}
   <ManaTextOffset>k__BackingField: {x: 1.5, y: -3}
   <CardVisualScale>k__BackingField: {x: 1.030298, y: 1.007656}
-  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: -1}
-  <TitleTextOffset>k__BackingField: {x: -1.5, y: -1.5}
-  <Description>k__BackingField: Exhaust the remaining cards in your hand. Deal 7
-    damage to one enemy for each card exhausted. Exhaust.
-  <Mana>k__BackingField: 1
+  <Description>k__BackingField: Exhaust the remaining cards in your hand. Deal 6
+    damage to one enemy for each card exhausted.
+  <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: 1468093377958117679
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Exhaust the remaining cards in your hand.
+    Deal 8 damage to one enemy for each card exhausted.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341659
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093377958117679
       type: {class: ExhaustHandAndDamageEffect, ns: , asm: Assembly-CSharp}
       data:
-        damagePerCard: 7
+        damagePerCard: 6
+    - rid: 1468093514728341659
+      type: {class: ExhaustHandAndDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damagePerCard: 8

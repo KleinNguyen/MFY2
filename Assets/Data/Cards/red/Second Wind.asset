@@ -15,14 +15,15 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 4164744761163438241, guid: da8b736055027f84287c3db11ac4222e, type: 3}
-  <ManaTextOffset>k__BackingField: {x: -2.5, y: -5}
-  <CardVisualScale>k__BackingField: {x: 0.990050, y: 1.021246}
-  <DescriptionTextOffset>k__BackingField: {x: 2, y: -3.5}
   <TitleTextOffset>k__BackingField: {x: 0, y: -3}
-  <Description>k__BackingField: Restore 6 HP. Exhaust.
+  <DescriptionTextOffset>k__BackingField: {x: 2, y: -3.5}
+  <ManaTextOffset>k__BackingField: {x: -2.5, y: -5}
+  <CardVisualScale>k__BackingField: {x: 0.99005, y: 1.021246}
+  <Description>k__BackingField: Restore 5 HP. Exhaust.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -30,12 +31,16 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093377958117547
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Restore 8 HP. Exhaust.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341687
+    <Effect>k__BackingField:
+      rid: 1468093514728341688
   references:
     version: 2
     RefIds:
@@ -47,4 +52,11 @@ MonoBehaviour:
     - rid: 1468093377958117547
       type: {class: HealEffect, ns: , asm: Assembly-CSharp}
       data:
-        healAmount: 6
+        healAmount: 5
+    - rid: 1468093514728341687
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341688
+      type: {class: HealEffect, ns: , asm: Assembly-CSharp}
+      data:
+        healAmount: 8

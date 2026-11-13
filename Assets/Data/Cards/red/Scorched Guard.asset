@@ -15,14 +15,15 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -1540426309290004842, guid: d7ab7dc557cb67b4b971af7bcdaab8ab, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 1, y: 0.5}
+  <DescriptionTextOffset>k__BackingField: {x: 0.5, y: -5}
   <ManaTextOffset>k__BackingField: {x: -2.5, y: 2}
   <CardVisualScale>k__BackingField: {x: 1.010292, y: 0.991026}
-  <DescriptionTextOffset>k__BackingField: {x: 0.5, y: -5}
-  <TitleTextOffset>k__BackingField: {x: 1, y: 0.5}
-  <Description>k__BackingField: Gain 9 Block. Exhaust a random card in your hand.
+  <Description>k__BackingField: Gain 10 Block. Exhaust a random card in your hand.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -34,12 +35,21 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093377958117637
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Gain 13 Block. Exhaust a random card in your
+    hand.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341684
+    <Effect>k__BackingField:
+      rid: 1468093514728341685
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341683
+    <Effect>k__BackingField:
+      rid: 1468093514728341686
   references:
     version: 2
     RefIds:
@@ -52,7 +62,21 @@ MonoBehaviour:
       type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
       data:
         statusEffectType: 0
-        stackCount: 9
+        stackCount: 10
     - rid: 1468093377958117637
+      type: {class: ExhaustRandomCardEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341683
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341684
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341685
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 13
+    - rid: 1468093514728341686
       type: {class: ExhaustRandomCardEffect, ns: , asm: Assembly-CSharp}
       data: 

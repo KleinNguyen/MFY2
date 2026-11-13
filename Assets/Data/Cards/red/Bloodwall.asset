@@ -18,7 +18,7 @@ MonoBehaviour:
   <TitleTextOffset>k__BackingField: {x: -1, y: 6}
   <DescriptionTextOffset>k__BackingField: {x: -1, y: 4}
   <ManaTextOffset>k__BackingField: {x: -1.5, y: 5}
-  <CardVisualScale>k__BackingField: {x: 0.980100, y: 0.964593}
+  <CardVisualScale>k__BackingField: {x: 0.9801, y: 0.964593}
   <Description>k__BackingField: Lose 2 HP. Gain 5 Block.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
@@ -35,12 +35,20 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093377958117585
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Lose 2 HP. Gain 10 Block.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341655
+    <Effect>k__BackingField:
+      rid: 1468093514728341656
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341657
+    <Effect>k__BackingField:
+      rid: 1468093514728341658
   references:
     version: 2
     RefIds:
@@ -58,3 +66,18 @@ MonoBehaviour:
       data:
         statusEffectType: 0
         stackCount: 5
+    - rid: 1468093514728341655
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341656
+      type: {class: LoseHealthEffect, ns: , asm: Assembly-CSharp}
+      data:
+        healthAmount: 2
+    - rid: 1468093514728341657
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341658
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 10

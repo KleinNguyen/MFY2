@@ -15,14 +15,15 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 3465286685962602723, guid: 0dd99ffe245106f46a59a7c5ed75a784, type: 3}
-  <ManaTextOffset>k__BackingField: {x: 0.5, y: 5}
-  <CardVisualScale>k__BackingField: {x: 1.019510, y: 1.004651}
-  <DescriptionTextOffset>k__BackingField: {x: 3, y: 0.5}
   <TitleTextOffset>k__BackingField: {x: 1, y: 2.5}
+  <DescriptionTextOffset>k__BackingField: {x: 3, y: 0.5}
+  <ManaTextOffset>k__BackingField: {x: 0.5, y: 5}
+  <CardVisualScale>k__BackingField: {x: 1.01951, y: 1.004651}
   <Description>k__BackingField: Deal 5 damage and apply 1 Weak to all enemies.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -34,12 +35,20 @@ MonoBehaviour:
       rid: 1468093377958117593
     <Effect>k__BackingField:
       rid: 1468093377958117595
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Deal 8 damage and apply 3 Weak to all enemies.
   <UpgradedMana>k__BackingField: 0
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341690
+    <Effect>k__BackingField:
+      rid: 1468093514728341691
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341692
+    <Effect>k__BackingField:
+      rid: 1468093514728341693
   references:
     version: 2
     RefIds:
@@ -57,3 +66,18 @@ MonoBehaviour:
       data:
         statusEffectType: 1
         stackCount: 1
+    - rid: 1468093514728341690
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341691
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 8
+    - rid: 1468093514728341692
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341693
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 1
+        stackCount: 3

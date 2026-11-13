@@ -15,15 +15,16 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 7680820834086852892, guid: 05870de64e1e99c4aa5e8a5fe8cfebef, type: 3}
-  <ManaTextOffset>k__BackingField: {x: -4.5, y: 6}
-  <CardVisualScale>k__BackingField: {x: 1.000000, y: 1.000000}
-  <DescriptionTextOffset>k__BackingField: {x: 0, y: 2}
   <TitleTextOffset>k__BackingField: {x: -1.5, y: 4.5}
-  <Description>k__BackingField: 'Power: Each turn, the first time you lose HP from
-    a card, gain 1 Strength and 1 Dexterity for that turn.'
-  <Mana>k__BackingField: 1
+  <DescriptionTextOffset>k__BackingField: {x: 0, y: 2}
+  <ManaTextOffset>k__BackingField: {x: -4.5, y: 6}
+  <CardVisualScale>k__BackingField: {x: 1, y: 1}
+  <Description>k__BackingField: Each turn, the first time you lose HP from a card,
+    gain 1 Strength and 1 Dexterity for that turn.Exhaust
+  <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -31,12 +32,17 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093405773430884
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Each turn, the first time you lose HP from
+    a card, gain 2 Strength and 2 Dexterity for that turn.Exhaust
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341648
+    <Effect>k__BackingField:
+      rid: 1468093514728341649
   references:
     version: 2
     RefIds:
@@ -49,3 +55,10 @@ MonoBehaviour:
       type: {class: GainAdversityPowerEffect, ns: , asm: Assembly-CSharp}
       data:
         amount: 1
+    - rid: 1468093514728341648
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341649
+      type: {class: GainAdversityPowerEffect, ns: , asm: Assembly-CSharp}
+      data:
+        amount: 2
