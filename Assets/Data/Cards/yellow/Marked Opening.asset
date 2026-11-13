@@ -15,10 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -855298285791758126, guid: 90a806c3a567ba040b538103ec623675, type: 3}
+  <TitleTextOffset>k__BackingField: {x: -2.5, y: 0}
+  <DescriptionTextOffset>k__BackingField: {x: -2, y: -0.5}
   <ManaTextOffset>k__BackingField: {x: -0.5, y: 1}
   <CardVisualScale>k__BackingField: {x: 1.030751, y: 1.021246}
-  <DescriptionTextOffset>k__BackingField: {x: -2, y: -0.5}
-  <TitleTextOffset>k__BackingField: {x: -2.5, y: 0}
   <Description>k__BackingField: Deal 7 damage. If the target has Exposed, gain 2
     Combo.
   <Mana>k__BackingField: 1
@@ -28,19 +28,23 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093488209330288
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Deal 10 damage. If the target has Exposed,
+    gain 3 Combo.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341733
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093488209330288
       type: {class: MarkedOpeningEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 7
         comboGain: 2
+    - rid: 1468093514728341733
+      type: {class: MarkedOpeningEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 10
+        comboGain: 3

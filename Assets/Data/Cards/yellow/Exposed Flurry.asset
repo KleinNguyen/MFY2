@@ -15,11 +15,11 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 4164744761163438241, guid: 95ef56a40f356ad4ab56c3dadad08f25, type: 3}
-  <ManaTextOffset>k__BackingField: {x: -0.5, y: 2}
-  <CardVisualScale>k__BackingField: {x: 1.006922, y: 1.000000}
-  <DescriptionTextOffset>k__BackingField: {x: 0, y: 1.5}
   <TitleTextOffset>k__BackingField: {x: 0, y: 1}
-  <Description>k__BackingField: Attack 4 times for 4 damage each. If the target has
+  <DescriptionTextOffset>k__BackingField: {x: 0, y: 1.5}
+  <ManaTextOffset>k__BackingField: {x: -0.5, y: 2}
+  <CardVisualScale>k__BackingField: {x: 1.006922, y: 1}
+  <Description>k__BackingField: Attack 3 times for 3 damage each. If the target has
     Exposed, each hit deals 2 additional damage.
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 0
@@ -28,20 +28,25 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093488209330307
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Attack 4 times for 4 damage each. If the
+    target has Exposed, each hit deals 3 additional damage.
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341723
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093488209330307
+      type: {class: ExposedFlurryEffect, ns: , asm: Assembly-CSharp}
+      data:
+        hitCount: 3
+        damagePerHit: 3
+        bonusDamageIfExposed: 2
+    - rid: 1468093514728341723
       type: {class: ExposedFlurryEffect, ns: , asm: Assembly-CSharp}
       data:
         hitCount: 4
         damagePerHit: 4
-        bonusDamageIfExposed: 2
+        bonusDamageIfExposed: 3

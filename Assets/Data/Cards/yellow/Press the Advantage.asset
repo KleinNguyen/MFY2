@@ -15,10 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -2966200626249415253, guid: 238c83266922e914d887eede5f3dac0c, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 0.5, y: -1.5}
+  <DescriptionTextOffset>k__BackingField: {x: 1.5, y: -4.5}
   <ManaTextOffset>k__BackingField: {x: 1.5, y: -3}
   <CardVisualScale>k__BackingField: {x: 1.016423, y: 0.999517}
-  <DescriptionTextOffset>k__BackingField: {x: 1.5, y: -4.5}
-  <TitleTextOffset>k__BackingField: {x: 0.5, y: -1.5}
   <Description>k__BackingField: Deal 6 damage. Gain 1 Combo.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
@@ -31,17 +31,19 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093488209330270
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Deal 9 damage. Gain 2 Combo.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+    rid: 1468093514728341738
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341739
+    <Effect>k__BackingField:
+      rid: 1468093514728341740
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 286842286307016837
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
@@ -54,3 +56,15 @@ MonoBehaviour:
       data:
         statusEffectType: 7
         stackCount: 1
+    - rid: 1468093514728341738
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 9
+    - rid: 1468093514728341739
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341740
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 7
+        stackCount: 2

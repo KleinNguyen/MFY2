@@ -15,10 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 1
   <CardImage>k__BackingField: {fileID: 4113829005332862926, guid: bbbbd35be6e50fd4eaac1607d89dcfbc, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 0.5, y: 3.5}
+  <DescriptionTextOffset>k__BackingField: {x: 2, y: 0.5}
   <ManaTextOffset>k__BackingField: {x: 2.5, y: 5}
   <CardVisualScale>k__BackingField: {x: 1.021505, y: 0.995392}
-  <DescriptionTextOffset>k__BackingField: {x: 2, y: 0.5}
-  <TitleTextOffset>k__BackingField: {x: 0.5, y: 3.5}
   <Description>k__BackingField: Attack twice for 3 damage each. Gain 1 Combo.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
@@ -31,17 +31,19 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093488209330280
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Attack twice for 5 damage each. Gain 2 Combo.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+    rid: 1468093514728341755
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341754
+    <Effect>k__BackingField:
+      rid: 1468093514728341756
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 286842286307016837
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
@@ -55,3 +57,16 @@ MonoBehaviour:
       data:
         statusEffectType: 7
         stackCount: 1
+    - rid: 1468093514728341754
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341755
+      type: {class: FollowThroughEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 5
+        requiredCombo: 0
+    - rid: 1468093514728341756
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 7
+        stackCount: 2

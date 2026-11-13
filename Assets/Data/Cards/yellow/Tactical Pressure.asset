@@ -15,10 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -5622901713081898559, guid: 9f52025804435aa44855203a1004d5f0, type: 3}
+  <TitleTextOffset>k__BackingField: {x: -0.5, y: 3}
+  <DescriptionTextOffset>k__BackingField: {x: 1.5, y: 6}
   <ManaTextOffset>k__BackingField: {x: 4.5, y: 4}
   <CardVisualScale>k__BackingField: {x: 1.043417, y: 0.991638}
-  <DescriptionTextOffset>k__BackingField: {x: 1.5, y: 6}
-  <TitleTextOffset>k__BackingField: {x: -0.5, y: 3}
   <Description>k__BackingField: Gain 7 Block. If you have played at least 2 Attacks
     this turn, deal 6 damage to the enemy with the lowest HP.
   <Mana>k__BackingField: 1
@@ -32,12 +32,17 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093488209330321
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Gain 10 Block. If you have played at least
+    2 Attacks this turn, deal 8 damage to the enemy with the lowest HP.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341746
+    <Effect>k__BackingField:
+      rid: 1468093514728341747
   references:
     version: 2
     RefIds:
@@ -52,3 +57,12 @@ MonoBehaviour:
         blockAmount: 7
         requiredAttacks: 2
         damageAmount: 6
+    - rid: 1468093514728341746
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341747
+      type: {class: TacticalPressureEffect, ns: , asm: Assembly-CSharp}
+      data:
+        blockAmount: 10
+        requiredAttacks: 2
+        damageAmount: 8

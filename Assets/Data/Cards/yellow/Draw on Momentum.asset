@@ -15,13 +15,13 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 6660783624410144326, guid: 2d078d01ceee2b64db737d151e620f96, type: 3}
+  <TitleTextOffset>k__BackingField: {x: -2, y: 0}
+  <DescriptionTextOffset>k__BackingField: {x: -2, y: -4.5}
   <ManaTextOffset>k__BackingField: {x: -2.5, y: 0}
   <CardVisualScale>k__BackingField: {x: 1.006259, y: 0.982134}
-  <DescriptionTextOffset>k__BackingField: {x: -2, y: -4.5}
-  <TitleTextOffset>k__BackingField: {x: -2, y: 0}
-  <Description>k__BackingField: Spend up to 2 Combo. Draw 1 card for each Combo spent.
-  <Mana>k__BackingField: 0
-  <ExhaustOnPlay>k__BackingField: 0
+  <Description>k__BackingField: Spend up to 3 Combo. Draw 1 card for each Combo spent.Exhaust,
+  <Mana>k__BackingField: 1
+  <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
   <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
@@ -31,12 +31,17 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093488209330302
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Spend up to 5 Combo. Draw 1 card for each
+    Combo spent.Exhaust
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341717
+    <Effect>k__BackingField:
+      rid: 1468093514728341718
   references:
     version: 2
     RefIds:
@@ -48,5 +53,13 @@ MonoBehaviour:
     - rid: 1468093488209330302
       type: {class: DrawOnMomentumEffect, ns: , asm: Assembly-CSharp}
       data:
-        maxComboSpend: 2
+        maxComboSpend: 3
+        drawPerCombo: 1
+    - rid: 1468093514728341717
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341718
+      type: {class: DrawOnMomentumEffect, ns: , asm: Assembly-CSharp}
+      data:
+        maxComboSpend: 5
         drawPerCombo: 1

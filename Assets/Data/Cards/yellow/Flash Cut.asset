@@ -15,30 +15,32 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 8102358098348255977, guid: 92eb068d2dd38ab479ed24e321d11829, type: 3}
-  <ManaTextOffset>k__BackingField: {x: -5.5, y: -2}
-  <CardVisualScale>k__BackingField: {x: 1.017590, y: 1.026683}
-  <DescriptionTextOffset>k__BackingField: {x: -5.5, y: 3.5}
   <TitleTextOffset>k__BackingField: {x: -4.5, y: -1.5}
-  <Description>k__BackingField: Deal 8 damage. Exhaust.
-  <Mana>k__BackingField: 0
+  <DescriptionTextOffset>k__BackingField: {x: -5.5, y: 3.5}
+  <ManaTextOffset>k__BackingField: {x: -5.5, y: -2}
+  <CardVisualScale>k__BackingField: {x: 1.01759, y: 1.026683}
+  <Description>k__BackingField: Deal 10 damage. Exhaust.
+  <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
   <IsAttack>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
     rid: 1468093488209330177
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Deal 15 damage. Exhaust.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341725
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093488209330177
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
-        damageAmount: 8
+        damageAmount: 10
+    - rid: 1468093514728341725
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 15
