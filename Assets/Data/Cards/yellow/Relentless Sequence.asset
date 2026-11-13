@@ -15,13 +15,13 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -796155573255488767, guid: 261158a2b316bf5408870e7b60b13fa4, type: 3}
+  <TitleTextOffset>k__BackingField: {x: -7, y: -1}
+  <DescriptionTextOffset>k__BackingField: {x: -5.5, y: 5}
   <ManaTextOffset>k__BackingField: {x: -0.5, y: -2}
   <CardVisualScale>k__BackingField: {x: 1.083982, y: 1.014085}
-  <DescriptionTextOffset>k__BackingField: {x: -5.5, y: 5}
-  <TitleTextOffset>k__BackingField: {x: -7, y: -1}
   <Description>k__BackingField: Each turn, after playing your fourth Attack, gain
     2 Combo and draw 1 card.
-  <Mana>k__BackingField: 1
+  <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
   <IsAttack>k__BackingField: 0
@@ -32,12 +32,17 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093488209330327
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Each turn, after playing your third Attack,
+    gain 5 Combo and draw 2 card.
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341742
+    <Effect>k__BackingField:
+      rid: 1468093514728341743
   references:
     version: 2
     RefIds:
@@ -52,3 +57,12 @@ MonoBehaviour:
         requiredAttacks: 4
         comboGain: 2
         drawAmount: 1
+    - rid: 1468093514728341742
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341743
+      type: {class: AttackMilestonePowerEffect, ns: , asm: Assembly-CSharp}
+      data:
+        requiredAttacks: 3
+        comboGain: 5
+        drawAmount: 2

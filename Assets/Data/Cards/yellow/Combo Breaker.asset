@@ -15,10 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 6894999169920593895, guid: 71ee3b2a51d098743956c3fa6de7f44a, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 1, y: 0}
+  <DescriptionTextOffset>k__BackingField: {x: 0, y: -1.5}
   <ManaTextOffset>k__BackingField: {x: 1.5, y: -1}
   <CardVisualScale>k__BackingField: {x: 1.013543, y: 0.995614}
-  <DescriptionTextOffset>k__BackingField: {x: 0, y: -1.5}
-  <TitleTextOffset>k__BackingField: {x: 1, y: 0}
   <Description>k__BackingField: Deal 7 damage. If you have at least 3 Combo, deal
     5 additional damage.
   <Mana>k__BackingField: 1
@@ -28,20 +28,25 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093488209330268
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Deal 10 damage. If you have at least 3 Combo,
+    deal 7 additional damage.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341712
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093488209330268
       type: {class: ComboBreakerEffect, ns: , asm: Assembly-CSharp}
       data:
         baseDamage: 7
         requiredCombo: 3
         bonusDamage: 5
+    - rid: 1468093514728341712
+      type: {class: ComboBreakerEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage: 10
+        requiredCombo: 3
+        bonusDamage: 7

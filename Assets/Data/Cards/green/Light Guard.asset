@@ -15,14 +15,15 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 1
   <CardImage>k__BackingField: {fileID: 4113829005332862926, guid: cad1e6911d357d84daeac8fdb70c0c23, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 0, y: 3}
+  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: 1}
   <ManaTextOffset>k__BackingField: {x: -1.5, y: 4}
   <CardVisualScale>k__BackingField: {x: 0.975124, y: 1.003863}
-  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: 1}
-  <TitleTextOffset>k__BackingField: {x: 0, y: 3}
   <Description>k__BackingField: Gain 5 Block.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -30,12 +31,16 @@ MonoBehaviour:
       rid: 1468093405773430904
     <Effect>k__BackingField:
       rid: 1468093405773430905
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Gain 8 Block.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341616
+    <Effect>k__BackingField:
+      rid: 1468093514728341617
   references:
     version: 2
     RefIds:
@@ -49,3 +54,11 @@ MonoBehaviour:
       data:
         statusEffectType: 0
         stackCount: 5
+    - rid: 1468093514728341616
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341617
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 8

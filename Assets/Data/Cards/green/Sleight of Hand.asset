@@ -15,14 +15,15 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 7157561037332017152, guid: 24ea8e2bcc1c6bb459cec3aeab6372a1, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 0, y: 0}
+  <DescriptionTextOffset>k__BackingField: {x: 0.5, y: -2}
   <ManaTextOffset>k__BackingField: {x: 0.5, y: -2}
   <CardVisualScale>k__BackingField: {x: 0.989815, y: 0.999517}
-  <DescriptionTextOffset>k__BackingField: {x: 0.5, y: -2}
-  <TitleTextOffset>k__BackingField: {x: 0, y: 0}
   <Description>k__BackingField: Draw 1 card, then discard 1 card.
-  <Mana>k__BackingField: 0
+  <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -34,12 +35,20 @@ MonoBehaviour:
       rid: 1468093405773430927
     <Effect>k__BackingField:
       rid: 1468093405773430929
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Draw 2 card, then discard 1 card.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341629
+    <Effect>k__BackingField:
+      rid: 1468093514728341630
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341631
+    <Effect>k__BackingField:
+      rid: 1468093514728341632
   references:
     version: 2
     RefIds:
@@ -56,6 +65,21 @@ MonoBehaviour:
       data:
         drawAmount: 1
     - rid: 1468093405773430929
+      type: {class: DiscardCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        discardAmount: 1
+        drawAfterDiscard: 0
+    - rid: 1468093514728341629
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341630
+      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 2
+    - rid: 1468093514728341631
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341632
       type: {class: DiscardCardsEffect, ns: , asm: Assembly-CSharp}
       data:
         discardAmount: 1

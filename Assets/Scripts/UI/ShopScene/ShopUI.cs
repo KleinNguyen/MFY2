@@ -369,4 +369,33 @@ public class ShopUI : MonoBehaviour
 
         mapUI.UpdateMapUI();
     }
+    #if UNITY_EDITOR
+        [ContextMenu("Auto Fill Shop Cards")]
+        private void AutoFillShopCards()
+        {
+            if (Application.isPlaying) return;
+
+            List<CardData> cards = new();
+            string[] guids = UnityEditor.AssetDatabase.FindAssets("t:CardData", new[] { "Assets/Data/Cards" });
+            foreach (string guid in guids)
+            {
+                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                CardData card = UnityEditor.AssetDatabase.LoadAssetAtPath<CardData>(path);
+                if (card != null) cards.Add(card);
+            }
+
+            cards.Sort((a, b) => string.Compare(a.name, b.name, System.StringComparison.OrdinalIgnoreCase));
+            UnityEditor.Undo.RecordObject(this, "Auto Fill Shop Cards");
+            shopCards = cards;
+
+            if (UnityEditor.PrefabUtility.IsPartOfPrefabInstance(this))
+                UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(this);
+
+            UnityEditor.EditorUtility.SetDirty(this);
+            if (gameObject.scene.IsValid() && gameObject.scene.isLoaded)
+                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+
+            Debug.Log($"Shop Cards loaded: {shopCards.Count}", this);
+        }
+    #endif
 }

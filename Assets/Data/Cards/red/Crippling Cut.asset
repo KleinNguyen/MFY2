@@ -15,31 +15,36 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 1
   <CardImage>k__BackingField: {fileID: -6270953770400647376, guid: a55d0db73676bc446928a0a9bf7a5a2e, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 1, y: 0.5}
+  <DescriptionTextOffset>k__BackingField: {x: 2, y: -1}
   <ManaTextOffset>k__BackingField: {x: 0.5, y: 3}
   <CardVisualScale>k__BackingField: {x: 1.020694, y: 1.009058}
-  <DescriptionTextOffset>k__BackingField: {x: 2, y: -1}
-  <TitleTextOffset>k__BackingField: {x: 1, y: 0.5}
   <Description>k__BackingField: Deal 4 damage. Apply 1 Weak.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: 1468093377958117654
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Deal 6 damage. Apply 2 Weak.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341661
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093377958117654
       type: {class: DamageThenStatusEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 4
         statusEffectType: 1
         stackCount: 1
+    - rid: 1468093514728341661
+      type: {class: DamageThenStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 6
+        statusEffectType: 1
+        stackCount: 2

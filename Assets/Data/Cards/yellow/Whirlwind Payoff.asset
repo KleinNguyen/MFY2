@@ -15,10 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 8288426215254106694, guid: 963030adfb6f9e547a87ee325c480d64, type: 3}
+  <TitleTextOffset>k__BackingField: {x: -1, y: 1}
+  <DescriptionTextOffset>k__BackingField: {x: -1.5, y: 0}
   <ManaTextOffset>k__BackingField: {x: -1.5, y: 2}
   <CardVisualScale>k__BackingField: {x: 1.016423, y: 1.004651}
-  <DescriptionTextOffset>k__BackingField: {x: -1.5, y: 0}
-  <TitleTextOffset>k__BackingField: {x: -1, y: 1}
   <Description>k__BackingField: Spend all Combo. Deal 3 damage to all enemies for
     each Combo spent.
   <Mana>k__BackingField: 1
@@ -32,12 +32,17 @@ MonoBehaviour:
       rid: 1468093488209330312
     <Effect>k__BackingField:
       rid: 1468093488209330313
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Spend all Combo. Deal 6 damage to all enemies
+    for each Combo spent.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341757
+    <Effect>k__BackingField:
+      rid: 1468093514728341758
   references:
     version: 2
     RefIds:
@@ -50,3 +55,10 @@ MonoBehaviour:
       type: {class: WhirlwindPayoffEffect, ns: , asm: Assembly-CSharp}
       data:
         damagePerCombo: 3
+    - rid: 1468093514728341757
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341758
+      type: {class: WhirlwindPayoffEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damagePerCombo: 6

@@ -15,32 +15,38 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -5750353039905602045, guid: 55e14b8f422a4494a950e0cbf69ad18c, type: 3}
+  <TitleTextOffset>k__BackingField: {x: -1, y: -0.5}
+  <DescriptionTextOffset>k__BackingField: {x: 0, y: -1}
   <ManaTextOffset>k__BackingField: {x: -4.5, y: 0}
   <CardVisualScale>k__BackingField: {x: 0.994764, y: 1.004651}
-  <DescriptionTextOffset>k__BackingField: {x: 0, y: -1}
-  <TitleTextOffset>k__BackingField: {x: -1, y: -0.5}
-  <Description>k__BackingField: Lose 3 HP. Gain 2 Strength for this combat. Apply
+  <Description>k__BackingField: Lose 2 HP. Gain 2 Strength for this combat. Apply
     1 Weak to one enemy. Exhaust.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: 1468093377958117698
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Lose 2 HP. Gain 4 Strength for this combat.
+    Apply 2 Weak to one enemy. Exhaust.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341704
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093377958117698
       type: {class: VowOfMightEffect, ns: , asm: Assembly-CSharp}
       data:
         healthAmount: 3
         strengthAmount: 2
         weakAmount: 1
+    - rid: 1468093514728341704
+      type: {class: VowOfMightEffect, ns: , asm: Assembly-CSharp}
+      data:
+        healthAmount: 2
+        strengthAmount: 4
+        weakAmount: 2

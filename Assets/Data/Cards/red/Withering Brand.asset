@@ -15,31 +15,36 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 7680820834086852892, guid: 05870de64e1e99c4aa5e8a5fe8cfebef, type: 3}
-  <ManaTextOffset>k__BackingField: {x: -4.5, y: 6}
-  <CardVisualScale>k__BackingField: {x: 1.000000, y: 1.000000}
-  <DescriptionTextOffset>k__BackingField: {x: 0, y: 2}
   <TitleTextOffset>k__BackingField: {x: -1.5, y: 4.5}
+  <DescriptionTextOffset>k__BackingField: {x: 0, y: 2}
+  <ManaTextOffset>k__BackingField: {x: -4.5, y: 6}
+  <CardVisualScale>k__BackingField: {x: 1, y: 1}
   <Description>k__BackingField: Lose 2 HP. Apply 2 Weak to one enemy.
-  <Mana>k__BackingField: 0
+  <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: 1468093377958117620
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Lose 2 HP. Apply 5 Weak to one enemy.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341705
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093377958117620
       type: {class: LoseHealthThenStatusEffect, ns: , asm: Assembly-CSharp}
       data:
         healthAmount: 2
         statusEffectType: 1
         stackCount: 2
+    - rid: 1468093514728341705
+      type: {class: LoseHealthThenStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        healthAmount: 2
+        statusEffectType: 1
+        stackCount: 5

@@ -15,15 +15,16 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -6270953770400647376, guid: 4bd67c258820e004a9ecb951599547e7, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 2.5, y: 1}
+  <DescriptionTextOffset>k__BackingField: {x: 1.5, y: 0.5}
   <ManaTextOffset>k__BackingField: {x: 2.5, y: 1}
   <CardVisualScale>k__BackingField: {x: 0.989815, y: 1.012554}
-  <DescriptionTextOffset>k__BackingField: {x: 1.5, y: 0.5}
-  <TitleTextOffset>k__BackingField: {x: 2.5, y: 1}
   <Description>k__BackingField: Return a random card from your Discard Pile to your
     hand. It costs 1 additional mana this turn. Exhaust.
-  <Mana>k__BackingField: 0
+  <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -31,12 +32,17 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093466301694082
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Return a random card from your Discard Pile
+    to your hand. It costs 0 additional mana this turn. Exhaust.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341627
+    <Effect>k__BackingField:
+      rid: 1468093514728341628
   references:
     version: 2
     RefIds:
@@ -49,3 +55,10 @@ MonoBehaviour:
       type: {class: RecoveredTechniqueEffect, ns: , asm: Assembly-CSharp}
       data:
         additionalManaCost: 1
+    - rid: 1468093514728341627
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341628
+      type: {class: RecoveredTechniqueEffect, ns: , asm: Assembly-CSharp}
+      data:
+        additionalManaCost: 0

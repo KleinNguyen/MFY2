@@ -15,14 +15,15 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 7680820834086852892, guid: 1df0bb9fa5a3b4e4bbda3a93c93bde60, type: 3}
-  <ManaTextOffset>k__BackingField: {x: -0.5, y: -3}
-  <CardVisualScale>k__BackingField: {x: 1.004663, y: 1.017220}
-  <DescriptionTextOffset>k__BackingField: {x: -1, y: 0}
   <TitleTextOffset>k__BackingField: {x: -0.5, y: -1}
+  <DescriptionTextOffset>k__BackingField: {x: -1, y: 0}
+  <ManaTextOffset>k__BackingField: {x: -0.5, y: -3}
+  <CardVisualScale>k__BackingField: {x: 1.004663, y: 1.01722}
   <Description>k__BackingField: Deal 5 damage to all enemies. Sly.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 1
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -30,12 +31,16 @@ MonoBehaviour:
       rid: 1468093405773430916
     <Effect>k__BackingField:
       rid: 1468093405773430915
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Deal 8 damage to all enemies. Sly.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341641
+    <Effect>k__BackingField:
+      rid: 1468093514728341642
   references:
     version: 2
     RefIds:
@@ -48,3 +53,10 @@ MonoBehaviour:
     - rid: 1468093405773430916
       type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1468093514728341641
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341642
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 8

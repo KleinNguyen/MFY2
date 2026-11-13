@@ -382,4 +382,31 @@ public class LibraryUI : MonoBehaviour
             cardScrollView.verticalNormalizedPosition = 1f;
         }
     }
+    #if UNITY_EDITOR
+        [ContextMenu("Auto Fill Cards")]
+        private void AutoFillCards()
+        {
+            if (Application.isPlaying) return;
+
+            UnityEditor.Undo.RecordObject(this, "Auto Fill Cards");
+            allCards.Clear();
+
+            string[] guids = UnityEditor.AssetDatabase.FindAssets("t:CardData", new[] { "Assets/Data/Cards" });
+            foreach (string guid in guids)
+            {
+                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                CardData card = UnityEditor.AssetDatabase.LoadAssetAtPath<CardData>(path);
+                if (card != null) allCards.Add(card);
+            }
+
+            allCards.Sort((a, b) => string.Compare(a.name, b.name, StringComparison.OrdinalIgnoreCase));
+            UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(this);
+            UnityEditor.EditorUtility.SetDirty(this);
+
+            if (gameObject.scene.IsValid())
+                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+
+            Debug.Log($"Library loaded {allCards.Count} cards.", this);
+        }
+    #endif
 }

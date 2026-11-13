@@ -15,15 +15,16 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -5622901713081898559, guid: de4b25f2c4736e34a995cda4dcac03cd, type: 3}
-  <ManaTextOffset>k__BackingField: {x: 1.5, y: -1}
-  <CardVisualScale>k__BackingField: {x: 1.034826, y: 1.018200}
-  <DescriptionTextOffset>k__BackingField: {x: 2, y: 5}
   <TitleTextOffset>k__BackingField: {x: 1.5, y: -1}
+  <DescriptionTextOffset>k__BackingField: {x: 2, y: 5}
+  <ManaTextOffset>k__BackingField: {x: 1.5, y: -1}
+  <CardVisualScale>k__BackingField: {x: 1.034826, y: 1.0182}
   <Description>k__BackingField: Gain 5 Block. Upgrade a card in your hand for this
     combat.Exhaust
-  <Mana>k__BackingField: 1
+  <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -36,11 +37,20 @@ MonoBehaviour:
     <Effect>k__BackingField:
       rid: 1468093377958117712
   <CanUpgrade>k__BackingField: 1
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <UpgradedDescription>k__BackingField: Gain 10 Block. Upgrade a card in your hand
+    for this combat.Exhaust
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341694
+    <Effect>k__BackingField:
+      rid: 1468093514728341695
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341696
+    <Effect>k__BackingField:
+      rid: 1468093514728341697
   references:
     version: 2
     RefIds:
@@ -55,5 +65,19 @@ MonoBehaviour:
         statusEffectType: 0
         stackCount: 5
     - rid: 1468093377958117712
+      type: {class: ChooseCardToUpgradeEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341694
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341695
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 10
+    - rid: 1468093514728341696
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341697
       type: {class: ChooseCardToUpgradeEffect, ns: , asm: Assembly-CSharp}
       data: 

@@ -15,14 +15,15 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -8038976213705442086, guid: 4f7441b14aa3cf34a8e355630b912114, type: 3}
-  <ManaTextOffset>k__BackingField: {x: 2.5, y: -7}
-  <CardVisualScale>k__BackingField: {x: 1.000000, y: 1.020908}
-  <DescriptionTextOffset>k__BackingField: {x: 1.5, y: 2}
   <TitleTextOffset>k__BackingField: {x: 0, y: 0}
+  <DescriptionTextOffset>k__BackingField: {x: 1.5, y: 2}
+  <ManaTextOffset>k__BackingField: {x: 2.5, y: -7}
+  <CardVisualScale>k__BackingField: {x: 1, y: 1.020908}
   <Description>k__BackingField: Gain 5 Block. Draw 1 card.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -34,12 +35,20 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093405773430918
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Gain 8 Block. Draw 2 card.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341623
+    <Effect>k__BackingField:
+      rid: 1468093514728341624
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341625
+    <Effect>k__BackingField:
+      rid: 1468093514728341626
   references:
     version: 2
     RefIds:
@@ -57,3 +66,18 @@ MonoBehaviour:
       type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
       data:
         drawAmount: 1
+    - rid: 1468093514728341623
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341624
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 8
+    - rid: 1468093514728341625
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341626
+      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 2

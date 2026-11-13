@@ -15,30 +15,34 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 6937817954938267909, guid: c71f06ff456d99f4dbccf8667b8d6c6f, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 0, y: 0.5}
+  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: -2}
   <ManaTextOffset>k__BackingField: {x: 1.5, y: 1}
   <CardVisualScale>k__BackingField: {x: 1.005291, y: 0.999043}
-  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: -2}
-  <TitleTextOffset>k__BackingField: {x: 0, y: 0.5}
   <Description>k__BackingField: Apply 2 Armor Break to one enemy.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: 1468093405773430909
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Apply 4 Armor Break to one enemy.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341599
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093405773430909
       type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
       data:
         statusEffectType: 4
         stackCount: 2
+    - rid: 1468093514728341599
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 4

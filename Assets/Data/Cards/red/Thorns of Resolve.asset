@@ -15,15 +15,16 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 4113829005332862926, guid: 0db560e76ee6eeb44bd7d981ece786d6, type: 3}
+  <TitleTextOffset>k__BackingField: {x: -1.5, y: 0.5}
+  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: -0.5}
   <ManaTextOffset>k__BackingField: {x: -2.5, y: 2}
   <CardVisualScale>k__BackingField: {x: 1.005291, y: 1.008772}
-  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: -0.5}
-  <TitleTextOffset>k__BackingField: {x: -1.5, y: 0.5}
-  <Description>k__BackingField: Gain 14 Block. Whenever you are attacked this turn,
+  <Description>k__BackingField: Gain 9 Block. Whenever you are attacked this turn,
     deal 4 damage to the attacker.
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -35,12 +36,21 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093377958117673
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Gain 14 Block. Whenever you are attacked
+    this turn, deal 6 damage to the attacker.
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341698
+    <Effect>k__BackingField:
+      rid: 1468093514728341699
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341700
+    <Effect>k__BackingField:
+      rid: 1468093514728341701
   references:
     version: 2
     RefIds:
@@ -53,8 +63,23 @@ MonoBehaviour:
       type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
       data:
         statusEffectType: 0
-        stackCount: 14
+        stackCount: 9
     - rid: 1468093377958117673
       type: {class: GainThornsEffect, ns: , asm: Assembly-CSharp}
       data:
         amount: 4
+    - rid: 1468093514728341698
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341699
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 14
+    - rid: 1468093514728341700
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341701
+      type: {class: GainThornsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        amount: 6

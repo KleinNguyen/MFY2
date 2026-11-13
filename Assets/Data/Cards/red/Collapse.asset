@@ -15,32 +15,38 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 4349915267927364619, guid: 391bab6e66472d44088bed8b316ffdde, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 0.5, y: -1.5}
+  <DescriptionTextOffset>k__BackingField: {x: 1, y: -2.5}
   <ManaTextOffset>k__BackingField: {x: -2.5, y: -1}
   <CardVisualScale>k__BackingField: {x: 0.995823, y: 1.013158}
-  <DescriptionTextOffset>k__BackingField: {x: 1, y: -2.5}
-  <TitleTextOffset>k__BackingField: {x: 0.5, y: -1.5}
   <Description>k__BackingField: 'Deal 6 damage, plus 3 for each Weak on the target.
     Maximum bonus: 12 damage.'
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: 1468093377958117559
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: 'Deal 8 damage, plus 4 for each Weak on the
+    target. Maximum bonus: 15 damage.'
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341660
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093377958117559
       type: {class: DamageFromWeakEffect, ns: , asm: Assembly-CSharp}
       data:
         baseDamage: 6
         damagePerWeak: 3
         maxBonusDamage: 12
+    - rid: 1468093514728341660
+      type: {class: DamageFromWeakEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage: 8
+        damagePerWeak: 4
+        maxBonusDamage: 15

@@ -15,13 +15,13 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -1045133410153605164, guid: 2d9cefa90aa978141b664e67f0927db2, type: 3}
+  <TitleTextOffset>k__BackingField: {x: -4.5, y: -1}
+  <DescriptionTextOffset>k__BackingField: {x: -3, y: 3}
   <ManaTextOffset>k__BackingField: {x: -4.5, y: -2}
   <CardVisualScale>k__BackingField: {x: 1.017197, y: 1.009637}
-  <DescriptionTextOffset>k__BackingField: {x: -3, y: 3}
-  <TitleTextOffset>k__BackingField: {x: -4.5, y: -1}
   <Description>k__BackingField: Exhaust up to 2 cards in your hand. Gain 2 Combo
     for each card exhausted.
-  <Mana>k__BackingField: 0
+  <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
   <IsAttack>k__BackingField: 0
@@ -32,12 +32,17 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093495396008015
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Exhaust up to 2 cards in your hand. Gain
+    4 Combo for each card exhausted.
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341708
+    <Effect>k__BackingField:
+      rid: 1468093514728341709
   references:
     version: 2
     RefIds:
@@ -51,3 +56,11 @@ MonoBehaviour:
       data:
         maxExhaust: 2
         comboPerCard: 2
+    - rid: 1468093514728341708
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341709
+      type: {class: BurnTheExcessEffect, ns: , asm: Assembly-CSharp}
+      data:
+        maxExhaust: 2
+        comboPerCard: 4

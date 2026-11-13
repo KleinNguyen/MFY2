@@ -15,15 +15,16 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -1045133410153605164, guid: 05d44d5317d1c37449f486b4b667fe87, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 0.5, y: -2.5}
+  <DescriptionTextOffset>k__BackingField: {x: 0, y: 2}
   <ManaTextOffset>k__BackingField: {x: -0.5, y: -7}
   <CardVisualScale>k__BackingField: {x: 0.995025, y: 1.022627}
-  <DescriptionTextOffset>k__BackingField: {x: 0, y: 2}
-  <TitleTextOffset>k__BackingField: {x: 0.5, y: -2.5}
   <Description>k__BackingField: Can only be played with at least 3 other cards in
     your hand. Discard all of them. Next turn, your Attacks deal double damage. Exhaust.
-  <Mana>k__BackingField: 1
+  <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -31,12 +32,18 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093466301694110
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Can only be played with at least 2 other
+    cards in your hand. Discard all of them. Next turn, your Attacks deal double
+    damage. Exhaust.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341610
+    <Effect>k__BackingField:
+      rid: 1468093514728341611
   references:
     version: 2
     RefIds:
@@ -49,3 +56,10 @@ MonoBehaviour:
       type: {class: GrandDisappearanceEffect, ns: , asm: Assembly-CSharp}
       data:
         requiredOtherCards: 3
+    - rid: 1468093514728341610
+      type: {class: LowestHealthEnemyTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341611
+      type: {class: GrandDisappearanceEffect, ns: , asm: Assembly-CSharp}
+      data:
+        requiredOtherCards: 2

@@ -15,14 +15,15 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -7371509505491802261, guid: 6dbf29e6adea3bc49b72d058e32e66d8, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 3, y: -0.5}
+  <DescriptionTextOffset>k__BackingField: {x: 2.5, y: -2}
   <ManaTextOffset>k__BackingField: {x: -0.5, y: 1}
   <CardVisualScale>k__BackingField: {x: 1.010292, y: 1.004651}
-  <DescriptionTextOffset>k__BackingField: {x: 2.5, y: -2}
-  <TitleTextOffset>k__BackingField: {x: 3, y: -0.5}
   <Description>k__BackingField: Deal 5 damage to all enemies 3 times.
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -38,12 +39,32 @@ MonoBehaviour:
       rid: 1468093377958117596
     <Effect>k__BackingField:
       rid: 1468093377958117597
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Deal 6 damage to all enemies 5 times.
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341702
+    <Effect>k__BackingField:
+      rid: 1468093514728341703
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341702
+    <Effect>k__BackingField:
+      rid: 1468093514728341703
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341702
+    <Effect>k__BackingField:
+      rid: 1468093514728341703
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341702
+    <Effect>k__BackingField:
+      rid: 1468093514728341703
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341702
+    <Effect>k__BackingField:
+      rid: 1468093514728341703
   references:
     version: 2
     RefIds:
@@ -56,3 +77,10 @@ MonoBehaviour:
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 5
+    - rid: 1468093514728341702
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341703
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 6

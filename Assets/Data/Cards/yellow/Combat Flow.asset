@@ -15,10 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -4178046375966092550, guid: c2bb07e665d9e2640835e7ca31c3063a, type: 3}
+  <TitleTextOffset>k__BackingField: {x: -1.5, y: 1}
+  <DescriptionTextOffset>k__BackingField: {x: -1, y: -6}
   <ManaTextOffset>k__BackingField: {x: -1.5, y: 2}
   <CardVisualScale>k__BackingField: {x: 1.011341, y: 0.991228}
-  <DescriptionTextOffset>k__BackingField: {x: -1, y: -6}
-  <TitleTextOffset>k__BackingField: {x: -1.5, y: 1}
   <Description>k__BackingField: Gain 7 Block. If you have played at least one Attack
     this turn, gain 1 Combo.
   <Mana>k__BackingField: 1
@@ -32,12 +32,17 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093488209330297
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Gain 10 Block. If you have played at least
+    one Attack this turn, gain 2 Combo.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341710
+    <Effect>k__BackingField:
+      rid: 1468093514728341711
   references:
     version: 2
     RefIds:
@@ -52,3 +57,12 @@ MonoBehaviour:
         blockAmount: 7
         requiredAttacks: 1
         comboGain: 1
+    - rid: 1468093514728341710
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341711
+      type: {class: CombatFlowEffect, ns: , asm: Assembly-CSharp}
+      data:
+        blockAmount: 10
+        requiredAttacks: 1
+        comboGain: 2

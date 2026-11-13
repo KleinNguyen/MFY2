@@ -15,11 +15,11 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -5099292496197868168, guid: e6cb2e6f60d6e5247831c9ac3ddd7f06, type: 3}
+  <TitleTextOffset>k__BackingField: {x: -2.5, y: 0.5}
+  <DescriptionTextOffset>k__BackingField: {x: -3, y: -6.5}
   <ManaTextOffset>k__BackingField: {x: -1.5, y: 0}
   <CardVisualScale>k__BackingField: {x: 1.026587, y: 0.977929}
-  <DescriptionTextOffset>k__BackingField: {x: -3, y: -6.5}
-  <TitleTextOffset>k__BackingField: {x: -2.5, y: 0.5}
-  <Description>k__BackingField: Spend all Combo. Deal 10 damage, plus 4 for each
+  <Description>k__BackingField: Spend all Combo. Deal 10 damage, plus 2 for each
     Combo spent. If this defeats the target, regain 2 Combo.
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 0
@@ -28,20 +28,25 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093495396008016
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Spend all Combo. Deal 10 damage, plus 4 for
+    each Combo spent. If this defeats the target, regain 2 Combo.
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341724
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093495396008016
       type: {class: FinalPayoffEffect, ns: , asm: Assembly-CSharp}
       data:
         baseDamage: 10
-        damagePerCombo: 4
+        damagePerCombo: 2
         comboOnKill: 2
+    - rid: 1468093514728341724
+      type: {class: FinalPayoffEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage: 10
+        damagePerCombo: 4
+        comboOnKill: 5

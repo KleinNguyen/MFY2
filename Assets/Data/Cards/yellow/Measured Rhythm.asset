@@ -15,10 +15,10 @@ MonoBehaviour:
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -1540426309290004842, guid: b8de6915e8267e644ae92789abd3e236, type: 3}
+  <TitleTextOffset>k__BackingField: {x: -4, y: -0.5}
+  <DescriptionTextOffset>k__BackingField: {x: -4, y: -0.5}
   <ManaTextOffset>k__BackingField: {x: -4.5, y: 0}
   <CardVisualScale>k__BackingField: {x: 0.996095, y: 1.009058}
-  <DescriptionTextOffset>k__BackingField: {x: -4, y: -0.5}
-  <TitleTextOffset>k__BackingField: {x: -4, y: -0.5}
   <Description>k__BackingField: Deal 5 damage, plus 1 for each Combo. Do not spend
     Combo.
   <Mana>k__BackingField: 1
@@ -28,19 +28,23 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093488209330275
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Deal 7 damage, plus 2 for each Combo. Do
+    not spend Combo.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341735
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093488209330275
       type: {class: MeasuredRhythmEffect, ns: , asm: Assembly-CSharp}
       data:
         baseDamage: 5
         damagePerCombo: 1
+    - rid: 1468093514728341735
+      type: {class: MeasuredRhythmEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage: 7
+        damagePerCombo: 2

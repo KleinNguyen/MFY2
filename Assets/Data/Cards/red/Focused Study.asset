@@ -15,15 +15,16 @@ MonoBehaviour:
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 8389134475083476877, guid: 9c6d19ea615fa694696be291547cea11, type: 3}
-  <ManaTextOffset>k__BackingField: {x: -0.5, y: 5}
-  <CardVisualScale>k__BackingField: {x: 1.000582, y: 1.000000}
-  <DescriptionTextOffset>k__BackingField: {x: 3, y: 0}
   <TitleTextOffset>k__BackingField: {x: 2.5, y: 2.5}
+  <DescriptionTextOffset>k__BackingField: {x: 3, y: 0}
+  <ManaTextOffset>k__BackingField: {x: -0.5, y: 5}
+  <CardVisualScale>k__BackingField: {x: 1.000582, y: 1}
   <Description>k__BackingField: Draw 3 cards. You cannot draw any more cards this
-    turn.
-  <Mana>k__BackingField: 1
-  <ExhaustOnPlay>k__BackingField: 0
+    turn.Exhaust.
+  <Mana>k__BackingField: 2
+  <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -31,12 +32,17 @@ MonoBehaviour:
       rid: 1468093377958117643
     <Effect>k__BackingField:
       rid: 1468093377958117644
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Draw 5 cards. You cannot draw any more cards
+    this turn.
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341671
+    <Effect>k__BackingField:
+      rid: 1468093514728341672
   references:
     version: 2
     RefIds:
@@ -46,6 +52,13 @@ MonoBehaviour:
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
     - rid: 1468093377958117644
+      type: {class: FocusedStudyEffect, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 3
+    - rid: 1468093514728341671
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341672
       type: {class: FocusedStudyEffect, ns: , asm: Assembly-CSharp}
       data:
         drawAmount: 3
