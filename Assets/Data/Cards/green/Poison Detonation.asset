@@ -15,15 +15,16 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 2720535173406242035, guid: b3997bcd8bedd094cbf928acc401db80, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 3.5, y: -1.5}
+  <DescriptionTextOffset>k__BackingField: {x: 2.5, y: 2.5}
   <ManaTextOffset>k__BackingField: {x: 3.5, y: -5}
   <CardVisualScale>k__BackingField: {x: 0.995025, y: 1.030702}
-  <DescriptionTextOffset>k__BackingField: {x: 2.5, y: 2.5}
-  <TitleTextOffset>k__BackingField: {x: 3.5, y: -1.5}
   <Description>k__BackingField: Deal 10 damage to all enemies, plus half of each
     target's current Poison, rounded down.
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -31,12 +32,17 @@ MonoBehaviour:
       rid: 1468093466301694045
     <Effect>k__BackingField:
       rid: 1468093466301694046
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Deal 13 damage to all enemies, plus half
+    of each target's current Poison, rounded down.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341620
+    <Effect>k__BackingField:
+      rid: 1468093514728341621
   references:
     version: 2
     RefIds:
@@ -49,4 +55,12 @@ MonoBehaviour:
       type: {class: PoisonDetonationEffect, ns: , asm: Assembly-CSharp}
       data:
         baseDamage: 10
+        poisonDivisor: 2
+    - rid: 1468093514728341620
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341621
+      type: {class: PoisonDetonationEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage: 13
         poisonDivisor: 2

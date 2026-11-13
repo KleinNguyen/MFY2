@@ -15,15 +15,16 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 6660783624410144326, guid: 90f174aafd726ce46b4bf113308dc39f, type: 3}
-  <ManaTextOffset>k__BackingField: {x: 1.5, y: -3}
-  <CardVisualScale>k__BackingField: {x: 1.005610, y: 1.034283}
-  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: 4.5}
   <TitleTextOffset>k__BackingField: {x: 1, y: -1.5}
+  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: 4.5}
+  <ManaTextOffset>k__BackingField: {x: 1.5, y: -3}
+  <CardVisualScale>k__BackingField: {x: 1.00561, y: 1.034283}
   <Description>k__BackingField: Discard the remaining cards in your hand, then draw
     the same number of cards. Exhaust.
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -31,12 +32,17 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093466301694064
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Discard the remaining cards in your hand,
+    then draw the same number of cards. Exhaust.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341595
+    <Effect>k__BackingField:
+      rid: 1468093514728341596
   references:
     version: 2
     RefIds:
@@ -46,5 +52,11 @@ MonoBehaviour:
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
     - rid: 1468093466301694064
+      type: {class: CleanSweepEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341595
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341596
       type: {class: CleanSweepEffect, ns: , asm: Assembly-CSharp}
       data: 

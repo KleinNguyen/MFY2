@@ -15,31 +15,36 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 4349915267927364619, guid: 194893b855d02ec46aae65980462f9fb, type: 3}
+  <TitleTextOffset>k__BackingField: {x: -1, y: 2}
+  <DescriptionTextOffset>k__BackingField: {x: -1.5, y: 2}
   <ManaTextOffset>k__BackingField: {x: -0.5, y: 3}
   <CardVisualScale>k__BackingField: {x: 0.995823, y: 1.003605}
-  <DescriptionTextOffset>k__BackingField: {x: -1.5, y: 2}
-  <TitleTextOffset>k__BackingField: {x: -1, y: 2}
   <Description>k__BackingField: Discard up to 3 cards. Deal 5 damage to one enemy
     for each card discarded. Exhaust.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: 1468093466301694092
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Discard up to 5 cards. Deal 6 damage to one
+    enemy for each card discarded. Exhaust.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341640
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093466301694092
       type: {class: ToxicRequisitionEffect, ns: , asm: Assembly-CSharp}
       data:
         maxDiscard: 3
         damagePerCard: 5
+    - rid: 1468093514728341640
+      type: {class: ToxicRequisitionEffect, ns: , asm: Assembly-CSharp}
+      data:
+        maxDiscard: 5
+        damagePerCard: 6

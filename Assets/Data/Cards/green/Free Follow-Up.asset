@@ -15,30 +15,34 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 5181654206020448988, guid: e1835a87936569e488f9e7ae83125d1c, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 0, y: 0}
+  <DescriptionTextOffset>k__BackingField: {x: 2.5, y: 2}
   <ManaTextOffset>k__BackingField: {x: 5.5, y: -3}
   <CardVisualScale>k__BackingField: {x: 1.009612, y: 1.004651}
-  <DescriptionTextOffset>k__BackingField: {x: 2.5, y: 2}
-  <TitleTextOffset>k__BackingField: {x: 0, y: 0}
   <Description>k__BackingField: Deal 12 damage. The next card you play this turn
     costs 0 mana.
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: 1468093466301694074
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Deal 15 damage. The next card you play this
+    turn costs 0 mana.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341609
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093466301694074
       type: {class: FreeFollowUpEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 12
+    - rid: 1468093514728341609
+      type: {class: FreeFollowUpEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 15

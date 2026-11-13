@@ -8636,6 +8636,7 @@ GameObject:
   - component: {fileID: 1920726309}
   - component: {fileID: 1920726311}
   - component: {fileID: 1920726310}
+  - component: {fileID: 1920726312}
   m_Layer: 5
   m_Name: AttackCountText
   m_TagString: Untagged
@@ -8762,6 +8763,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1920726308}
   m_CullTransparentMesh: 1
+--- !u!114 &1920726312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920726308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f73b65ccf5b82f943a5c05e43cd389c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1938126348
 GameObject:
   m_ObjectHideFlags: 0

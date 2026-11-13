@@ -15,32 +15,38 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 8288426215254106694, guid: 4468cbb3fd1234047b3e89eb1c7d5144, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 2.5, y: 1}
+  <DescriptionTextOffset>k__BackingField: {x: 1, y: -1.5}
   <ManaTextOffset>k__BackingField: {x: 1.5, y: 1}
   <CardVisualScale>k__BackingField: {x: 0.989815, y: 1.003863}
-  <DescriptionTextOffset>k__BackingField: {x: 1, y: -1.5}
-  <TitleTextOffset>k__BackingField: {x: 2.5, y: 1}
   <Description>k__BackingField: Deal 8 damage. If the target has at least 5 Poison,
     deal 6 additional damage.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: 1468093466301694034
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Deal 11 damage. If the target has at least
+    3 Poison, deal 6 additional damage.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341602
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093466301694034
       type: {class: DamageIfPoisonedEffect, ns: , asm: Assembly-CSharp}
       data:
         baseDamage: 8
         bonusDamage: 6
         requiredPoisonStacks: 5
+    - rid: 1468093514728341602
+      type: {class: DamageIfPoisonedEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage: 11
+        bonusDamage: 6
+        requiredPoisonStacks: 3

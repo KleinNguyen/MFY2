@@ -15,14 +15,15 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 4164744761163438241, guid: 863f05af10bf0824e9374bdfb0d9ab3f, type: 3}
+  <TitleTextOffset>k__BackingField: {x: -1, y: 0}
+  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: -3}
   <ManaTextOffset>k__BackingField: {x: 0.5, y: -1}
   <CardVisualScale>k__BackingField: {x: 0.995288, y: 0.999757}
-  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: -3}
-  <TitleTextOffset>k__BackingField: {x: -1, y: 0}
   <Description>k__BackingField: Apply 3 Poison to all enemies.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -30,12 +31,16 @@ MonoBehaviour:
       rid: 1468093405773430910
     <Effect>k__BackingField:
       rid: 1468093405773430911
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Apply 5 Poison to all enemies.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341643
+    <Effect>k__BackingField:
+      rid: 1468093514728341644
   references:
     version: 2
     RefIds:
@@ -49,3 +54,11 @@ MonoBehaviour:
       data:
         statusEffectType: 2
         stackCount: 3
+    - rid: 1468093514728341643
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341644
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 5

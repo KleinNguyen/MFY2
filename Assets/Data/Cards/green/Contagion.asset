@@ -15,16 +15,16 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -796155573255488767, guid: 60826e7ed7795ee48ae0981cedaa129f, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 0.5, y: 0.5}
+  <DescriptionTextOffset>k__BackingField: {x: -1.5, y: 5.5}
   <ManaTextOffset>k__BackingField: {x: -0.5, y: -2}
   <CardVisualScale>k__BackingField: {x: 1.000878, y: 1.008489}
-  <DescriptionTextOffset>k__BackingField: {x: -1.5, y: 5.5}
-  <TitleTextOffset>k__BackingField: {x: 0.5, y: 0.5}
-  <Description>k__BackingField: Choose the enemy with the most Poison. Add Poison
-    to every other enemy equal to half of the chosen target's current Poison, rounded
-    down. Exhaust.
+  <Description>k__BackingField: Add Poison to every other enemy equal to one third
+    of the Poison on the enemy with the most Poison, rounded down. Exhaust.
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -32,12 +32,17 @@ MonoBehaviour:
       rid: 1468093466301694051
     <Effect>k__BackingField:
       rid: 1468093466301694052
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Add Poison to every other enemy equal to
+    half of the Poison on the enemy with the most Poison, rounded down. Exhaust.
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341597
+    <Effect>k__BackingField:
+      rid: 1468093514728341598
   references:
     version: 2
     RefIds:
@@ -47,6 +52,13 @@ MonoBehaviour:
       type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
       data: 
     - rid: 1468093466301694052
+      type: {class: ContagionEffect, ns: , asm: Assembly-CSharp}
+      data:
+        poisonDivisor: 3
+    - rid: 1468093514728341597
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341598
       type: {class: ContagionEffect, ns: , asm: Assembly-CSharp}
       data:
         poisonDivisor: 2

@@ -15,32 +15,38 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -1540426309290004842, guid: f5ac3b68ca02acf47af8227a89546f9b, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 1.5, y: 0}
+  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: 2}
   <ManaTextOffset>k__BackingField: {x: 1.5, y: -1}
   <CardVisualScale>k__BackingField: {x: 1.004975, y: 1.019589}
-  <DescriptionTextOffset>k__BackingField: {x: -0.5, y: 2}
-  <TitleTextOffset>k__BackingField: {x: 1.5, y: 0}
   <Description>k__BackingField: 'Deal 1 damage, plus 1 for each card drawn this combat.
     Maximum: 30 base damage.'
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: 1468093466301694067
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: 'Deal 2 damage, plus 2 for each card drawn
+    this combat. Maximum: 30 base damage.'
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093514728341636
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1468093466301694067
       type: {class: TheLongConEffect, ns: , asm: Assembly-CSharp}
       data:
         baseDamage: 1
         damagePerCardDrawn: 1
+        maxBaseDamage: 30
+    - rid: 1468093514728341636
+      type: {class: TheLongConEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage: 2
+        damagePerCardDrawn: 2
         maxBaseDamage: 30

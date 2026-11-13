@@ -15,15 +15,16 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 4130640169021434097, guid: 00f6f9c18c798674dadf6c490ffb5824, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 1, y: 0}
+  <DescriptionTextOffset>k__BackingField: {x: 0.5, y: -0.5}
   <ManaTextOffset>k__BackingField: {x: 1.5, y: 0}
   <CardVisualScale>k__BackingField: {x: 1.001479, y: 1.011962}
-  <DescriptionTextOffset>k__BackingField: {x: 0.5, y: -0.5}
-  <TitleTextOffset>k__BackingField: {x: 1, y: 0}
   <Description>k__BackingField: Apply 2 Armor Break to all enemies. Enemies that
     already have Poison receive 1 additional Armor Break. Sly.
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 1
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -31,12 +32,17 @@ MonoBehaviour:
       rid: 1468093466301694055
     <Effect>k__BackingField:
       rid: 1468093466301694056
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Apply 4 Armor Break to all enemies. Enemies
+    that already have Poison receive 2 additional Armor Break. Sly.
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341600
+    <Effect>k__BackingField:
+      rid: 1468093514728341601
   references:
     version: 2
     RefIds:
@@ -50,3 +56,11 @@ MonoBehaviour:
       data:
         baseArmorBreak: 2
         bonusArmorBreak: 1
+    - rid: 1468093514728341600
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341601
+      type: {class: CorrosiveSchemeEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseArmorBreak: 4
+        bonusArmorBreak: 2

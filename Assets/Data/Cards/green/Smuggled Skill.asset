@@ -15,15 +15,16 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -5622901713081898559, guid: 2f4d6b99cbb0a62489a87e130139f7f9, type: 3}
-  <ManaTextOffset>k__BackingField: {x: 0.5, y: -4}
-  <CardVisualScale>k__BackingField: {x: 1.039801, y: 1.017870}
-  <DescriptionTextOffset>k__BackingField: {x: -3, y: 4.5}
   <TitleTextOffset>k__BackingField: {x: -3, y: -1.5}
+  <DescriptionTextOffset>k__BackingField: {x: -3, y: 4.5}
+  <ManaTextOffset>k__BackingField: {x: 0.5, y: -4}
+  <CardVisualScale>k__BackingField: {x: 1.039801, y: 1.01787}
   <Description>k__BackingField: Gain 7 Block. Give a card in your hand Sly for this
     turn.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -31,12 +32,17 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093466301694088
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Gain 10 Block. Give a card in your hand Sly
+    for this turn.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341633
+    <Effect>k__BackingField:
+      rid: 1468093514728341634
   references:
     version: 2
     RefIds:
@@ -49,3 +55,10 @@ MonoBehaviour:
       type: {class: SmuggledSkillEffect, ns: , asm: Assembly-CSharp}
       data:
         blockAmount: 7
+    - rid: 1468093514728341633
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341634
+      type: {class: SmuggledSkillEffect, ns: , asm: Assembly-CSharp}
+      data:
+        blockAmount: 10

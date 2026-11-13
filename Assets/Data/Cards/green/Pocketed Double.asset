@@ -15,15 +15,16 @@ MonoBehaviour:
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 8102358098348255977, guid: 3be53c459f05a414d8edbd1f68cb41bf, type: 3}
+  <TitleTextOffset>k__BackingField: {x: 2, y: -2}
+  <DescriptionTextOffset>k__BackingField: {x: 1, y: -3.5}
   <ManaTextOffset>k__BackingField: {x: 0.5, y: -7}
   <CardVisualScale>k__BackingField: {x: 0.985498, y: 1.004386}
-  <DescriptionTextOffset>k__BackingField: {x: 1, y: -3.5}
-  <TitleTextOffset>k__BackingField: {x: 2, y: -2}
   <Description>k__BackingField: Choose a card in your hand. At the start of your
     next turn, add 2 temporary copies of it to your hand. Exhaust.
-  <Mana>k__BackingField: 1
+  <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
+  <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -31,12 +32,17 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093466301694102
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: Choose a card in your hand. At the start
+    of your next turn, add 3 temporary copies of it to your hand. Exhaust.
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093514728341618
+    <Effect>k__BackingField:
+      rid: 1468093514728341619
   references:
     version: 2
     RefIds:
@@ -49,3 +55,10 @@ MonoBehaviour:
       type: {class: PocketedDoubleEffect, ns: , asm: Assembly-CSharp}
       data:
         copyAmount: 2
+    - rid: 1468093514728341618
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1468093514728341619
+      type: {class: PocketedDoubleEffect, ns: , asm: Assembly-CSharp}
+      data:
+        copyAmount: 3
