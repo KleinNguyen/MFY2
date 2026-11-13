@@ -26,11 +26,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093377958117536
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Apply 3 Weak to one enemy. Exhaust."
   <UpgradedMana>k__BackingField: 0
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093377958117537
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -42,3 +42,8 @@ MonoBehaviour:
       data:
         statusEffectType: 1
         stackCount: 2
+    - rid: 1468093377958117537
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 1
+        stackCount: 3

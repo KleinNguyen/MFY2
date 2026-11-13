@@ -31,12 +31,16 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093466301694071
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Double the Block you gain from cards for the rest of this turn. Exhaust."
   <UpgradedMana>k__BackingField: 0
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093466301694072
+    <Effect>k__BackingField:
+      rid: 1468093466301694073
   references:
     version: 2
     RefIds:
@@ -47,4 +51,10 @@ MonoBehaviour:
       data: 
     - rid: 1468093466301694071
       type: {class: FortifiedTrapEffect, ns: , asm: Assembly-CSharp}
-      data: 
+      data:
+    - rid: 1468093466301694072
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093466301694073
+      type: {class: FortifiedTrapEffect, ns: , asm: Assembly-CSharp}
+      data:

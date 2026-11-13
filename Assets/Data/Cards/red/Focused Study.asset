@@ -31,12 +31,16 @@ MonoBehaviour:
       rid: 1468093377958117643
     <Effect>k__BackingField:
       rid: 1468093377958117644
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Draw 4 cards. You cannot draw any more cards this turn."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117645
+    <Effect>k__BackingField:
+      rid: 1468093377958117646
   references:
     version: 2
     RefIds:
@@ -49,3 +53,10 @@ MonoBehaviour:
       type: {class: FocusedStudyEffect, ns: , asm: Assembly-CSharp}
       data:
         drawAmount: 3
+    - rid: 1468093377958117645
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093377958117646
+      type: {class: FocusedStudyEffect, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 4

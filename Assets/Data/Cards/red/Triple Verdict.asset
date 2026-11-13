@@ -38,12 +38,24 @@ MonoBehaviour:
       rid: 1468093377958117596
     <Effect>k__BackingField:
       rid: 1468093377958117597
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Deal 6 damage to all enemies 3 times."
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117598
+    <Effect>k__BackingField:
+      rid: 1468093377958117599
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117598
+    <Effect>k__BackingField:
+      rid: 1468093377958117599
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117598
+    <Effect>k__BackingField:
+      rid: 1468093377958117599
   references:
     version: 2
     RefIds:
@@ -56,3 +68,10 @@ MonoBehaviour:
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 5
+    - rid: 1468093377958117598
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093377958117599
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 6

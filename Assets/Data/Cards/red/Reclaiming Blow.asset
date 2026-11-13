@@ -27,11 +27,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093405773430882
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Deal 10 damage. Put a card from your Discard Pile on top of your Draw Pile."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093405773430883
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -42,3 +42,7 @@ MonoBehaviour:
       type: {class: ReclaimingBlowEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 7
+    - rid: 1468093405773430883
+      type: {class: ReclaimingBlowEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 10

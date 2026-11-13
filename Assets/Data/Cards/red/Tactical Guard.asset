@@ -36,11 +36,19 @@ MonoBehaviour:
     <Effect>k__BackingField:
       rid: 1468093377958117712
   <CanUpgrade>k__BackingField: 1
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <UpgradedDescription>k__BackingField: "Gain 8 Block. Upgrade a card in your hand for this combat. Exhaust."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117713
+    <Effect>k__BackingField:
+      rid: 1468093377958117714
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117713
+    <Effect>k__BackingField:
+      rid: 1468093377958117715
   references:
     version: 2
     RefIds:
@@ -56,4 +64,15 @@ MonoBehaviour:
         stackCount: 5
     - rid: 1468093377958117712
       type: {class: ChooseCardToUpgradeEffect, ns: , asm: Assembly-CSharp}
-      data: 
+      data:
+    - rid: 1468093377958117713
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093377958117714
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 8
+    - rid: 1468093377958117715
+      type: {class: ChooseCardToUpgradeEffect, ns: , asm: Assembly-CSharp}
+      data:

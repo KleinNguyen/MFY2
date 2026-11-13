@@ -26,11 +26,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093377958117556
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Deal damage equal to your current Block."
   <UpgradedMana>k__BackingField: 0
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093377958117557
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -39,4 +39,7 @@ MonoBehaviour:
       type: {class: , ns: , asm: }
     - rid: 1468093377958117556
       type: {class: DamageFromBlockEffect, ns: , asm: Assembly-CSharp}
-      data: 
+      data:
+    - rid: 1468093377958117557
+      type: {class: DamageFromBlockEffect, ns: , asm: Assembly-CSharp}
+      data:

@@ -31,12 +31,16 @@ MonoBehaviour:
       rid: 1468093466301694045
     <Effect>k__BackingField:
       rid: 1468093466301694046
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Deal 13 damage to all enemies, plus half of each target's current Poison, rounded down."
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093466301694047
+    <Effect>k__BackingField:
+      rid: 1468093466301694048
   references:
     version: 2
     RefIds:
@@ -49,4 +53,12 @@ MonoBehaviour:
       type: {class: PoisonDetonationEffect, ns: , asm: Assembly-CSharp}
       data:
         baseDamage: 10
+        poisonDivisor: 2
+    - rid: 1468093466301694047
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093466301694048
+      type: {class: PoisonDetonationEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage: 13
         poisonDivisor: 2

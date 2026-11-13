@@ -31,12 +31,16 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093488209330302
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Spend up to 2 Combo. Draw 2 cards for each Combo spent."
   <UpgradedMana>k__BackingField: 0
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093488209330303
+    <Effect>k__BackingField:
+      rid: 1468093488209330304
   references:
     version: 2
     RefIds:
@@ -50,3 +54,11 @@ MonoBehaviour:
       data:
         maxComboSpend: 2
         drawPerCombo: 1
+    - rid: 1468093488209330303
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093488209330304
+      type: {class: DrawOnMomentumEffect, ns: , asm: Assembly-CSharp}
+      data:
+        maxComboSpend: 2
+        drawPerCombo: 2

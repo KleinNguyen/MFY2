@@ -28,11 +28,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093488209330300
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Deal 11 damage. Gain 1 Combo for every 2 Combo you had before playing this card, up to 3 Combo gained."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093488209330301
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -43,5 +43,11 @@ MonoBehaviour:
       type: {class: EscalatingRhythmEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 8
+        comboPerGain: 2
+        maxComboGain: 3
+    - rid: 1468093488209330301
+      type: {class: EscalatingRhythmEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 11
         comboPerGain: 2
         maxComboGain: 3

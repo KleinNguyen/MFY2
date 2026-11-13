@@ -31,12 +31,16 @@ MonoBehaviour:
       rid: 1468093466301694055
     <Effect>k__BackingField:
       rid: 1468093466301694056
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Apply 3 Armor Break to all enemies. Enemies that already have Poison receive 1 additional Armor Break. Sly."
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093466301694057
+    <Effect>k__BackingField:
+      rid: 1468093466301694058
   references:
     version: 2
     RefIds:
@@ -49,4 +53,12 @@ MonoBehaviour:
       type: {class: CorrosiveSchemeEffect, ns: , asm: Assembly-CSharp}
       data:
         baseArmorBreak: 2
+        bonusArmorBreak: 1
+    - rid: 1468093466301694057
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093466301694058
+      type: {class: CorrosiveSchemeEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseArmorBreak: 3
         bonusArmorBreak: 1

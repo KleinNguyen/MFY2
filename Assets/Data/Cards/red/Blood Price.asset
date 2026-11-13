@@ -34,12 +34,20 @@ MonoBehaviour:
       rid: 1468093377958117580
     <Effect>k__BackingField:
       rid: 1468093377958117583
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Lose 2 HP. Gain 1 mana. Exhaust."
   <UpgradedMana>k__BackingField: 0
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117584
+    <Effect>k__BackingField:
+      rid: 1468093377958117586
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117585
+    <Effect>k__BackingField:
+      rid: 1468093377958117587
   references:
     version: 2
     RefIds:
@@ -56,6 +64,20 @@ MonoBehaviour:
       data:
         healthAmount: 3
     - rid: 1468093377958117583
+      type: {class: GainManaEffect, ns: , asm: Assembly-CSharp}
+      data:
+        manaAmount: 1
+    - rid: 1468093377958117584
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093377958117585
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093377958117586
+      type: {class: LoseHealthEffect, ns: , asm: Assembly-CSharp}
+      data:
+        healthAmount: 2
+    - rid: 1468093377958117587
       type: {class: GainManaEffect, ns: , asm: Assembly-CSharp}
       data:
         manaAmount: 1

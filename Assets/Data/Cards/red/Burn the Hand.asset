@@ -27,11 +27,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093377958117679
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Exhaust the remaining cards in your hand. Deal 9 damage to one enemy for each card exhausted. Exhaust."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093377958117680
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -42,3 +42,7 @@ MonoBehaviour:
       type: {class: ExhaustHandAndDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         damagePerCard: 7
+    - rid: 1468093377958117680
+      type: {class: ExhaustHandAndDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damagePerCard: 9

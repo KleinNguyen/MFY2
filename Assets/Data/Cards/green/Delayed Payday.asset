@@ -30,12 +30,16 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093466301694060
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Next turn, gain 3 additional mana. Exhaust."
   <UpgradedMana>k__BackingField: 0
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093466301694061
+    <Effect>k__BackingField:
+      rid: 1468093466301694062
   references:
     version: 2
     RefIds:
@@ -48,4 +52,12 @@ MonoBehaviour:
       type: {class: IncreaseTurnManaEffect, ns: , asm: Assembly-CSharp}
       data:
         amount: 2
+        nextTurnOnly: 1
+    - rid: 1468093466301694061
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093466301694062
+      type: {class: IncreaseTurnManaEffect, ns: , asm: Assembly-CSharp}
+      data:
+        amount: 3
         nextTurnOnly: 1

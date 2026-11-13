@@ -31,12 +31,16 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093488209330264
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Gain 3 Combo."
   <UpgradedMana>k__BackingField: 0
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093488209330265
+    <Effect>k__BackingField:
+      rid: 1468093488209330266
   references:
     version: 2
     RefIds:
@@ -50,3 +54,11 @@ MonoBehaviour:
       data:
         statusEffectType: 7
         stackCount: 2
+    - rid: 1468093488209330265
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093488209330266
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 7
+        stackCount: 3

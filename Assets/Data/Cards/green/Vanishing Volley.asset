@@ -30,12 +30,16 @@ MonoBehaviour:
       rid: 1468093405773430916
     <Effect>k__BackingField:
       rid: 1468093405773430915
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Deal 8 damage to all enemies. Sly."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093405773430918
+    <Effect>k__BackingField:
+      rid: 1468093405773430917
   references:
     version: 2
     RefIds:
@@ -47,4 +51,11 @@ MonoBehaviour:
         damageAmount: 5
     - rid: 1468093405773430916
       type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
-      data: 
+      data:
+    - rid: 1468093405773430917
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 8
+    - rid: 1468093405773430918
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data:

@@ -32,12 +32,16 @@ MonoBehaviour:
       rid: 1468093466301694051
     <Effect>k__BackingField:
       rid: 1468093466301694052
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Add Poison to every other enemy equal to half of the Poison on the enemy with the most Poison, rounded down. Exhaust."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093466301694053
+    <Effect>k__BackingField:
+      rid: 1468093466301694054
   references:
     version: 2
     RefIds:
@@ -47,6 +51,13 @@ MonoBehaviour:
       type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
       data: 
     - rid: 1468093466301694052
+      type: {class: ContagionEffect, ns: , asm: Assembly-CSharp}
+      data:
+        poisonDivisor: 2
+    - rid: 1468093466301694053
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093466301694054
       type: {class: ContagionEffect, ns: , asm: Assembly-CSharp}
       data:
         poisonDivisor: 2

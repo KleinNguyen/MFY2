@@ -32,12 +32,16 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093488209330294
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Gain 10 Block. If you have at least 3 Combo, draw 1 card."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093488209330295
+    <Effect>k__BackingField:
+      rid: 1468093488209330296
   references:
     version: 2
     RefIds:
@@ -50,5 +54,14 @@ MonoBehaviour:
       type: {class: FlowingGuardEffect, ns: , asm: Assembly-CSharp}
       data:
         blockAmount: 7
+        requiredCombo: 3
+        drawAmount: 1
+    - rid: 1468093488209330295
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093488209330296
+      type: {class: FlowingGuardEffect, ns: , asm: Assembly-CSharp}
+      data:
+        blockAmount: 10
         requiredCombo: 3
         drawAmount: 1

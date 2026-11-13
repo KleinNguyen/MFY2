@@ -27,11 +27,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093466301694092
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Discard up to 3 cards. Deal 6 damage to one enemy for each card discarded. Exhaust."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093466301694093
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -43,3 +43,8 @@ MonoBehaviour:
       data:
         maxDiscard: 3
         damagePerCard: 5
+    - rid: 1468093466301694093
+      type: {class: ToxicRequisitionEffect, ns: , asm: Assembly-CSharp}
+      data:
+        maxDiscard: 3
+        damagePerCard: 6

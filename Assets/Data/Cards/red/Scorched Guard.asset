@@ -34,12 +34,20 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093377958117637
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Gain 12 Block. Exhaust a random card in your hand."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117638
+    <Effect>k__BackingField:
+      rid: 1468093377958117639
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117638
+    <Effect>k__BackingField:
+      rid: 1468093377958117640
   references:
     version: 2
     RefIds:
@@ -55,4 +63,15 @@ MonoBehaviour:
         stackCount: 9
     - rid: 1468093377958117637
       type: {class: ExhaustRandomCardEffect, ns: , asm: Assembly-CSharp}
-      data: 
+      data:
+    - rid: 1468093377958117638
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093377958117639
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 12
+    - rid: 1468093377958117640
+      type: {class: ExhaustRandomCardEffect, ns: , asm: Assembly-CSharp}
+      data:

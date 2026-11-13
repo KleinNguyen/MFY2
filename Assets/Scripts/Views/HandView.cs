@@ -32,12 +32,13 @@ public class HandView : MonoBehaviour
     private IEnumerator UpdateCardPositions(float duration)
     {
         if(cards.Count == 0) yield break;
-        float cardSpacing = 1f / 10f;
+        const float minPosition = 0.05f, maxPosition = 0.95f;
+        float cardSpacing = cards.Count > 1 ? Mathf.Min(0.1f, (maxPosition - minPosition) / (cards.Count - 1)) : 0f;
         float firstCardPosition = 0.5f - (cards.Count - 1) * cardSpacing / 2;
         Spline spline = splineContainer.Spline;
         for(int i = 0; i < cards.Count; i++)
         {
-            float p = firstCardPosition + i * cardSpacing;
+            float p = Mathf.Clamp(firstCardPosition + i * cardSpacing, minPosition, maxPosition);
             Vector3 splinePosition = spline.EvaluatePosition(p);
             Vector3 forward = spline.EvaluateTangent(p);
             Vector3 up = spline.EvaluateUpVector(p);

@@ -27,11 +27,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093377958117649
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Deal 11 damage. Restore 2 HP for each enemy with Weak, up to 6 HP."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093377958117650
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -42,5 +42,11 @@ MonoBehaviour:
       type: {class: DamageHealPerWeakEnemyEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 8
+        healPerWeakEnemy: 2
+        maxHeal: 6
+    - rid: 1468093377958117650
+      type: {class: DamageHealPerWeakEnemyEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 11
         healPerWeakEnemy: 2
         maxHeal: 6

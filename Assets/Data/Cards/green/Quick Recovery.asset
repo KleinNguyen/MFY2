@@ -34,12 +34,20 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093405773430918
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Gain 8 Block. Draw 1 card."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093405773430919
+    <Effect>k__BackingField:
+      rid: 1468093405773430920
+  - <TargetMode>k__BackingField:
+      rid: 1468093405773430919
+    <Effect>k__BackingField:
+      rid: 1468093405773430921
   references:
     version: 2
     RefIds:
@@ -54,6 +62,18 @@ MonoBehaviour:
         statusEffectType: 0
         stackCount: 5
     - rid: 1468093405773430918
+      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 1
+    - rid: 1468093405773430919
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093405773430920
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 8
+    - rid: 1468093405773430921
       type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
       data:
         drawAmount: 1

@@ -30,12 +30,16 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093377958117660
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Keep your Block at the start of your next turn."
   <UpgradedMana>k__BackingField: 0
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117661
+    <Effect>k__BackingField:
+      rid: 1468093377958117662
   references:
     version: 2
     RefIds:
@@ -46,4 +50,10 @@ MonoBehaviour:
       data: 
     - rid: 1468093377958117660
       type: {class: KeepBlockEffect, ns: , asm: Assembly-CSharp}
-      data: 
+      data:
+    - rid: 1468093377958117661
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093377958117662
+      type: {class: KeepBlockEffect, ns: , asm: Assembly-CSharp}
+      data:

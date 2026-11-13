@@ -32,12 +32,16 @@ MonoBehaviour:
       rid: 1468093488209330312
     <Effect>k__BackingField:
       rid: 1468093488209330313
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Spend all Combo. Deal 4 damage to all enemies for each Combo spent."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093488209330314
+    <Effect>k__BackingField:
+      rid: 1468093488209330315
   references:
     version: 2
     RefIds:
@@ -50,3 +54,10 @@ MonoBehaviour:
       type: {class: WhirlwindPayoffEffect, ns: , asm: Assembly-CSharp}
       data:
         damagePerCombo: 3
+    - rid: 1468093488209330314
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093488209330315
+      type: {class: WhirlwindPayoffEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damagePerCombo: 4

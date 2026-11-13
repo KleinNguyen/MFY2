@@ -27,11 +27,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093466301694033
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Deal 10 damage. If the target has Poison, deal 4 additional damage."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093466301694034
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -42,5 +42,11 @@ MonoBehaviour:
       type: {class: DamageIfPoisonedEffect, ns: , asm: Assembly-CSharp}
       data:
         baseDamage: 7
+        bonusDamage: 4
+        requiredPoisonStacks: 1
+    - rid: 1468093466301694034
+      type: {class: DamageIfPoisonedEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage: 10
         bonusDamage: 4
         requiredPoisonStacks: 1

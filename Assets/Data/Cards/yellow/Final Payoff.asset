@@ -28,11 +28,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093495396008016
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Spend all Combo. Deal 13 damage, plus 4 for each Combo spent. If this defeats the target, regain 2 Combo."
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093495396008017
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -43,5 +43,11 @@ MonoBehaviour:
       type: {class: FinalPayoffEffect, ns: , asm: Assembly-CSharp}
       data:
         baseDamage: 10
+        damagePerCombo: 4
+        comboOnKill: 2
+    - rid: 1468093495396008017
+      type: {class: FinalPayoffEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage: 13
         damagePerCombo: 4
         comboOnKill: 2

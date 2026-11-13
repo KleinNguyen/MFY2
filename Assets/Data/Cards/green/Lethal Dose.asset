@@ -30,12 +30,16 @@ MonoBehaviour:
       rid: 1468093466301694029
     <Effect>k__BackingField:
       rid: 1468093466301694030
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Apply 7 Poison to the enemy with the lowest HP."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093466301694031
+    <Effect>k__BackingField:
+      rid: 1468093466301694032
   references:
     version: 2
     RefIds:
@@ -49,3 +53,11 @@ MonoBehaviour:
       data:
         statusEffectType: 2
         stackCount: 6
+    - rid: 1468093466301694031
+      type: {class: LowestHealthEnemyTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093466301694032
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 2
+        stackCount: 7

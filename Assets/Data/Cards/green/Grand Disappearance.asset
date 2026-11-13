@@ -31,12 +31,16 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093466301694110
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Can only be played with at least 2 other cards in your hand. Discard all of them. Next turn, your Attacks deal double damage. Exhaust."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093466301694111
+    <Effect>k__BackingField:
+      rid: 1468093466301694112
   references:
     version: 2
     RefIds:
@@ -49,3 +53,10 @@ MonoBehaviour:
       type: {class: GrandDisappearanceEffect, ns: , asm: Assembly-CSharp}
       data:
         requiredOtherCards: 3
+    - rid: 1468093466301694111
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093466301694112
+      type: {class: GrandDisappearanceEffect, ns: , asm: Assembly-CSharp}
+      data:
+        requiredOtherCards: 2

@@ -31,12 +31,16 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093466301694088
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Gain 10 Block. Give a card in your hand Sly for this turn."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093466301694089
+    <Effect>k__BackingField:
+      rid: 1468093466301694090
   references:
     version: 2
     RefIds:
@@ -49,3 +53,10 @@ MonoBehaviour:
       type: {class: SmuggledSkillEffect, ns: , asm: Assembly-CSharp}
       data:
         blockAmount: 7
+    - rid: 1468093466301694089
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093466301694090
+      type: {class: SmuggledSkillEffect, ns: , asm: Assembly-CSharp}
+      data:
+        blockAmount: 10

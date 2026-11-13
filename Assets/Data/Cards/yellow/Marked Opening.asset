@@ -28,11 +28,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093488209330288
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Deal 10 damage. If the target has Exposed, gain 2 Combo."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093488209330289
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -43,4 +43,9 @@ MonoBehaviour:
       type: {class: MarkedOpeningEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 7
+        comboGain: 2
+    - rid: 1468093488209330289
+      type: {class: MarkedOpeningEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 10
         comboGain: 2

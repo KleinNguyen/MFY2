@@ -31,12 +31,16 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093377958117627
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Gain 9 Block. If you have lost HP from a card this turn, gain 4 additional Block."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117628
+    <Effect>k__BackingField:
+      rid: 1468093377958117629
   references:
     version: 2
     RefIds:
@@ -49,4 +53,12 @@ MonoBehaviour:
       type: {class: BlockIfLostHealthEffect, ns: , asm: Assembly-CSharp}
       data:
         baseBlock: 6
+        bonusBlock: 4
+    - rid: 1468093377958117628
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093377958117629
+      type: {class: BlockIfLostHealthEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseBlock: 9
         bonusBlock: 4

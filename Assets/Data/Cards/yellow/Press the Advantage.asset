@@ -31,12 +31,16 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093488209330270
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Deal 9 damage. Gain 1 Combo."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+    rid: 1468093488209330272
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093488209330271
+    <Effect>k__BackingField:
+      rid: 1468093488209330273
   references:
     version: 2
     RefIds:
@@ -50,6 +54,18 @@ MonoBehaviour:
       data:
         damageAmount: 6
     - rid: 1468093488209330270
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 7
+        stackCount: 1
+    - rid: 1468093488209330271
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093488209330272
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 9
+    - rid: 1468093488209330273
       type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
       data:
         statusEffectType: 7

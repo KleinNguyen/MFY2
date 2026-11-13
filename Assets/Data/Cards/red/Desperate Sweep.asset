@@ -34,12 +34,20 @@ MonoBehaviour:
       rid: 1468093377958117589
     <Effect>k__BackingField:
       rid: 1468093377958117590
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Lose 3 HP. Deal 12 damage to all enemies."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117591
+    <Effect>k__BackingField:
+      rid: 1468093377958117592
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117593
+    <Effect>k__BackingField:
+      rid: 1468093377958117594
   references:
     version: 2
     RefIds:
@@ -59,3 +67,17 @@ MonoBehaviour:
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 9
+    - rid: 1468093377958117591
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093377958117592
+      type: {class: LoseHealthEffect, ns: , asm: Assembly-CSharp}
+      data:
+        healthAmount: 3
+    - rid: 1468093377958117593
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093377958117594
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 12

@@ -32,12 +32,16 @@ MonoBehaviour:
       rid: 1468093488209330315
     <Effect>k__BackingField:
       rid: 1468093488209330316
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Attack 3 times for 5 damage each. Exhaust a card of your choice from your hand."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+    rid: 1468093488209330317
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093488209330318
+    <Effect>k__BackingField:
+      rid: 1468093488209330319
   references:
     version: 2
     RefIds:
@@ -53,6 +57,19 @@ MonoBehaviour:
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
     - rid: 1468093488209330316
+      type: {class: ChooseCardToExhaustEffect, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 0
+    - rid: 1468093488209330317
+      type: {class: ExposedFlurryEffect, ns: , asm: Assembly-CSharp}
+      data:
+        hitCount: 3
+        damagePerHit: 5
+        bonusDamageIfExposed: 0
+    - rid: 1468093488209330318
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093488209330319
       type: {class: ChooseCardToExhaustEffect, ns: , asm: Assembly-CSharp}
       data:
         drawAmount: 0

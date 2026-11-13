@@ -27,11 +27,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093488209330291
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Gain 3 Combo. If the target has Exposed, draw 1 card."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093488209330292
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -42,4 +42,9 @@ MonoBehaviour:
       type: {class: ReadTheOpeningEffect, ns: , asm: Assembly-CSharp}
       data:
         comboGain: 2
+        drawAmount: 1
+    - rid: 1468093488209330292
+      type: {class: ReadTheOpeningEffect, ns: , asm: Assembly-CSharp}
+      data:
+        comboGain: 3
         drawAmount: 1

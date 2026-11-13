@@ -28,11 +28,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093488209330275
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Deal 8 damage, plus 1 for each Combo. Do not spend Combo."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093488209330276
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -43,4 +43,9 @@ MonoBehaviour:
       type: {class: MeasuredRhythmEffect, ns: , asm: Assembly-CSharp}
       data:
         baseDamage: 5
+        damagePerCombo: 1
+    - rid: 1468093488209330276
+      type: {class: MeasuredRhythmEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage: 8
         damagePerCombo: 1

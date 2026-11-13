@@ -31,12 +31,16 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093466301694077
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Exhaust a card in your hand to draw 2 cards. Gain 9 Block."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093466301694078
+    <Effect>k__BackingField:
+      rid: 1468093466301694079
   references:
     version: 2
     RefIds:
@@ -50,3 +54,11 @@ MonoBehaviour:
       data:
         drawAmount: 2
         blockAmount: 6
+    - rid: 1468093466301694078
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093466301694079
+      type: {class: ToxicExchangeEffect, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 2
+        blockAmount: 9

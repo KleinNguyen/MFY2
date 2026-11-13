@@ -31,12 +31,16 @@ MonoBehaviour:
       rid: 1468093466301694037
     <Effect>k__BackingField:
       rid: 1468093466301694038
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Gain Block equal to the total Poison on all enemies, up to 30 Block. Exhaust."
   <UpgradedMana>k__BackingField: 0
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093466301694039
+    <Effect>k__BackingField:
+      rid: 1468093466301694040
   references:
     version: 2
     RefIds:
@@ -46,6 +50,13 @@ MonoBehaviour:
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
     - rid: 1468093466301694038
+      type: {class: BlockFromPoisonEffect, ns: , asm: Assembly-CSharp}
+      data:
+        maxBlock: 30
+    - rid: 1468093466301694039
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093466301694040
       type: {class: BlockFromPoisonEffect, ns: , asm: Assembly-CSharp}
       data:
         maxBlock: 30

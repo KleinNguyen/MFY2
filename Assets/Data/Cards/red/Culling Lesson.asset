@@ -31,12 +31,16 @@ MonoBehaviour:
       rid: 1468093377958117689
     <Effect>k__BackingField:
       rid: 1468093377958117690
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Exhaust a card of your choice from your hand, then draw 3 cards."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117691
+    <Effect>k__BackingField:
+      rid: 1468093377958117692
   references:
     version: 2
     RefIds:
@@ -49,3 +53,10 @@ MonoBehaviour:
       type: {class: ChooseCardToExhaustEffect, ns: , asm: Assembly-CSharp}
       data:
         drawAmount: 2
+    - rid: 1468093377958117691
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093377958117692
+      type: {class: ChooseCardToExhaustEffect, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 3

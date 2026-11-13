@@ -26,11 +26,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093377958117525
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Gain 7 Block. Deal 5 damage."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093377958117526
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -41,4 +41,9 @@ MonoBehaviour:
       type: {class: BlockThenDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         blockAmount: 4
+        damageAmount: 5
+    - rid: 1468093377958117526
+      type: {class: BlockThenDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        blockAmount: 7
         damageAmount: 5

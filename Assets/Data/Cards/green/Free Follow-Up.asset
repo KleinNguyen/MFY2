@@ -27,11 +27,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093466301694074
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Deal 15 damage. The next card you play this turn costs 0 mana."
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093466301694075
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -42,3 +42,7 @@ MonoBehaviour:
       type: {class: FreeFollowUpEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 12
+    - rid: 1468093466301694075
+      type: {class: FreeFollowUpEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 15

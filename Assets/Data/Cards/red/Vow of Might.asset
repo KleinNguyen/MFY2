@@ -27,11 +27,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093377958117698
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Lose 3 HP. Gain 3 Strength for this combat. Apply 1 Weak to one enemy. Exhaust."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093377958117699
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -43,4 +43,10 @@ MonoBehaviour:
       data:
         healthAmount: 3
         strengthAmount: 2
+        weakAmount: 1
+    - rid: 1468093377958117699
+      type: {class: VowOfMightEffect, ns: , asm: Assembly-CSharp}
+      data:
+        healthAmount: 3
+        strengthAmount: 3
         weakAmount: 1

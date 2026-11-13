@@ -26,11 +26,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093405773430909
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Apply 3 Armor Break to one enemy."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093405773430910
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -42,3 +42,8 @@ MonoBehaviour:
       data:
         statusEffectType: 4
         stackCount: 2
+    - rid: 1468093405773430910
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 4
+        stackCount: 3

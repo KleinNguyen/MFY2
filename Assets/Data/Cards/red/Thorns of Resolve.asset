@@ -35,12 +35,20 @@ MonoBehaviour:
       rid: 286842286307016837
     <Effect>k__BackingField:
       rid: 1468093377958117673
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Gain 14 Block. Whenever you are attacked this turn, deal 6 damage to the attacker."
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
-  <UpgradedOtherEffects>k__BackingField: []
+  <UpgradedOtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117674
+    <Effect>k__BackingField:
+      rid: 1468093377958117675
+  - <TargetMode>k__BackingField:
+      rid: 1468093377958117674
+    <Effect>k__BackingField:
+      rid: 1468093377958117676
   references:
     version: 2
     RefIds:
@@ -58,3 +66,15 @@ MonoBehaviour:
       type: {class: GainThornsEffect, ns: , asm: Assembly-CSharp}
       data:
         amount: 4
+    - rid: 1468093377958117674
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data:
+    - rid: 1468093377958117675
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 14
+    - rid: 1468093377958117676
+      type: {class: GainThornsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        amount: 6

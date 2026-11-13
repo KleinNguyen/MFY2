@@ -28,11 +28,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093488209330307
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Attack 4 times for 5 damage each. If the target has Exposed, each hit deals 2 additional damage."
+  <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093488209330308
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -44,4 +44,10 @@ MonoBehaviour:
       data:
         hitCount: 4
         damagePerHit: 4
+        bonusDamageIfExposed: 2
+    - rid: 1468093488209330308
+      type: {class: ExposedFlurryEffect, ns: , asm: Assembly-CSharp}
+      data:
+        hitCount: 4
+        damagePerHit: 5
         bonusDamageIfExposed: 2

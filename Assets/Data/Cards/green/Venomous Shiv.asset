@@ -26,11 +26,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093405773430903
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Deal 9 damage."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093405773430904
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -41,3 +41,7 @@ MonoBehaviour:
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 6
+    - rid: 1468093405773430904
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 9

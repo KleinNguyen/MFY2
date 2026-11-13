@@ -27,11 +27,11 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 1468093377958117559
   <OtherEffects>k__BackingField: []
-  <CanUpgrade>k__BackingField: 0
-  <UpgradedDescription>k__BackingField: 
-  <UpgradedMana>k__BackingField: 0
+  <CanUpgrade>k__BackingField: 1
+  <UpgradedDescription>k__BackingField: "Deal 9 damage, plus 3 for each Weak on the target. Maximum bonus: 12 damage."
+  <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1468093377958117560
   <UpgradedOtherEffects>k__BackingField: []
   references:
     version: 2
@@ -42,5 +42,11 @@ MonoBehaviour:
       type: {class: DamageFromWeakEffect, ns: , asm: Assembly-CSharp}
       data:
         baseDamage: 6
+        damagePerWeak: 3
+        maxBonusDamage: 12
+    - rid: 1468093377958117560
+      type: {class: DamageFromWeakEffect, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage: 9
         damagePerWeak: 3
         maxBonusDamage: 12
