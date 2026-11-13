@@ -6,22 +6,20 @@ using UnityEngine.UI;
 
 public enum SfxId
 {
-    ButtonClick,
-    CardDrawn,
-    CardPlayed,
-    CardUpgraded,
-    HeroAttack,
-    EnemyAttack,
-    Rest,
-    ItemPurchased,
-    HeroAttackRed,
-    HeroAttackGreen,
-    HeroAttackYellow,
-    ArmorGained,
-    WeakApplied,
-    PoisonApplied,
-    DebuffApplied,
-    BuffApplied
+    ButtonClick = 0,
+    CardDrawn = 1,
+    CardPlayed = 2,
+    CardUpgraded = 3,
+    Rest = 6,
+    ItemPurchased = 7,
+    HeroAttackRed = 8,
+    HeroAttackGreen = 9,
+    HeroAttackYellow = 10,
+    ArmorGained = 11,
+    WeakApplied = 12,
+    PoisonApplied = 13,
+    Defeat = 16,
+    ArmorBreakApplied = 17
 }
 
 public class SfxManager : MonoBehaviour

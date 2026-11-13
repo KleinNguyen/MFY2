@@ -178,13 +178,9 @@ public class DamageSystem : MonoBehaviour
                 CharacterType.Red => SfxId.HeroAttackRed,
                 CharacterType.Green => SfxId.HeroAttackGreen,
                 CharacterType.Yellow => SfxId.HeroAttackYellow,
-                _ => SfxId.HeroAttack
+                _ => SfxId.HeroAttackRed
             };
             SfxManager.PlayCombatEffectSfx(heroAttackSfx);
-        }
-        else if (caster is EnemyView)
-        {
-            SfxManager.PlayCombatEffectSfx(SfxId.EnemyAttack);
         }
     }
 

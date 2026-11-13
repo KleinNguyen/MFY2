@@ -79,10 +79,7 @@ public class StatusEffectSystem : MonoBehaviour
                     StatusEffectType.ARMOR => SfxId.ArmorGained,
                     StatusEffectType.WEAK => SfxId.WeakApplied,
                     StatusEffectType.POISON => SfxId.PoisonApplied,
-                    StatusEffectType.EXPOSED or StatusEffectType.ARMOR_BREAK =>
-                        SfxId.DebuffApplied,
-                    StatusEffectType.STRENGTH or StatusEffectType.DEXTERITY or StatusEffectType.COMBO =>
-                        SfxId.BuffApplied,
+                    StatusEffectType.ARMOR_BREAK => SfxId.ArmorBreakApplied,
                     _ => null
                 };
 

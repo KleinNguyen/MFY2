@@ -83,9 +83,17 @@ PrefabInstance:
       propertyPath: m_ChildControlHeight
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2934280205239068150, guid: b7046fa49e1b5f84d8ba6b67ace69e55, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -855298285791758126, guid: cea8638ecd92d6e4083ab31b48f1eeb1, type: 3}
+    - target: {fileID: 5196406231868700010, guid: b7046fa49e1b5f84d8ba6b67ace69e55, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5196406231868700010, guid: b7046fa49e1b5f84d8ba6b67ace69e55, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1.5
+      value: -2.7
       objectReference: {fileID: 0}
     - target: {fileID: 6126892933316634992, guid: b7046fa49e1b5f84d8ba6b67ace69e55, type: 3}
       propertyPath: m_LocalPosition.x
@@ -220,6 +228,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3654316806530453087}
     m_Modifications:
+    - target: {fileID: 217354432979498138, guid: e6f7f08cd5cfa784ab4ecb6936276aad, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 290
+      objectReference: {fileID: 0}
+    - target: {fileID: 217354432979498138, guid: e6f7f08cd5cfa784ab4ecb6936276aad, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 217354432979498138, guid: e6f7f08cd5cfa784ab4ecb6936276aad, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -115
+      objectReference: {fileID: 0}
+    - target: {fileID: 684504154035026672, guid: e6f7f08cd5cfa784ab4ecb6936276aad, type: 3}
+      propertyPath: m_Color.b
+      value: 0.4867924
+      objectReference: {fileID: 0}
+    - target: {fileID: 684504154035026672, guid: e6f7f08cd5cfa784ab4ecb6936276aad, type: 3}
+      propertyPath: m_Color.g
+      value: 0.4867924
+      objectReference: {fileID: 0}
+    - target: {fileID: 684504154035026672, guid: e6f7f08cd5cfa784ab4ecb6936276aad, type: 3}
+      propertyPath: m_Color.r
+      value: 0.4867924
+      objectReference: {fileID: 0}
     - target: {fileID: 2246954439836066416, guid: e6f7f08cd5cfa784ab4ecb6936276aad, type: 3}
       propertyPath: m_Name
       value: HealthBarCanvas
@@ -303,6 +335,22 @@ PrefabInstance:
     - target: {fileID: 5539142065665039603, guid: e6f7f08cd5cfa784ab4ecb6936276aad, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8783109385429097453, guid: e6f7f08cd5cfa784ab4ecb6936276aad, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 8783109385429097453, guid: e6f7f08cd5cfa784ab4ecb6936276aad, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8783109385429097453, guid: e6f7f08cd5cfa784ab4ecb6936276aad, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8783109385429097453, guid: e6f7f08cd5cfa784ab4ecb6936276aad, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -115
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

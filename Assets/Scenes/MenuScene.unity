@@ -2578,6 +2578,12 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 9d2ea3c047d299e48b3d242841037ae0, type: 3}
   - id: 6
     clip: {fileID: 8300000, guid: 44950371ea94b7f4a90774ac3e8613cf, type: 3}
+  - id: 6
+    clip: {fileID: 8300000, guid: 44950371ea94b7f4a90774ac3e8613cf, type: 3}
+  - id: 16
+    clip: {fileID: 8300000, guid: 9d2ea3c047d299e48b3d242841037ae0, type: 3}
+  - id: 17
+    clip: {fileID: 8300000, guid: 9d2ea3c047d299e48b3d242841037ae0, type: 3}
 --- !u!4 &943522074
 Transform:
   m_ObjectHideFlags: 0

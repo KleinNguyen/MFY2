@@ -36,6 +36,7 @@ public class BattleSystem : Singleton<BattleSystem>
     {
         if (IsBattleOver) return;
         IsBattleOver = true;
+        SfxManager.PlaySfx(SfxId.Defeat);
         RunSystem run = RunSystem.Instance;
 
         if (run != null)
