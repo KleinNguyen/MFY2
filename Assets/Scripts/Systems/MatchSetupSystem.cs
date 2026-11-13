@@ -5,7 +5,6 @@ public class MatchSetupSystem : MonoBehaviour
 {
     [SerializeField] private HeroData heroData;
     [SerializeField] private SpriteRenderer battleBackground;
-    [SerializeField] private PerkData perkData;
     [SerializeField] private List<EnemyData> enemyDatas;
     private void Start()
     {
@@ -31,7 +30,9 @@ public class MatchSetupSystem : MonoBehaviour
         HeroSystem.Instance.HeroView.SetCurrentHealth(RunSystem.Instance.CurrentHealth);
         EnemySystem.Instance.Setup(RunSystem.Instance.CurrentEncounter);
         CardSystem.Instance.Setup(RunSystem.Instance.Deck);
-        PerkSystem.Instance.AddPerk(new Perk(perkData));
+        PerkData startingPerk = RunSystem.Instance.HeroData.StartingPerk;
+        if (startingPerk != null)
+            PerkSystem.Instance.AddPerk(new Perk(startingPerk));
         DrawCardsGA drawCardsGA = new(5);
         ActionSystem.Instance.Perform(drawCardsGA);
     }

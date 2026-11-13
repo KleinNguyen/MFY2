@@ -1,42 +1,46 @@
-using JetBrains.Annotations;
-using UnityEngine;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class Perk 
+public class Perk
 {
-    public Sprite Image => data.Image;
     private readonly PerkData data;
-    private readonly PerkCondition condition;
-    private readonly AutoTargetEffect effect;
+    private bool subscribed;
+
+    public Sprite Image => data.Image;
+
     public Perk(PerkData perkData)
     {
-        data = perkData;
-        condition = data.PerkCondition;
-        effect = data.AutoTargetEffect;
+        data = perkData != null ? perkData : throw new ArgumentNullException(nameof(perkData));
     }
+
     public void OnAdd()
     {
-        condition.SubscribeCondition(Reaction);
+        if (subscribed || data.PerkCondition == null) return;
+
+        data.PerkCondition.SubscribeCondition(Reaction);
+        subscribed = true;
     }
+
     public void OnRemove()
     {
-        condition.UnsubscribeCondition(Reaction);
+        if (!subscribed) return;
+
+        data.PerkCondition.UnsubscribeCondition(Reaction);
+        subscribed = false;
     }
+
     private void Reaction(GameAction gameAction)
     {
-        if (condition.SubConditionIsMet(gameAction))
-        {
-            List<CombatantView> targets = new();
-            if(data.UseActionCasterAsTarget && gameAction is IHaveCaster haveCaster)
-            {
-                targets.Add(haveCaster.Caster);
-            }
-            if (data.UseAutoTarget)
-            {
-                targets.AddRange(effect.TargetMode.GetTargets());
-            }
-            GameAction perkEffectAction = effect.Effect.GetGameAction(targets, HeroSystem.Instance.HeroView);
-            ActionSystem.Instance.AddReaction(perkEffectAction);
-        }
+        if (!subscribed || data.AutoTargetEffect?.Effect == null) return;
+        if (ActionSystem.Instance == null || HeroSystem.Instance == null) return;
+        if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver) return;
+
+        HeroView hero = HeroSystem.Instance.HeroView;
+        if (hero == null || hero.CurrentHealth <= 0) return;
+        if (!data.PerkCondition.SubConditionIsMet(gameAction)) return;
+
+        GameAction action = data.AutoTargetEffect.Effect.GetGameAction(new List<CombatantView>(), hero);
+        if (action != null) ActionSystem.Instance.AddReaction(action);
     }
 }

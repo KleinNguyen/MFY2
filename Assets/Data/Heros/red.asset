@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67a6147af0c4b19479bdfc1d72ae808b, type: 3}
-  m_Name: 1stHero
+  m_Name: red
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 0
   <Image>k__BackingField: {fileID: 3584940629993556120, guid: 229ff0ca5b197ab4486d04868d14fc28, type: 3}
@@ -21,13 +21,11 @@ MonoBehaviour:
   <Health>k__BackingField: 40
   <StartingMana>k__BackingField: 3
   <Deck>k__BackingField:
-  - {fileID: 11400000, guid: 9038e06a7cf3c1740bba1b650cc371a4, type: 2}
   - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
-  - {fileID: 11400000, guid: 18cef348e160ff845a3ad68d03e0f3fe, type: 2}
-  - {fileID: 11400000, guid: 033fbf8b1b690f142b32ee4d3d05376f, type: 2}
-  - {fileID: 11400000, guid: 15b8fe17af68741429ac71de1776d2eb, type: 2}
-  - {fileID: 11400000, guid: 6adcd012999ce3e4eaf5f3caeb8afe58, type: 2}
-  - {fileID: 11400000, guid: c1fcd465b3a5df64f886390bdf2123f1, type: 2}
-  - {fileID: 11400000, guid: 39ac8a7cdd99b944084b055dfbb63fa2, type: 2}
-  - {fileID: 11400000, guid: 39ac8a7cdd99b944084b055dfbb63fa2, type: 2}
-  - {fileID: 11400000, guid: 39ac8a7cdd99b944084b055dfbb63fa2, type: 2}
+  - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
+  - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
+  - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
+  - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
+  - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
+  - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
+  <StartingPerk>k__BackingField: {fileID: 11400000, guid: c6252b4f5ad8b774a9a7bc5bff0539b8, type: 2}

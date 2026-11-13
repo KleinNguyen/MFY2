@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67a6147af0c4b19479bdfc1d72ae808b, type: 3}
-  m_Name: 3rdHero
+  m_Name: yellow
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
   <Image>k__BackingField: {fileID: -1868591669631162887, guid: 9151f22c7e1aacb4eb49893ceb0803e4, type: 3}
@@ -27,3 +27,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0aad0526b5be41946bb67c87713040a0, type: 2}
   - {fileID: 11400000, guid: 62f21bbc669e444428b483d5c36cc7e1, type: 2}
   - {fileID: 11400000, guid: 0aad0526b5be41946bb67c87713040a0, type: 2}
+  <StartingPerk>k__BackingField: {fileID: 11400000, guid: 524a56f9a39e54e45bd4d4b2da70c8fc, type: 2}
