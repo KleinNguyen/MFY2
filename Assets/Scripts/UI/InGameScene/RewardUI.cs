@@ -240,4 +240,33 @@ public class RewardUI : MonoBehaviour
 
         SceneManager.LoadScene("MapScene");
     }
+    #if UNITY_EDITOR
+        [ContextMenu("Auto Fill Reward Cards")]
+        private void AutoFillRewardCards()
+        {
+            if (Application.isPlaying) return;
+
+            List<CardData> cards = new();
+            string[] guids = UnityEditor.AssetDatabase.FindAssets("t:CardData", new[] { "Assets/Data/Cards" });
+            foreach (string guid in guids)
+            {
+                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                CardData card = UnityEditor.AssetDatabase.LoadAssetAtPath<CardData>(path);
+                if (card != null) cards.Add(card);
+            }
+
+            cards.Sort((a, b) => string.Compare(a.name, b.name, System.StringComparison.OrdinalIgnoreCase));
+            UnityEditor.Undo.RecordObject(this, "Auto Fill Reward Cards");
+            rewardCards = cards;
+
+            if (UnityEditor.PrefabUtility.IsPartOfPrefabInstance(this))
+                UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(this);
+
+            UnityEditor.EditorUtility.SetDirty(this);
+            if (gameObject.scene.IsValid() && gameObject.scene.isLoaded)
+                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+
+            Debug.Log($"Reward Cards loaded: {rewardCards.Count}", this);
+        }
+    #endif
 }

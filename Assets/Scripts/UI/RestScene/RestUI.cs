@@ -47,7 +47,7 @@ public class RestUI : MonoBehaviour
         if (run == null || run.HeroData == null) return;
 
         if (healthText != null) healthText.text = "HP: " + run.CurrentHealth + " / " + run.HeroData.Health;
-        if (messageText != null) messageText.text = "Choose to rest or upgrade a card.";
+        if (messageText != null) messageText.text = "Rest and upgrade a card.";
     }
 
     private void SetMessage(string message)
