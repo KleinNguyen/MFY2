@@ -22,10 +22,9 @@ MonoBehaviour:
   <StartingMana>k__BackingField: 3
   <Deck>k__BackingField:
   - {fileID: 11400000, guid: 05529845a6487374bb1b4c7308a5d9bd, type: 2}
-  - {fileID: 11400000, guid: 05529845a6487374bb1b4c7308a5d9bd, type: 2}
-  - {fileID: 11400000, guid: 05529845a6487374bb1b4c7308a5d9bd, type: 2}
-  - {fileID: 11400000, guid: 05529845a6487374bb1b4c7308a5d9bd, type: 2}
-  - {fileID: 11400000, guid: 05529845a6487374bb1b4c7308a5d9bd, type: 2}
+  - {fileID: 11400000, guid: 89757d1417742bd46b8a954a044de73b, type: 2}
+  - {fileID: 11400000, guid: 30fa7417f8f8ab44ca2b1e33308ddba5, type: 2}
+  - {fileID: 11400000, guid: 0fbe77b1ab063f64bb609b5ad64d44ee, type: 2}
   - {fileID: 11400000, guid: 05529845a6487374bb1b4c7308a5d9bd, type: 2}
   - {fileID: 11400000, guid: 05529845a6487374bb1b4c7308a5d9bd, type: 2}
   - {fileID: 11400000, guid: 05529845a6487374bb1b4c7308a5d9bd, type: 2}

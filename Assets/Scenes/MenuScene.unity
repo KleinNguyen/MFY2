@@ -2552,7 +2552,7 @@ GameObject:
   - component: {fileID: 943522074}
   - component: {fileID: 943522073}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: SFX Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2578,10 +2578,26 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 9d2ea3c047d299e48b3d242841037ae0, type: 3}
   - id: 6
     clip: {fileID: 8300000, guid: 44950371ea94b7f4a90774ac3e8613cf, type: 3}
-  - id: 6
-    clip: {fileID: 8300000, guid: 44950371ea94b7f4a90774ac3e8613cf, type: 3}
-  - id: 16
+  - id: 1
+    clip: {fileID: 8300000, guid: f8874895bf0292442922b8206912bb1a, type: 3}
+  - id: 2
+    clip: {fileID: 8300000, guid: f8874895bf0292442922b8206912bb1a, type: 3}
+  - id: 3
+    clip: {fileID: 8300000, guid: 451dcc8ed771d6e43b19ca3e6b7cde85, type: 3}
+  - id: 7
+    clip: {fileID: 8300000, guid: eb979cc438430a24eb7be81628bea956, type: 3}
+  - id: 9
+    clip: {fileID: 8300000, guid: ea2beafb236d4b640b9cf7e4888671ce, type: 3}
+  - id: 10
+    clip: {fileID: 8300000, guid: c14dd420a077f8a428bec03279d0c9be, type: 3}
+  - id: 11
+    clip: {fileID: 8300000, guid: 1525b8bb64d19dd4dbd72a0c02783b88, type: 3}
+  - id: 12
+    clip: {fileID: 8300000, guid: 0ce1c041ff8f7164783fdca9e65b24ad, type: 3}
+  - id: 17
     clip: {fileID: 8300000, guid: 9d2ea3c047d299e48b3d242841037ae0, type: 3}
+  - id: 16
+    clip: {fileID: 8300000, guid: ef0c31af17b3ba2478cc9a17d633687a, type: 3}
   - id: 17
     clip: {fileID: 8300000, guid: 9d2ea3c047d299e48b3d242841037ae0, type: 3}
 --- !u!4 &943522074
