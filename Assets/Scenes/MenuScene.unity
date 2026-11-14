@@ -2598,8 +2598,6 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 9d2ea3c047d299e48b3d242841037ae0, type: 3}
   - id: 16
     clip: {fileID: 8300000, guid: ef0c31af17b3ba2478cc9a17d633687a, type: 3}
-  - id: 17
-    clip: {fileID: 8300000, guid: 9d2ea3c047d299e48b3d242841037ae0, type: 3}
 --- !u!4 &943522074
 Transform:
   m_ObjectHideFlags: 0

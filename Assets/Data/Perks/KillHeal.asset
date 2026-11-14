@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 274ecb96680a6054b9fe8d83245d622d, type: 3}
   m_Name: KillHeal
   m_EditorClassIdentifier: 
-  <Image>k__BackingField: {fileID: 0}
+  <Image>k__BackingField: {fileID: 855641430548220792, guid: d14830d978649944fb4de227a2fb93cc, type: 3}
   <PerkCondition>k__BackingField:
     rid: 1468093514728341800
   <AutoTargetEffect>k__BackingField:

@@ -12,13 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 274ecb96680a6054b9fe8d83245d622d, type: 3}
   m_Name: GainAttackCombo
   m_EditorClassIdentifier: 
-  <Image>k__BackingField: {fileID: 0}
+  <Image>k__BackingField: {fileID: 8142696591078814465, guid: e5d23f2e4a3e1a14bb22c6f8542afff6, type: 3}
   <PerkCondition>k__BackingField:
     rid: 1468093514728341796
   <AutoTargetEffect>k__BackingField:
     rid: 1468093514728341797
-  <UseAutoTarget>k__BackingField: 0
-  <UseActionCasterAsTarget>k__BackingField: 0
   references:
     version: 2
     RefIds:
