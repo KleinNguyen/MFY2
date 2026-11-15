@@ -1,0 +1,650 @@
+fileFormatVersion: 2
+guid: 6e0d22b51dd24214285f20874096b933
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6842748034386278243
+    second: arrgreen_0
+  - first:
+      213: 2380938610609407654
+    second: arrgreen_1
+  - first:
+      213: 1381362619688898265
+    second: arrgreen_2
+  - first:
+      213: -4336325435623330157
+    second: arrgreen_3
+  - first:
+      213: 1710615243582471420
+    second: arrgreen_4
+  - first:
+      213: -3866269245577479367
+    second: arrgreen_5
+  - first:
+      213: -7229548412991168123
+    second: arrgreen_6
+  - first:
+      213: -7412152945458490783
+    second: arrgreen_7
+  - first:
+      213: -4967706156523329443
+    second: arrgreen_8
+  - first:
+      213: -3973472261723241496
+    second: arrgreen_9
+  - first:
+      213: 172435115522777252
+    second: arrgreen_10
+  - first:
+      213: -4729956779200141876
+    second: arrgreen_11
+  - first:
+      213: -3215011039809897906
+    second: arrgreen_12
+  - first:
+      213: -5362188668179262627
+    second: arrgreen_13
+  - first:
+      213: 6603033116009838396
+    second: arrgreen_14
+  - first:
+      213: 243574101515594516
+    second: arrgreen_15
+  - first:
+      213: 5013511120091799454
+    second: arrgreen_16
+  - first:
+      213: 6464693945343804780
+    second: arrgreen_17
+  - first:
+      213: -238308168002688062
+    second: arrgreen_18
+  - first:
+      213: 2999002476358573898
+    second: arrgreen_19
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: arrgreen_0
+      rect:
+        serializedVersion: 2
+        x: 899
+        y: 306
+        width: 847
+        height: 702
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 367b815351356fe50800000000000000
+      internalID: 6842748034386278243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_1
+      rect:
+        serializedVersion: 2
+        x: 1281
+        y: 944
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a6c2653d0bca0120800000000000000
+      internalID: 2380938610609407654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_2
+      rect:
+        serializedVersion: 2
+        x: 1638
+        y: 833
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9de4f8cdbf59b2310800000000000000
+      internalID: 1381362619688898265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_3
+      rect:
+        serializedVersion: 2
+        x: 1648
+        y: 822
+        width: 95
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39e2e2bbdf642d3c0800000000000000
+      internalID: -4336325435623330157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_4
+      rect:
+        serializedVersion: 2
+        x: 1641
+        y: 791
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfcf91530835db710800000000000000
+      internalID: 1710615243582471420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_5
+      rect:
+        serializedVersion: 2
+        x: 939
+        y: 711
+        width: 22
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93b36530b90485ac0800000000000000
+      internalID: -3866269245577479367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_6
+      rect:
+        serializedVersion: 2
+        x: 965
+        y: 730
+        width: 28
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5812c2da50c7bab90800000000000000
+      internalID: -7229548412991168123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_7
+      rect:
+        serializedVersion: 2
+        x: 1631
+        y: 745
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 162d419da2eb22990800000000000000
+      internalID: -7412152945458490783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_8
+      rect:
+        serializedVersion: 2
+        x: 899
+        y: 726
+        width: 24
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d58e7e712992f0bb0800000000000000
+      internalID: -4967706156523329443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_9
+      rect:
+        serializedVersion: 2
+        x: 902
+        y: 685
+        width: 23
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e34e13c7046bd8c0800000000000000
+      internalID: -3973472261723241496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_10
+      rect:
+        serializedVersion: 2
+        x: 962
+        y: 701
+        width: 14
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a0e98fe2dc946200800000000000000
+      internalID: 172435115522777252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_11
+      rect:
+        serializedVersion: 2
+        x: 891
+        y: 674
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc523d4ae51db5eb0800000000000000
+      internalID: -4729956779200141876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_12
+      rect:
+        serializedVersion: 2
+        x: 902
+        y: 673
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4afb2f3e7cf163d0800000000000000
+      internalID: -3215011039809897906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_13
+      rect:
+        serializedVersion: 2
+        x: 918
+        y: 637
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d53dc8ef0dda595b0800000000000000
+      internalID: -5362188668179262627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_14
+      rect:
+        serializedVersion: 2
+        x: 891
+        y: 610
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3738e772afa2ab50800000000000000
+      internalID: 6603033116009838396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_15
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 571
+        width: 17
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41b6255da59516300800000000000000
+      internalID: 243574101515594516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_16
+      rect:
+        serializedVersion: 2
+        x: 886
+        y: 588
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9fda8e0dc1939540800000000000000
+      internalID: 5013511120091799454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_17
+      rect:
+        serializedVersion: 2
+        x: 965
+        y: 545
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6506d154e437b950800000000000000
+      internalID: 6464693945343804780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_18
+      rect:
+        serializedVersion: 2
+        x: 1738
+        y: 464
+        width: 13
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2cb202bdbfb51bcf0800000000000000
+      internalID: -238308168002688062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrgreen_19
+      rect:
+        serializedVersion: 2
+        x: 1658
+        y: 428
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4f9ed3ecd89e9920800000000000000
+      internalID: 2999002476358573898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      arrgreen_0: 6842748034386278243
+      arrgreen_1: 2380938610609407654
+      arrgreen_10: 172435115522777252
+      arrgreen_11: -4729956779200141876
+      arrgreen_12: -3215011039809897906
+      arrgreen_13: -5362188668179262627
+      arrgreen_14: 6603033116009838396
+      arrgreen_15: 243574101515594516
+      arrgreen_16: 5013511120091799454
+      arrgreen_17: 6464693945343804780
+      arrgreen_18: -238308168002688062
+      arrgreen_19: 2999002476358573898
+      arrgreen_2: 1381362619688898265
+      arrgreen_3: -4336325435623330157
+      arrgreen_4: 1710615243582471420
+      arrgreen_5: -3866269245577479367
+      arrgreen_6: -7229548412991168123
+      arrgreen_7: -7412152945458490783
+      arrgreen_8: -4967706156523329443
+      arrgreen_9: -3973472261723241496
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

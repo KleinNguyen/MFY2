@@ -136,6 +136,11 @@ public class CardView : MonoBehaviour
     }
     private void OnMouseDown()
     {
+        if (CardSystem.Instance != null && CardSystem.Instance.IsCardInHand(Card))
+        {
+            SfxManager.PlaySfx(SfxId.CardPlayed);
+        }
+
         if (
             CardSystem.Instance != null &&
             CardSystem.Instance.IsChoosingCardToUpgrade

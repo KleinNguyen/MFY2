@@ -83,6 +83,38 @@ PrefabInstance:
       propertyPath: m_ChildControlHeight
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 931301378282377963, guid: b7046fa49e1b5f84d8ba6b67ace69e55, type: 3}
+      propertyPath: weakSprite
+      value: 
+      objectReference: {fileID: 7732263151187783402, guid: 86f80a7c4a200dc4d9c195de51271f7f, type: 3}
+    - target: {fileID: 931301378282377963, guid: b7046fa49e1b5f84d8ba6b67ace69e55, type: 3}
+      propertyPath: armorSprite
+      value: 
+      objectReference: {fileID: -1128947775675819744, guid: 6c73d9f262d348f4783049a8d4ddac48, type: 3}
+    - target: {fileID: 931301378282377963, guid: b7046fa49e1b5f84d8ba6b67ace69e55, type: 3}
+      propertyPath: comboSprite
+      value: 
+      objectReference: {fileID: -7204300847262918128, guid: 815b023b0dc48b845a8b7b6b8f5077ee, type: 3}
+    - target: {fileID: 931301378282377963, guid: b7046fa49e1b5f84d8ba6b67ace69e55, type: 3}
+      propertyPath: poisonSprite
+      value: 
+      objectReference: {fileID: -5005990984189769374, guid: 9e42a5ae4d00d0d479a8b326e3dae7e4, type: 3}
+    - target: {fileID: 931301378282377963, guid: b7046fa49e1b5f84d8ba6b67ace69e55, type: 3}
+      propertyPath: exposedSprite
+      value: 
+      objectReference: {fileID: 404419191164972637, guid: 1d6f7db2ba59a5b40ab0deed7287dc5d, type: 3}
+    - target: {fileID: 931301378282377963, guid: b7046fa49e1b5f84d8ba6b67ace69e55, type: 3}
+      propertyPath: strengthSprite
+      value: 
+      objectReference: {fileID: 12085813604639031, guid: b8e13db26fcdaa046903bccc5a03cb1a, type: 3}
+    - target: {fileID: 931301378282377963, guid: b7046fa49e1b5f84d8ba6b67ace69e55, type: 3}
+      propertyPath: dexteritySprite
+      value: 
+      objectReference: {fileID: -4001184471521848107, guid: d86369e3094b10a488febb448b487dee, type: 3}
+    - target: {fileID: 931301378282377963, guid: b7046fa49e1b5f84d8ba6b67ace69e55, type: 3}
+      propertyPath: armorBreakSprite
+      value: 
+      objectReference: {fileID: -2228378330002625457, guid: 767813200a93c3346822e3989eedb5f2, type: 3}
     - target: {fileID: 2934280205239068150, guid: b7046fa49e1b5f84d8ba6b67ace69e55, type: 3}
       propertyPath: m_Sprite
       value: 

@@ -83,6 +83,11 @@ public class CardSystem : Singleton<CardSystem>
             ManaSystem.Instance != null && ManaSystem.Instance.HasEnoughMana(GetManaCost(card));
     }
 
+    public bool IsCardInHand(Card card)
+    {
+        return card != null && hand.Contains(card);
+    }
+
     private bool MeetsCardPlayConditions(Card card)
     {
         int otherCardsInHand = hand.Count - (hand.Contains(card) ? 1 : 0);
@@ -412,6 +417,7 @@ public class CardSystem : Singleton<CardSystem>
 
         hand.Add(card);
         CardsDrawnThisCombat++;
+        SfxManager.PlaySfx(SfxId.CardDrawn);
 
         pileUI.UpdateDrawPileText(drawPile.Count);
 
