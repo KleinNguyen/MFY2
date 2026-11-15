@@ -36,17 +36,29 @@ public class EnemySystem : Singleton<EnemySystem>
     }
     private IEnumerator EnemyTurnPerformer(EnemyTurnGA enemyTurnGA)
     {
-        foreach (var enemy in enemyBoardView.EnemyViews)
+        foreach (EnemyView enemy in enemyBoardView.EnemyViews)
         {
+            if (enemy == null || enemy.CurrentHealth <= 0) continue;
+
             int poisonStacks = enemy.GetStatusEffectStacks(StatusEffectType.POISON);
-            if(poisonStacks > 0)
+            if (poisonStacks > 0)
+                ActionSystem.Instance.AddReaction(new ApplyPoisonGA(poisonStacks, enemy));
+
+            ActionSystem.Instance.AddReaction(new ArmorBreakTickGA(enemy));
+
+            if (enemy.ArmorPerTurn > 0)
             {
-                ApplyPoisonGA applyBurnGA = new(poisonStacks, enemy);
-                ActionSystem.Instance.AddReaction(applyBurnGA);
+                AddStatusEffectGA armor = new(
+                    StatusEffectType.ARMOR,
+                    enemy.ArmorPerTurn,
+                    new List<CombatantView> { enemy }
+                );
+                ActionSystem.Instance.AddReaction(armor);
             }
-            AttackHeroGA attackHeroGA = new(enemy);
-            ActionSystem.Instance.AddReaction(attackHeroGA);
+
+            ActionSystem.Instance.AddReaction(new AttackHeroGA(enemy));
         }
+
         yield return null;
     }
     private IEnumerator AttackHeroPerformer(
@@ -72,17 +84,8 @@ public class EnemySystem : Singleton<EnemySystem>
             0.15f
         );
 
-        int damage = attacker.AttackPower;
-
-        int weakStacks = attacker.GetStatusEffectStacks(
-            StatusEffectType.WEAK
-        );
-
-        //change weak dmg
-        if (weakStacks > 0)
-        {
-            damage = Mathf.FloorToInt(damage * 0.75f);
-        }
+        int damage = attacker.GetAttackDamage();
+        int weakStacks = attacker.GetStatusEffectStacks(StatusEffectType.WEAK);
 
         DealDamageGA dealDamageGA = new(
             damage,

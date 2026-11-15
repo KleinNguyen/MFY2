@@ -156,6 +156,7 @@ public class CombatantView : MonoBehaviour
     }
     public void AddStatusEffect(StatusEffectType type, int stackCount)
     {
+        if (type == StatusEffectType.ARMOR_BREAK && GetStatusEffectStacks(StatusEffectType.ARMOR) <= 0) return;
         if (type == StatusEffectType.COMBO)
         {
             stackCount = Mathf.Max(0, stackCount);
@@ -345,6 +346,11 @@ public class CombatantView : MonoBehaviour
             }
         }
         statusEffectsUI.UpdateStatusEffectUI(type, GetStatusEffectStacks(type));
+        if (type == StatusEffectType.ARMOR && GetStatusEffectStacks(StatusEffectType.ARMOR) <= 0)
+        {
+            int armorBreakStacks = GetStatusEffectStacks(StatusEffectType.ARMOR_BREAK);
+            if (armorBreakStacks > 0) RemoveStatusEffect(StatusEffectType.ARMOR_BREAK, armorBreakStacks);
+        }
     }
     public int GetStatusEffectStacks(StatusEffectType type)
     {

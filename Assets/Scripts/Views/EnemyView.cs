@@ -10,15 +10,30 @@ public class EnemyView : CombatantView
     [SerializeField] private TMP_Text attackText;
 
     public int AttackPower { get; set; }
+    public int ArmorPerTurn { get; private set; }
+    private int lastDisplayedAttack = -1;
+
+    public int GetAttackDamage()
+    {
+        int damage = Mathf.Max(0, AttackPower);
+        return GetStatusEffectStacks(StatusEffectType.WEAK) > 0
+            ? Mathf.FloorToInt(damage * 0.75f)
+            : damage;
+    }
 
     public void Setup(EnemyData enemyData)
     {
         AttackPower = enemyData.AttackPower;
-        UpdateAttackText();
+        ArmorPerTurn = Mathf.Max(0, enemyData.ArmorPerTurn);
         SetupBase(enemyData.Health, enemyData.Image);
 
+        lastDisplayedAttack = -1;
+        UpdateAttackText();
         FitSpriteToLimit(GetSpriteLimit(enemyData.Rank));
         InitializeIdleAnimation();
+
+        if (enemyData.StartingArmor > 0)
+            AddStatusEffect(StatusEffectType.ARMOR, enemyData.StartingArmor);
     }
 
     private void Update()
@@ -52,24 +67,24 @@ public class EnemyView : CombatantView
 
     private void UpdateAttackText()
     {
-        attackText.text = "ATK: " + AttackPower;
+        if (attackText == null) return;
+
+        int damage = GetAttackDamage();
+        if (lastDisplayedAttack == damage) return;
+
+        lastDisplayedAttack = damage;
+        attackText.text = "ATK: " + damage;
+    }
+    private void LateUpdate()
+    {
+        UpdateAttackText();
     }
     public Vector3 GetTargetArrowPosition()
     {
         SpriteRenderer enemySprite = CombatantSpriteRenderer;
-
-        if (enemySprite == null)
-        {
-            return transform.position;
-        }
+        if (enemySprite == null) return transform.position;
 
         Bounds bounds = enemySprite.bounds;
-
-        return new Vector3(
-            bounds.center.x,
-            bounds.max.y,
-            bounds.center.z
-        );
+        return new Vector3(bounds.center.x, bounds.max.y, bounds.center.z);
     }
-
 }
