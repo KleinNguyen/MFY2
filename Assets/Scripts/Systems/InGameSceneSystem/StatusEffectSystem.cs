@@ -39,12 +39,6 @@ public class StatusEffectSystem : MonoBehaviour
 
             int finalStackCount = action.StackCount;
 
-            if (action.StatusEffectType == StatusEffectType.ARMOR_BREAK &&
-                target.GetStatusEffectStacks(StatusEffectType.ARMOR) <= 0)
-            {
-                continue;
-            }
-
             if (action.StatusEffectType == StatusEffectType.ARMOR)
             {
                 if (action.CardCaster != null)
@@ -111,18 +105,13 @@ public class StatusEffectSystem : MonoBehaviour
         if (stacks <= 0) yield break;
 
         int currentArmor = target.GetStatusEffectStacks(StatusEffectType.ARMOR);
-        if (currentArmor <= 0)
+        if (currentArmor > 0)
         {
-            target.RemoveStatusEffect(StatusEffectType.ARMOR_BREAK, stacks);
-            yield break;
+            int remainingArmor = Mathf.FloorToInt(currentArmor * (1f - ARMOR_BREAK_REDUCTION));
+            target.RemoveStatusEffect(StatusEffectType.ARMOR, currentArmor - remainingArmor);
         }
 
-        int remainingArmor = Mathf.FloorToInt(currentArmor * (1f - ARMOR_BREAK_REDUCTION));
-        target.RemoveStatusEffect(StatusEffectType.ARMOR, currentArmor - remainingArmor);
-
-        if (target.GetStatusEffectStacks(StatusEffectType.ARMOR_BREAK) > 0)
-            target.RemoveStatusEffect(StatusEffectType.ARMOR_BREAK, 1);
-
+        target.RemoveStatusEffect(StatusEffectType.ARMOR_BREAK, 1);
         yield return null;
     }
     private void EndPlayerTurnReaction(EnemyTurnGA action)

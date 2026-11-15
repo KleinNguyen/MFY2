@@ -18,14 +18,14 @@ MonoBehaviour:
   <Description>k__BackingField: A twisted experimental subject with a monstrous mutated
     fist. He dominates close combat with brutal punches and harnesses his own blood
     to unleash devastating abilities, turning his vitality into a deadly weapon
-  <Health>k__BackingField: 40
+  <Health>k__BackingField: 80
   <StartingMana>k__BackingField: 3
   <Deck>k__BackingField:
-  - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
-  - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
-  - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
-  - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
-  - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
-  - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
-  - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
+  - {fileID: 11400000, guid: 1f6df09cc03f77e4ea041a3ab9b10534, type: 2}
+  - {fileID: 11400000, guid: 1f6df09cc03f77e4ea041a3ab9b10534, type: 2}
+  - {fileID: 11400000, guid: 1f6df09cc03f77e4ea041a3ab9b10534, type: 2}
+  - {fileID: 11400000, guid: 1f6df09cc03f77e4ea041a3ab9b10534, type: 2}
+  - {fileID: 11400000, guid: 1f6df09cc03f77e4ea041a3ab9b10534, type: 2}
+  - {fileID: 11400000, guid: 1f6df09cc03f77e4ea041a3ab9b10534, type: 2}
+  - {fileID: 11400000, guid: 1f6df09cc03f77e4ea041a3ab9b10534, type: 2}
   <StartingPerk>k__BackingField: {fileID: 11400000, guid: c6252b4f5ad8b774a9a7bc5bff0539b8, type: 2}

@@ -40,15 +40,11 @@ MonoBehaviour:
     <Effect>k__BackingField:
       rid: 1468093377958117597
   <CanUpgrade>k__BackingField: 1
-  <UpgradedDescription>k__BackingField: Deal 6 damage to all enemies 5 times.
+  <UpgradedDescription>k__BackingField: Deal 6 damage to all enemies 4 times.
   <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2
   <UpgradedOtherEffects>k__BackingField:
-  - <TargetMode>k__BackingField:
-      rid: 1468093514728341702
-    <Effect>k__BackingField:
-      rid: 1468093514728341703
   - <TargetMode>k__BackingField:
       rid: 1468093514728341702
     <Effect>k__BackingField:

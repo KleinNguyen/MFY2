@@ -18,7 +18,7 @@ MonoBehaviour:
   <Description>k__BackingField: A sinister biological experiment specializing in
     toxins and chemical warfare. He spreads poisonous substances to weaken his enemies,
     inflict debilitating effects, and control the battlefield.
-  <Health>k__BackingField: 50
+  <Health>k__BackingField: 75
   <StartingMana>k__BackingField: 3
   <Deck>k__BackingField:
   - {fileID: 11400000, guid: 05529845a6487374bb1b4c7308a5d9bd, type: 2}

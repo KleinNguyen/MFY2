@@ -18,7 +18,7 @@ MonoBehaviour:
   <Description>k__BackingField: 'A relentless experimental subject equipped with
     razor-sharp mechanical claws on both hands. Specializing in swift, consecutive
     strikes, he overwhelms enemies with rapid attacks and relentless combos. '
-  <Health>k__BackingField: 60
+  <Health>k__BackingField: 75
   <StartingMana>k__BackingField: 3
   <Deck>k__BackingField:
   - {fileID: 11400000, guid: 0aad0526b5be41946bb67c87713040a0, type: 2}

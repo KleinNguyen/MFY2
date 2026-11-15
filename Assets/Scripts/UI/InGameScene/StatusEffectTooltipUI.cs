@@ -152,7 +152,7 @@ public class StatusEffectTooltipUI : Singleton<StatusEffectTooltipUI>
                 "Takes 50% more damage from attacks. Loses 1 stack at the end of its turn.",
 
             StatusEffectType.ARMOR_BREAK =>
-                "Each turn, loses 25% of current Armor, rounded down, then loses 1 stack. Removed immediately when Armor reaches 0.",
+                "Each turn, current Armor is reduced by 25%, rounded down, then loses 1 stack. Remains even when Armor reaches 0.",
 
             StatusEffectType.STRENGTH =>
                 "Each stack adds 1 damage to hero attacks.",
