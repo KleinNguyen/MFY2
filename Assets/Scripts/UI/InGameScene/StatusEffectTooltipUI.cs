@@ -152,7 +152,7 @@ public class StatusEffectTooltipUI : Singleton<StatusEffectTooltipUI>
                 "Takes 50% more damage from attacks. Loses 1 stack at the end of its turn.",
 
             StatusEffectType.ARMOR_BREAK =>
-                "Each turn, current Armor is reduced by 25%, rounded down, then loses 1 stack. Remains even when Armor reaches 0.",
+                "Each turn, current Armor is reduced by 25%.",
 
             StatusEffectType.STRENGTH =>
                 "Each stack adds 1 damage to hero attacks.",
@@ -161,7 +161,7 @@ public class StatusEffectTooltipUI : Singleton<StatusEffectTooltipUI>
                 "Each stack adds 1 Armor to Armor gained from cards.",
 
             StatusEffectType.COMBO =>
-                "Resource used by Yellow cards. Kept between turns and spent by card effects. Resets each combat.",
+                "Resource used by Yellow Hero. Kept between turns and spent by card effects. Resets each combat.",
 
             _ => "No description available."
         };

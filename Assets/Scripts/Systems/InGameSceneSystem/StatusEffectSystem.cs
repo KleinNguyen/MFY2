@@ -6,10 +6,12 @@ public class StatusEffectSystem : MonoBehaviour
 {
     private const float ARMOR_BREAK_REDUCTION = 0.25f;
     private int cardBlockMultiplier = 1;
+    private bool heroHadExposedAtEnemyTurnStart;
 
     private void OnEnable()
     {
         cardBlockMultiplier = 1;
+        heroHadExposedAtEnemyTurnStart = false;
         ActionSystem.AttachPerformer<FortifiedTrapGA>(FortifiedTrapPerformer);
         ActionSystem.AttachPerformer<AddStatusEffectGA>(AddStatusEffectPerformer);
         ActionSystem.AttachPerformer<RemoveStatusEffectGA>(RemoveStatusEffectPerformer);
@@ -117,29 +119,28 @@ public class StatusEffectSystem : MonoBehaviour
     private void EndPlayerTurnReaction(EnemyTurnGA action)
     {
         cardBlockMultiplier = 1;
+        heroHadExposedAtEnemyTurnStart = false;
 
-        if (HeroSystem.Instance == null || HeroSystem.Instance.HeroView == null)
-        {
-            return;
-        }
+        HeroView hero = HeroSystem.Instance != null ? HeroSystem.Instance.HeroView : null;
+        if (hero == null || hero.CurrentHealth <= 0) return;
 
-        ReduceTemporaryStatuses(HeroSystem.Instance.HeroView);
+        heroHadExposedAtEnemyTurnStart = hero.GetStatusEffectStacks(StatusEffectType.EXPOSED) > 0;
+        ReduceStatusByOne(hero, StatusEffectType.WEAK);
+        ActionSystem.Instance.AddReaction(new ArmorBreakTickGA(hero));
     }
 
     private void EndEnemyTurnReaction(EnemyTurnGA action)
     {
-        if (EnemySystem.Instance == null)
-        {
-            return;
-        }
+        HeroView hero = HeroSystem.Instance != null ? HeroSystem.Instance.HeroView : null;
+        if (heroHadExposedAtEnemyTurnStart)
+            ReduceStatusByOne(hero, StatusEffectType.EXPOSED);
+
+        heroHadExposedAtEnemyTurnStart = false;
+        if (EnemySystem.Instance == null) return;
 
         foreach (EnemyView enemy in EnemySystem.Instance.Enemies)
         {
-            if (enemy == null || enemy.CurrentHealth <= 0)
-            {
-                continue;
-            }
-
+            if (enemy == null || enemy.CurrentHealth <= 0) continue;
             ReduceTemporaryStatuses(enemy);
         }
     }

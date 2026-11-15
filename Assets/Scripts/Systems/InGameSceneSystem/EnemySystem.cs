@@ -137,12 +137,31 @@ public class EnemySystem : Singleton<EnemySystem>
         EnemyMoveGA move = action.MoveAction;
         if (move == null || !move.WasExecuted || !CanAct(move.Enemy)) yield break;
 
+        TryApplyMoveDebuff(move);
+
         EnemyView enemy = move.Enemy;
         if (enemy.GetStatusEffectStacks(StatusEffectType.WEAK) > 0)
             enemy.RemoveStatusEffect(StatusEffectType.WEAK, 1);
 
         enemy.AdvanceMove();
         yield return null;
+    }
+    private void TryApplyMoveDebuff(EnemyMoveGA action)
+    {
+        EnemyView enemy = action.Enemy;
+        EnemyMoveData move = action.Move;
+        if (!CanAct(enemy) || move == null || !enemy.CanApplyRandomDebuff) return;
+        if (!action.Attacks.Exists(attack => attack.WasExecuted)) return;
+
+        float chance = Mathf.Clamp(move.DebuffChancePercent, 0f, 100f);
+        if (chance <= 0f || (chance < 100f && Random.value * 100f >= chance)) return;
+
+        int index = Random.Range(0, enemy.AllowedDebuffs.Count);
+        StatusEffectType effect = enemy.AllowedDebuffs[index];
+        HeroView hero = HeroSystem.Instance.HeroView;
+
+        AddStatusEffectGA debuff = new(effect, Mathf.Max(1, move.DebuffStacks), new List<CombatantView> { hero });
+        ActionSystem.Instance.AddReaction(debuff);
     }
 
     private IEnumerator KillEnemyPerformer(KillEnemyGA action)

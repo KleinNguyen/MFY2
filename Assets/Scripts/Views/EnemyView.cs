@@ -66,6 +66,16 @@ public class EnemyView : CombatantView
         return GetStatusEffectStacks(StatusEffectType.WEAK) > 0
             ? Mathf.FloorToInt(damage * 0.75f) : damage;
     }
+    private int GetAttackPreviewDamage()
+    {
+        int damage = GetAttackDamage();
+        HeroView hero = HeroSystem.Instance != null ? HeroSystem.Instance.HeroView : null;
+
+        if (hero != null && hero.GetStatusEffectStacks(StatusEffectType.EXPOSED) > 0)
+            damage = Mathf.FloorToInt(damage * 1.5f);
+
+        return damage;
+    }
 
     public void AdvanceMove()
     {
@@ -96,7 +106,7 @@ public class EnemyView : CombatantView
 
         if (CurrentMoveAttacks)
         {
-            string attack = "ATK: " + GetAttackDamage();
+            string attack = "ATK: " + GetAttackPreviewDamage();
             if (CurrentHitCount > 1) attack += " x " + CurrentHitCount;
             lines.Add(attack);
         }
@@ -113,12 +123,12 @@ public class EnemyView : CombatantView
         if (CurrentMoveType == EnemyMoveType.Rest)
             lines.Add("REST");
 
-        if (CanApplyRandomDebuff)
-        {
-            int stacks = Mathf.Max(1, CurrentMove.DebuffStacks);
-            float chance = Mathf.Clamp(CurrentMove.DebuffChancePercent, 0f, 100f);
-            lines.Add($"DEBUFF: ? x {stacks} ({chance:0.#}%)");
-        }
+        //if (CanApplyRandomDebuff)
+        //{
+        //    int stacks = Mathf.Max(1, CurrentMove.DebuffStacks);
+        //    float chance = Mathf.Clamp(CurrentMove.DebuffChancePercent, 0f, 100f);
+        //    lines.Add($"DEBUFF: ? x {stacks} ({chance:0.#}%)");
+        //}
 
         string intent = string.Join("\n", lines);
         if (lastIntentText == intent) return;

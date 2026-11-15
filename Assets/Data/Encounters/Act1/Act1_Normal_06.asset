@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Act1_Normal_06
   m_EditorClassIdentifier: 
   <Enemies>k__BackingField:
-  - {fileID: 11400000, guid: fcfa9bf2c0344ba49b4b020ccfd9447a, type: 2}
+  - {fileID: 11400000, guid: 0ca0abe62146a684b901c43f2db394fe, type: 2}
   <Type>k__BackingField: 0
