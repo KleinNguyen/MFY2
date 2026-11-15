@@ -3,10 +3,9 @@ using UnityEngine;
 
 public static class MapGeneratorSystem
 {
-     //private const int FLOOR_COUNT = 2;
     private const int FLOOR_COUNT = 9;
     private const float FLOOR_SPACING = 300f;
-    private const int COLUMN_COUNT = 7;
+    //private const int COLUMN_COUNT = 7;
 
     public static List<MapPoint> GenerateMap(ActData actData)
     {
@@ -54,50 +53,21 @@ public static class MapGeneratorSystem
     private static List<MapPoint> CreateFloor(int floor, ref int nextId)
     {
         List<MapPoint> points = new();
+        const float mapWidth = 1200f;
 
-        if (floor == 0)
-        {
-            MapPoint startingPoint = new(
-                nextId,
-                floor,
-                new Vector2(600f, 150f),
-                MapPointType.Normal
-            );
-
-            points.Add(startingPoint);
-            nextId++;
-
-            return points;
-        }
-
-        List<int> availableColumns = new();
-
-        for (int i = 0; i < COLUMN_COUNT; i++)
-        {
-            availableColumns.Add(i);
-        }
-
-        int pointCount = Random.Range(2, 5);
+        int pointCount = floor == 0 ? 1 : Random.Range(2, 5);
+        float spacing = mapWidth / (pointCount + 1);
 
         for (int i = 0; i < pointCount; i++)
         {
-            int randomIndex = Random.Range(0, availableColumns.Count);
-
-            int column = availableColumns[randomIndex];
-            availableColumns.RemoveAt(randomIndex);
-
-            float randomOffset = Random.Range(-30f, 30f);
-
-            float x = 150f + column * 150f + randomOffset;
+            float x = spacing * (i + 1);
             float y = 150f + floor * FLOOR_SPACING;
-
-            MapPointType type = MapPointType.Normal;
 
             MapPoint point = new(
                 nextId,
                 floor,
                 new Vector2(x, y),
-                type
+                MapPointType.Normal
             );
 
             points.Add(point);
@@ -106,50 +76,21 @@ public static class MapGeneratorSystem
 
         return points;
     }
-    private static MapPointType GetRandomPointType(ActData actData)
+    private static MapPointType GetRandomPointType(ActData actData, bool allowElite, bool allowShop, bool allowRest)
     {
-        int normalWeight = Mathf.Max(0, actData.NormalWeight);
-        int eliteWeight = Mathf.Max(0, actData.EliteWeight);
-        int shopWeight = Mathf.Max(0, actData.ShopWeight);
-        int restWeight = Mathf.Max(0, actData.RestWeight);
+        int normal = Mathf.Max(0, actData.NormalWeight);
+        int elite = allowElite ? Mathf.Max(0, actData.EliteWeight) : 0;
+        int shop = allowShop ? Mathf.Max(0, actData.ShopWeight) : 0;
+        int rest = allowRest ? Mathf.Max(0, actData.RestWeight) : 0;
+        int total = normal + elite + shop + rest;
+        if (total <= 0) return MapPointType.Normal;
 
-        int totalWeight =
-            normalWeight +
-            eliteWeight +
-            shopWeight +
-            restWeight;
-
-        if (totalWeight <= 0)
-        {
-            Debug.LogWarning(
-                "All map point weights are zero. Using Normal."
-            );
-
-            return MapPointType.Normal;
-        }
-
-        int randomValue = Random.Range(0, totalWeight);
-
-        if (randomValue < normalWeight)
-        {
-            return MapPointType.Normal;
-        }
-
-        randomValue -= normalWeight;
-
-        if (randomValue < eliteWeight)
-        {
-            return MapPointType.Elite;
-        }
-
-        randomValue -= eliteWeight;
-
-        if (randomValue < shopWeight)
-        {
-            return MapPointType.Shop;
-        }
-
-        return MapPointType.Rest;
+        int roll = Random.Range(0, total);
+        if (roll < normal) return MapPointType.Normal;
+        roll -= normal;
+        if (roll < elite) return MapPointType.Elite;
+        roll -= elite;
+        return roll < shop ? MapPointType.Shop : MapPointType.Rest;
     }
 
     private static void ConnectFloors(
@@ -217,68 +158,121 @@ public static class MapGeneratorSystem
 
         return nearestPoint;
     }
-    //private static void AssignPointTypes(List<List<MapPoint>> floors, ActData actData)
-    //{
-    //    for (int floor = 1; floor < floors.Count; floor++)
-    //    {
-    //        List<MapPoint> previousFloor = floors[floor - 1];
-    //        List<MapPoint> currentFloor = floors[floor];
-
-    //        foreach (MapPoint currentPoint in currentFloor)
-    //        {
-    //            MapPointType pointType = GetRandomPointType(actData);
-
-    //            if (pointType == MapPointType.Shop)
-    //            {
-    //                foreach (MapPoint previousPoint in previousFloor)
-    //                {
-    //                    if (previousPoint.Type != MapPointType.Shop) continue;
-
-    //                    if (previousPoint.NextPoints.Contains(currentPoint.Id))
-    //                    {
-    //                        pointType = MapPointType.Normal;
-    //                        break;
-    //                    }
-    //                }
-    //            }
-
-    //            currentPoint.SetType(pointType);
-    //        }
-    //    }
-    //}
     private static void AssignPointTypes(List<List<MapPoint>> floors, ActData actData)
     {
+        if (actData == null || floors.Count < 6)
+        {
+            Debug.LogError("Assign ActData and set FLOOR_COUNT to 9 before generating the map.");
+            return;
+        }
+
+        int lastFloor = floors.Count - 1;
+        int earlyFloors = Mathf.Clamp(actData.EarlyNormalFloors, 1, lastFloor - 2);
+        int firstEliteIndex = Mathf.Max(earlyFloors, actData.FirstEliteFloor - 1);
+        List<MapPoint> normalAnchors = new();
+        HashSet<MapPoint> reserved = new();
+
         for (int floor = 0; floor < floors.Count; floor++)
         {
             List<MapPoint> points = floors[floor];
-
-            MapPointType type;
-            if (floor == 3 || floor == floors.Count - 1)
-                type = MapPointType.Rest;
-            else if (floor == 4)
-                type = MapPointType.Shop;
-            else
-                type = MapPointType.Normal;
-
             foreach (MapPoint point in points)
             {
-                point.SetType(type);
+                bool isEarly = floor < earlyFloors;
+                bool isLast = floor == lastFloor;
+                point.SetType(isEarly ? MapPointType.Normal : GetRandomPointType(
+                    actData, floor >= firstEliteIndex && !isLast, !isLast, true));
             }
 
-            if (floor != 6 || points.Count < 2) continue;
+            MapPoint normal = points[Random.Range(0, points.Count)];
+            normal.SetType(MapPointType.Normal);
+            normalAnchors.Add(normal);
+            reserved.Add(normal);
+        }
 
-            MapPoint elitePoint = points[Random.Range(0, points.Count)];
-            elitePoint.SetType(MapPointType.Elite);
+        // Shop and an intermediate Rest move to different floors on each new map.
+        int shopFloor = Random.Range(earlyFloors, lastFloor);
+        List<int> restFloors = new();
+        for (int floor = earlyFloors; floor < lastFloor; floor++)
+        {
+            if (floor != shopFloor) restFloors.Add(floor);
+        }
+        int restFloor = restFloors[Random.Range(0, restFloors.Count)];
 
-            List<MapPoint> normalPoints = points.FindAll(point =>
-                point.Type == MapPointType.Normal);
+        MapPoint shopPoint = PickSpecialPoint(floors[shopFloor], normalAnchors[shopFloor]);
+        shopPoint.SetType(MapPointType.Shop);
+        reserved.Add(shopPoint);
 
-            foreach (MapPoint previousPoint in floors[floor - 1])
+        MapPoint restPoint = PickSpecialPoint(floors[restFloor], normalAnchors[restFloor]);
+        restPoint.SetType(MapPointType.Rest);
+        reserved.Add(restPoint);
+
+        MapPoint finalRest = PickSpecialPoint(floors[lastFloor], normalAnchors[lastFloor]);
+        finalRest.SetType(MapPointType.Rest);
+        reserved.Add(finalRest);
+
+        int eliteCount = 0;
+        List<MapPoint> eliteCandidates = new();
+        for (int floor = 0; floor < floors.Count; floor++)
+        {
+            foreach (MapPoint point in floors[floor])
             {
-                previousPoint.AddNextPoint(elitePoint.Id);
+                if (point.Type == MapPointType.Elite) eliteCount++;
+                else if (floor >= firstEliteIndex && floor < lastFloor && !reserved.Contains(point))
+                    eliteCandidates.Add(point);
+            }
+        }
 
-                MapPoint normalPoint = GetNearestPoint(previousPoint, normalPoints);
-                previousPoint.AddNextPoint(normalPoint.Id);
+        int requiredElites = Mathf.Max(0, actData.MinimumElitePoints);
+        while (eliteCount < requiredElites && eliteCandidates.Count > 0)
+        {
+            int index = Random.Range(0, eliteCandidates.Count);
+            eliteCandidates[index].SetType(MapPointType.Elite);
+            eliteCandidates.RemoveAt(index);
+            eliteCount++;
+        }
+
+        if (eliteCount < requiredElites)
+            Debug.LogWarning("Not enough eligible points for Minimum Elite Points. Check the Act settings.");
+
+        RepairPointConnections(floors);
+    }
+
+    private static MapPoint PickSpecialPoint(List<MapPoint> points, MapPoint normalAnchor)
+    {
+        List<MapPoint> candidates = points.FindAll(point => point != normalAnchor);
+        return candidates[Random.Range(0, candidates.Count)];
+    }
+
+    private static void RepairPointConnections(List<List<MapPoint>> floors)
+    {
+        for (int floor = 1; floor < floors.Count; floor++)
+        {
+            List<MapPoint> previous = floors[floor - 1];
+            List<MapPoint> current = floors[floor];
+            List<MapPoint> normalPoints = current.FindAll(point => point.Type == MapPointType.Normal);
+
+            foreach (MapPoint point in previous)
+            {
+                point.NextPoints.RemoveAll(id => current.Exists(next =>
+                    next.Id == id && next.Type != MapPointType.Normal && next.Type == point.Type));
+                if (!normalPoints.Exists(normal => point.NextPoints.Contains(normal.Id)))
+                    point.AddNextPoint(GetNearestPoint(point, normalPoints).Id);
+            }
+
+            foreach (MapPoint point in current)
+            {
+                if (previous.Exists(parent => parent.NextPoints.Contains(point.Id))) continue;
+                List<MapPoint> parents = previous.FindAll(parent =>
+                    point.Type == MapPointType.Normal || parent.Type != point.Type);
+                GetNearestPoint(point, parents).AddNextPoint(point.Id);
+            }
+
+            if (floor != floors.Count - 1) continue;
+            List<MapPoint> restPoints = current.FindAll(point => point.Type == MapPointType.Rest);
+            foreach (MapPoint point in previous)
+            {
+                if (point.Type != MapPointType.Rest && !restPoints.Exists(rest => point.NextPoints.Contains(rest.Id)))
+                    point.AddNextPoint(GetNearestPoint(point, restPoints).Id);
             }
         }
     }
