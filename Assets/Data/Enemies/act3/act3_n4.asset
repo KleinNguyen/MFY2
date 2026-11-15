@@ -14,5 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: -4178046375966092550, guid: 458a0c6d007d19e4e9047b055ae5539b, type: 3}
   <Health>k__BackingField: 15
-  <AttackPower>k__BackingField: 5
   <Rank>k__BackingField: 0
+  <Moves>k__BackingField:
+  - <MoveType>k__BackingField: 0
+    <DamagePerHit>k__BackingField: 5
+    <HitCount>k__BackingField: 1
+    <ArmorGain>k__BackingField: 0
+    <ApplyRandomDebuff>k__BackingField: 0
+    <DebuffChancePercent>k__BackingField: 0
+    <DebuffStacks>k__BackingField: 1
+  - <MoveType>k__BackingField: 2
+    <DamagePerHit>k__BackingField: 4
+    <HitCount>k__BackingField: 1
+    <ArmorGain>k__BackingField: 4
+    <ApplyRandomDebuff>k__BackingField: 0
+    <DebuffChancePercent>k__BackingField: 0
+    <DebuffStacks>k__BackingField: 1

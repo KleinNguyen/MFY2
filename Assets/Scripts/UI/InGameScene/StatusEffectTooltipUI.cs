@@ -139,30 +139,14 @@ public class StatusEffectTooltipUI : Singleton<StatusEffectTooltipUI>
     {
         return statusType switch
         {
-            StatusEffectType.ARMOR =>
-                "Absorbs incoming damage. Each point of Armor blocks 1 damage.",
-
-            StatusEffectType.WEAK =>
-                "Reduces enemy attack damage by 25%. Loses 1 stack after the enemy attacks.",
-
-            StatusEffectType.POISON =>
-                "At the start of its turn, takes damage equal to its Poison stacks, then loses 1 stack.",
-
-            StatusEffectType.EXPOSED =>
-                "Takes 50% more damage from attacks. Loses 1 stack at the end of its turn.",
-
-            StatusEffectType.ARMOR_BREAK =>
-                "Each turn, current Armor is reduced by 25%.",
-
-            StatusEffectType.STRENGTH =>
-                "Each stack adds 1 damage to hero attacks.",
-
-            StatusEffectType.DEXTERITY =>
-                "Each stack adds 1 Armor to Armor gained from cards.",
-
-            StatusEffectType.COMBO =>
-                "Resource used by Yellow Hero. Kept between turns and spent by card effects. Resets each combat.",
-
+            StatusEffectType.ARMOR => "Absorbs incoming damage. Each point of Armor blocks 1 damage.",
+            StatusEffectType.WEAK => "Reduces attack damage by 25%. Each stack lasts one turn.",
+            StatusEffectType.POISON => "At the start of its turn, takes damage equal to its Poison stacks, then loses 1 stack.",
+            StatusEffectType.EXPOSED => "Takes 50% more damage from attacks. Stacks track duration in turns.",
+            StatusEffectType.ARMOR_BREAK => "Each turn, retains 75% of current Armor, rounded down, then loses 1 stack. Stacks still count down at 0 Armor.",
+            StatusEffectType.STRENGTH => "Each stack adds 1 damage to attacks.",
+            StatusEffectType.DEXTERITY => "Each stack adds 1 Armor to Armor gained from cards.",
+            StatusEffectType.COMBO => "Resource used by Yellow Hero. Kept between turns and spent by card effects. Resets each combat.",
             _ => "No description available."
         };
     }

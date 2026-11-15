@@ -14,5 +14,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 7574722205383545943, guid: 2f0e5a2309961bf4b83ebbc5a0762b5c, type: 3}
   <Health>k__BackingField: 200
-  <AttackPower>k__BackingField: 24
   <Rank>k__BackingField: 2
+  <Moves>k__BackingField:
+  - <MoveType>k__BackingField: 0
+    <DamagePerHit>k__BackingField: 10
+    <HitCount>k__BackingField: 1
+    <ArmorGain>k__BackingField: 0
+    <ApplyRandomDebuff>k__BackingField: 1
+    <DebuffChancePercent>k__BackingField: 100
+    <DebuffStacks>k__BackingField: 1
+  - <MoveType>k__BackingField: 2
+    <DamagePerHit>k__BackingField: 8
+    <HitCount>k__BackingField: 1
+    <ArmorGain>k__BackingField: 8
+    <ApplyRandomDebuff>k__BackingField: 1
+    <DebuffChancePercent>k__BackingField: 100
+    <DebuffStacks>k__BackingField: 1
+  - <MoveType>k__BackingField: 0
+    <DamagePerHit>k__BackingField: 5
+    <HitCount>k__BackingField: 3
+    <ArmorGain>k__BackingField: 0
+    <ApplyRandomDebuff>k__BackingField: 0
+    <DebuffChancePercent>k__BackingField: 0
+    <DebuffStacks>k__BackingField: 1
+  - <MoveType>k__BackingField: 1
+    <DamagePerHit>k__BackingField: 0
+    <HitCount>k__BackingField: 1
+    <ArmorGain>k__BackingField: 10
+    <ApplyRandomDebuff>k__BackingField: 0
+    <DebuffChancePercent>k__BackingField: 0
+    <DebuffStacks>k__BackingField: 1

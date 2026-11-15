@@ -94,13 +94,6 @@ public class EnemySystem : Singleton<EnemySystem>
         action.MoveType = enemy.CurrentMoveType;
         action.WasExecuted = true;
 
-        int strength = enemy.CurrentStrengthGain;
-        if (strength > 0)
-        {
-            AddStatusEffectGA gainStrength = new(StatusEffectType.STRENGTH, strength, new List<CombatantView> { enemy });
-            ActionSystem.Instance.AddReaction(gainStrength);
-        }
-
         for (int hit = 0; hit < enemy.CurrentHitCount; hit++)
         {
             AttackHeroGA attack = new(enemy);

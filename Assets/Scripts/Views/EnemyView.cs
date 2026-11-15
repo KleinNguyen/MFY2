@@ -27,10 +27,6 @@ public class EnemyView : CombatantView
     public int CurrentArmorGain => CurrentMoveType == EnemyMoveType.Defend ||
         CurrentMoveType == EnemyMoveType.AttackAndDefend
         ? Mathf.Max(0, CurrentMove.ArmorGain) : 0;
-
-    public int CurrentStrengthGain => CurrentMoveType == EnemyMoveType.Buff
-        ? Mathf.Max(0, CurrentMove.StrengthGain) : 0;
-
     public bool CanApplyRandomDebuff => CurrentMoveAttacks && CurrentMove != null &&
         CurrentMove.ApplyRandomDebuff && CurrentMove.DebuffChancePercent > 0f && allowedDebuffs.Count > 0;
 
@@ -62,9 +58,8 @@ public class EnemyView : CombatantView
     {
         if (!CurrentMoveAttacks || CurrentMove == null) return 0;
 
-        int damage = Mathf.Max(0, CurrentMove.DamagePerHit + GetStatusEffectStacks(StatusEffectType.STRENGTH));
-        return GetStatusEffectStacks(StatusEffectType.WEAK) > 0
-            ? Mathf.FloorToInt(damage * 0.75f) : damage;
+        int damage = Mathf.Max(0, CurrentMove.DamagePerHit);
+        return GetStatusEffectStacks(StatusEffectType.WEAK) > 0 ? Mathf.FloorToInt(damage * 0.75f) : damage;
     }
     private int GetAttackPreviewDamage()
     {
@@ -116,9 +111,6 @@ public class EnemyView : CombatantView
 
         int currentArmor = GetStatusEffectStacks(StatusEffectType.ARMOR);
         lines.Add("ARMOR: " + currentArmor);
-
-        if (CurrentMoveType == EnemyMoveType.Buff)
-            lines.Add("STR: +" + CurrentStrengthGain);
 
         if (CurrentMoveType == EnemyMoveType.Rest)
             lines.Add("REST");
