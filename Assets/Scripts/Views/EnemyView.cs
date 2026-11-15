@@ -10,38 +10,32 @@ public class EnemyView : CombatantView
 
     [SerializeField] private TMP_Text attackText;
 
-    public int AttackPower { get; set; }
-    public int ArmorPerTurn { get; private set; }
-    public EnemyMoveData CurrentMove => moves.Count > 0 ? moves[moveIndex] : null;
-    public IReadOnlyList<StatusEffectType> AllowedDebuffs => allowedDebuffs;
-
     private readonly List<EnemyMoveData> moves = new();
     private readonly List<StatusEffectType> allowedDebuffs = new();
     private int moveIndex;
     private string lastIntentText;
 
-    public EnemyMoveType CurrentMoveType => CurrentMove != null ? CurrentMove.MoveType :
-        ArmorPerTurn > 0 ? EnemyMoveType.AttackAndDefend : EnemyMoveType.Attack;
+    public EnemyMoveData CurrentMove => moves.Count > 0 ? moves[moveIndex] : null;
+    public IReadOnlyList<StatusEffectType> AllowedDebuffs => allowedDebuffs;
+    public EnemyMoveType CurrentMoveType => CurrentMove?.MoveType ?? EnemyMoveType.Rest;
 
     public bool CurrentMoveAttacks => CurrentMoveType == EnemyMoveType.Attack ||
         CurrentMoveType == EnemyMoveType.AttackAndDefend;
 
-    public int CurrentHitCount => CurrentMoveAttacks ? Mathf.Max(1, CurrentMove?.HitCount ?? 1) : 0;
+    public int CurrentHitCount => CurrentMoveAttacks ? Mathf.Max(1, CurrentMove.HitCount) : 0;
 
     public int CurrentArmorGain => CurrentMoveType == EnemyMoveType.Defend ||
         CurrentMoveType == EnemyMoveType.AttackAndDefend
-        ? Mathf.Max(0, CurrentMove?.ArmorGain ?? ArmorPerTurn) : 0;
+        ? Mathf.Max(0, CurrentMove.ArmorGain) : 0;
 
     public int CurrentStrengthGain => CurrentMoveType == EnemyMoveType.Buff
-        ? Mathf.Max(0, CurrentMove?.StrengthGain ?? 0) : 0;
+        ? Mathf.Max(0, CurrentMove.StrengthGain) : 0;
 
     public bool CanApplyRandomDebuff => CurrentMoveAttacks && CurrentMove != null &&
         CurrentMove.ApplyRandomDebuff && CurrentMove.DebuffChancePercent > 0f && allowedDebuffs.Count > 0;
 
     public void Setup(EnemyData enemyData)
     {
-        AttackPower = Mathf.Max(0, enemyData.AttackPower);
-        ArmorPerTurn = Mathf.Max(0, enemyData.ArmorPerTurn);
         SetupBase(enemyData.Health, enemyData.Image);
 
         moves.Clear();
@@ -53,24 +47,22 @@ public class EnemyView : CombatantView
             }
         }
 
+        if (moves.Count == 0)
+            Debug.LogError($"Enemy '{enemyData.name}' has no Moves. Configure its Moves in EnemyData.", enemyData);
+
         moveIndex = 0;
         LoadDebuffPool();
         lastIntentText = null;
         FitSpriteToLimit(GetSpriteLimit(enemyData.Rank));
         InitializeIdleAnimation();
-
-        if (enemyData.StartingArmor > 0)
-            AddStatusEffect(StatusEffectType.ARMOR, enemyData.StartingArmor);
-
         UpdateIntentText();
     }
 
     public int GetAttackDamage()
     {
-        if (!CurrentMoveAttacks) return 0;
+        if (!CurrentMoveAttacks || CurrentMove == null) return 0;
 
-        int baseDamage = CurrentMove != null ? CurrentMove.DamagePerHit : AttackPower;
-        int damage = Mathf.Max(0, baseDamage + GetStatusEffectStacks(StatusEffectType.STRENGTH));
+        int damage = Mathf.Max(0, CurrentMove.DamagePerHit + GetStatusEffectStacks(StatusEffectType.STRENGTH));
         return GetStatusEffectStacks(StatusEffectType.WEAK) > 0
             ? Mathf.FloorToInt(damage * 0.75f) : damage;
     }
@@ -92,7 +84,8 @@ public class EnemyView : CombatantView
             bool isDebuff = effect == StatusEffectType.WEAK || effect == StatusEffectType.POISON ||
                 effect == StatusEffectType.EXPOSED || effect == StatusEffectType.ARMOR_BREAK;
 
-            if (isDebuff && !allowedDebuffs.Contains(effect)) allowedDebuffs.Add(effect);
+            if (isDebuff && !allowedDebuffs.Contains(effect))
+                allowedDebuffs.Add(effect);
         }
     }
 
@@ -108,8 +101,11 @@ public class EnemyView : CombatantView
             lines.Add(attack);
         }
 
-        if (CurrentMoveType == EnemyMoveType.Defend || CurrentMoveType == EnemyMoveType.AttackAndDefend)
-            lines.Add("ARMOR: +" + CurrentArmorGain);
+        if (CurrentMoveType == EnemyMoveType.Defend)
+            lines.Add("DEFEND");
+
+        int currentArmor = GetStatusEffectStacks(StatusEffectType.ARMOR);
+        lines.Add("ARMOR: " + currentArmor);
 
         if (CurrentMoveType == EnemyMoveType.Buff)
             lines.Add("STR: +" + CurrentStrengthGain);
@@ -126,6 +122,7 @@ public class EnemyView : CombatantView
 
         string intent = string.Join("\n", lines);
         if (lastIntentText == intent) return;
+
         lastIntentText = intent;
         attackText.text = intent;
     }
