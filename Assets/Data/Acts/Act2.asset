@@ -32,3 +32,4 @@ MonoBehaviour:
   <EarlyNormalFloors>k__BackingField: 2
   <FirstEliteFloor>k__BackingField: 4
   <MinimumElitePoints>k__BackingField: 2
+  <EnemyDebuffPool>k__BackingField: 0100000002000000

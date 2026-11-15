@@ -12,5 +12,6 @@ public class EnemyData : ScriptableObject
     [field: SerializeField] public EnemyRank Rank { get; private set; }
     [field: SerializeField, Min(0)] public int StartingArmor { get; private set; }
     [field: SerializeField, Min(0)] public int ArmorPerTurn { get; private set; }
+    [field: SerializeField] public List<EnemyMoveData> Moves { get; private set; } = new();
 
 }

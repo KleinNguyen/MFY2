@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: act1_elite3
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 4113829005332862926, guid: 04aab9fa24eaa464eae150f1a8215eaf, type: 3}
-  <Health>k__BackingField: 55
-  <AttackPower>k__BackingField: 11
+  <Health>k__BackingField: 36
+  <AttackPower>k__BackingField: 9
   <Rank>k__BackingField: 1
+  <StartingArmor>k__BackingField: 0
+  <ArmorPerTurn>k__BackingField: 0

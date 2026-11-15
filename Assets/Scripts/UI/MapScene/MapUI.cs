@@ -634,6 +634,8 @@ public class MapUI : MonoBehaviour
             return null;
         }
 
-        return available[Random.Range(0, available.Count)];
+        EncounterData selected = available[Random.Range(0, available.Count)];
+        Debug.Log($"Floor {point.Floor + 1}: {available.Count} eligible encounters → {selected.name}", selected);
+        return selected;
     }
 }
