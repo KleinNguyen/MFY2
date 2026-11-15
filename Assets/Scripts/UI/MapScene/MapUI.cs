@@ -558,7 +558,7 @@ public class MapUI : MonoBehaviour
             return;
         }
 
-        EncounterData encounter = GetEncounter(point.Type);
+        EncounterData encounter = GetEncounter(point);
 
         if (encounter == null)
         {
@@ -572,46 +572,68 @@ public class MapUI : MonoBehaviour
         SceneManager.LoadScene("InGameScene");
     }
 
-    private EncounterData GetEncounter(MapPointType type)
+    private EncounterData GetEncounter(MapPoint point)
     {
-        ActData currentAct = RunSystem.Instance.CurrentAct;
-
-        if (currentAct == null)
+        RunSystem run = RunSystem.Instance;
+        if (run == null || run.CurrentAct == null || point == null)
         {
-            Debug.LogError("Current Act is missing.");
+            Debug.LogError("RunSystem, Current Act or map point is missing.");
             return null;
         }
 
-        if (type == MapPointType.Boss)
-        {
-            return currentAct.BossEncounter;
-        }
+        ActData act = run.CurrentAct;
+        if (point.Type == MapPointType.Boss)
+            return act.BossEncounter;
 
-        List<EncounterData> encounterList = null;
+        bool isNormal = point.Type == MapPointType.Normal;
+        if (!isNormal && point.Type != MapPointType.Elite) return null;
 
-        if (type == MapPointType.Normal)
+        List<EncounterData> pool = isNormal ? act.NormalEncounters : act.EliteEncounters;
+        if (pool == null || pool.Count == 0)
         {
-            encounterList = currentAct.NormalEncounters;
-        }
-        else if (type == MapPointType.Elite)
-        {
-            encounterList = currentAct.EliteEncounters;
-        }
-
-        if (encounterList == null || encounterList.Count == 0)
-        {
-            Debug.LogError(
-                "No encounter is assigned for " +
-                type +
-                " in " +
-                currentAct.ActName
-            );
-
+            Debug.LogError("Encounter list is empty in " + act.ActName);
             return null;
         }
 
-        int randomIndex = Random.Range(0, encounterList.Count);
+        int minEnemies = 1;
+        int maxEnemies = 3;
 
-        return encounterList[randomIndex];
+        if (isNormal)
+        {
+            int floor = point.Floor + 1;
+            int actIndex = run.CurrentActIndex;
+
+            if (actIndex == 0)
+            {
+                minEnemies = floor >= 6 ? 2 : 1;
+                maxEnemies = floor <= 2 ? 1 : floor <= 5 ? 2 : 3;
+            }
+            else if (actIndex == 1)
+            {
+                minEnemies = floor <= 2 ? 1 : 2;
+                maxEnemies = floor <= 5 ? 2 : 3;
+            }
+            else
+            {
+                minEnemies = 2;
+                maxEnemies = floor <= 2 ? 2 : 3;
+            }
+        }
+
+        EncounterType requiredType = isNormal ? EncounterType.Normal : EncounterType.Elite;
+        List<EncounterData> available = pool.FindAll(encounter =>
+            encounter != null && encounter.Type == requiredType &&
+            encounter.Enemies != null && !encounter.Enemies.Contains(null) &&
+            encounter.Enemies.Count >= minEnemies &&
+            encounter.Enemies.Count <= maxEnemies);
+
+        if (available.Count == 0)
+        {
+            Debug.LogError("No suitable encounter for " + point.Type +
+                " at floor " + (point.Floor + 1) + " in " + act.ActName);
+            return null;
+        }
+
+        return available[Random.Range(0, available.Count)];
     }
 }
