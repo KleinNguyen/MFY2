@@ -3,8 +3,8 @@ using UnityEngine;
 
 public static class MapGeneratorSystem
 {
-     private const int FLOOR_COUNT = 2;
-    //private const int FLOOR_COUNT = 10;
+     //private const int FLOOR_COUNT = 2;
+    private const int FLOOR_COUNT = 9;
     private const float FLOOR_SPACING = 300f;
     private const int COLUMN_COUNT = 7;
 
@@ -217,33 +217,68 @@ public static class MapGeneratorSystem
 
         return nearestPoint;
     }
-    private static void AssignPointTypes(List<List<MapPoint>> floors, ActData actData
-    )
+    //private static void AssignPointTypes(List<List<MapPoint>> floors, ActData actData)
+    //{
+    //    for (int floor = 1; floor < floors.Count; floor++)
+    //    {
+    //        List<MapPoint> previousFloor = floors[floor - 1];
+    //        List<MapPoint> currentFloor = floors[floor];
+
+    //        foreach (MapPoint currentPoint in currentFloor)
+    //        {
+    //            MapPointType pointType = GetRandomPointType(actData);
+
+    //            if (pointType == MapPointType.Shop)
+    //            {
+    //                foreach (MapPoint previousPoint in previousFloor)
+    //                {
+    //                    if (previousPoint.Type != MapPointType.Shop) continue;
+
+    //                    if (previousPoint.NextPoints.Contains(currentPoint.Id))
+    //                    {
+    //                        pointType = MapPointType.Normal;
+    //                        break;
+    //                    }
+    //                }
+    //            }
+
+    //            currentPoint.SetType(pointType);
+    //        }
+    //    }
+    //}
+    private static void AssignPointTypes(List<List<MapPoint>> floors, ActData actData)
     {
-        for (int floor = 1; floor < floors.Count; floor++)
+        for (int floor = 0; floor < floors.Count; floor++)
         {
-            List<MapPoint> previousFloor = floors[floor - 1];
-            List<MapPoint> currentFloor = floors[floor];
+            List<MapPoint> points = floors[floor];
 
-            foreach (MapPoint currentPoint in currentFloor)
+            MapPointType type;
+            if (floor == 3 || floor == floors.Count - 1)
+                type = MapPointType.Rest;
+            else if (floor == 4)
+                type = MapPointType.Shop;
+            else
+                type = MapPointType.Normal;
+
+            foreach (MapPoint point in points)
             {
-                MapPointType pointType = GetRandomPointType(actData);
+                point.SetType(type);
+            }
 
-                if (pointType == MapPointType.Shop)
-                {
-                    foreach (MapPoint previousPoint in previousFloor)
-                    {
-                        if (previousPoint.Type != MapPointType.Shop) continue;
+            if (floor != 6 || points.Count < 2) continue;
 
-                        if (previousPoint.NextPoints.Contains(currentPoint.Id))
-                        {
-                            pointType = MapPointType.Normal;
-                            break;
-                        }
-                    }
-                }
+            MapPoint elitePoint = points[Random.Range(0, points.Count)];
+            elitePoint.SetType(MapPointType.Elite);
 
-                currentPoint.SetType(pointType);
+            List<MapPoint> normalPoints = points.FindAll(point =>
+                point.Type == MapPointType.Normal);
+
+            foreach (MapPoint previousPoint in floors[floor - 1])
+            {
+                previousPoint.AddNextPoint(elitePoint.Id);
+
+                MapPoint normalPoint = GetNearestPoint(previousPoint, normalPoints);
+                previousPoint.AddNextPoint(normalPoint.Id);
             }
         }
     }

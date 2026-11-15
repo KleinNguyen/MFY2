@@ -25,7 +25,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9526d5c310e040e9a96e547011f45b9b, type: 2}
   - {fileID: 11400000, guid: 120a37f6d230487089dce7eccc364b51, type: 2}
   <BossEncounter>k__BackingField: {fileID: 11400000, guid: c3302a12f0c142749f1f045a81049760, type: 2}
-  <NormalWeight>k__BackingField: 45
-  <EliteWeight>k__BackingField: 25
+  <NormalWeight>k__BackingField: 50
+  <EliteWeight>k__BackingField: 20
   <ShopWeight>k__BackingField: 15
   <RestWeight>k__BackingField: 15
+  <EarlyNormalFloors>k__BackingField: 3
+  <FirstEliteFloor>k__BackingField: 6
+  <MinimumElitePoints>k__BackingField: 1
