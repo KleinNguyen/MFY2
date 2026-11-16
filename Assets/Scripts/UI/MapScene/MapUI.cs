@@ -582,60 +582,78 @@ public class MapUI : MonoBehaviour
         }
 
         ActData act = run.CurrentAct;
+        int floor = point.Floor + 1;
+
         if (point.Type == MapPointType.Boss)
-            return act.BossEncounter;
-
-        bool isNormal = point.Type == MapPointType.Normal;
-        if (!isNormal && point.Type != MapPointType.Elite) return null;
-
-        List<EncounterData> pool = isNormal ? act.NormalEncounters : act.EliteEncounters;
-        if (pool == null || pool.Count == 0)
         {
-            Debug.LogError("Encounter list is empty in " + act.ActName);
+            if (IsEncounterAvailable(act.BossEncounter, EncounterType.Boss, floor))
+                return act.BossEncounter;
+
+            Debug.LogError($"Invalid Boss encounter at floor {floor} in {act.name}.");
             return null;
         }
 
-        int minEnemies = 1;
-        int maxEnemies = 3;
+        bool normal = point.Type == MapPointType.Normal;
+        if (!normal && point.Type != MapPointType.Elite) return null;
 
-        if (isNormal)
+        EncounterType type = normal ? EncounterType.Normal : EncounterType.Elite;
+        List<EncounterData> pool = normal ? act.NormalEncounters : act.EliteEncounters;
+        List<EncounterData> available = new();
+
+        if (pool != null)
         {
-            int floor = point.Floor + 1;
-            int actIndex = run.CurrentActIndex;
-
-            if (actIndex == 0)
+            foreach (EncounterData encounter in pool)
             {
-                minEnemies = floor >= 6 ? 2 : 1;
-                maxEnemies = floor <= 2 ? 1 : floor <= 5 ? 2 : 3;
-            }
-            else if (actIndex == 1)
-            {
-                minEnemies = floor <= 2 ? 1 : 2;
-                maxEnemies = floor <= 5 ? 2 : 3;
-            }
-            else
-            {
-                minEnemies = 2;
-                maxEnemies = floor <= 2 ? 2 : 3;
+                if (IsEncounterAvailable(encounter, type, floor) && !available.Contains(encounter))
+                    available.Add(encounter);
             }
         }
-
-        EncounterType requiredType = isNormal ? EncounterType.Normal : EncounterType.Elite;
-        List<EncounterData> available = pool.FindAll(encounter =>
-            encounter != null && encounter.Type == requiredType &&
-            encounter.Enemies != null && !encounter.Enemies.Contains(null) &&
-            encounter.Enemies.Count >= minEnemies &&
-            encounter.Enemies.Count <= maxEnemies);
 
         if (available.Count == 0)
         {
-            Debug.LogError("No suitable encounter for " + point.Type +
-                " at floor " + (point.Floor + 1) + " in " + act.ActName);
+            Debug.LogError($"No suitable {type} encounter at floor {floor} in {act.name}.");
             return null;
         }
 
-        EncounterData selected = available[Random.Range(0, available.Count)];
-        Debug.Log($"Floor {point.Floor + 1}: {available.Count} eligible encounters → {selected.name}", selected);
-        return selected;
+        EncounterData previous = normal ? run.LastNormalEncounter : run.LastEliteEncounter;
+        if (available.Count > 1) available.Remove(previous);
+
+        int totalWeight = 0;
+        foreach (EncounterData encounter in available) totalWeight += encounter.Weight;
+        int roll = Random.Range(0, totalWeight);
+
+        foreach (EncounterData encounter in available)
+        {
+            roll -= encounter.Weight;
+            if (roll >= 0) continue;
+
+            Debug.Log($"{act.name}, floor {floor}: {available.Count} candidates -> {encounter.name}", encounter);
+            return encounter;
+        }
+
+        return null;
+    }
+
+    private bool IsEncounterAvailable(EncounterData encounter, EncounterType type, int floor)
+    {
+        if (encounter == null || encounter.Type != type || encounter.Weight <= 0) return false;
+        if (floor < encounter.MinFloor || floor > encounter.MaxFloor) return false;
+        if (encounter.Enemies == null || encounter.Enemies.Count == 0 || encounter.Enemies.Count > 3) return false;
+        if (type != EncounterType.Normal && encounter.Enemies.Count != 1) return false;
+
+        EnemyRank rank = type switch
+        {
+            EncounterType.Elite => EnemyRank.Elite,
+            EncounterType.Boss => EnemyRank.Boss,
+            _ => EnemyRank.Normal
+        };
+
+        foreach (EnemyData enemy in encounter.Enemies)
+        {
+            if (enemy == null || enemy.Rank != rank || enemy.Health <= 0 || enemy.Moves == null || enemy.Moves.Count == 0)
+                return false;
+        }
+
+        return true;
     }
 }

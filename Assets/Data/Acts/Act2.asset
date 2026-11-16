@@ -20,6 +20,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 97ccbb4d6db349bf9f5a227c07124cd5, type: 2}
   - {fileID: 11400000, guid: d203be49607f4541a0171168b959e718, type: 2}
   - {fileID: 11400000, guid: bce710e310d44e6b8937025a65d6c09c, type: 2}
+  - {fileID: 11400000, guid: 2a39ab7cf55649d48bed658f86cb9536, type: 2}
+  - {fileID: 11400000, guid: 7434f79d8d0be3d4e8132af1d66987d3, type: 2}
+  - {fileID: 11400000, guid: a53c93ef17e29554c9815992919168be, type: 2}
+  - {fileID: 11400000, guid: f442dedad840a35479f9133a1105e50f, type: 2}
   <EliteEncounters>k__BackingField:
   - {fileID: 11400000, guid: 3cbad38dccb24213abdced1bd689b532, type: 2}
   - {fileID: 11400000, guid: 68bb43a81fbc4a6ab815e6cc5e7e04bd, type: 2}

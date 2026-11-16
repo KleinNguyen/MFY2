@@ -22,6 +22,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2c1c04c2aee94483917445eaff295413, type: 2}
   - {fileID: 11400000, guid: 31a79331858b4904db58e967a28b08d7, type: 2}
   - {fileID: 11400000, guid: ca3f75549b191354882e03a03c715a29, type: 2}
+  - {fileID: 11400000, guid: 2e842c4eddb7bcb42bf5046297d70d80, type: 2}
+  - {fileID: 11400000, guid: a76d1d3378e203c4ca40f795eeb54a48, type: 2}
   <EliteEncounters>k__BackingField:
   - {fileID: 11400000, guid: 1fb6a628e31c4bf1b248ab52316bb303, type: 2}
   - {fileID: 11400000, guid: 9526d5c310e040e9a96e547011f45b9b, type: 2}

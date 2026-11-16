@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Enemies>k__BackingField:
   - {fileID: 11400000, guid: fcfa9bf2c0344ba49b4b020ccfd9447a, type: 2}
+  - {fileID: 11400000, guid: 8dc7f4c43a2822a4591b37c26c8d9218, type: 2}
   <Type>k__BackingField: 0
+  <MinFloor>k__BackingField: 4
+  <MaxFloor>k__BackingField: 9
+  <Weight>k__BackingField: 3

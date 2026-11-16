@@ -11,9 +11,11 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 048e654e30d2ec24d8660a267c633f51, type: 3}
   m_Name: Act2_Normal_05
-  <Type>k__BackingField: 0
   m_EditorClassIdentifier: 
   <Enemies>k__BackingField:
-  - {fileID: 11400000, guid: f041040941572d246a566110a7330119, type: 2}
-  - {fileID: 11400000, guid: d2c65ec7c879b9b4c8e06955eca5077f, type: 2}
   - {fileID: 11400000, guid: 4d51dd75a474ba047ac66e2e630c587a, type: 2}
+  - {fileID: 11400000, guid: eacd7d6fa310e6842ba615ece774dabf, type: 2}
+  <Type>k__BackingField: 0
+  <MinFloor>k__BackingField: 3
+  <MaxFloor>k__BackingField: 9
+  <Weight>k__BackingField: 3
