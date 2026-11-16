@@ -163,6 +163,7 @@ public class RunSystem : PersistentSingleton<RunSystem>
         }
 
         CurrentActIndex = nextActIndex;
+        CurrentHealth = HeroData.Health;
         MapPoints.Clear();
         CompletedMapPointId = -1;
         SelectedMapPointId = -1;

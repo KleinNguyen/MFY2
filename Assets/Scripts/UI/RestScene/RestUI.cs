@@ -143,7 +143,7 @@ public class RestUI : MonoBehaviour
             yield break;
         }
 
-        int healAmount = Mathf.CeilToInt(run.HeroData.Health * 0.3f);
+        int healAmount = Mathf.CeilToInt(run.HeroData.Health * 0.2f);
         run.Heal(healAmount);
         hasRested = true;
 
