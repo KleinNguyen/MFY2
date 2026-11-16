@@ -6,37 +6,33 @@ using UnityEngine.UI;
 
 public class RewardUI : MonoBehaviour
 {
-    [SerializeField, Min(0)] private int goldReward = 20;
+    [SerializeField, Min(0)] private int normalGoldReward = 25;
+    [SerializeField, Min(0)] private int eliteGoldReward = 45;
+    [SerializeField, Min(0)] private int bossGoldReward = 75;
     [SerializeField] private List<CardData> rewardCards;
-
     [SerializeField] private TMP_Text goldRewardText;
     [SerializeField] private TMP_Text messageText;
-
-
     [SerializeField] private Transform cardContent;
     [SerializeField] private CardView cardPrefab;
     [SerializeField, Range(1, 3)] private int choiceCount = 3;
-
-
     [SerializeField] private Button skipButton;
     [SerializeField] private Button continueButton;
     [SerializeField] private RunResultUI runResultUI;
-
-    private readonly List<CardData> currentChoices = new();
-    private readonly List<RewardCardHoverUI> choiceViews = new();
     [SerializeField, Min(1f)] private float hoverScale = 1.12f;
     [SerializeField, Min(0f)] private float hoverLift = 35f;
     [SerializeField, Min(0.01f)] private float hoverDuration = 0.12f;
 
+    private readonly List<CardData> currentChoices = new();
+    private readonly List<RewardCardHoverUI> choiceViews = new();
     private bool selectionFinished;
+    private int currentGoldReward;
 
     public void Setup()
     {
         RunSystem run = RunSystem.Instance;
-
-        if (run == null || run.HeroData == null)
+        if (run == null || run.HeroData == null || run.CurrentEncounter == null)
         {
-            Debug.LogError("No active run or hero was found.");
+            Debug.LogError("An active run, hero and encounter are required for rewards.");
             return;
         }
 
@@ -47,13 +43,19 @@ public class RewardUI : MonoBehaviour
         }
 
         ClearCardViews();
-
         currentChoices.Clear();
         selectionFinished = false;
 
-        goldRewardText.text = "Gold reward: " + goldReward;
-        messageText.text = "Choose one card or skip.";
+        EncounterType type = run.CurrentEncounter.Type;
+        currentGoldReward = Mathf.Max(0, type switch
+        {
+            EncounterType.Elite => eliteGoldReward,
+            EncounterType.Boss => bossGoldReward,
+            _ => normalGoldReward
+        });
 
+        goldRewardText.text = "Gold reward: " + currentGoldReward;
+        messageText.text = "Choose one card or skip.";
         continueButton.interactable = false;
         skipButton.interactable = true;
 
@@ -76,27 +78,23 @@ public class RewardUI : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < choiceCount; i++)
+        for (int i = 0; i < Mathf.Clamp(choiceCount, 1, 3); i++)
         {
-            CardData card = CardRaritySelector.TakeRandomCard(availableCards);
-
+            CardData card = CardRaritySelector.TakeRewardCard(availableCards, type);
             if (card == null) break;
 
             int choiceIndex = currentChoices.Count;
-
             currentChoices.Add(card);
             CreateRewardCard(card, choiceIndex);
         }
 
         if (currentChoices.Count == 0) messageText.text = "No reward cards available. Press Skip to claim the gold.";
-
         Canvas.ForceUpdateCanvases();
     }
 
     private void CreateRewardCard(CardData cardData, int choiceIndex)
     {
         GameObject slot = new("RewardSlot_" + choiceIndex, typeof(RectTransform), typeof(Image), typeof(Button), typeof(RewardCardHoverUI));
-
         slot.layer = cardContent.gameObject.layer;
         slot.transform.SetParent(cardContent, false);
 
@@ -110,12 +108,10 @@ public class RewardUI : MonoBehaviour
         button.interactable = true;
 
         LibraryCardUI cardUI = Instantiate(cardPrefab.LibraryTemplate, slot.transform);
-
         cardUI.gameObject.SetActive(true);
         cardUI.Setup(cardData, false);
 
         RectTransform cardRect = cardUI.GetComponent<RectTransform>();
-
         cardRect.anchorMin = Vector2.zero;
         cardRect.anchorMax = Vector2.one;
         cardRect.pivot = new Vector2(0.5f, 0.5f);
@@ -125,19 +121,15 @@ public class RewardUI : MonoBehaviour
         cardRect.localRotation = Quaternion.identity;
 
         CanvasGroup canvasGroup = cardUI.GetComponent<CanvasGroup>();
-
         if (canvasGroup == null) canvasGroup = cardUI.gameObject.AddComponent<CanvasGroup>();
-
         canvasGroup.alpha = 1f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
 
         RewardCardHoverUI hoverUI = slot.GetComponent<RewardCardHoverUI>();
         hoverUI.Initialize(cardRect, hoverScale, hoverLift, hoverDuration);
-
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(() => SelectCard(choiceIndex));
-
         choiceViews.Add(hoverUI);
     }
 
@@ -148,7 +140,6 @@ public class RewardUI : MonoBehaviour
         for (int i = cardContent.childCount - 1; i >= 0; i--)
         {
             GameObject oldCard = cardContent.GetChild(i).gameObject;
-
             oldCard.SetActive(false);
             Destroy(oldCard);
         }
@@ -157,25 +148,20 @@ public class RewardUI : MonoBehaviour
     public void SelectCard(int index)
     {
         RunSystem run = RunSystem.Instance;
-
         if (selectionFinished || run == null || run.RewardClaimed) return;
         if (index < 0 || index >= currentChoices.Count) return;
 
         CardData selectedCard = currentChoices[index];
-
-        run.ClaimReward(goldReward, selectedCard);
-
+        run.ClaimReward(currentGoldReward, selectedCard);
         FinishSelection("Received: " + selectedCard.name, index);
     }
 
     public void SkipCard()
     {
         RunSystem run = RunSystem.Instance;
-
         if (selectionFinished || run == null || run.RewardClaimed) return;
 
-        run.ClaimReward(goldReward, null);
-
+        run.ClaimReward(currentGoldReward, null);
         FinishSelection("Card skipped. Gold received.");
     }
 
@@ -186,9 +172,7 @@ public class RewardUI : MonoBehaviour
 
         for (int i = 0; i < choiceViews.Count; i++)
         {
-            if (choiceViews[i] == null) continue;
-
-            choiceViews[i].Finish(i == selectedIndex);
+            if (choiceViews[i] != null) choiceViews[i].Finish(i == selectedIndex);
         }
 
         skipButton.interactable = false;
@@ -215,6 +199,7 @@ public class RewardUI : MonoBehaviour
             Debug.LogError("Assign Run Result UI in RewardUI.");
             return;
         }
+
         if (defeatedBoss && !finishedRun && !run.CanMoveToNextAct)
         {
             Debug.LogError("The next Act is missing in RunSystem.");
@@ -222,6 +207,7 @@ public class RewardUI : MonoBehaviour
         }
 
         run.CompleteStage();
+
         if (finishedRun)
         {
             run.FinishRun(RunResult.Won);
@@ -229,6 +215,7 @@ public class RewardUI : MonoBehaviour
             runResultUI.Show();
             return;
         }
+
         if (defeatedBoss && !run.MoveToNextAct())
         {
             Debug.LogError("Could not advance to the next Act.");
@@ -237,33 +224,35 @@ public class RewardUI : MonoBehaviour
 
         SceneManager.LoadScene("MapScene");
     }
-    #if UNITY_EDITOR
-        [ContextMenu("Auto Fill Reward Cards")]
-        private void AutoFillRewardCards()
+
+#if UNITY_EDITOR
+    [ContextMenu("Auto Fill Reward Cards")]
+    private void AutoFillRewardCards()
+    {
+        if (Application.isPlaying) return;
+
+        List<CardData> cards = new();
+        string[] guids = UnityEditor.AssetDatabase.FindAssets("t:CardData", new[] { "Assets/Data/Cards" });
+
+        foreach (string guid in guids)
         {
-            if (Application.isPlaying) return;
-
-            List<CardData> cards = new();
-            string[] guids = UnityEditor.AssetDatabase.FindAssets("t:CardData", new[] { "Assets/Data/Cards" });
-            foreach (string guid in guids)
-            {
-                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
-                CardData card = UnityEditor.AssetDatabase.LoadAssetAtPath<CardData>(path);
-                if (card != null) cards.Add(card);
-            }
-
-            cards.Sort((a, b) => string.Compare(a.name, b.name, System.StringComparison.OrdinalIgnoreCase));
-            UnityEditor.Undo.RecordObject(this, "Auto Fill Reward Cards");
-            rewardCards = cards;
-
-            if (UnityEditor.PrefabUtility.IsPartOfPrefabInstance(this))
-                UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(this);
-
-            UnityEditor.EditorUtility.SetDirty(this);
-            if (gameObject.scene.IsValid() && gameObject.scene.isLoaded)
-                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
-
-            Debug.Log($"Reward Cards loaded: {rewardCards.Count}", this);
+            string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+            CardData card = UnityEditor.AssetDatabase.LoadAssetAtPath<CardData>(path);
+            if (card != null) cards.Add(card);
         }
-    #endif
+
+        cards.Sort((a, b) => string.Compare(a.name, b.name, System.StringComparison.OrdinalIgnoreCase));
+        UnityEditor.Undo.RecordObject(this, "Auto Fill Reward Cards");
+        rewardCards = cards;
+
+        if (UnityEditor.PrefabUtility.IsPartOfPrefabInstance(this))
+            UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(this);
+
+        UnityEditor.EditorUtility.SetDirty(this);
+        if (gameObject.scene.IsValid() && gameObject.scene.isLoaded)
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+
+        Debug.Log($"Reward Cards loaded: {rewardCards.Count}", this);
+    }
+#endif
 }

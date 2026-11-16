@@ -3,67 +3,55 @@ using UnityEngine;
 
 public static class CardRaritySelector
 {
-    private const int COMMON_WEIGHT = 60;
-    private const int UNCOMMON_WEIGHT = 30;
-    private const int RARE_WEIGHT = 10;
-
-    public static CardData TakeRandomCard(List<CardData> availableCards)
+    public static CardData TakeRewardCard(List<CardData> availableCards, EncounterType type)
     {
-        List<CardData> commonCards = new();
-        List<CardData> uncommonCards = new();
-        List<CardData> rareCards = new();
+        return type switch
+        {
+            EncounterType.Elite => TakeRandomCard(availableCards, 20, 50, 30),
+            EncounterType.Boss => TakeRandomCard(availableCards, 0, 0, 100),
+            _ => TakeRandomCard(availableCards, 60, 30, 10)
+        };
+    }
+
+    public static CardData TakeRandomCard(List<CardData> availableCards, int commonWeight = 60, int uncommonWeight = 30, int rareWeight = 10)
+    {
+        if (availableCards == null || availableCards.Count == 0) return null;
+
+        List<CardData> common = new();
+        List<CardData> uncommon = new();
+        List<CardData> rare = new();
 
         foreach (CardData card in availableCards)
         {
             if (card == null) continue;
 
-            if (card.Rarity == CardRarity.Common)
+            switch (card.Rarity)
             {
-                commonCards.Add(card);
-            }
-            else if (card.Rarity == CardRarity.Uncommon)
-            {
-                uncommonCards.Add(card);
-            }
-            else if (card.Rarity == CardRarity.Rare)
-            {
-                rareCards.Add(card);
+                case CardRarity.Common: common.Add(card); break;
+                case CardRarity.Uncommon: uncommon.Add(card); break;
+                case CardRarity.Rare: rare.Add(card); break;
             }
         }
 
-        int commonWeight = commonCards.Count > 0 ? COMMON_WEIGHT : 0;
-        int uncommonWeight = uncommonCards.Count > 0 ? UNCOMMON_WEIGHT : 0;
-        int rareWeight = rareCards.Count > 0 ? RARE_WEIGHT : 0;
-
-        int totalWeight = commonWeight + uncommonWeight + rareWeight;
-
-        if (totalWeight == 0)
-        {
-            return null;
-        }
-
-        int randomValue = Random.Range(0, totalWeight);
-
+        commonWeight = common.Count > 0 ? Mathf.Max(0, commonWeight) : 0;
+        uncommonWeight = uncommon.Count > 0 ? Mathf.Max(0, uncommonWeight) : 0;
+        rareWeight = rare.Count > 0 ? Mathf.Max(0, rareWeight) : 0;
+        int total = commonWeight + uncommonWeight + rareWeight;
         List<CardData> selectedGroup;
 
-        if (randomValue < commonWeight)
+        if (total == 0)
         {
-            selectedGroup = commonCards;
-        }
-        else if (randomValue < commonWeight + uncommonWeight)
-        {
-            selectedGroup = uncommonCards;
+            selectedGroup = rare.Count > 0 ? rare : uncommon.Count > 0 ? uncommon : common;
+            if (selectedGroup.Count == 0) return null;
         }
         else
         {
-            selectedGroup = rareCards;
+            int roll = Random.Range(0, total);
+            selectedGroup = roll < commonWeight ? common : roll < commonWeight + uncommonWeight ? uncommon : rare;
         }
 
-        int randomIndex = Random.Range(0, selectedGroup.Count);
-        CardData selectedCard = selectedGroup[randomIndex];
-
-        availableCards.Remove(selectedCard);
-
-        return selectedCard;
+        CardData selected = selectedGroup[Random.Range(0, selectedGroup.Count)];
+        availableCards.Remove(selected);
+        return selected;
     }
 }

@@ -10471,9 +10471,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 39ac8a7cdd99b944084b055dfbb63fa2, type: 2}
   - {fileID: 11400000, guid: b7bdbff249520594e8c53f4a009cbc6b, type: 2}
   - {fileID: 11400000, guid: 41838691e3995a5499a983e43ad5a07f, type: 2}
-  commonPrice: 25
-  uncommonPrice: 75
-  rarePrice: 120
+  commonPrice: 40
+  uncommonPrice: 65
+  rarePrice: 100
   cardButtons:
   - {fileID: 1740857868}
   - {fileID: 1646802832}
@@ -10494,8 +10494,8 @@ MonoBehaviour:
   hoverScale: 1.12
   hoverLift: 20
   hoverDuration: 0.12
-  healthPotionPrice: 50
-  manaPotionPrice: 50
+  healthPotionPrice: 35
+  manaPotionPrice: 35
   healthButton: {fileID: 1768610683}
   manaButton: {fileID: 718223172}
 --- !u!1 &2090710330
