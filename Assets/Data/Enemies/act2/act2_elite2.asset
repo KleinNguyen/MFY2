@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: act2_elite2
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 3465286685962602723, guid: 48634b604234ef84c966fd78bbb79c3a, type: 3}
-  <Health>k__BackingField: 65
+  <Health>k__BackingField: 64
   <Rank>k__BackingField: 1
   <Moves>k__BackingField:
   - <MoveType>k__BackingField: 2

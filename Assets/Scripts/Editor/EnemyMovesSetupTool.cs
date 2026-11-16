@@ -4,6 +4,81 @@ using UnityEngine;
 
 public static class EnemyMovesSetupTool
 {
+    [MenuItem("Tools/Enemies/Apply All Enemy Health")]
+    public static void ApplyAllHealth()
+    {
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+        {
+            Debug.LogWarning("Exit Play Mode before applying enemy Health.");
+            return;
+        }
+
+        string[] names = { "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "elite1", "elite2", "elite3", "boss" };
+        int[][] healthByAct =
+        {
+        new[] { 18, 16, 14, 12, 16, 10, 22, 14, 18, 42, 52, 36, 90 },
+        new[] { 24, 20, 18, 16, 22, 14, 28, 18, 22, 56, 64, 46, 120 },
+        new[] { 30, 24, 22, 20, 26, 18, 34, 22, 26, 72, 80, 60, 150 }
+    };
+
+        EnemyData[] enemies = new EnemyData[healthByAct.Length * names.Length];
+
+        for (int act = 0; act < healthByAct.Length; act++)
+        {
+            if (healthByAct[act].Length != names.Length)
+            {
+                Debug.LogError($"Health count does not match enemy count for Act {act + 1}.");
+                return;
+            }
+
+            for (int i = 0; i < names.Length; i++)
+            {
+                int index = act * names.Length + i;
+                string path = $"Assets/Data/Enemies/act{act + 1}/act{act + 1}_{names[i]}.asset";
+                enemies[index] = AssetDatabase.LoadAssetAtPath<EnemyData>(path);
+
+                if (enemies[index] == null || healthByAct[act][i] <= 0)
+                {
+                    Debug.LogError("Enemy asset is missing or its proposed Health is invalid: " + path);
+                    return;
+                }
+
+                SerializedObject serialized = new(enemies[index]);
+                if (serialized.FindProperty("<Health>k__BackingField") == null)
+                {
+                    Debug.LogError("EnemyData is missing the serialized Health field.", enemies[index]);
+                    return;
+                }
+            }
+        }
+
+        Undo.IncrementCurrentGroup();
+        int undoGroup = Undo.GetCurrentGroup();
+        Undo.SetCurrentGroupName("Apply All Enemy Health");
+        Undo.RegisterCompleteObjectUndo(enemies, "Apply All Enemy Health");
+
+        try
+        {
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                SerializedObject serialized = new(enemies[i]);
+                serialized.Update();
+                serialized.FindProperty("<Health>k__BackingField").intValue = healthByAct[i / names.Length][i % names.Length];
+                serialized.ApplyModifiedPropertiesWithoutUndo();
+                EditorUtility.SetDirty(enemies[i]);
+            }
+        }
+        catch (Exception exception)
+        {
+            Undo.RevertAllDownToGroup(undoGroup);
+            Debug.LogException(exception);
+            return;
+        }
+
+        Undo.CollapseUndoOperations(undoGroup);
+        AssetDatabase.SaveAssets();
+        Debug.Log($"Applied Health to {enemies.Length} enemies.");
+    }
     private readonly struct MoveSpec
     {
         public readonly EnemyMoveType Type;

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: act3_n1
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: -855298285791758126, guid: 90bf371a74e56e24d875e1dbe1fd4e7c, type: 3}
-  <Health>k__BackingField: 15
+  <Health>k__BackingField: 30
   <Rank>k__BackingField: 0
   <Moves>k__BackingField:
   - <MoveType>k__BackingField: 0

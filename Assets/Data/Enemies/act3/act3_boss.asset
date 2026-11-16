@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: act3_boss
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 1667664292612734564, guid: 6e54c8627abcf494d8f3168f5cd86bc7, type: 3}
-  <Health>k__BackingField: 240
+  <Health>k__BackingField: 150
   <Rank>k__BackingField: 2
   <Moves>k__BackingField:
   - <MoveType>k__BackingField: 0
