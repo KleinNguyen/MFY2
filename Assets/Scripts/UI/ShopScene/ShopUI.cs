@@ -81,10 +81,7 @@ public class ShopUI : MonoBehaviour
         {
             foreach (CardData card in shopCards)
             {
-                if (card == null) continue;
-                if (card.Character != run.HeroData.Character) continue;
-                if (card.Rarity == CardRarity.Basic) continue;
-                if (run.HasCardInDeck(card)) continue;
+                if (card == null || card.Character != run.HeroData.Character || card.Rarity == CardRarity.Basic) continue;
                 if (availableCards.Contains(card)) continue;
 
                 availableCards.Add(card);
@@ -93,10 +90,7 @@ public class ShopUI : MonoBehaviour
 
         if (availableCards.Count == 0)
         {
-            Debug.Log(
-                "No new cards are available for this character.",
-                this
-            );
+            Debug.Log("No cards are available for this character.", this);
         }
 
         for (int i = 0; i < cardButtons.Length; i++)

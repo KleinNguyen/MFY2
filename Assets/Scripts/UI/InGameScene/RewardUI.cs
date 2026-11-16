@@ -69,10 +69,7 @@ public class RewardUI : MonoBehaviour
         {
             foreach (CardData card in rewardCards)
             {
-                if (card == null) continue;
-                if (card.Character != run.HeroData.Character) continue;
-                if (card.Rarity == CardRarity.Basic) continue;
-                if (run.HasCardInDeck(card)) continue;
+                if (card == null || card.Character != run.HeroData.Character || card.Rarity == CardRarity.Basic) continue;
                 if (availableCards.Contains(card)) continue;
 
                 availableCards.Add(card);
