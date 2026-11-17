@@ -77,7 +77,8 @@ public class LuckyWheelUI : MonoBehaviour
         }
 
         wheelText.gameObject.SetActive(false);
-        pointerPivot.localRotation = Quaternion.Euler(0f, 0f, hasResult ? -selectedIndex * 60f : 0f);
+        pointerPivot.localRotation = Quaternion.identity;
+        wheelRoot.localRotation = Quaternion.Euler(0f, 0f, hasResult ? selectedIndex * 60f : 0f);
         resultText.text = hasResult ? "Result: " + labels[selectedIndex] : "Press Spin.";
         spinButton.interactable = !hasResult;
         continueButton.interactable = hasResult || allowCancel;
@@ -100,11 +101,11 @@ public class LuckyWheelUI : MonoBehaviour
         continueButton.interactable = false;
         resultText.text = "Spinning...";
 
-        float current = pointerPivot.localEulerAngles.z;
-        float target = Mathf.Repeat(-selectedIndex * 60f, 360f);
+        float current = wheelRoot.localEulerAngles.z;
+        float target = Mathf.Repeat(selectedIndex * 60f, 360f);
         float travel = 360f * Random.Range(4, 7) + Mathf.Repeat(current - target, 360f);
 
-        spinTween = pointerPivot.DOLocalRotate(new Vector3(0f, 0f, current - travel), spinDuration, RotateMode.FastBeyond360)
+        spinTween = wheelRoot.DOLocalRotate(new Vector3(0f, 0f, current - travel), spinDuration, RotateMode.FastBeyond360)
             .SetEase(Ease.OutCubic).SetUpdate(true).SetLink(gameObject).OnComplete(CompleteSpin);
     }
 
