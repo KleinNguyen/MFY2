@@ -1,47 +1,50 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ShowDeckUI : MonoBehaviour
 {
-    private enum DeckMode
-    {
-        View,
-        Remove,
-        Upgrade
-    }
+    private enum DeckMode { View, Remove, Upgrade }
 
+    [Header("Deck panel")]
     [SerializeField] private GameObject deckPanel;
     [SerializeField] private Transform cardContent;
     [SerializeField] private CardView cardPrefab;
     [SerializeField] private ScrollRect scrollRect;
+
+    [Header("Card hover")]
     [SerializeField, Min(1f)] private float hoverScale = 1.12f;
     [SerializeField, Min(0f)] private float hoverLift = 24f;
     [SerializeField, Min(0.01f)] private float hoverDuration = 0.12f;
 
+    [Header("Remove card")]
     [SerializeField] private GameObject removeControls;
     [SerializeField] private Button confirmRemoveButton;
     [SerializeField] private TMP_Text confirmRemoveText;
     [SerializeField, Min(0)] private int removePrice = 75;
+
+    [Header("Upgrade card")]
     [SerializeField] private GameObject upgradeControls;
     [SerializeField] private Button confirmUpgradeButton;
     [SerializeField] private TMP_Text upgradeInfoText;
 
+    // Panel state and selected card.
     private DeckMode mode;
-
     private int selectedCardIndex = -1;
     private CardData selectedCard;
     private LibraryCardUI selectedCardUI;
+    private Action<CardData> onUpgradeConfirmed;
+    private Func<bool> canUpgradeNow;
 
-    private System.Action<CardData> onUpgradeConfirmed;
-    private System.Func<bool> canUpgradeNow;
+    public int RemovePrice => removePrice;
 
     private void Awake() => CloseDeck();
 
+    // Open and close the deck panel.
     public void OpenDeck()
     {
         if (!CanOpenPanel()) return;
-
         OpenPanel(DeckMode.View);
     }
 
@@ -56,11 +59,10 @@ public class ShowDeckUI : MonoBehaviour
         }
 
         OpenPanel(DeckMode.Remove);
-
-        confirmRemoveText.text = "Remove: " + removePrice + " Gold";
+        confirmRemoveText.text = $"Remove: {removePrice} Gold";
     }
 
-    public bool OpenUpgradeCard(System.Action<CardData> onUpgraded, System.Func<bool> canUpgrade)
+    public bool OpenUpgradeCard(Action<CardData> onUpgraded, Func<bool> canUpgrade)
     {
         if (!CanOpenPanel()) return false;
         if (onUpgraded == null || canUpgrade == null || !canUpgrade()) return false;
@@ -72,36 +74,14 @@ public class ShowDeckUI : MonoBehaviour
         }
 
         OpenPanel(DeckMode.Upgrade);
-
         onUpgradeConfirmed = onUpgraded;
         canUpgradeNow = canUpgrade;
-
         return true;
-    }
-
-    private void OpenPanel(DeckMode newMode)
-    {
-        CloseDeck();
-
-        mode = newMode;
-        if (scrollRect != null)
-        {
-            scrollRect.movementType = ScrollRect.MovementType.Clamped;
-        }
-
-        if (removeControls != null) removeControls.SetActive(mode == DeckMode.Remove);
-        if (upgradeControls != null) upgradeControls.SetActive(mode == DeckMode.Upgrade);
-
-        deckPanel.SetActive(true);
-        deckPanel.transform.SetAsLastSibling();
-
-        RefreshCards();
     }
 
     public void CloseDeck()
     {
         ClearSelection();
-
         onUpgradeConfirmed = null;
         canUpgradeNow = null;
         mode = DeckMode.View;
@@ -111,206 +91,21 @@ public class ShowDeckUI : MonoBehaviour
         if (deckPanel != null) deckPanel.SetActive(false);
     }
 
-    private bool CanOpenPanel()
+    private void OpenPanel(DeckMode newMode)
     {
-        if (RunSystem.Instance == null || RunSystem.Instance.Deck == null)
-        {
-            Debug.LogWarning("No active run or deck was found.");
-            return false;
-        }
+        CloseDeck();
+        mode = newMode;
 
-        if (deckPanel == null || cardContent == null || cardPrefab == null || cardPrefab.LibraryTemplate == null)
-        {
-            Debug.LogError("Deck Panel, Card Content, Card Prefab or Library Template is missing in ShowDeckUI.");
-            return false;
-        }
+        if (scrollRect != null) scrollRect.movementType = ScrollRect.MovementType.Clamped;
+        if (removeControls != null) removeControls.SetActive(mode == DeckMode.Remove);
+        if (upgradeControls != null) upgradeControls.SetActive(mode == DeckMode.Upgrade);
 
-        return true;
+        deckPanel.SetActive(true);
+        deckPanel.transform.SetAsLastSibling();
+        RefreshCards();
     }
 
-    private void RefreshCards()
-    {
-        if (!CanOpenPanel()) return;
-
-        for (int i = cardContent.childCount - 1; i >= 0; i--)
-        {
-            GameObject oldCard = cardContent.GetChild(i).gameObject;
-
-            oldCard.SetActive(false);
-            Destroy(oldCard);
-        }
-
-        RunSystem run = RunSystem.Instance;
-        bool hasUpgradeableCard = false;
-
-        for (int i = 0; i < run.Deck.Count; i++)
-        {
-            CardData cardData = run.Deck[i];
-
-            if (cardData == null) continue;
-
-            bool isUpgraded = run.IsCardUpgraded(cardData);
-            bool canUpgrade = cardData.CanUpgrade && !isUpgraded;
-
-            if (canUpgrade)
-            {
-                hasUpgradeableCard = true;
-            }
-
-            CreateDeckCard(cardData, i, isUpgraded, canUpgrade);
-        }
-
-        if (mode == DeckMode.Upgrade)
-        {
-            upgradeInfoText.text = hasUpgradeableCard
-                ? "Choose a card to preview its upgrade."
-                : "No cards available to upgrade.";
-        }
-
-        Canvas.ForceUpdateCanvases();
-
-        if (scrollRect != null)
-        {
-            scrollRect.StopMovement();
-            scrollRect.verticalNormalizedPosition = 1f;
-        }
-    }
-    private void CreateDeckCard(
-    CardData cardData,
-    int cardIndex,
-    bool isUpgraded,
-    bool canUpgrade
-)
-    {
-        GameObject slot = new(
-            "DeckCardSlot_" + cardIndex,
-            typeof(RectTransform),
-            typeof(Image),
-            typeof(Button),
-            typeof(RewardCardHoverUI)
-        );
-
-        slot.layer = cardContent.gameObject.layer;
-        slot.transform.SetParent(cardContent, false);
-
-        Image slotImage = slot.GetComponent<Image>();
-        slotImage.color = new Color(1f, 1f, 1f, 0f);
-        slotImage.raycastTarget = true;
-
-        Button cardButton = slot.GetComponent<Button>();
-        cardButton.targetGraphic = slotImage;
-        cardButton.transition = Selectable.Transition.None;
-        cardButton.interactable = true;
-
-        LibraryCardUI cardUI = Instantiate(
-            cardPrefab.LibraryTemplate,
-            slot.transform
-        );
-
-        cardUI.gameObject.SetActive(true);
-        cardUI.Setup(cardData, isUpgraded);
-
-        RectTransform cardRect = cardUI.GetComponent<RectTransform>();
-
-        cardRect.anchorMin = new Vector2(0.5f, 0.5f);
-        cardRect.anchorMax = new Vector2(0.5f, 0.5f);
-        cardRect.pivot = new Vector2(0.5f, 0.5f);
-        cardRect.anchoredPosition3D = Vector3.zero;
-        cardRect.localRotation = Quaternion.identity;
-
-        CanvasGroup canvasGroup = cardUI.GetComponent<CanvasGroup>();
-
-        if (canvasGroup == null)
-        {
-            canvasGroup = cardUI.gameObject.AddComponent<CanvasGroup>();
-        }
-
-        canvasGroup.alpha = mode == DeckMode.Upgrade && !canUpgrade
-            ? 0.4f
-            : 1f;
-
-        canvasGroup.interactable = false;
-        canvasGroup.blocksRaycasts = false;
-
-        RewardCardHoverUI hoverUI = slot.GetComponent<RewardCardHoverUI>();
-
-        hoverUI.Initialize(
-            cardRect,
-            hoverScale,
-            hoverLift,
-            hoverDuration,
-            useSortingCanvas: false
-        );
-
-        bool canSelect = mode == DeckMode.Remove ||
-            (mode == DeckMode.Upgrade && canUpgrade);
-
-        if (canSelect)
-        {
-            cardButton.onClick.AddListener(
-                () => SelectCard(cardIndex, cardData, cardUI)
-            );
-        }
-    }
-
-    private void SelectCard(int cardIndex, CardData cardData, LibraryCardUI cardUI)
-    {
-        if (mode == DeckMode.View) return;
-
-        RunSystem run = RunSystem.Instance;
-
-        if (run == null || run.Deck == null) return;
-        if (cardIndex < 0 || cardIndex >= run.Deck.Count) return;
-        if (run.Deck[cardIndex] != cardData) return;
-
-        if (mode == DeckMode.Upgrade && (!cardData.CanUpgrade || run.IsCardUpgraded(cardData))) return;
-
-        ClearSelection();
-
-        selectedCardIndex = cardIndex;
-        selectedCard = cardData;
-        selectedCardUI = cardUI;
-
-        if (mode == DeckMode.Remove)
-        {
-            confirmRemoveButton.interactable = run.Gold >= removePrice;
-            confirmRemoveText.text = run.Gold >= removePrice ? "Remove: " + removePrice + " Gold" : "Need " + removePrice + " Gold";
-            return;
-        }
-
-        selectedCardUI.Setup(cardData, true);
-
-        upgradeInfoText.text = cardData.name + " → " + cardData.name + "+\nMana: " + cardData.Mana + " → " + cardData.UpgradedMana + "\n" + cardData.UpgradedDescription;
-
-        confirmUpgradeButton.interactable = true;
-    }
-
-    private void ClearSelection()
-    {
-        if (mode == DeckMode.Upgrade && selectedCardUI != null && selectedCard != null)
-        {
-            bool isUpgraded = RunSystem.Instance != null && RunSystem.Instance.IsCardUpgraded(selectedCard);
-            selectedCardUI.Setup(selectedCard, isUpgraded);
-        }
-
-        selectedCardIndex = -1;
-        selectedCard = null;
-        selectedCardUI = null;
-
-        if (confirmRemoveButton != null) confirmRemoveButton.interactable = false;
-        if (confirmUpgradeButton != null) confirmUpgradeButton.interactable = false;
-    }
-
-    private bool IsSelectionValid()
-    {
-        RunSystem run = RunSystem.Instance;
-
-        if (run == null || run.Deck == null || selectedCard == null) return false;
-        if (selectedCardIndex < 0 || selectedCardIndex >= run.Deck.Count) return false;
-
-        return run.Deck[selectedCardIndex] == selectedCard;
-    }
-
+    // Confirm card removal or upgrade.
     public void ConfirmRemoveCard()
     {
         if (mode != DeckMode.Remove) return;
@@ -322,9 +117,7 @@ public class ShowDeckUI : MonoBehaviour
             return;
         }
 
-        bool success = RunSystem.Instance.RemoveCardFromDeck(selectedCardIndex, removePrice);
-
-        if (!success)
+        if (!RunSystem.Instance.RemoveCardFromDeck(selectedCardIndex, removePrice))
         {
             confirmRemoveText.text = "Could not remove this card.";
             return;
@@ -332,8 +125,7 @@ public class ShowDeckUI : MonoBehaviour
 
         ClearSelection();
         RefreshCards();
-
-        confirmRemoveText.text = "Remove: " + removePrice + " Gold";
+        confirmRemoveText.text = $"Remove: {removePrice} Gold";
     }
 
     public void ConfirmUpgradeCard()
@@ -355,7 +147,6 @@ public class ShowDeckUI : MonoBehaviour
         }
 
         RunSystem run = RunSystem.Instance;
-
         if (!run.UpgradeDeckCard(selectedCardIndex))
         {
             ClearSelection();
@@ -365,10 +156,157 @@ public class ShowDeckUI : MonoBehaviour
         }
 
         CardData upgradedCard = run.Deck[selectedCardIndex];
-        System.Action<CardData> callback = onUpgradeConfirmed;
+        Action<CardData> callback = onUpgradeConfirmed;
 
         CloseDeck();
-
         callback?.Invoke(upgradedCard);
+    }
+
+    // Rebuild the deck display.
+    private void RefreshCards()
+    {
+        if (!CanOpenPanel()) return;
+
+        for (int i = cardContent.childCount - 1; i >= 0; i--)
+        {
+            GameObject oldCard = cardContent.GetChild(i).gameObject;
+            oldCard.SetActive(false);
+            Destroy(oldCard);
+        }
+
+        RunSystem run = RunSystem.Instance;
+        bool hasUpgradeableCard = false;
+
+        for (int i = 0; i < run.Deck.Count; i++)
+        {
+            CardData cardData = run.Deck[i];
+            if (cardData == null) continue;
+
+            bool isUpgraded = run.IsCardUpgraded(cardData);
+            bool canUpgrade = cardData.CanUpgrade && !isUpgraded;
+
+            if (canUpgrade) hasUpgradeableCard = true;
+            CreateDeckCard(cardData, i, isUpgraded, canUpgrade);
+        }
+
+        if (mode == DeckMode.Upgrade)
+            upgradeInfoText.text = hasUpgradeableCard ? "Choose a card to preview its upgrade." : "No cards available to upgrade.";
+
+        Canvas.ForceUpdateCanvases();
+
+        if (scrollRect != null)
+        {
+            scrollRect.StopMovement();
+            scrollRect.verticalNormalizedPosition = 1f;
+        }
+    }
+
+    private void CreateDeckCard(CardData cardData, int cardIndex, bool isUpgraded, bool canUpgrade)
+    {
+        GameObject slot = new("DeckCardSlot_" + cardIndex, typeof(RectTransform), typeof(Image), typeof(Button), typeof(RewardCardHoverUI));
+        slot.layer = cardContent.gameObject.layer;
+        slot.transform.SetParent(cardContent, false);
+
+        Image slotImage = slot.GetComponent<Image>();
+        slotImage.color = new Color(1f, 1f, 1f, 0f);
+        slotImage.raycastTarget = true;
+
+        Button cardButton = slot.GetComponent<Button>();
+        cardButton.targetGraphic = slotImage;
+        cardButton.transition = Selectable.Transition.None;
+        cardButton.interactable = true;
+
+        LibraryCardUI cardUI = Instantiate(cardPrefab.LibraryTemplate, slot.transform);
+        cardUI.gameObject.SetActive(true);
+        cardUI.Setup(cardData, isUpgraded);
+
+        RectTransform cardRect = cardUI.GetComponent<RectTransform>();
+        cardRect.anchorMin = cardRect.anchorMax = new Vector2(0.5f, 0.5f);
+        cardRect.pivot = new Vector2(0.5f, 0.5f);
+        cardRect.anchoredPosition3D = Vector3.zero;
+        cardRect.localRotation = Quaternion.identity;
+
+        CanvasGroup canvasGroup = cardUI.GetComponent<CanvasGroup>();
+        if (canvasGroup == null) canvasGroup = cardUI.gameObject.AddComponent<CanvasGroup>();
+        canvasGroup.alpha = mode == DeckMode.Upgrade && !canUpgrade ? 0.4f : 1f;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+
+        RewardCardHoverUI hoverUI = slot.GetComponent<RewardCardHoverUI>();
+        hoverUI.Initialize(cardRect, hoverScale, hoverLift, hoverDuration, useSortingCanvas: false);
+
+        bool canSelect = mode == DeckMode.Remove || (mode == DeckMode.Upgrade && canUpgrade);
+        if (canSelect) cardButton.onClick.AddListener(() => SelectCard(cardIndex, cardData, cardUI));
+    }
+
+    // Select a card and preview its upgrade.
+    private void SelectCard(int cardIndex, CardData cardData, LibraryCardUI cardUI)
+    {
+        if (mode == DeckMode.View) return;
+
+        RunSystem run = RunSystem.Instance;
+        if (run == null || run.Deck == null) return;
+        if (cardIndex < 0 || cardIndex >= run.Deck.Count || run.Deck[cardIndex] != cardData) return;
+        if (mode == DeckMode.Upgrade && (!cardData.CanUpgrade || run.IsCardUpgraded(cardData))) return;
+
+        ClearSelection();
+        selectedCardIndex = cardIndex;
+        selectedCard = cardData;
+        selectedCardUI = cardUI;
+
+        if (mode == DeckMode.Remove)
+        {
+            bool canAfford = run.Gold >= removePrice;
+            confirmRemoveButton.interactable = canAfford;
+            confirmRemoveText.text = canAfford ? $"Remove: {removePrice} Gold" : $"Need {removePrice} Gold";
+            return;
+        }
+
+        selectedCardUI.Setup(cardData, true);
+        upgradeInfoText.text = $"{cardData.name} → {cardData.name}+\nMana: {cardData.Mana} → {cardData.UpgradedMana}\n{cardData.UpgradedDescription}";
+        confirmUpgradeButton.interactable = true;
+    }
+
+    private void ClearSelection()
+    {
+        if (mode == DeckMode.Upgrade && selectedCardUI != null && selectedCard != null)
+        {
+            bool isUpgraded = RunSystem.Instance != null && RunSystem.Instance.IsCardUpgraded(selectedCard);
+            selectedCardUI.Setup(selectedCard, isUpgraded);
+        }
+
+        selectedCardIndex = -1;
+        selectedCard = null;
+        selectedCardUI = null;
+
+        if (confirmRemoveButton != null) confirmRemoveButton.interactable = false;
+        if (confirmUpgradeButton != null) confirmUpgradeButton.interactable = false;
+    }
+
+    // Validate panel references and card selection.
+    private bool CanOpenPanel()
+    {
+        if (RunSystem.Instance == null || RunSystem.Instance.Deck == null)
+        {
+            Debug.LogWarning("No active run or deck was found.");
+            return false;
+        }
+
+        if (deckPanel == null || cardContent == null || cardPrefab == null || cardPrefab.LibraryTemplate == null)
+        {
+            Debug.LogError("Deck Panel, Card Content, Card Prefab or Library Template is missing in ShowDeckUI.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool IsSelectionValid()
+    {
+        RunSystem run = RunSystem.Instance;
+        if (run == null || run.Deck == null || selectedCard == null) return false;
+        if (selectedCardIndex < 0 || selectedCardIndex >= run.Deck.Count) return false;
+
+        return run.Deck[selectedCardIndex] == selectedCard;
     }
 }

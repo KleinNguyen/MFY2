@@ -18,9 +18,15 @@ public class SettingsButtonUI : MonoBehaviour
 
     public void OpenSettings()
     {
-        if (settingsPanel != null)
-        {
-            settingsPanel.SetActive(true);
-        }
+        if (settingsPanel == null) return;
+        if (ActionSystem.Instance != null && ActionSystem.Instance.IsPerforming) return;
+        if (InteractionSystem.Instance != null && InteractionSystem.Instance.PlayerIsDragging) return;
+        if (BattleSystem.Instance != null && BattleSystem.Instance.IsPreparingBattle) return;
+
+        if (ManualTargetSystem.Instance != null) ManualTargetSystem.Instance.CancelTargeting();
+        if (CardViewHoverSystem.Instance != null) CardViewHoverSystem.Instance.Hide();
+
+        settingsPanel.SetActive(true);
+        settingsPanel.transform.SetAsLastSibling();
     }
 }

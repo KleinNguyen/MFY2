@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class MapUI : MonoBehaviour
 {
+    private int lastFocusedPointId = int.MinValue;
     private const float MapLayoutWidth = 1200f;
     private const float MapEdgePadding = 90f;
     private const float MapHorizontalScale = 0.82f;
@@ -307,6 +308,7 @@ public class MapUI : MonoBehaviour
         MapPoint completedPoint = run.GetMapPoint(run.CompletedMapPointId);
         if (mapMessageText != null) mapMessageText.text = completedPoint != null && completedPoint.Type == MapPointType.Boss ? "Run Complete" : "Choose your next point";
         UpdateCurrentPointGlow(run);
+        FocusCurrentMapPoint();
     }
 
     public void SelectMapPoint(int pointId)
@@ -612,5 +614,36 @@ public class MapUI : MonoBehaviour
         canvasGroup.alpha = 0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
+    }
+    private void FocusCurrentMapPoint()
+    {
+        RunSystem run = RunSystem.Instance;
+        if (run == null || mapScrollRect == null || mapContent == null || mapScrollRect.viewport == null) return;
+
+        int pointId = run.CompletedMapPointId;
+        if (pointId == lastFocusedPointId) return;
+
+        lastFocusedPointId = pointId;
+        Canvas.ForceUpdateCanvases();
+        mapScrollRect.StopMovement();
+
+        if (pointId < 0)
+        {
+            mapScrollRect.verticalNormalizedPosition = 0f;
+            return;
+        }
+
+        if (!pointButtons.TryGetValue(pointId, out Button pointButton) || pointButton == null) return;
+
+        RectTransform viewport = mapScrollRect.viewport;
+        Bounds contentBounds = RectTransformUtility.CalculateRelativeRectTransformBounds(viewport, mapContent);
+        float scrollableHeight = contentBounds.size.y - viewport.rect.height;
+        if (scrollableHeight <= 0f) return;
+
+        float pointY = viewport.InverseTransformPoint(pointButton.transform.position).y;
+        float desiredY = viewport.rect.yMin + viewport.rect.height * 0.3f;
+        float offset = (pointY - desiredY) / scrollableHeight;
+
+        mapScrollRect.verticalNormalizedPosition = Mathf.Clamp01(mapScrollRect.verticalNormalizedPosition + offset);
     }
 }
