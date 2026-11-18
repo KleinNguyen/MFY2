@@ -4384,9 +4384,9 @@ MonoBehaviour:
   masterValue: {fileID: 9100000000000000094}
   musicValue: {fileID: 9100000000000000066}
   soundEffectsValue: {fileID: 9100000000000000038}
-  saveButton: {fileID: 0}
-  restartButton: {fileID: 0}
-  leaveButton: {fileID: 0}
+  saveButton: {fileID: 9100000000000000113}
+  restartButton: {fileID: 1988132683436822330}
+  leaveButton: {fileID: 9100000000000000122}
   messageText: {fileID: 0}
 --- !u!1 &9100000000000000006
 GameObject:
