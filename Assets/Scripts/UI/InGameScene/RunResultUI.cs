@@ -53,4 +53,16 @@ public class RunResultUI : MonoBehaviour
     {
         SceneManager.LoadScene("MenuScene");
     }
+
+    public void ContinueAfterRun()
+    {
+        RunSystem run = RunSystem.Instance;
+        if (run == null || !run.IsRunFinished)
+        {
+            Debug.LogError("Cannot continue: the run result is missing.");
+            return;
+        }
+
+        SceneManager.LoadScene(run.Result == RunResult.Won ? "EndingScene" : "MenuScene");
+    }
 }

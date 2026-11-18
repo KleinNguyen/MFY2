@@ -188,7 +188,7 @@ public class RewardUI : MonoBehaviour
 
         wheelOpen = true;
         UpdateButtons();
-        if (!luckyWheel.Show(RewardWheelLabels, ApplyWheelResult, OnWheelClosed, canCancel: true, closeCaption: "Back to rewards")) OnWheelClosed();
+        if (!luckyWheel.Show(RewardWheelLabels, ApplyWheelResult, OnWheelClosed, canCancel: true, closeCaption: "Back to rewards", character: run.HeroData.Character)) OnWheelClosed();
     }
 
     private void ApplyWheelResult(int result)

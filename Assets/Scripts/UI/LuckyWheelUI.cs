@@ -10,10 +10,19 @@ public class LuckyWheelUI : MonoBehaviour
     private const int SliceCount = 6;
     [SerializeField] private RectTransform wheelRoot;
     [SerializeField] private RectTransform pointerPivot;
+    [SerializeField] private Image wheelImage;
+    [SerializeField] private Image characterImage;
     [SerializeField] private TMP_Text wheelText;
     [SerializeField] private TMP_Text resultText;
     [SerializeField] private Button spinButton;
     [SerializeField] private Button continueButton;
+    [Header("Character-specific wheel art")]
+    [SerializeField] private Sprite redWheelSprite;
+    [SerializeField] private Sprite greenWheelSprite;
+    [SerializeField] private Sprite yellowWheelSprite;
+    [SerializeField] private Sprite redCharacterSprite;
+    [SerializeField] private Sprite greenCharacterSprite;
+    [SerializeField] private Sprite yellowCharacterSprite;
     [SerializeField, Min(0f)] private float labelRadius = 175f;
     [SerializeField, Min(0.1f)] private float spinDuration = 4f;
 
@@ -29,7 +38,7 @@ public class LuckyWheelUI : MonoBehaviour
 
     public bool IsSpinning => spinning;
     public bool HasResult => hasResult;
-    public bool IsConfigured => wheelRoot != null && pointerPivot != null && wheelText != null && resultText != null && spinButton != null && continueButton != null;
+    public bool IsConfigured => wheelRoot != null && pointerPivot != null && wheelImage != null && characterImage != null && wheelText != null && resultText != null && spinButton != null && continueButton != null;
 
     private void Awake()
     {
@@ -47,7 +56,7 @@ public class LuckyWheelUI : MonoBehaviour
         }
     }
 
-    public bool Show(string[] options, Action<int> onResult, Action onClosed = null, bool canCancel = false, int previousResult = -1, string closeCaption = "Continue")
+    public bool Show(string[] options, Action<int> onResult, Action onClosed = null, bool canCancel = false, int previousResult = -1, string closeCaption = "Continue", CharacterType character = CharacterType.Red)
     {
         if (!IsConfigured || options == null || options.Length != SliceCount)
         {
@@ -56,6 +65,8 @@ public class LuckyWheelUI : MonoBehaviour
         }
 
         if (spinning) return false;
+        if (!SetCharacterArt(character)) return false;
+
         spinTween?.Kill();
         labels = (string[])options.Clone();
         resultCallback = onResult;
@@ -108,6 +119,41 @@ public class LuckyWheelUI : MonoBehaviour
 
         transform.SetAsLastSibling();
         gameObject.SetActive(true);
+        return true;
+    }
+
+    private bool SetCharacterArt(CharacterType character)
+    {
+        Sprite wheelSprite;
+        Sprite portraitSprite;
+
+        switch (character)
+        {
+            case CharacterType.Red:
+                wheelSprite = redWheelSprite;
+                portraitSprite = redCharacterSprite;
+                break;
+            case CharacterType.Green:
+                wheelSprite = greenWheelSprite;
+                portraitSprite = greenCharacterSprite;
+                break;
+            case CharacterType.Yellow:
+                wheelSprite = yellowWheelSprite;
+                portraitSprite = yellowCharacterSprite;
+                break;
+            default:
+                Debug.LogError("LuckyWheelUI received an unsupported character type: " + character, this);
+                return false;
+        }
+
+        if (wheelSprite == null || portraitSprite == null)
+        {
+            Debug.LogError("Assign the wheel and chibi sprites for " + character + " in LuckyWheelUI.", this);
+            return false;
+        }
+
+        wheelImage.sprite = wheelSprite;
+        characterImage.sprite = portraitSprite;
         return true;
     }
 

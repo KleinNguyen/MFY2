@@ -83,7 +83,7 @@ public class MatchSetupSystem : MonoBehaviour
         {
             mysteryResult = index;
             RunSystem.Instance.SaveMysteryResult(index);
-        }, () => mysteryConfirmed = true, canCancel: false, previousResult: mysteryResult, closeCaption: "Begin battle");
+        }, () => mysteryConfirmed = true, canCancel: false, previousResult: mysteryResult, closeCaption: "Begin battle", character: RunSystem.Instance.HeroData.Character);
     }
 
     private void ApplyMysteryResult(RunSystem run)
