@@ -14,7 +14,7 @@ public class LuckyWheelUI : MonoBehaviour
     [SerializeField] private TMP_Text resultText;
     [SerializeField] private Button spinButton;
     [SerializeField] private Button continueButton;
-    [SerializeField, Min(0f)] private float labelRadius = 200f;
+    [SerializeField, Min(0f)] private float labelRadius = 175f;
     [SerializeField, Min(0.1f)] private float spinDuration = 4f;
 
     private readonly TMP_Text[] sliceLabels = new TMP_Text[SliceCount];
@@ -80,16 +80,18 @@ public class LuckyWheelUI : MonoBehaviour
             rect.pivot = new Vector2(0.5f, 0.5f);
             rect.anchoredPosition = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * labelRadius;
             rect.localRotation = Quaternion.identity;
-            rect.sizeDelta = new Vector2(170f, 70f);
+            rect.sizeDelta = new Vector2(160f, 88f);
 
             label.text = labels[i];
             label.alignment = TextAlignmentOptions.Center;
-            label.fontStyle = FontStyles.Bold;
+            label.fontStyle = FontStyles.Normal;
             label.enableAutoSizing = true;
-            label.fontSizeMin = 20f;
-            label.fontSizeMax = 26f;
-            label.textWrappingMode = TextWrappingModes.NoWrap;
-            label.color = Color.black;
+            label.fontSizeMin = 12f;
+            label.fontSizeMax = 20f;
+            label.textWrappingMode = TextWrappingModes.Normal;
+            label.color = new Color32(24, 34, 45, 255);
+            label.outlineColor = new Color32(255, 242, 205, 255);
+            label.outlineWidth = 0.12f;
             label.raycastTarget = false;
             label.gameObject.SetActive(true);
         }
