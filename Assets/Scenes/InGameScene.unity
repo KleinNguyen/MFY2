@@ -6178,7 +6178,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1274244908
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6351,11 +6351,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 39ac8a7cdd99b944084b055dfbb63fa2, type: 2}
   - {fileID: 11400000, guid: b7bdbff249520594e8c53f4a009cbc6b, type: 2}
   - {fileID: 11400000, guid: 41838691e3995a5499a983e43ad5a07f, type: 2}
-  goldRewardText: {fileID: 144175128}
-  messageText: {fileID: 948893995}
   cardContent: {fileID: 1310215566}
   cardPrefab: {fileID: 7171852290959586651, guid: bdcfe10473c2bb24dae7fb137c2f5503, type: 3}
   choiceCount: 3
+  goldRewardText: {fileID: 144175128}
+  messageText: {fileID: 948893995}
   skipButton: {fileID: 1334983026}
   continueButton: {fileID: 694034890}
   runResultUI: {fileID: 1722109186}
