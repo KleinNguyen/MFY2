@@ -10,7 +10,7 @@ public class EndingSequenceUI : MonoBehaviour
     [SerializeField] private Sprite sceneImage;
     [SerializeField, Min(0f)] private float sceneDuration = 10f;
     [SerializeField, TextArea(2, 5)] private string subtitle =
-        "Một hành trình khép lại, nhưng câu chuyện vẫn còn ở phía trước...";
+        "One journey ends, but the story still has more to tell...";
     [SerializeField, TextArea(8, 24)] private string credits =
         "MFY2\n\nCẢM ƠN BẠN ĐÃ CHƠI\n\nPhát triển\nTên của bạn\n\nThiết kế trò chơi\nTên của bạn\n\nLập trình\nTên của bạn\n\nĐồ họa và âm thanh\nTên của bạn\n\nĐặc biệt cảm ơn\nTất cả những người đã chơi\n\nHẾT";
     [SerializeField, Min(1f)] private float creditsScrollSpeed = 55f;

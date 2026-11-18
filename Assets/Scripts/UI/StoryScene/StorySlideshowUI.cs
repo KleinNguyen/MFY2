@@ -168,6 +168,7 @@ public class StorySlideshowUI : MonoBehaviour
         storyText.color = Color.white;
         storyText.alignment = TextAlignmentOptions.Center;
         storyText.raycastTarget = false;
+        textObject.SetActive(true);
         return storyText;
     }
 }

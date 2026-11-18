@@ -139,14 +139,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 12e0f243863be9b448b179f50a86eaf4, type: 3}
   - {fileID: 21300000, guid: 1a8f7f49bfb023d46a2e77fb00cfa5dc, type: 3}
   storyTexts:
-  - "Sau m\u1ED9t ch\u1EB7ng \u0111\u01B0\u1EDDng d\xE0i, ng\u01B0\u1EDDi l\u1EEF
-    kh\xE1ch \u0111\u1EB7t ch\xE2n \u0111\u1EBFn v\xF9ng \u0111\u1EA5t xa l\u1EA1."
-  - "B\xF3ng t\u1ED1i \u0111ang lan r\u1ED9ng, v\xE0 nh\u1EEFng d\u1EA5u v\u1EBFt
-    k\u1EF3 l\u1EA1 xu\u1EA5t hi\u1EC7n kh\u1EAFp n\u01A1i."
-  - "Kh\xF4ng c\xF2n \u0111\u01B0\u1EDDng lui, h\u1ECD chu\u1EA9n b\u1ECB \u0111\u1ED1i
-    m\u1EB7t v\u1EDBi th\u1EED th\xE1ch ph\xEDa tr\u01B0\u1EDBc."
-  - "Cu\u1ED9c h\xE0nh tr\xECnh b\u1EAFt \u0111\u1EA7u. M\u1ECDi l\u1EF1a ch\u1ECDn
-    s\u1EBD quy\u1EBFt \u0111\u1ECBnh s\u1ED1 ph\u1EADn c\u1EE7a h\u1ECD."
+  - "After a long journey, the traveler set foot in a strange land."
+  - "Darkness was spreading, and strange signs appeared everywhere."
+  - "With no way back, they prepared to face the challenge ahead."
+  - "The journey begins. Every choice will determine their fate."
   secondsPerImage: 3
   slideDuration: 1.5
 --- !u!1 &539627193
