@@ -21,7 +21,7 @@ public class ContinueRunUI : MonoBehaviour
     }
 
     private void OnDestroy() => button.onClick.RemoveListener(ContinueRun);
-
+        
     private void ContinueRun()
     {
         if (!RunSaveSystem.HasSave) return;
@@ -38,6 +38,6 @@ public class ContinueRunUI : MonoBehaviour
         }
 
         if (RunSystem.Instance != null && RunSystem.Instance.TryLoadCheckpoint())
-            SceneManager.LoadScene("MapScene");
+            SceneManager.LoadScene(RunSystem.Instance.ContinueSceneName);
     }
 }

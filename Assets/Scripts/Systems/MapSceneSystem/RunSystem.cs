@@ -217,6 +217,7 @@ public partial class RunSystem : PersistentSingleton<RunSystem>
         SelectedMapPointId = -1;
         CurrentStage++;
         CurrentEncounter = null;
+        battleStartSave = null;
         SaveCheckpoint();
     }
 
@@ -375,6 +376,7 @@ public partial class RunSystem : PersistentSingleton<RunSystem>
 
     private void ResetMapProgress()
     {
+        battleStartSave = null;
         MapPoints.Clear();
         CompletedMapPointId = -1;
         SelectedMapPointId = -1;

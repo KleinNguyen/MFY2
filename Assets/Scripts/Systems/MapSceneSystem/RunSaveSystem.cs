@@ -76,6 +76,9 @@ public class RunSaveData
     public int actIndex, stage, completedPointId = -1;
     public int health, gold, healthPotions, manaPotions;
     public float elapsedTime;
+    public bool resumeBattle;
+    public int battlePointId = -1, mysteryResult = -1;
+    public string battleEncounter;
     public List<SavedDeckCard> deck = new();
     public List<SavedMapPoint> map = new();
 }

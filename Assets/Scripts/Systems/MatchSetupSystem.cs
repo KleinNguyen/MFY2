@@ -21,6 +21,10 @@ public class MatchSetupSystem : MonoBehaviour
 
         RunSystem run = RunSystem.Instance;
         if (!ValidateSetup(run)) yield break;
+        if (!run.CaptureBattleStart()) yield break;
+
+        run.StartRunTimer();
+        mysteryResult = run.SavedMysteryResult;
 
         SetupBackground(run.CurrentAct);
         HeroSystem.Instance.Setup(run.HeroData);
@@ -75,7 +79,11 @@ public class MatchSetupSystem : MonoBehaviour
 
     private bool OpenMysteryWheel()
     {
-        return mysteryWheel.Show(MysteryLabels, index => mysteryResult = index, () => mysteryConfirmed = true, canCancel: false, previousResult: mysteryResult, closeCaption: "Begin battle");
+        return mysteryWheel.Show(MysteryLabels, index =>
+        {
+            mysteryResult = index;
+            RunSystem.Instance.SaveMysteryResult(index);
+        }, () => mysteryConfirmed = true, canCancel: false, previousResult: mysteryResult, closeCaption: "Begin battle");
     }
 
     private void ApplyMysteryResult(RunSystem run)

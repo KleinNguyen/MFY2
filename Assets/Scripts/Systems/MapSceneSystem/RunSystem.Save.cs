@@ -4,16 +4,92 @@ using UnityEngine;
 
 public partial class RunSystem
 {
+    private RunSaveData battleStartSave;
+
+    public string ContinueSceneName => CurrentEncounter != null && SelectedMapPointId >= 0 ? "InGameScene" : "MapScene";
+    public int SavedMysteryResult => battleStartSave?.mysteryResult ?? -1;
+    public bool CanRestartBattle => !IsRunFinished && battleStartSave != null && CurrentEncounter != null && SelectedMapPointId == battleStartSave.battlePointId && CurrentEncounter.name == battleStartSave.battleEncounter;
+
+    public void PauseRunTimer() => isRunTimerRunning = false;
+
     public bool SaveCheckpoint()
     {
         if (IsRunFinished || HeroData == null || CurrentHealth <= 0 || CurrentAct == null || Deck == null || MapPoints.Count == 0 || SelectedMapPointId >= 0) return false;
         if (GetMapPoint(CompletedMapPointId)?.Type == MapPointType.Boss) return false;
 
+        RunSaveData data = CreateSaveData();
+        return data != null && RunSaveSystem.Write(data);
+    }
+
+    public bool SaveGame()
+    {
+        if (IsRunFinished) return false;
+        if (!CanRestartBattle) return SaveCheckpoint();
+
+        battleStartSave.elapsedTime = ElapsedRunTime;
+        return RunSaveSystem.Write(battleStartSave);
+    }
+
+    public bool CaptureBattleStart()
+    {
+        if (CanRestartBattle) return true;
+        if (IsRunFinished || CurrentEncounter == null || GetMapPoint(SelectedMapPointId) == null) return false;
+
+        RunSaveData data = CreateSaveData();
+        if (data == null) return false;
+
+        data.resumeBattle = true;
+        data.battlePointId = SelectedMapPointId;
+        data.battleEncounter = CurrentEncounter.name;
+        data.mysteryResult = -1;
+        battleStartSave = data;
+        RunSaveSystem.Write(data);
+        return true;
+    }
+
+    public void SaveMysteryResult(int result)
+    {
+        if (!CanRestartBattle || result < 0 || result > 5 || GetMapPoint(SelectedMapPointId)?.Type != MapPointType.Mystery) return;
+        if (battleStartSave.mysteryResult >= 0) return;
+
+        battleStartSave.mysteryResult = result;
+        SaveGame();
+    }
+
+    public bool RestartBattle()
+    {
+        if (!CanRestartBattle) return false;
+
         RunSaveCatalog catalog = Resources.Load<RunSaveCatalog>("RunSaveCatalog");
-        if (catalog == null)
+        if (catalog == null || !IsSaveValid(battleStartSave, catalog)) return false;
+
+        battleStartSave.elapsedTime = ElapsedRunTime;
+        if (!RunSaveSystem.Write(battleStartSave)) return false;
+
+        ApplySaveData(battleStartSave, catalog);
+        return true;
+    }
+
+    public bool TryLoadCheckpoint()
+    {
+        RunSaveCatalog catalog = Resources.Load<RunSaveCatalog>("RunSaveCatalog");
+        if (catalog == null || !RunSaveSystem.TryRead(out RunSaveData data, candidate => IsSaveValid(candidate, catalog)))
         {
-            Debug.LogError("Run Rebuild Save Catalog before saving.");
+            Debug.LogError("Run save is missing, invalid, or incompatible. Check the save catalog.");
             return false;
+        }
+
+        ApplySaveData(data, catalog);
+        return true;
+    }
+
+    private RunSaveData CreateSaveData()
+    {
+        RunSaveCatalog catalog = Resources.Load<RunSaveCatalog>("RunSaveCatalog");
+        if (catalog == null || HeroData == null || CurrentAct == null || Deck == null)
+        {
+            Debug.LogError("Run Rebuild Save Catalog and check the active run before saving.");
+            return null;
         }
 
         RunSaveData data = new()
@@ -37,27 +113,19 @@ public partial class RunSystem
             if (card == null || catalog.FindCard(card.SaveId) == null)
             {
                 Debug.LogError("A deck card is missing from the save catalog. Rebuild Save Catalog.");
-                return false;
+                return null;
             }
-
             data.deck.Add(new SavedDeckCard { id = card.SaveId, upgraded = IsCardUpgraded(card) });
         }
 
         foreach (MapPoint point in MapPoints)
             data.map.Add(new SavedMapPoint { id = point.Id, floor = point.Floor, position = point.Position, type = point.Type, next = new List<int>(point.NextPoints) });
 
-        return RunSaveSystem.Write(data);
+        return data;
     }
 
-    public bool TryLoadCheckpoint()
+    private void ApplySaveData(RunSaveData data, RunSaveCatalog catalog)
     {
-        RunSaveCatalog catalog = Resources.Load<RunSaveCatalog>("RunSaveCatalog");
-        if (catalog == null || !RunSaveSystem.TryRead(out RunSaveData data, candidate => IsSaveValid(candidate, catalog)))
-        {
-            Debug.LogError("Run save is missing, invalid, or incompatible. Check the save catalog.");
-            return false;
-        }
-
         ClearRuntimeUpgrades();
         startingHero = HeroData = catalog.FindHero(data.hero);
         Deck = new List<CardData>();
@@ -76,12 +144,13 @@ public partial class RunSystem
         ManaPotionCount = data.manaPotions;
         ElapsedRunTime = data.elapsedTime;
         CompletedMapPointId = data.completedPointId;
-        SelectedMapPointId = -1;
-        CurrentEncounter = null;
+        SelectedMapPointId = data.resumeBattle ? data.battlePointId : -1;
+        CurrentEncounter = data.resumeBattle ? FindSavedEncounter(data) : null;
         Result = RunResult.None;
         isRunTimerRunning = false;
         ResetRewards();
 
+        battleStartSave = data.resumeBattle ? data : null;
         LastNormalEncounter = CurrentAct.NormalEncounters?.Find(encounter => encounter != null && encounter.name == data.lastNormal);
         LastEliteEncounter = CurrentAct.EliteEncounters?.Find(encounter => encounter != null && encounter.name == data.lastElite);
 
@@ -92,7 +161,18 @@ public partial class RunSystem
             foreach (int next in saved.next) point.AddNextPoint(next);
             MapPoints.Add(point);
         }
-        return true;
+    }
+
+    private EncounterData FindSavedEncounter(RunSaveData data)
+    {
+        MapPointType type = data.map.Find(point => point.id == data.battlePointId).type;
+        ActData act = acts[data.actIndex];
+
+        if (type == MapPointType.Boss)
+            return act.BossEncounter != null && act.BossEncounter.name == data.battleEncounter ? act.BossEncounter : null;
+
+        List<EncounterData> pool = type == MapPointType.Elite ? act.EliteEncounters : act.NormalEncounters;
+        return pool?.Find(encounter => encounter != null && encounter.name == data.battleEncounter);
     }
 
     private bool IsSaveValid(RunSaveData data, RunSaveCatalog catalog)
@@ -135,6 +215,13 @@ public partial class RunSystem
             foreach (int next in point.next)
                 if (!points.TryGetValue(next, out SavedMapPoint target) || target.floor != point.floor + 1) return false;
         }
-        return true;
+
+        if (!data.resumeBattle) return true;
+        if (!points.TryGetValue(data.battlePointId, out SavedMapPoint battle) || data.mysteryResult < -1 || data.mysteryResult > 5) return false;
+        if (battle.type != MapPointType.Normal && battle.type != MapPointType.Elite && battle.type != MapPointType.Boss && battle.type != MapPointType.Mystery) return false;
+        if (data.completedPointId == -1 ? battle.floor != 0 : !points[data.completedPointId].next.Contains(battle.id)) return false;
+        if (battle.type != MapPointType.Mystery && data.mysteryResult != -1) return false;
+
+        return FindSavedEncounter(data) != null;
     }
 }
