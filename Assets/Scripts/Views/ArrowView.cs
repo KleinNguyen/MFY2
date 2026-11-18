@@ -7,8 +7,11 @@ public class ArrowView : MonoBehaviour
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private Sprite[] arrowBodySprites;
     [SerializeField] private float arrowBodyWidth = 0.45f;
-    [SerializeField] private float arrowHeadLength = 0.55f;
-    [SerializeField] private float arrowHeadRotationOffset = 155f;
+    [SerializeField] private float arrowBodyRotationOffset = 22.84f;
+    [SerializeField, Range(0f, 1f)] private float arrowBodySegmentGap = 0.2f;
+    [SerializeField] private float arrowHeadLength = 0.65f;
+    [SerializeField] private float arrowHeadRotationOffset = 90f;
+    [SerializeField] private Vector2 arrowHeadTipPosition = new(0.4f, 0f);
 
     private readonly List<SpriteRenderer> arrowBodyRenderers = new();
     private SpriteRenderer arrowHeadRenderer;
@@ -49,7 +52,12 @@ public class ArrowView : MonoBehaviour
 
     private void UpdateArrow(Vector3 endPosition)
     {
-        Vector3 direction = endPosition - startPosition;
+        Vector3 arrowStartPosition = new(
+            startPosition.x,
+            startPosition.y,
+            endPosition.z
+        );
+        Vector3 direction = endPosition - arrowStartPosition;
         float distance = direction.magnitude;
 
         if (distance <= Mathf.Epsilon)
@@ -60,11 +68,15 @@ public class ArrowView : MonoBehaviour
 
         direction /= distance;
         float bodyLength = Mathf.Max(0f, distance - arrowHeadLength);
-        UpdateArrowBody(direction, bodyLength);
+        UpdateArrowBody(arrowStartPosition, direction, bodyLength);
         UpdateArrowHead(endPosition, direction);
     }
 
-    private void UpdateArrowBody(Vector3 direction, float bodyLength)
+    private void UpdateArrowBody(
+        Vector3 arrowStartPosition,
+        Vector3 direction,
+        float bodyLength
+    )
     {
         if (bodyLength <= Mathf.Epsilon || arrowBodySprites == null || arrowBodySprites.Length == 0)
         {
@@ -72,49 +84,46 @@ public class ArrowView : MonoBehaviour
             return;
         }
 
-        Quaternion rotation = Quaternion.FromToRotation(Vector3.up, direction);
-        float consumedLength = 0f;
-        int segmentCount = 0;
-
-        while (consumedLength < bodyLength)
+        Sprite sprite = arrowBodySprites[0];
+        if (sprite == null)
         {
-            Sprite sprite = arrowBodySprites[segmentCount % arrowBodySprites.Length];
-            if (sprite == null)
-            {
-                Debug.LogError("ArrowView has an unassigned arrow body sprite.");
-                SetBodyRenderersActive(0);
-                return;
-            }
-
-            float scale = arrowBodyWidth / sprite.bounds.size.x;
-            float segmentLength = Mathf.Min(
-                sprite.bounds.size.y * scale,
-                bodyLength - consumedLength
-            );
-
-            consumedLength += segmentLength;
-            segmentCount++;
+            Debug.LogError("ArrowView has an unassigned arrow body sprite.");
+            SetBodyRenderersActive(0);
+            return;
         }
 
+        if (sprite.bounds.size.x <= Mathf.Epsilon || sprite.bounds.size.y <= Mathf.Epsilon)
+        {
+            Debug.LogError("ArrowView arrow body sprite must have non-zero dimensions.");
+            SetBodyRenderersActive(0);
+            return;
+        }
+
+        if (arrowBodyWidth <= Mathf.Epsilon)
+        {
+            Debug.LogError("ArrowView arrow body width must be greater than zero.");
+            SetBodyRenderersActive(0);
+            return;
+        }
+
+        Quaternion rotation = Quaternion.FromToRotation(Vector3.up, direction)
+            * Quaternion.Euler(0f, 0f, arrowBodyRotationOffset);
+        float uniformScale = arrowBodyWidth / sprite.bounds.size.x;
+        float segmentLength = sprite.bounds.size.y * uniformScale;
+        float segmentPitch = segmentLength * (1f + arrowBodySegmentGap);
+        int segmentCount = Mathf.CeilToInt(bodyLength / segmentPitch);
         EnsureBodyRendererCount(segmentCount);
 
-        consumedLength = 0f;
         for (int i = 0; i < segmentCount; i++)
         {
-            Sprite sprite = arrowBodySprites[i % arrowBodySprites.Length];
-            float uniformScale = arrowBodyWidth / sprite.bounds.size.x;
-            float segmentLength = Mathf.Min(
-                sprite.bounds.size.y * uniformScale,
-                bodyLength - consumedLength
-            );
+            float segmentStart = i * segmentPitch;
             Vector3 scale = new(
                 uniformScale,
-                segmentLength / sprite.bounds.size.y,
+                uniformScale,
                 1f
             );
-
-            float segmentCenterOffset = consumedLength + segmentLength * 0.5f;
-            Vector3 segmentCenter = startPosition + direction * segmentCenterOffset;
+            Vector3 segmentCenter =
+                arrowStartPosition + direction * (segmentStart + segmentLength * 0.5f);
             Vector3 localCenterOffset = Vector3.Scale(sprite.bounds.center, scale);
             SpriteRenderer renderer = arrowBodyRenderers[i];
 
@@ -124,8 +133,6 @@ public class ArrowView : MonoBehaviour
             );
             renderer.transform.localScale = scale;
             renderer.enabled = true;
-
-            consumedLength += segmentLength;
         }
 
         SetBodyRenderersActive(segmentCount);
@@ -142,14 +149,13 @@ public class ArrowView : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg
             + arrowHeadRotationOffset;
         Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
-        Vector3 spriteSize = arrowHeadRenderer.sprite.bounds.size;
-        Vector3 estimatedTipOffset = new(
-            spriteSize.x * 0.35f,
-            spriteSize.y * 0.02f,
-            0f
+        Bounds spriteBounds = arrowHeadRenderer.sprite.bounds;
+        Vector3 tipOffset = spriteBounds.min + Vector3.Scale(
+            spriteBounds.size,
+            new Vector3(arrowHeadTipPosition.x, arrowHeadTipPosition.y, 0f)
         );
         Vector3 worldTipOffset = Vector3.Scale(
-            estimatedTipOffset,
+            tipOffset,
             arrowHeadRenderer.transform.lossyScale
         );
 
@@ -169,7 +175,7 @@ public class ArrowView : MonoBehaviour
             SpriteRenderer renderer = segment.AddComponent<SpriteRenderer>();
             renderer.sortingLayerID = lineRenderer.sortingLayerID;
             renderer.sortingOrder = lineRenderer.sortingOrder;
-            renderer.sprite = arrowBodySprites[arrowBodyRenderers.Count % arrowBodySprites.Length];
+            renderer.sprite = arrowBodySprites[0];
             arrowBodyRenderers.Add(renderer);
         }
     }

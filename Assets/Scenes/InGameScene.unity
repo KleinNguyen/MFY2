@@ -2338,6 +2338,70 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000000, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000024, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000024, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000024, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000029, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000029, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000052, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000052, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000052, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000057, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000057, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000080, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000080, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000080, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000085, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000085, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -2564,7 +2628,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 746556924}
@@ -2613,7 +2677,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 8816886408898176165, guid: f25fe2a3b5f28654e99426c31282a791, type: 3}
+  m_Sprite: {fileID: -2263462924471369608, guid: ec84cf30603ded04db45bd50ebf7100d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4440,13 +4504,13 @@ MonoBehaviour:
   arrowHead: {fileID: 466369484}
   lineRenderer: {fileID: 14255780}
   arrowBodySprites:
-  - {fileID: -765150924802650856, guid: f25fe2a3b5f28654e99426c31282a791, type: 3}
-  - {fileID: -7451953295746623981, guid: f25fe2a3b5f28654e99426c31282a791, type: 3}
-  - {fileID: 4793074969510804509, guid: f25fe2a3b5f28654e99426c31282a791, type: 3}
-  - {fileID: 4397636249099975194, guid: f25fe2a3b5f28654e99426c31282a791, type: 3}
+  - {fileID: -6860061040563717381, guid: f6278c46b38f5df4cb30b167c5a1569b, type: 3}
   arrowBodyWidth: 0.45
-  arrowHeadLength: 0.55
-  arrowHeadRotationOffset: 155
+  arrowBodyRotationOffset: 22.84
+  arrowBodySegmentGap: 0.2
+  arrowHeadLength: 0.65
+  arrowHeadRotationOffset: 90
+  arrowHeadTipPosition: {x: 0.4, y: 0}
 --- !u!1 &783666504
 GameObject:
   m_ObjectHideFlags: 0

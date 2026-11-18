@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyView : CombatantView
 {
@@ -8,11 +9,24 @@ public class EnemyView : CombatantView
     private static readonly Vector2 EliteSpriteLimit = new(3.3f, 3.8f);
     private static readonly Vector2 BossSpriteLimit = new(4.2f, 5.2f);
     private const float UiFootGap = 0.05f;
+    private const float UiHeadGap = 0.05f;
+    private const float AttackIconGap = 0.04f;
+    private const float AttackIconHeightRatio = 0.12f;
+    private const float AttackIconMaxHeight = 0.32f;
+    private const float AttackFrameHorizontalPadding = 0.08f;
+    private const float AttackFrameVerticalPadding = 0.04f;
 
     [SerializeField] private TMP_Text attackText;
+    [SerializeField] private Sprite attackIconSprite;
 
     private readonly List<EnemyMoveData> moves = new();
     private readonly List<StatusEffectType> allowedDebuffs = new();
+    private Renderer attackTextRenderer;
+    private SpriteRenderer attackIcon;
+    private RectTransform attackFrameRect;
+    private Image attackFrameImage;
+    private Vector3 attackIntentAnchorLocal;
+    private bool attackIntentAnchorInitialized;
     private int moveIndex;
     private string lastIntentText;
 
@@ -34,6 +48,7 @@ public class EnemyView : CombatantView
     public void Setup(EnemyData enemyData)
     {
         SetupBase(enemyData.Health, enemyData.Image);
+        attackTextRenderer = attackText != null ? attackText.GetComponent<Renderer>() : null;
 
         moves.Clear();
         if (enemyData.Moves != null)
@@ -51,8 +66,12 @@ public class EnemyView : CombatantView
         LoadDebuffPool();
         lastIntentText = null;
         FitSpriteToLimit(GetSpriteLimit(enemyData.Rank));
+        SetupAttackIcon();
         InitializeIdleAnimation();
+        CacheAttackIntentAnchor();
+        SetupAttackFrame();
         UpdateIntentText();
+        UpdateAttackTextAnchorAboveSprite();
         UpdateUIAnchorBelowSprite(UiFootGap);
     }
 
@@ -103,16 +122,13 @@ public class EnemyView : CombatantView
 
         if (CurrentMoveAttacks)
         {
-            string attack = "ATK: " + GetAttackPreviewDamage();
+            string attack = GetAttackPreviewDamage().ToString();
             if (CurrentHitCount > 1) attack += " x " + CurrentHitCount;
             lines.Add(attack);
         }
 
         if (CurrentMoveType == EnemyMoveType.Defend)
             lines.Add("DEFEND");
-
-        int currentArmor = GetStatusEffectStacks(StatusEffectType.ARMOR);
-        lines.Add("ARMOR: " + currentArmor);
 
         if (CurrentMoveType == EnemyMoveType.Rest)
             lines.Add("REST");
@@ -129,6 +145,7 @@ public class EnemyView : CombatantView
 
         lastIntentText = intent;
         attackText.text = intent;
+        attackText.ForceMeshUpdate();
     }
 
     private void Update()
@@ -139,7 +156,144 @@ public class EnemyView : CombatantView
     private void LateUpdate()
     {
         UpdateIntentText();
+        UpdateAttackTextAnchorAboveSprite();
         UpdateUIAnchorBelowSprite(UiFootGap);
+    }
+
+    private void UpdateAttackTextAnchorAboveSprite()
+    {
+        if (attackText == null || !attackIntentAnchorInitialized) return;
+
+        Bounds textBounds = attackTextRenderer != null
+            ? attackTextRenderer.bounds
+            : new Bounds(attackText.transform.position, Vector3.zero);
+        bool showAttackIcon = CurrentMoveAttacks && attackIcon != null;
+        if (attackIcon != null) attackIcon.enabled = showAttackIcon;
+
+        float iconHalfHeight = showAttackIcon ? attackIcon.bounds.extents.y : 0f;
+        float textHalfHeight = textBounds.extents.y;
+        float textWidth = textBounds.size.x;
+        float iconWidth = showAttackIcon ? attackIcon.bounds.size.x : 0f;
+        float groupGap = showAttackIcon ? AttackIconGap : 0f;
+        float contentHeight = Mathf.Max(iconHalfHeight, textHalfHeight) * 2f;
+        float frameHeight = contentHeight + AttackFrameVerticalPadding * 2f;
+        Vector3 anchor = transform.TransformPoint(attackIntentAnchorLocal);
+        float labelY = anchor.y + UiHeadGap + frameHeight * 0.5f;
+        Vector3 textPosition = attackText.transform.position;
+
+        if (showAttackIcon)
+        {
+            Vector3 iconPosition = attackIcon.transform.position;
+            attackIcon.transform.position = new Vector3(
+                anchor.x - (textWidth + groupGap) * 0.5f,
+                labelY,
+                iconPosition.z
+            );
+        }
+
+        attackText.transform.position = new Vector3(
+            anchor.x + (showAttackIcon ? (iconWidth + groupGap) * 0.5f : 0f),
+            labelY,
+            textPosition.z
+        );
+
+        bool showFrame = !string.IsNullOrEmpty(attackText.text);
+        if (attackFrameRect != null)
+        {
+            attackFrameRect.gameObject.SetActive(showFrame);
+            if (showFrame)
+            {
+                Vector3 parentScale = attackFrameRect.parent.lossyScale;
+                float frameWidth = textWidth + iconWidth + groupGap + AttackFrameHorizontalPadding * 2f;
+                attackFrameRect.sizeDelta = new Vector2(
+                    frameWidth / Mathf.Max(Mathf.Abs(parentScale.x), 0.0001f),
+                    frameHeight / Mathf.Max(Mathf.Abs(parentScale.y), 0.0001f)
+                );
+                attackFrameRect.position = new Vector3(anchor.x, labelY, textPosition.z);
+            }
+        }
+    }
+
+    private void CacheAttackIntentAnchor()
+    {
+        SpriteRenderer sprite = CombatantSpriteRenderer;
+        if (sprite == null || sprite.sprite == null) return;
+
+        Bounds bounds = sprite.bounds;
+        Vector3 worldAnchor = new(bounds.center.x, bounds.max.y, bounds.center.z);
+        attackIntentAnchorLocal = transform.InverseTransformPoint(worldAnchor);
+        attackIntentAnchorInitialized = true;
+    }
+
+    private void SetupAttackIcon()
+    {
+        if (attackIconSprite == null)
+        {
+            Debug.LogError("Assign the attack icon sprite in the EnemyView prefab.", this);
+            return;
+        }
+
+        if (attackIcon == null)
+        {
+            GameObject iconObject = new GameObject("AttackIcon", typeof(SpriteRenderer));
+            iconObject.layer = gameObject.layer;
+            iconObject.transform.SetParent(transform, false);
+            attackIcon = iconObject.GetComponent<SpriteRenderer>();
+        }
+
+        attackIcon.sprite = attackIconSprite;
+        attackIcon.enabled = false;
+
+        if (attackTextRenderer != null)
+        {
+            attackIcon.sortingLayerID = attackTextRenderer.sortingLayerID;
+            attackIcon.sortingOrder = attackTextRenderer.sortingOrder + 1;
+        }
+
+        float desiredHeight = Mathf.Min(
+            CombatantSpriteRenderer.bounds.size.y * AttackIconHeightRatio,
+            AttackIconMaxHeight
+        );
+        float parentScaleY = Mathf.Max(Mathf.Abs(transform.lossyScale.y), 0.0001f);
+        float iconScale = desiredHeight / parentScaleY / attackIconSprite.bounds.size.y;
+        attackIcon.transform.localScale = Vector3.one * iconScale;
+    }
+
+    private void SetupAttackFrame()
+    {
+        if (attackText == null || attackText.transform.parent == null) return;
+
+        if (attackFrameRect == null)
+        {
+            GameObject frameObject = new GameObject(
+                "AttackIntentFrame",
+                typeof(RectTransform),
+                typeof(CanvasRenderer),
+                typeof(Image),
+                typeof(Outline)
+            );
+            frameObject.layer = attackText.gameObject.layer;
+            frameObject.transform.SetParent(attackText.transform.parent, false);
+
+            attackFrameRect = frameObject.GetComponent<RectTransform>();
+            attackFrameRect.anchorMin = new Vector2(0.5f, 0.5f);
+            attackFrameRect.anchorMax = new Vector2(0.5f, 0.5f);
+            attackFrameRect.pivot = new Vector2(0.5f, 0.5f);
+            attackFrameRect.SetAsFirstSibling();
+
+            attackFrameImage = frameObject.GetComponent<Image>();
+            attackFrameImage.color = new Color(0.07f, 0.05f, 0.04f, 0.92f);
+            attackFrameImage.raycastTarget = false;
+
+            Outline outline = frameObject.GetComponent<Outline>();
+            outline.effectColor = new Color(0.85f, 0.67f, 0.34f, 1f);
+            outline.effectDistance = new Vector2(1.5f, 1.5f);
+        }
+
+        if (attackTextRenderer != null)
+            attackTextRenderer.sortingOrder = 2;
+        if (attackIcon != null)
+            attackIcon.sortingOrder = 3;
     }
 
     private Vector2 GetSpriteLimit(EnemyRank rank)

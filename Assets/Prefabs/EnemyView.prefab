@@ -102,7 +102,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'ATK: 999'
+  m_text: '999'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -237,6 +237,7 @@ MonoBehaviour:
   - {fileID: 5414751689539882796, guid: 0c7c0331767fba741812e0fa3cc28a29, type: 3}
   - {fileID: 2755900030101616435, guid: 0c7c0331767fba741812e0fa3cc28a29, type: 3}
   attackText: {fileID: 3146364943246529455}
+  attackIconSprite: {fileID: -3753825769889500098, guid: 2cbe228d43793164e97ac911c0d96c0a, type: 3}
 --- !u!65 &1650120507743887676
 BoxCollider:
   m_ObjectHideFlags: 0
