@@ -8,6 +8,7 @@ public class EnemySystem : Singleton<EnemySystem>
     [SerializeField] private EnemyBoardView enemyBoardView;
     public List<EnemyView> Enemies => enemyBoardView.EnemyViews;
     private int thornsDamage;
+    private int extraOpeningTurns;
 
     private void OnEnable()
     {
@@ -35,10 +36,12 @@ public class EnemySystem : Singleton<EnemySystem>
 
     public void Setup(EncounterData encounter)
     {
+        extraOpeningTurns = 0;
         thornsDamage = 0;
         enemyBoardView.AddEnemies(encounter.Enemies);
         GrantTurnArmor(true);
     }
+    public void SetExtraOpeningTurns(int amount) => extraOpeningTurns = Mathf.Max(0, amount);
     private void GrantTurnArmor(bool immediate)
     {
         foreach (EnemyView enemy in Enemies)
@@ -69,13 +72,19 @@ public class EnemySystem : Singleton<EnemySystem>
 
     private IEnumerator EnemyTurnPerformer(EnemyTurnGA action)
     {
+        action.WasSkipped = extraOpeningTurns > 0;
+        if (action.WasSkipped)
+        {
+            extraOpeningTurns--;
+            yield break;
+        }
+
         foreach (EnemyView enemy in Enemies)
         {
             if (!CanAct(enemy)) continue;
 
             int poison = enemy.GetStatusEffectStacks(StatusEffectType.POISON);
-            if (poison > 0)
-                ActionSystem.Instance.AddReaction(new ApplyPoisonGA(poison, enemy));
+            if (poison > 0) ActionSystem.Instance.AddReaction(new ApplyPoisonGA(poison, enemy));
 
             ActionSystem.Instance.AddReaction(new ArmorBreakTickGA(enemy));
             ActionSystem.Instance.AddReaction(new EnemyMoveGA(enemy));
@@ -183,6 +192,6 @@ public class EnemySystem : Singleton<EnemySystem>
     private void EnemyTurnPostReaction(EnemyTurnGA action)
     {
         thornsDamage = 0;
-        GrantTurnArmor(false);
+        if (!action.WasSkipped) GrantTurnArmor(false);
     }
 }

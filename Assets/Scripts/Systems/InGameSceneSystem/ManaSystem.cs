@@ -58,6 +58,13 @@ public class ManaSystem : Singleton<ManaSystem>
         currentMana = maxMana;
         manaUI.UpdateManaText(currentMana);
     }
+    public void SetBattleManaBonus(int amount)
+    {
+        int newMax = RunSystem.Instance.HeroData.StartingMana + Mathf.Max(0, amount);
+        currentMana = Mathf.Max(0, currentMana + newMax - maxMana);
+        maxMana = newMax;
+        manaUI.UpdateManaText(currentMana);
+    }
     private IEnumerator SpendManaPerformer(SpendManaGA spendManaGA)
     {
         currentMana -= spendManaGA.Amount;

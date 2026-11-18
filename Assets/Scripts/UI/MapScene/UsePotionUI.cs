@@ -76,8 +76,7 @@ public class UsePotionUI : MonoBehaviour
             return false;
         }
 
-        if (BattleSystem.Instance == null ||
-            BattleSystem.Instance.IsBattleOver)
+        if (BattleSystem.Instance == null || BattleSystem.Instance.IsBattleOver || BattleSystem.Instance.IsPreparingBattle)
         {
             return false;
         }

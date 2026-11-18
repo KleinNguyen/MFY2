@@ -174,7 +174,7 @@ public class LuckyWheelUI : MonoBehaviour
     {
         if (!Application.isPlaying) return;
 
-        string[] options = { "FULL HEAL", "EXTRA TURN", "+2 MANA", "5 JUNK", "LOSE 30% HP", "NO EFFECT" };
+        string[] options = { "FULL HEAL", "EXTRA TURN", "+2 MANA", "5 JUNK", "LOSE 30% HP", "GET ALL DEBUFFS\n3 TURNS" };
         Show(options, index => Debug.Log($"Wheel result {index}: {options[index]}", this));
     }
 #endif

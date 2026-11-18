@@ -131,6 +131,11 @@ public class StatusEffectSystem : MonoBehaviour
 
     private void EndEnemyTurnReaction(EnemyTurnGA action)
     {
+        if (action.WasSkipped)
+        {
+            heroHadExposedAtEnemyTurnStart = false;
+            return;
+        }
         HeroView hero = HeroSystem.Instance != null ? HeroSystem.Instance.HeroView : null;
         if (heroHadExposedAtEnemyTurnStart)
             ReduceStatusByOne(hero, StatusEffectType.EXPOSED);

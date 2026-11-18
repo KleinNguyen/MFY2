@@ -4,10 +4,10 @@ public class EndTurnButtonUI : MonoBehaviour
 {
     public void OnClick()
     {
+        if (BattleSystem.Instance == null || BattleSystem.Instance.IsBattleOver || BattleSystem.Instance.IsPreparingBattle) return;
         if (CardSystem.Instance != null && CardSystem.Instance.IsViewingPile) return;
-        if (BattleSystem.Instance.IsBattleOver) return;
-        EnemyTurnGA enemyTurnGA = new();
-        ActionSystem.Instance.Perform(enemyTurnGA);
-    }
+        if (ActionSystem.Instance == null || ActionSystem.Instance.IsPerforming) return;
 
+        ActionSystem.Instance.Perform(new EnemyTurnGA());
+    }
 }

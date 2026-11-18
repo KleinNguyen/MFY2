@@ -8,6 +8,7 @@ public class BattleSystem : Singleton<BattleSystem>
     [SerializeField] private RewardUI rewardUI;
     [SerializeField] private RunResultUI runResultUI;
     public bool IsBattleOver { get; private set; } = false;
+    public bool IsPreparingBattle { get; private set; } = true;
 
     private void Start()
     {
@@ -20,6 +21,10 @@ public class BattleSystem : Singleton<BattleSystem>
     private void Update()
     {
         UIInputModuleCompatibility.MonitorAndConfigure(EventSystem.current, this);
+    }
+    public void BeginBattle()
+    {
+        if (!IsBattleOver) IsPreparingBattle = false;
     }
 
     public void Victory()

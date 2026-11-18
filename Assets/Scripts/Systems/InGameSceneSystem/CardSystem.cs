@@ -40,7 +40,7 @@ public class CardSystem : Singleton<CardSystem>
     private void OpenPile(List<Card> pile, string title)
     {
         if (!isPlayerTurn || IsChoosingCardToExhaust || IsChoosingCardToUpgrade) return;
-        if (BattleSystem.Instance == null || BattleSystem.Instance.IsBattleOver) return;
+        if (BattleSystem.Instance == null || BattleSystem.Instance.IsBattleOver || BattleSystem.Instance.IsPreparingBattle) return;
         if (ActionSystem.Instance == null || ActionSystem.Instance.IsPerforming) return;
         if (InteractionSystem.Instance == null || InteractionSystem.Instance.PlayerIsDragging) return;
 
@@ -78,9 +78,9 @@ public class CardSystem : Singleton<CardSystem>
 
     public bool CanPlayCard(Card card)
     {
-        return card != null && isPlayerTurn && hand.Contains(card) &&
-            MeetsCardPlayConditions(card) &&
-            ManaSystem.Instance != null && ManaSystem.Instance.HasEnoughMana(GetManaCost(card));
+        return card != null && !card.IsUnplayable && isPlayerTurn && hand.Contains(card) &&
+            BattleSystem.Instance != null && !BattleSystem.Instance.IsBattleOver && !BattleSystem.Instance.IsPreparingBattle &&
+            MeetsCardPlayConditions(card) && ManaSystem.Instance != null && ManaSystem.Instance.HasEnoughMana(GetManaCost(card));
     }
 
     public bool IsCardInHand(Card card)
@@ -215,6 +215,13 @@ public class CardSystem : Singleton<CardSystem>
         pileUI.UpdateDrawPileText(drawPile.Count);
         pileUI.UpdateDiscardPileText(discardPile.Count);
     }
+    public void AddJunkCards(int amount, Sprite image)
+    {
+        if (amount <= 0) return;
+
+        for (int i = 0; i < amount; i++) drawPile.Add(Card.CreateJunk(image));
+        pileUI.UpdateDrawPileText(drawPile.Count);
+    }
 
     //performers
     private IEnumerator DrawCardsPerformer(DrawCardsGA drawCardsGA)
@@ -254,7 +261,7 @@ public class CardSystem : Singleton<CardSystem>
     private IEnumerator PlayCardPerformer(PlayCardGA action)
     {
         action.ResetPlayResult();
-        if (action.Card == null || !isPlayerTurn)
+        if (action.Card == null || action.Card.IsUnplayable || !isPlayerTurn || BattleSystem.Instance == null || BattleSystem.Instance.IsBattleOver || BattleSystem.Instance.IsPreparingBattle)
         {
             yield break;
         }
