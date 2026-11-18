@@ -59,7 +59,7 @@ public class MapUI : MonoBehaviour
 
         shopUI.gameObject.SetActive(false);
         restUI.gameObject.SetActive(false);
-        mapScrollRect.horizontal = true;
+        mapScrollRect.horizontal = false;
         mapScrollRect.vertical = true;
         HideScrollbar(mapScrollRect.horizontalScrollbar);
         HideScrollbar(mapScrollRect.verticalScrollbar);
