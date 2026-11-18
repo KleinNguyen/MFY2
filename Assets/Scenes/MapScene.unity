@@ -10729,6 +10729,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7172262013439202372, guid: 3d4dc3f04c7614c4b9210fe3784d925e, type: 3}
+      propertyPath: previewOnStart
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7229785796989488782, guid: 3d4dc3f04c7614c4b9210fe3784d925e, type: 3}
       propertyPath: m_Name
       value: LuckyWheelPanel

@@ -3,21 +3,36 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class RewardUI : MonoBehaviour
 {
+    private const int WheelOutcomeCount = 3;
+    private static readonly string[] RewardWheelLabels = { "X2 GOLD", "RARITY UP", "UNCHANGED", "X2 GOLD", "RARITY UP", "UNCHANGED" };
+
+    [Header("Gold rewards")]
     [SerializeField, Min(0)] private int normalGoldReward = 25;
     [SerializeField, Min(0)] private int eliteGoldReward = 45;
     [SerializeField, Min(0)] private int bossGoldReward = 75;
+
+    [Header("Reward cards")]
     [SerializeField] private List<CardData> rewardCards;
-    [SerializeField] private TMP_Text goldRewardText;
-    [SerializeField] private TMP_Text messageText;
     [SerializeField] private Transform cardContent;
     [SerializeField] private CardView cardPrefab;
     [SerializeField, Range(1, 3)] private int choiceCount = 3;
+
+    [Header("Reward interface")]
+    [SerializeField] private TMP_Text goldRewardText;
+    [SerializeField] private TMP_Text messageText;
     [SerializeField] private Button skipButton;
     [SerializeField] private Button continueButton;
     [SerializeField] private RunResultUI runResultUI;
+
+    [Header("Lucky wheel")]
+    [SerializeField] private LuckyWheelUI luckyWheel;
+    [SerializeField] private Button wheelButton;
+
+    [Header("Card hover")]
     [SerializeField, Min(1f)] private float hoverScale = 1.12f;
     [SerializeField, Min(0f)] private float hoverLift = 35f;
     [SerializeField, Min(0.01f)] private float hoverDuration = 0.12f;
@@ -25,39 +40,30 @@ public class RewardUI : MonoBehaviour
     private readonly List<CardData> currentChoices = new();
     private readonly List<RewardCardHoverUI> choiceViews = new();
     private bool selectionFinished;
-    private int currentGoldReward;
+    private bool wheelOpen;
 
+    // Unity
+    private void Awake()
+    {
+        if (wheelButton != null) wheelButton.onClick.AddListener(OpenRewardWheel);
+    }
+
+    private void OnDestroy()
+    {
+        if (wheelButton != null) wheelButton.onClick.RemoveListener(OpenRewardWheel);
+    }
+
+    // Reward setup
     public void Setup()
     {
+        if (wheelOpen) return;
+
         RunSystem run = RunSystem.Instance;
-        if (run == null || run.HeroData == null || run.CurrentEncounter == null)
-        {
-            Debug.LogError("An active run, hero and encounter are required for rewards.");
-            return;
-        }
+        if (!ValidateSetup(run)) return;
 
-        if (cardContent == null || cardPrefab == null || cardPrefab.LibraryTemplate == null || goldRewardText == null || messageText == null || skipButton == null || continueButton == null)
-        {
-            Debug.LogError("RewardUI is missing references. Check the Inspector.");
-            return;
-        }
-
-        ClearCardViews();
-        currentChoices.Clear();
         selectionFinished = false;
-
-        EncounterType type = run.CurrentEncounter.Type;
-        currentGoldReward = Mathf.Max(0, type switch
-        {
-            EncounterType.Elite => eliteGoldReward,
-            EncounterType.Boss => bossGoldReward,
-            _ => normalGoldReward
-        });
-
-        goldRewardText.text = "Gold reward: " + currentGoldReward;
-        messageText.text = "Choose one card or skip.";
-        continueButton.interactable = false;
-        skipButton.interactable = true;
+        PrepareRewardChoices(run);
+        RefreshRewardView(run);
 
         if (run.RewardClaimed)
         {
@@ -65,31 +71,220 @@ public class RewardUI : MonoBehaviour
             return;
         }
 
-        List<CardData> availableCards = new();
+        messageText.text = run.RewardWheelResult >= 0 ? "Wheel already used. Choose one card or skip." : "Spin the wheel, choose one card or skip.";
+        if (currentChoices.Count == 0) messageText.text = "No reward cards available. Press Skip to claim the gold.";
+        UpdateButtons();
+    }
 
-        if (rewardCards != null)
+    private bool ValidateSetup(RunSystem run)
+    {
+        if (run == null || run.HeroData == null || run.CurrentEncounter == null)
         {
-            foreach (CardData card in rewardCards)
-            {
-                if (card == null || card.Character != run.HeroData.Character || card.Rarity == CardRarity.Basic) continue;
-                if (availableCards.Contains(card)) continue;
-
-                availableCards.Add(card);
-            }
+            Debug.LogError("An active run, hero and encounter are required for rewards.", this);
+            return false;
         }
+
+        if (run.IsRunFinished) return false;
+
+        if (cardContent == null || cardPrefab == null || cardPrefab.LibraryTemplate == null || goldRewardText == null || messageText == null || skipButton == null || continueButton == null || luckyWheel == null || !luckyWheel.IsConfigured || wheelButton == null)
+        {
+            Debug.LogError("RewardUI is missing references. Check the Inspector.", this);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void PrepareRewardChoices(RunSystem run)
+    {
+        if (run.RewardsPrepared || run.RewardClaimed) return;
+
+        EncounterType type = run.CurrentEncounter.Type;
+        List<CardData> availableCards = GetAvailableRewardCards(run.HeroData.Character);
+        List<CardData> choices = new();
 
         for (int i = 0; i < Mathf.Clamp(choiceCount, 1, 3); i++)
         {
             CardData card = CardRaritySelector.TakeRewardCard(availableCards, type);
             if (card == null) break;
-
-            int choiceIndex = currentChoices.Count;
-            currentChoices.Add(card);
-            CreateRewardCard(card, choiceIndex);
+            choices.Add(card);
         }
 
-        if (currentChoices.Count == 0) messageText.text = "No reward cards available. Press Skip to claim the gold.";
+        run.PrepareRewards(GetRewardGold(type), choices);
+    }
+
+    private List<CardData> GetAvailableRewardCards(CharacterType character)
+    {
+        List<CardData> availableCards = new();
+        if (rewardCards == null) return availableCards;
+
+        foreach (CardData card in rewardCards)
+        {
+            if (card == null || card.Character != character || card.Rarity == CardRarity.Basic || availableCards.Contains(card)) continue;
+            availableCards.Add(card);
+        }
+
+        return availableCards;
+    }
+
+    private int GetRewardGold(EncounterType type)
+    {
+        return type switch
+        {
+            EncounterType.Elite => eliteGoldReward,
+            EncounterType.Boss => bossGoldReward,
+            _ => normalGoldReward
+        };
+    }
+
+    // Claiming rewards
+    public void SelectCard(int index)
+    {
+        RunSystem run = RunSystem.Instance;
+        if (!CanClaimRewards(run) || index < 0 || index >= currentChoices.Count) return;
+
+        CardData selectedCard = currentChoices[index];
+        if (selectedCard == null) return;
+
+        run.ClaimReward(run.PendingRewardGold, selectedCard);
+        if (run.RewardClaimed) FinishSelection("Received: " + selectedCard.name, index);
+        else messageText.text = "Could not claim this reward.";
+    }
+
+    public void SkipCard()
+    {
+        RunSystem run = RunSystem.Instance;
+        if (!CanClaimRewards(run)) return;
+
+        run.ClaimReward(run.PendingRewardGold, null);
+        if (run.RewardClaimed) FinishSelection("Card skipped. Gold received.");
+        else messageText.text = "Could not claim this reward.";
+    }
+
+    private bool CanClaimRewards(RunSystem run)
+    {
+        return run != null && !run.IsRunFinished && run.RewardsPrepared && !run.RewardClaimed && !selectionFinished && !wheelOpen;
+    }
+
+    private void FinishSelection(string message, int selectedIndex = -1)
+    {
+        selectionFinished = true;
+        messageText.text = message;
+
+        for (int i = 0; i < choiceViews.Count; i++)
+        {
+            if (choiceViews[i] != null) choiceViews[i].Finish(i == selectedIndex);
+        }
+
+        UpdateButtons();
+    }
+
+    // Lucky wheel
+    public void OpenRewardWheel()
+    {
+        RunSystem run = RunSystem.Instance;
+        if (!CanClaimRewards(run) || run.RewardWheelResult >= 0) return;
+        if (luckyWheel == null || !luckyWheel.IsConfigured) return;
+
+        wheelOpen = true;
+        UpdateButtons();
+        if (!luckyWheel.Show(RewardWheelLabels, ApplyWheelResult, OnWheelClosed, canCancel: true, closeCaption: "Back to rewards")) OnWheelClosed();
+    }
+
+    private void ApplyWheelResult(int result)
+    {
+        RunSystem run = RunSystem.Instance;
+        if (run == null) return;
+
+        int cardIndex = -1;
+        CardData replacement = null;
+        if (result % WheelOutcomeCount == 1) TryFindRarityReplacement(out cardIndex, out replacement);
+        if (!run.ApplyRewardWheel(result, cardIndex, replacement)) return;
+
+        bool cardChanged = replacement != null && cardIndex >= 0 && cardIndex < run.RewardChoices.Count && run.RewardChoices[cardIndex] == replacement;
+        RefreshRewardView(run);
+        UpdateButtons();
+        messageText.text = (result % WheelOutcomeCount) switch
+        {
+            0 => "Gold reward doubled!",
+            1 => cardChanged ? "Higher rarity reward: " + replacement.name : "No higher rarity card available. Rewards unchanged.",
+            _ => "Rewards unchanged."
+        };
+    }
+
+    private void OnWheelClosed()
+    {
+        wheelOpen = false;
+        UpdateButtons();
+    }
+
+    // Rarity replacement
+    private bool TryFindRarityReplacement(out int cardIndex, out CardData replacement)
+    {
+        cardIndex = -1;
+        replacement = null;
+        List<int> eligibleIndices = new();
+
+        for (int i = 0; i < currentChoices.Count; i++)
+        {
+            if (GetHigherRarityCards(currentChoices[i]).Count > 0) eligibleIndices.Add(i);
+        }
+
+        if (eligibleIndices.Count == 0) return false;
+        cardIndex = eligibleIndices[Random.Range(0, eligibleIndices.Count)];
+        List<CardData> candidates = GetHigherRarityCards(currentChoices[cardIndex]);
+        replacement = candidates[Random.Range(0, candidates.Count)];
+        return true;
+    }
+
+    private List<CardData> GetHigherRarityCards(CardData original)
+    {
+        List<CardData> candidates = new();
+        if (original == null || rewardCards == null) return candidates;
+
+        foreach (CardData card in rewardCards)
+        {
+            if (card == null || card.Character != original.Character || currentChoices.Contains(card) || candidates.Contains(card)) continue;
+            if (IsHigherRarity(original.Rarity, card.Rarity)) candidates.Add(card);
+        }
+
+        return candidates;
+    }
+
+    private static bool IsHigherRarity(CardRarity original, CardRarity replacement)
+    {
+        return original switch
+        {
+            CardRarity.Common => replacement == CardRarity.Uncommon || replacement == CardRarity.Rare,
+            CardRarity.Uncommon => replacement == CardRarity.Rare,
+            _ => false
+        };
+    }
+
+    // Interface
+    private void RefreshRewardView(RunSystem run)
+    {
+        ClearCardViews();
+        currentChoices.Clear();
+        currentChoices.AddRange(run.RewardChoices);
+        goldRewardText.text = "Gold reward: " + run.PendingRewardGold;
+
+        for (int i = 0; i < currentChoices.Count; i++) CreateRewardCard(currentChoices[i], i);
         Canvas.ForceUpdateCanvases();
+    }
+
+    private void UpdateButtons()
+    {
+        RunSystem run = RunSystem.Instance;
+        bool canChoose = CanClaimRewards(run);
+        if (skipButton != null) skipButton.interactable = canChoose;
+        if (wheelButton != null) wheelButton.interactable = canChoose && run.RewardWheelResult < 0;
+        if (continueButton != null) continueButton.interactable = run != null && !run.IsRunFinished && run.RewardClaimed && !wheelOpen;
+
+        foreach (RewardCardHoverUI view in choiceViews)
+        {
+            if (view != null) view.GetComponent<Button>().interactable = canChoose;
+        }
     }
 
     private void CreateRewardCard(CardData cardData, int choiceIndex)
@@ -145,44 +340,11 @@ public class RewardUI : MonoBehaviour
         }
     }
 
-    public void SelectCard(int index)
-    {
-        RunSystem run = RunSystem.Instance;
-        if (selectionFinished || run == null || run.RewardClaimed) return;
-        if (index < 0 || index >= currentChoices.Count) return;
-
-        CardData selectedCard = currentChoices[index];
-        run.ClaimReward(currentGoldReward, selectedCard);
-        FinishSelection("Received: " + selectedCard.name, index);
-    }
-
-    public void SkipCard()
-    {
-        RunSystem run = RunSystem.Instance;
-        if (selectionFinished || run == null || run.RewardClaimed) return;
-
-        run.ClaimReward(currentGoldReward, null);
-        FinishSelection("Card skipped. Gold received.");
-    }
-
-    private void FinishSelection(string message, int selectedIndex = -1)
-    {
-        selectionFinished = true;
-        messageText.text = message;
-
-        for (int i = 0; i < choiceViews.Count; i++)
-        {
-            if (choiceViews[i] != null) choiceViews[i].Finish(i == selectedIndex);
-        }
-
-        skipButton.interactable = false;
-        continueButton.interactable = true;
-    }
-
+    // Stage transition
     public void ContinueToMap()
     {
         RunSystem run = RunSystem.Instance;
-        if (run == null || run.IsRunFinished || !run.RewardClaimed) return;
+        if (wheelOpen || run == null || run.IsRunFinished || !run.RewardClaimed) return;
 
         MapPoint selectedPoint = run.GetMapPoint(run.SelectedMapPointId);
         if (selectedPoint == null)

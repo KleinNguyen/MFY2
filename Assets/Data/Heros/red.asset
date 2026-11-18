@@ -22,7 +22,14 @@ MonoBehaviour:
   <StartingMana>k__BackingField: 3
   <Deck>k__BackingField:
   - {fileID: 11400000, guid: 1f6df09cc03f77e4ea041a3ab9b10534, type: 2}
-  - {fileID: 11400000, guid: 5695d59be4fb8e742b02914990409464, type: 2}
-  - {fileID: 11400000, guid: cbff6786240d2ba49962f4ccee5848f2, type: 2}
-  - {fileID: 11400000, guid: f197105a1d8679345adb57362354f686, type: 2}
+  - {fileID: 11400000, guid: 9038e06a7cf3c1740bba1b650cc371a4, type: 2}
+  - {fileID: 11400000, guid: 9038e06a7cf3c1740bba1b650cc371a4, type: 2}
+  - {fileID: 11400000, guid: 9038e06a7cf3c1740bba1b650cc371a4, type: 2}
+  - {fileID: 11400000, guid: 9038e06a7cf3c1740bba1b650cc371a4, type: 2}
+  - {fileID: 11400000, guid: 9038e06a7cf3c1740bba1b650cc371a4, type: 2}
+  - {fileID: 11400000, guid: 18cef348e160ff845a3ad68d03e0f3fe, type: 2}
+  - {fileID: 11400000, guid: 18cef348e160ff845a3ad68d03e0f3fe, type: 2}
+  - {fileID: 11400000, guid: 18cef348e160ff845a3ad68d03e0f3fe, type: 2}
+  - {fileID: 11400000, guid: 18cef348e160ff845a3ad68d03e0f3fe, type: 2}
+  - {fileID: 11400000, guid: 1f6df09cc03f77e4ea041a3ab9b10534, type: 2}
   <StartingPerk>k__BackingField: {fileID: 11400000, guid: c6252b4f5ad8b774a9a7bc5bff0539b8, type: 2}

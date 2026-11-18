@@ -3,36 +3,51 @@ using UnityEngine;
 
 public class RunSystem : PersistentSingleton<RunSystem>
 {
+    private const int StartingGold = 200;
+    private const int WheelSliceCount = 6;
+    private const int WheelOutcomeCount = 3;
+
     [SerializeField] private HeroData startingHero;
     [SerializeField] private ActData[] acts;
 
     private readonly HashSet<CardData> upgradedCards = new();
     private readonly List<CardData> runtimeUpgradedCards = new();
+    private readonly List<CardData> preparedRewardChoices = new();
     private bool isRunTimerRunning;
 
-    public int CurrentActIndex { get; private set; }
+    // Hero and inventory
     public HeroData HeroData { get; private set; }
     public List<CardData> Deck { get; private set; }
     public int CurrentHealth { get; private set; }
     public int Gold { get; private set; }
     public int HealthPotionCount { get; private set; }
     public int ManaPotionCount { get; private set; }
-    public int CurrentStage { get; private set; }
-    public EncounterData CurrentEncounter { get; private set; }
-    public EncounterData LastNormalEncounter { get; private set; }
-    public EncounterData LastEliteEncounter { get; private set; }
-    public bool RewardClaimed { get; private set; }
+
+    // Run and map
+    public RunResult Result { get; private set; }
     public float ElapsedRunTime { get; private set; }
+    public int CurrentActIndex { get; private set; }
+    public int CurrentStage { get; private set; }
     public List<MapPoint> MapPoints { get; private set; } = new();
     public int CompletedMapPointId { get; private set; } = -1;
     public int SelectedMapPointId { get; private set; } = -1;
-    public RunResult Result { get; private set; }
+    public EncounterData CurrentEncounter { get; private set; }
+    public EncounterData LastNormalEncounter { get; private set; }
+    public EncounterData LastEliteEncounter { get; private set; }
+
+    // Rewards
+    public IReadOnlyList<CardData> RewardChoices => preparedRewardChoices;
+    public bool RewardClaimed { get; private set; }
+    public bool RewardsPrepared { get; private set; }
+    public int PendingRewardGold { get; private set; }
+    public int RewardWheelResult { get; private set; } = -1;
 
     public ActData CurrentAct => acts != null && CurrentActIndex >= 0 && CurrentActIndex < acts.Length ? acts[CurrentActIndex] : null;
     public bool IsRunFinished => Result != RunResult.None;
-    public bool IsLastAct => acts != null && acts.Length > 0 && CurrentAct != null && CurrentActIndex == acts.Length - 1;
-    public bool CanMoveToNextAct => acts != null && CurrentAct != null && CurrentActIndex + 1 < acts.Length && acts[CurrentActIndex + 1] != null;
+    public bool IsLastAct => CurrentAct != null && CurrentActIndex == acts.Length - 1;
+    public bool CanMoveToNextAct => CurrentAct != null && CurrentActIndex + 1 < acts.Length && acts[CurrentActIndex + 1] != null;
 
+    // Unity
     protected override void Awake()
     {
         if (Instance != null && Instance != this)
@@ -50,35 +65,28 @@ public class RunSystem : PersistentSingleton<RunSystem>
         if (isRunTimerRunning) ElapsedRunTime += Time.unscaledDeltaTime;
     }
 
+    // Run lifecycle
     public void StartNewRun()
     {
-        Result = RunResult.None;
-
-        foreach (CardData cardData in runtimeUpgradedCards)
+        if (startingHero == null || startingHero.Deck == null)
         {
-            if (cardData != null) Destroy(cardData);
+            Debug.LogError("Assign a starting hero and starting deck in RunSystem.", this);
+            return;
         }
 
-        runtimeUpgradedCards.Clear();
-        upgradedCards.Clear();
-
-        CurrentActIndex = 0;
+        ClearRuntimeUpgrades();
         HeroData = startingHero;
-        Deck = new List<CardData>(startingHero.Deck);
-        CurrentHealth = startingHero.Health;
-        Gold = 200;
+        Deck = new List<CardData>(HeroData.Deck);
+        CurrentHealth = HeroData.Health;
+        Gold = StartingGold;
         HealthPotionCount = 0;
         ManaPotionCount = 0;
-        CurrentStage = 0;
-        CurrentEncounter = null;
-        LastNormalEncounter = null;
-        LastEliteEncounter = null;
-        RewardClaimed = false;
+        CurrentActIndex = 0;
+        Result = RunResult.None;
         ElapsedRunTime = 0f;
         isRunTimerRunning = false;
-        MapPoints.Clear();
-        CompletedMapPointId = -1;
-        SelectedMapPointId = -1;
+        ResetMapProgress();
+        ResetRewards();
     }
 
     public void StartNewRun(HeroData selectedHero)
@@ -114,37 +122,7 @@ public class RunSystem : PersistentSingleton<RunSystem>
         isRunTimerRunning = false;
     }
 
-    public void SetEncounter(EncounterData encounter)
-    {
-        CurrentEncounter = encounter;
-        if (encounter == null) return;
-
-        if (encounter.Type == EncounterType.Normal) LastNormalEncounter = encounter;
-        else if (encounter.Type == EncounterType.Elite) LastEliteEncounter = encounter;
-    }
-
-    public void SaveHealth(int health) => CurrentHealth = health;
-
-    public void ClaimReward(int goldAmount, CardData card)
-    {
-        if (RewardClaimed) return;
-
-        Gold += goldAmount;
-        if (card != null) Deck.Add(card);
-        RewardClaimed = true;
-    }
-
-    public void CompleteStage()
-    {
-        if (!RewardClaimed || SelectedMapPointId < 0) return;
-
-        CompletedMapPointId = SelectedMapPointId;
-        SelectedMapPointId = -1;
-        CurrentStage++;
-        CurrentEncounter = null;
-        RewardClaimed = false;
-    }
-
+    // Act and map
     public bool MoveToNextAct()
     {
         if (acts == null || acts.Length == 0)
@@ -164,17 +142,117 @@ public class RunSystem : PersistentSingleton<RunSystem>
 
         CurrentActIndex = nextActIndex;
         CurrentHealth = HeroData.Health;
-        MapPoints.Clear();
-        CompletedMapPointId = -1;
-        SelectedMapPointId = -1;
-        CurrentStage = 0;
-        CurrentEncounter = null;
-        LastNormalEncounter = null;
-        LastEliteEncounter = null;
-        RewardClaimed = false;
+        ResetMapProgress();
+        ResetRewards();
         return true;
     }
 
+    public void GenerateMap()
+    {
+        if (MapPoints.Count > 0) return;
+
+        if (CurrentAct == null)
+        {
+            Debug.LogError("Current Act is missing. Assign Acts in RunSystem.");
+            return;
+        }
+
+        MapPoints = MapGeneratorSystem.GenerateMap(CurrentAct);
+    }
+
+    public MapPoint GetMapPoint(int pointId)
+    {
+        foreach (MapPoint point in MapPoints)
+        {
+            if (point.Id == pointId) return point;
+        }
+
+        return null;
+    }
+
+    public bool CanSelectMapPoint(int pointId)
+    {
+        if (IsRunFinished) return false;
+
+        MapPoint point = GetMapPoint(pointId);
+        if (point == null || SelectedMapPointId != -1) return false;
+        if (CompletedMapPointId == -1) return point.Floor == 0;
+
+        MapPoint completedPoint = GetMapPoint(CompletedMapPointId);
+        return completedPoint != null && completedPoint.NextPoints.Contains(pointId);
+    }
+
+    public void SelectMapPoint(int pointId) => SelectedMapPointId = pointId;
+
+    public void SetEncounter(EncounterData encounter)
+    {
+        CurrentEncounter = encounter;
+        if (encounter == null) return;
+
+        if (encounter.Type == EncounterType.Normal) LastNormalEncounter = encounter;
+        else if (encounter.Type == EncounterType.Elite) LastEliteEncounter = encounter;
+    }
+
+    public void CompleteStage()
+    {
+        if (!RewardClaimed || SelectedMapPointId < 0) return;
+
+        CompleteMapPoint();
+        ResetRewards();
+    }
+
+    public void CompleteMapPoint()
+    {
+        if (SelectedMapPointId < 0) return;
+
+        CompletedMapPointId = SelectedMapPointId;
+        SelectedMapPointId = -1;
+        CurrentStage++;
+        CurrentEncounter = null;
+    }
+
+    // Rewards
+    public void PrepareRewards(int gold, List<CardData> choices)
+    {
+        if (RewardsPrepared || RewardClaimed || IsRunFinished || choices == null) return;
+
+        preparedRewardChoices.Clear();
+        preparedRewardChoices.AddRange(choices);
+        PendingRewardGold = Mathf.Max(0, gold);
+        RewardWheelResult = -1;
+        RewardsPrepared = true;
+    }
+
+    public bool ApplyRewardWheel(int result, int cardIndex = -1, CardData replacement = null)
+    {
+        if (!RewardsPrepared || RewardClaimed || IsRunFinished || RewardWheelResult >= 0 || result < 0 || result >= WheelSliceCount) return false;
+
+        RewardWheelResult = result;
+        if (result % WheelOutcomeCount == 0) PendingRewardGold *= 2;
+        else if (result % WheelOutcomeCount == 1) ReplaceRewardCard(cardIndex, replacement);
+        return true;
+    }
+
+    public void ClaimReward(int goldAmount, CardData card)
+    {
+        if (RewardClaimed || IsRunFinished || Deck == null) return;
+        if (RewardsPrepared && card != null && !preparedRewardChoices.Contains(card)) return;
+
+        Gold += RewardsPrepared ? PendingRewardGold : Mathf.Max(0, goldAmount);
+        if (card != null) Deck.Add(card);
+        RewardClaimed = true;
+    }
+
+    // Health
+    public void SaveHealth(int health) => CurrentHealth = health;
+
+    public void Heal(int amount)
+    {
+        CurrentHealth += amount;
+        if (CurrentHealth > HeroData.Health) CurrentHealth = HeroData.Health;
+    }
+
+    // Shop and potions
     public bool BuyCard(CardData card, int price)
     {
         if (card == null || price < 0 || Gold < price) return false;
@@ -227,31 +305,29 @@ public class RunSystem : PersistentSingleton<RunSystem>
         return true;
     }
 
-    public void Heal(int amount)
+    // Deck
+    public bool HasCardInDeck(CardData cardData)
     {
-        CurrentHealth += amount;
-        if (CurrentHealth > HeroData.Health) CurrentHealth = HeroData.Health;
+        if (cardData == null || Deck == null) return false;
+
+        foreach (CardData ownedCard in Deck)
+        {
+            if (ownedCard == null) continue;
+            if (ownedCard == cardData || (ownedCard.Character == cardData.Character && ownedCard.name == cardData.name)) return true;
+        }
+
+        return false;
     }
+
+    public bool IsCardUpgraded(CardData cardData) => upgradedCards.Contains(cardData);
 
     public bool UpgradeCard(int cardIndex, CardData upgradedCard)
     {
-        if (cardIndex < 0 || cardIndex >= Deck.Count || upgradedCard == null) return false;
+        if (Deck == null || cardIndex < 0 || cardIndex >= Deck.Count || upgradedCard == null) return false;
 
         Deck[cardIndex] = upgradedCard;
         return true;
     }
-
-    public void CompleteMapPoint()
-    {
-        if (SelectedMapPointId < 0) return;
-
-        CompletedMapPointId = SelectedMapPointId;
-        SelectedMapPointId = -1;
-        CurrentStage++;
-        CurrentEncounter = null;
-    }
-
-    public bool IsCardUpgraded(CardData cardData) => upgradedCards.Contains(cardData);
 
     public bool UpgradeCard(CardData cardData)
     {
@@ -259,41 +335,6 @@ public class RunSystem : PersistentSingleton<RunSystem>
 
         int cardIndex = Deck.IndexOf(cardData);
         return UpgradeDeckCard(cardIndex);
-    }
-
-    public void GenerateMap()
-    {
-        if (MapPoints.Count > 0) return;
-
-        if (CurrentAct == null)
-        {
-            Debug.LogError("Current Act is missing. Assign Acts in RunSystem.");
-            return;
-        }
-
-        MapPoints = MapGeneratorSystem.GenerateMap(CurrentAct);
-    }
-
-    public MapPoint GetMapPoint(int pointId)
-    {
-        foreach (MapPoint point in MapPoints)
-        {
-            if (point.Id == pointId) return point;
-        }
-
-        return null;
-    }
-
-    public bool CanSelectMapPoint(int pointId)
-    {
-        if (IsRunFinished) return false;
-
-        MapPoint point = GetMapPoint(pointId);
-        if (point == null || SelectedMapPointId != -1) return false;
-        if (CompletedMapPointId == -1) return point.Floor == 0;
-
-        MapPoint completedPoint = GetMapPoint(CompletedMapPointId);
-        return completedPoint != null && completedPoint.NextPoints.Contains(pointId);
     }
 
     public bool UpgradeDeckCard(int cardIndex)
@@ -311,18 +352,54 @@ public class RunSystem : PersistentSingleton<RunSystem>
         return true;
     }
 
-    public void SelectMapPoint(int pointId) => SelectedMapPointId = pointId;
-
-    public bool HasCardInDeck(CardData cardData)
+    // Internal helpers
+    private void ClearRuntimeUpgrades()
     {
-        if (cardData == null || Deck == null) return false;
-
-        foreach (CardData ownedCard in Deck)
+        foreach (CardData cardData in runtimeUpgradedCards)
         {
-            if (ownedCard == null) continue;
-            if (ownedCard == cardData || (ownedCard.Character == cardData.Character && ownedCard.name == cardData.name)) return true;
+            if (cardData != null) Destroy(cardData);
         }
 
-        return false;
+        runtimeUpgradedCards.Clear();
+        upgradedCards.Clear();
+    }
+
+    private void ResetMapProgress()
+    {
+        MapPoints.Clear();
+        CompletedMapPointId = -1;
+        SelectedMapPointId = -1;
+        CurrentStage = 0;
+        CurrentEncounter = null;
+        LastNormalEncounter = null;
+        LastEliteEncounter = null;
+    }
+
+    private void ReplaceRewardCard(int cardIndex, CardData replacement)
+    {
+        if (HeroData == null || replacement == null || cardIndex < 0 || cardIndex >= preparedRewardChoices.Count) return;
+        if (replacement.Character != HeroData.Character || preparedRewardChoices.Contains(replacement)) return;
+
+        CardData original = preparedRewardChoices[cardIndex];
+        if (original != null && IsHigherRarity(original.Rarity, replacement.Rarity)) preparedRewardChoices[cardIndex] = replacement;
+    }
+
+    private static bool IsHigherRarity(CardRarity original, CardRarity replacement)
+    {
+        return original switch
+        {
+            CardRarity.Common => replacement == CardRarity.Uncommon || replacement == CardRarity.Rare,
+            CardRarity.Uncommon => replacement == CardRarity.Rare,
+            _ => false
+        };
+    }
+
+    private void ResetRewards()
+    {
+        preparedRewardChoices.Clear();
+        RewardClaimed = false;
+        RewardsPrepared = false;
+        PendingRewardGold = 0;
+        RewardWheelResult = -1;
     }
 }
