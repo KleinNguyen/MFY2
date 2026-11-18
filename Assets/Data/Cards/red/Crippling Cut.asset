@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Crippling Cut
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 1f6df09cc03f77e4ea041a3ab9b10534
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 1
   <CardImage>k__BackingField: {fileID: -6270953770400647376, guid: a55d0db73676bc446928a0a9bf7a5a2e, type: 3}

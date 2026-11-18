@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Withering Brand
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 41838691e3995a5499a983e43ad5a07f
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 7680820834086852892, guid: 05870de64e1e99c4aa5e8a5fe8cfebef, type: 3}

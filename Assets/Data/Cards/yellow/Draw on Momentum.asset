@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Draw on Momentum
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: afa96aba1c08bf6409e239fca5fa3a12
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 6660783624410144326, guid: 2d078d01ceee2b64db737d151e620f96, type: 3}

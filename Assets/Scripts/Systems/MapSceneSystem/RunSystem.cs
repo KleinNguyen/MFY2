@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RunSystem : PersistentSingleton<RunSystem>
+public partial class RunSystem : PersistentSingleton<RunSystem>
 {
     private const int StartingGold = 200;
     private const int WheelSliceCount = 6;
@@ -91,14 +91,15 @@ public class RunSystem : PersistentSingleton<RunSystem>
 
     public void StartNewRun(HeroData selectedHero)
     {
-        if (selectedHero == null)
+        if (selectedHero == null || selectedHero.Deck == null)
         {
-            Debug.LogError("Selected HeroData is missing.");
+            Debug.LogError("Selected hero data or deck is missing.");
             return;
         }
 
         startingHero = selectedHero;
         StartNewRun();
+        RunSaveSystem.Delete();
     }
 
     public void StartRunTimer()
@@ -120,6 +121,7 @@ public class RunSystem : PersistentSingleton<RunSystem>
 
         Result = result;
         isRunTimerRunning = false;
+        RunSaveSystem.Delete();
     }
 
     // Act and map
@@ -144,6 +146,8 @@ public class RunSystem : PersistentSingleton<RunSystem>
         CurrentHealth = HeroData.Health;
         ResetMapProgress();
         ResetRewards();
+        GenerateMap();
+        SaveCheckpoint();
         return true;
     }
 
@@ -182,7 +186,11 @@ public class RunSystem : PersistentSingleton<RunSystem>
         return completedPoint != null && completedPoint.NextPoints.Contains(pointId);
     }
 
-    public void SelectMapPoint(int pointId) => SelectedMapPointId = pointId;
+    public void SelectMapPoint(int pointId)
+    {
+        SaveCheckpoint();
+        SelectedMapPointId = pointId;
+    }
 
     public void SetEncounter(EncounterData encounter)
     {
@@ -209,6 +217,7 @@ public class RunSystem : PersistentSingleton<RunSystem>
         SelectedMapPointId = -1;
         CurrentStage++;
         CurrentEncounter = null;
+        SaveCheckpoint();
     }
 
     // Rewards

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Pain-Forged Guard
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: c4294a8c17e497d45a5c1b06e3443087
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 6937817954938267909, guid: 7e6254df078fed2479288d1dc3ed049f, type: 3}

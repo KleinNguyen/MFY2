@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Second Wind
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 6de12fda7d5c36c47a8105f1c62d3442
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 4164744761163438241, guid: da8b736055027f84287c3db11ac4222e, type: 3}

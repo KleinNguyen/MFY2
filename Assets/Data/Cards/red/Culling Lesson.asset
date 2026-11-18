@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Culling Lesson
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: f197105a1d8679345adb57362354f686
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -1045133410153605164, guid: c81fdc5568707994da9fbd6494ce8603, type: 3}

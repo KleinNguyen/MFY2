@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Expose the Guard
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 0aad0526b5be41946bb67c87713040a0
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 7028616704906629411, guid: 5cacfa684f1789b46a2651740caf015b, type: 3}

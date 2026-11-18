@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Fortified Trap
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: e8931d4126b1bf148a482f8c111a49ff
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 2960402581040015946, guid: 409ecab6567c5e84e99ade51c9c0342e, type: 3}

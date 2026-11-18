@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Twin Feint
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: d0222fe21c90d7841aaead9504f3947b
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 1
   <CardImage>k__BackingField: {fileID: 4113829005332862926, guid: bbbbd35be6e50fd4eaac1607d89dcfbc, type: 3}

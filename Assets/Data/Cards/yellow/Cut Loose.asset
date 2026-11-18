@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Cut Loose
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 9b64ce0ab105d7541bb1f409cfdfb0c6
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -5750353039905602045, guid: dfc97a63b82378b44984953543cbfc23, type: 3}

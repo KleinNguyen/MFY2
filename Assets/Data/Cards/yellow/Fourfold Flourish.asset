@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Fourfold Flourish
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 632e424804f0f3445bf14447cde037da
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 3465286685962602723, guid: 287fa5503a9154b4195b71741c5d8c52, type: 3}

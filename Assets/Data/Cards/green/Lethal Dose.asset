@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Lethal Dose
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 19b4a752a4e87e54ea893b4da29943f2
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -2966200626249415253, guid: 31758fd0a2fd38943b4856c4d97e103d, type: 3}

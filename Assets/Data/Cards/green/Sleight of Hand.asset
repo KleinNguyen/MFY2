@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Sleight of Hand
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 156d887343ee601449357f07ab84c7d6
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 7157561037332017152, guid: 24ea8e2bcc1c6bb459cec3aeab6372a1, type: 3}

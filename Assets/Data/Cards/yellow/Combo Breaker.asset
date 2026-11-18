@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Combo Breaker
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 6e38b497f0d994742af9902dbd8ebcf0
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 6894999169920593895, guid: 71ee3b2a51d098743956c3fa6de7f44a, type: 3}

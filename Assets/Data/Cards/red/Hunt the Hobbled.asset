@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Hunt the Hobbled
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 8a534f9ef4931ad499588d4c7fa395a0
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -8038976213705442086, guid: b9f05f600d939024a80269b5f2f449a5, type: 3}

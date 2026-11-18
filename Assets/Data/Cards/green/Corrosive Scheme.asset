@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Corrosive Scheme
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: daa32a530bc46344e8f4aa6f69ba54f6
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 4130640169021434097, guid: 00f6f9c18c798674dadf6c490ffb5824, type: 3}

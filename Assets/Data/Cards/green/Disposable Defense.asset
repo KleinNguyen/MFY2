@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Disposable Defense
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: c09c98b9ea393ad4ca1b296aff8212ab
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 3465286685962602723, guid: 6f3a851f0f64ced4ca02cab2db6a4334, type: 3}

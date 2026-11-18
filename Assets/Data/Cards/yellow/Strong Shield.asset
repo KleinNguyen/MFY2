@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Strong Shield
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 4798f11bbbc4a4343afb4a2a728015a9
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 1
   <CardImage>k__BackingField: {fileID: 4349915267927364619, guid: 5d8793f621ab8e54c925b0df4afdbb9f, type: 3}

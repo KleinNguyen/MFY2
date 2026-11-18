@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Triple Verdict
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 3ec9e463b2e226b43b7b33ba9dd676ce
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -7371509505491802261, guid: 6dbf29e6adea3bc49b72d058e32e66d8, type: 3}

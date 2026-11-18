@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Recovered Technique
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 7172c3090acf7e34994d7943e8e93b33
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -6270953770400647376, guid: 4bd67c258820e004a9ecb951599547e7, type: 3}

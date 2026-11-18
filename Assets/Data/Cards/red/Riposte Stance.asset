@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Riposte Stance
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 033fbf8b1b690f142b32ee4d3d05376f
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -6470460504253458178, guid: 5fe9227050fda47418a8c34bd973dc5d, type: 3}

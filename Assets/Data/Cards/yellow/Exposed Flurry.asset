@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Exposed Flurry
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: cc01cdabc4fc1a343807aa07154554ab
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 4164744761163438241, guid: 95ef56a40f356ad4ab56c3dadad08f25, type: 3}

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Press the Advantage
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 8f9c15f8286ca9e4aa544965273ea48b
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -2966200626249415253, guid: 238c83266922e914d887eede5f3dac0c, type: 3}

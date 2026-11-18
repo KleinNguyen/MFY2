@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Blood Price
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: cbff6786240d2ba49962f4ccee5848f2
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 6660783624410144326, guid: 4b72c2f1c7b3e5f4e97d6c4ff62321d4, type: 3}

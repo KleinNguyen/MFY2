@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Suppression Wave
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: a7d57072070490648bf6ce8853a47502
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 3465286685962602723, guid: 0dd99ffe245106f46a59a7c5ed75a784, type: 3}

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Toxic Requisition
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: b6e6e96b7f2cf5b4882dca28c739c5c4
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 4349915267927364619, guid: 194893b855d02ec46aae65980462f9fb, type: 3}

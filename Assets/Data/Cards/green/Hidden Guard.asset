@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Hidden Guard
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: a894464be295f55418821a0c00f30bed
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -4178046375966092550, guid: 8b14ac5b621b39d4a8ee8d98a7336bcc, type: 3}

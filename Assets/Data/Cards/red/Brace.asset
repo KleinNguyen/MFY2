@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Brace
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 9038e06a7cf3c1740bba1b650cc371a4
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 1
   <CardImage>k__BackingField: {fileID: -796155573255488767, guid: cfb2ebfd3191b8f499a6f9a04d8d419d, type: 3}

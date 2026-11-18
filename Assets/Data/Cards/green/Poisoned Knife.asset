@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Poisoned Knife
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: fef762ab39030774ab2b54452713129d
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -5099292496197868168, guid: 014790d81a6f28241b9671d09a2c0c89, type: 3}

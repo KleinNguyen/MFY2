@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Flash Cut
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 62f21bbc669e444428b483d5c36cc7e1
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 8102358098348255977, guid: 92eb068d2dd38ab479ed24e321d11829, type: 3}

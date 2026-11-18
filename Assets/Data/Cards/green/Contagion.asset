@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Contagion
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 30fa7417f8f8ab44ca2b1e33308ddba5
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -796155573255488767, guid: 60826e7ed7795ee48ae0981cedaa129f, type: 3}

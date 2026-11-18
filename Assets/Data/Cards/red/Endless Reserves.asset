@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Endless Reserves
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 41d23e5b15cf42b41b64687bd51e2f4e
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 2720535173406242035, guid: 1bc24532d32b9fb4ca9edf62abd5c04f, type: 3}

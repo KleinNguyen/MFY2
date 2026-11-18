@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Poison Detonation
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 4fee471cbfcc59e4da799cc1d897d572
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 2720535173406242035, guid: b3997bcd8bedd094cbf928acc401db80, type: 3}

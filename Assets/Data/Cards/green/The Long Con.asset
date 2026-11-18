@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: The Long Con
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: d96600f29c38a874d9a6786d10183879
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -1540426309290004842, guid: f5ac3b68ca02acf47af8227a89546f9b, type: 3}

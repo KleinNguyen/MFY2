@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Venomous Shiv
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 9b425182e39a5764f9acdd6d459bda3a
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 1
   <CardImage>k__BackingField: {fileID: 8389134475083476877, guid: 5ebb14f10ca4c8e43a2165d0865ba1c2, type: 3}

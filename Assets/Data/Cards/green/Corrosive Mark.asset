@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Corrosive Mark
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: e5b72ace1c748b34199fd4c3f761bf5b
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 6937817954938267909, guid: c71f06ff456d99f4dbccf8667b8d6c6f, type: 3}

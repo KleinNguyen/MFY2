@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Bloodwall
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 9bf412e2526a8c54ea898b25d8397a1e
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -8803318502494350906, guid: 5b4c7832abed95844a87f3036e740e3c, type: 3}

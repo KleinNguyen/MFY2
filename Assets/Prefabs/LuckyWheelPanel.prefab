@@ -1114,4 +1114,4 @@ MonoBehaviour:
   continueButton: {fileID: 8915072201539461839}
   labelRadius: 200
   spinDuration: 4
-  previewOnStart: 1
+  previewOnStart: 0

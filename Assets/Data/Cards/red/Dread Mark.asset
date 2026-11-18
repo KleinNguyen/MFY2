@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Dread Mark
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 15b8fe17af68741429ac71de1776d2eb
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 8288426215254106694, guid: 568328ec7b0061342a052e65f73baec6, type: 3}

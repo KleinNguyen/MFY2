@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Measured Rhythm
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 0426457cc6aa61943b8e9598c2c8bf64
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -1540426309290004842, guid: b8de6915e8267e644ae92789abd3e236, type: 3}

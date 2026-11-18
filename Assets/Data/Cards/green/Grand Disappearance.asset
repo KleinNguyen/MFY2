@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Grand Disappearance
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: df85bd04e937e844e85c034f49189a07
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -1045133410153605164, guid: 05d44d5317d1c37449f486b4b667fe87, type: 3}

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Burn the Hand
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 9b2d4481c592ca9449087c796a333a8c
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 7157561037332017152, guid: 02a52d49e55c69849bc8dd63a9b214de, type: 3}
@@ -22,7 +23,7 @@ MonoBehaviour:
   <Description>k__BackingField: Exhaust the remaining cards in your hand. Deal 6
     damage to one enemy for each card exhausted.
   <Mana>k__BackingField: 2
-  <ExhaustOnPlay>k__BackingField: 1
+  <ExhaustOnPlay>k__BackingField: 0
   <IsSly>k__BackingField: 0
   <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:

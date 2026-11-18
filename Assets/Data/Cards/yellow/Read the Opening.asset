@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Read the Opening
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 1f0b0ef17757b5c41af35a9766c2f756
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 7157561037332017152, guid: e534f3f8a2ce74444a909706d83a6dc5, type: 3}

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Iron Counter
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 15140e43f590c9e4db6c7c45ac05d9a0
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 5181654206020448988, guid: 1aff27431bec728499571116244a78d9, type: 3}

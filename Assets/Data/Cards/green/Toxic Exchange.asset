@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Toxic Exchange
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 503489a5ab80ed54585e101ec3564ed5
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -7371509505491802261, guid: 32e18698894aee14b948ae2a98eab4f8, type: 3}

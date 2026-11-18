@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Deepening Toxin
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 2b93139d6c1c4794497177ae92e3039f
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 8288426215254106694, guid: 4468cbb3fd1234047b3e89eb1c7d5144, type: 3}

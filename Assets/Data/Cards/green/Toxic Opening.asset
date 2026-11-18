@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Toxic Opening
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: a79e0502337dcbc44b86b3d387764958
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 7028616704906629411, guid: 1f167ce3314cc654492a9348f9e74af4, type: 3}

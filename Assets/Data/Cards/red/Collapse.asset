@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Collapse
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 35d7154eca612ba48860529cce4c2a1e
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 4349915267927364619, guid: 391bab6e66472d44088bed8b316ffdde, type: 3}

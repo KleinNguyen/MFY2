@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Pocketed Double
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: ad98fdf1c71e7884a90a9ad7330d5f1d
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 8102358098348255977, guid: 3be53c459f05a414d8edbd1f68cb41bf, type: 3}

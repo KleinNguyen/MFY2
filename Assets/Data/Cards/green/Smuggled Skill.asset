@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Smuggled Skill
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 9d14494dffe364642b60d11a925513aa
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -5622901713081898559, guid: 2f4d6b99cbb0a62489a87e130139f7f9, type: 3}

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Scorched Guard
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 57723162917c7214a9114de080a3b7a8
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -1540426309290004842, guid: d7ab7dc557cb67b4b971af7bcdaab8ab, type: 3}

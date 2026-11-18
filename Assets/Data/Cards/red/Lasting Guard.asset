@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Lasting Guard
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 47bd2bfcff49fa242bd7fea192ea47c9
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 8102358098348255977, guid: 12fb12a37f496954baedb31902fe8f4b, type: 3}

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Vow of Might
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 39ac8a7cdd99b944084b055dfbb63fa2
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: -5750353039905602045, guid: 55e14b8f422a4494a950e0cbf69ad18c, type: 3}

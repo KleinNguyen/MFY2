@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Piercing Opening
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 78c70155b6070f346a139611c0d3989d
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 7680820834086852892, guid: 625c7872bed857642aa986f116e8d1f1, type: 3}

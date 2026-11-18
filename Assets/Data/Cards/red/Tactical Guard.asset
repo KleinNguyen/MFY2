@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Tactical Guard
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: c1fcd465b3a5df64f886390bdf2123f1
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: -5622901713081898559, guid: de4b25f2c4736e34a995cda4dcac03cd, type: 3}

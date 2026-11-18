@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Whirlwind Payoff
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: b7bdbff249520594e8c53f4a009cbc6b
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 2
   <CardImage>k__BackingField: {fileID: 8288426215254106694, guid: 963030adfb6f9e547a87ee325c480d64, type: 3}

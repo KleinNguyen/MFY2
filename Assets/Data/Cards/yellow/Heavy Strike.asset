@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Heavy Strike
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 1168af3d5d4b7464c8858eba9b9a7d7d
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 1
   <CardImage>k__BackingField: {fileID: 6937817954938267909, guid: 15a9660bde283e341a3f4cdddd251dbb, type: 3}

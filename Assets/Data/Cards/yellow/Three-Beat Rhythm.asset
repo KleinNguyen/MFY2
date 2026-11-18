@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Three-Beat Rhythm
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 3c1ad4c71328cd247ae848338788e239
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -6270953770400647376, guid: 40ec9a52361b6f144ab0b5d48dd6df2c, type: 3}

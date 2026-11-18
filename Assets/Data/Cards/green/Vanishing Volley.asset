@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Vanishing Volley
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: d73f629f26d909a4c8b0335fb9bb0c8d
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 7680820834086852892, guid: 1df0bb9fa5a3b4e4bbda3a93c93bde60, type: 3}

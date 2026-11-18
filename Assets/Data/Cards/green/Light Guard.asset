@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Light Guard
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 1913935f6543ec041981b2f4449f4db4
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 1
   <CardImage>k__BackingField: {fileID: 4113829005332862926, guid: cad1e6911d357d84daeac8fdb70c0c23, type: 3}

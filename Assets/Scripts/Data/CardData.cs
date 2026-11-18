@@ -8,6 +8,7 @@ using SerializeReferenceEditor;
 public class CardData : ScriptableObject
 {
     // CardData.cs
+    [field: SerializeField, HideInInspector] public string SaveId { get; private set; }
     [field: SerializeField] public CharacterType Character { get; private set; }
     [field: SerializeField] public CardRarity Rarity { get; private set; }
     [field: SerializeField] public Sprite CardImage { get; private set; }

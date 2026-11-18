@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Perfect Strike
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 8e4d7121e9ee9b744aca3e138ae5379d
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: 5181654206020448988, guid: e1cadc579cd13bd4f955596dacec3605, type: 3}

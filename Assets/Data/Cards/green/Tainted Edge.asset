@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Tainted Edge
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 11fe394f2ff97ed41be5e3b8be705cdc
   <Character>k__BackingField: 1
   <Rarity>k__BackingField: 1
   <CardImage>k__BackingField: {fileID: -6470460504253458178, guid: 07e3e2ad551dce74980dcd4c9612e252, type: 3}

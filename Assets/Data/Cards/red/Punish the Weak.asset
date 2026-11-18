@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Punish the Weak
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 89757d1417742bd46b8a954a044de73b
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 0
   <CardImage>k__BackingField: {fileID: 7028616704906629411, guid: 38ed76bc1eff29b488c00b94f3ff0c39, type: 3}

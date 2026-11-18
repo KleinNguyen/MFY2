@@ -72,6 +72,7 @@ public class MapUI : MonoBehaviour
         }
 
         run.StartRunTimer();
+        run.SaveCheckpoint();
         Canvas.ForceUpdateCanvases();
         StyleMapLegend();
         SetupRunTimer();

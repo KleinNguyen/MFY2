@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Measured Strike
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 18cef348e160ff845a3ad68d03e0f3fe
   <Character>k__BackingField: 0
   <Rarity>k__BackingField: 1
   <CardImage>k__BackingField: {fileID: -855298285791758126, guid: 40ec1e7fd4751a94fabc80c2125df2ba, type: 3}

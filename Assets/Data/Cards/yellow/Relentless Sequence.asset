@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Relentless Sequence
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 76dd6d2e396239044b40d0f14b35a399
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -796155573255488767, guid: 261158a2b316bf5408870e7b60b13fa4, type: 3}
@@ -20,7 +21,7 @@ MonoBehaviour:
   <ManaTextOffset>k__BackingField: {x: -0.5, y: -2}
   <CardVisualScale>k__BackingField: {x: 1.083982, y: 1.014085}
   <Description>k__BackingField: Each turn, after playing your fourth Attack, gain
-    2 Combo and draw 1 card.
+    2 Combo and draw 1 card. Exhaust.
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
@@ -34,7 +35,7 @@ MonoBehaviour:
       rid: 1468093488209330327
   <CanUpgrade>k__BackingField: 1
   <UpgradedDescription>k__BackingField: Each turn, after playing your third Attack,
-    gain 5 Combo and draw 2 card.
+    gain 5 Combo and draw 2 card. Exhaust.
   <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2

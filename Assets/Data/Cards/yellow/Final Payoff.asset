@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2bac1a5d085234a85ec8b0e26b2dea, type: 3}
   m_Name: Final Payoff
   m_EditorClassIdentifier: 
+  <SaveId>k__BackingField: 099a2db06f409bf48b443e4d63523d92
   <Character>k__BackingField: 2
   <Rarity>k__BackingField: 3
   <CardImage>k__BackingField: {fileID: -5099292496197868168, guid: e6cb2e6f60d6e5247831c9ac3ddd7f06, type: 3}
