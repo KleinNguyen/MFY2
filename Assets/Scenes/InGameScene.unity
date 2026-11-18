@@ -6079,6 +6079,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3668464689488420799, guid: 3d4dc3f04c7614c4b9210fe3784d925e, type: 3}
   m_PrefabInstance: {fileID: 1148652229}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1148652231 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7172262013439202372, guid: 3d4dc3f04c7614c4b9210fe3784d925e, type: 3}
+  m_PrefabInstance: {fileID: 1148652229}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4a2bc7aac8a99e44876acd9c0c862f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1187213081
 GameObject:
   m_ObjectHideFlags: 0
@@ -6351,16 +6362,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 39ac8a7cdd99b944084b055dfbb63fa2, type: 2}
   - {fileID: 11400000, guid: b7bdbff249520594e8c53f4a009cbc6b, type: 2}
   - {fileID: 11400000, guid: 41838691e3995a5499a983e43ad5a07f, type: 2}
-  goldRewardText: {fileID: 144175128}
-  messageText: {fileID: 948893995}
   cardContent: {fileID: 1310215566}
   cardPrefab: {fileID: 7171852290959586651, guid: bdcfe10473c2bb24dae7fb137c2f5503, type: 3}
   choiceCount: 3
+  goldRewardText: {fileID: 144175128}
+  messageText: {fileID: 948893995}
   skipButton: {fileID: 1334983026}
   continueButton: {fileID: 694034890}
   runResultUI: {fileID: 1722109186}
-  luckyWheel: {fileID: 0}
-  wheelButton: {fileID: 0}
+  luckyWheel: {fileID: 1148652231}
+  wheelButton: {fileID: 1366903110}
   hoverScale: 1.12
   hoverLift: 35
   hoverDuration: 0.12

@@ -76,13 +76,14 @@ public static class MapGeneratorSystem
 
         return points;
     }
-    private static MapPointType GetRandomPointType(ActData actData, bool allowElite, bool allowShop, bool allowRest)
+    private static MapPointType GetRandomPointType(ActData actData, bool allowElite, bool allowShop, bool allowRest, bool allowMystery)
     {
         int normal = Mathf.Max(0, actData.NormalWeight);
         int elite = allowElite ? Mathf.Max(0, actData.EliteWeight) : 0;
         int shop = allowShop ? Mathf.Max(0, actData.ShopWeight) : 0;
         int rest = allowRest ? Mathf.Max(0, actData.RestWeight) : 0;
-        int total = normal + elite + shop + rest;
+        int mystery = allowMystery ? Mathf.Max(0, actData.MysteryWeight) : 0;
+        int total = normal + elite + shop + rest + mystery;
         if (total <= 0) return MapPointType.Normal;
 
         int roll = Random.Range(0, total);
@@ -90,7 +91,9 @@ public static class MapGeneratorSystem
         roll -= normal;
         if (roll < elite) return MapPointType.Elite;
         roll -= elite;
-        return roll < shop ? MapPointType.Shop : MapPointType.Rest;
+        if (roll < shop) return MapPointType.Shop;
+        roll -= shop;
+        return roll < rest ? MapPointType.Rest : MapPointType.Mystery;
     }
 
     private static void ConnectFloors(
@@ -179,8 +182,7 @@ public static class MapGeneratorSystem
             {
                 bool isEarly = floor < earlyFloors;
                 bool isLast = floor == lastFloor;
-                point.SetType(isEarly ? MapPointType.Normal : GetRandomPointType(
-                    actData, floor >= firstEliteIndex && !isLast, !isLast, true));
+                point.SetType(isEarly ? MapPointType.Normal : GetRandomPointType(actData, floor >= firstEliteIndex && !isLast, !isLast, true, !isLast));
             }
 
             MapPoint normal = points[Random.Range(0, points.Count)];
@@ -234,7 +236,30 @@ public static class MapGeneratorSystem
         if (eliteCount < requiredElites)
             Debug.LogWarning("Not enough eligible points for Minimum Elite Points. Check the Act settings.");
 
+        EnsureMysteryPoint(floors, actData, reserved, earlyFloors, lastFloor);
         RepairPointConnections(floors);
+    }
+    private static void EnsureMysteryPoint(List<List<MapPoint>> floors, ActData actData, HashSet<MapPoint> reserved, int earlyFloors, int lastFloor)
+    {
+        if (actData.MysteryWeight <= 0) return;
+
+        List<MapPoint> candidates = new();
+        for (int floor = earlyFloors; floor < lastFloor; floor++)
+        {
+            foreach (MapPoint point in floors[floor])
+            {
+                if (point.Type == MapPointType.Mystery) return;
+                if (!reserved.Contains(point) && point.Type != MapPointType.Elite) candidates.Add(point);
+            }
+        }
+
+        if (candidates.Count == 0)
+        {
+            Debug.LogWarning("No eligible map point for Mystery. Check the Act settings.");
+            return;
+        }
+
+        candidates[Random.Range(0, candidates.Count)].SetType(MapPointType.Mystery);
     }
 
     private static MapPoint PickSpecialPoint(List<MapPoint> points, MapPoint normalAnchor)
