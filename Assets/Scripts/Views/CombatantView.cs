@@ -16,6 +16,9 @@ public class CombatantView : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private StatusEffectsUI statusEffectsUI;
     [SerializeField] private Sprite[] statusEffectOverlaySprites = new Sprite[8];
+    private Canvas healthBarCanvas;
+    private Canvas statusEffectsCanvas;
+    private bool uiAnchorErrorLogged;
     public int MaxHealth { get; private set; }
     public int CurrentHealth { get; private set; }
     protected SpriteRenderer CombatantSpriteRenderer => spriteRenderer;
@@ -30,6 +33,13 @@ public class CombatantView : MonoBehaviour
     {
         MaxHealth = CurrentHealth = health;
         spriteRenderer.sprite = image;
+        healthBarCanvas = healthFillImage != null
+            ? healthFillImage.GetComponentInParent<Canvas>()
+            : null;
+        statusEffectsCanvas = statusEffectsUI != null
+            ? statusEffectsUI.GetComponentInParent<Canvas>()
+            : null;
+        uiAnchorErrorLogged = false;
         idleAnimationInitialized = false;
         UpdateHealthText();
     }
@@ -80,6 +90,54 @@ public class CombatantView : MonoBehaviour
         Vector3 currentAnchorWorld =
             spriteTransform.TransformPoint(GetSpriteBottomCenter(spriteRenderer.sprite));
         spriteTransform.position += targetAnchorWorld - currentAnchorWorld;
+    }
+
+    protected void UpdateUIAnchorBelowSprite(float gap)
+    {
+        if (spriteRenderer == null || spriteRenderer.sprite == null)
+        {
+            return;
+        }
+
+        RectTransform healthBarRect = healthBarCanvas != null
+            ? healthBarCanvas.transform as RectTransform
+            : null;
+        RectTransform statusEffectsRect = statusEffectsCanvas != null
+            ? statusEffectsCanvas.transform as RectTransform
+            : null;
+        if (healthBarRect == null || statusEffectsRect == null)
+        {
+            if (!uiAnchorErrorLogged)
+            {
+                Debug.LogError(
+                    "Cannot anchor combatant UI: health bar or status effects Canvas is missing.",
+                    this
+                );
+                uiAnchorErrorLogged = true;
+            }
+
+            return;
+        }
+
+        Vector3 spriteBottom = spriteRenderer.transform.TransformPoint(
+            GetSpriteBottomCenter(spriteRenderer.sprite)
+        );
+        float healthBarHeight =
+            healthBarRect.rect.height * Mathf.Abs(healthBarRect.lossyScale.y);
+        float statusEffectsHeight =
+            statusEffectsRect.rect.height * Mathf.Abs(statusEffectsRect.lossyScale.y);
+
+        Vector3 healthBarPosition = new(
+            spriteBottom.x,
+            spriteBottom.y - gap - healthBarHeight * 0.5f,
+            spriteBottom.z
+        );
+        healthBarRect.position = healthBarPosition;
+        statusEffectsRect.position = new Vector3(
+            spriteBottom.x,
+            healthBarPosition.y - healthBarHeight * 0.5f - gap - statusEffectsHeight * 0.5f,
+            spriteBottom.z
+        );
     }
 
     private static Vector3 GetSpriteBottomCenter(Sprite sprite)

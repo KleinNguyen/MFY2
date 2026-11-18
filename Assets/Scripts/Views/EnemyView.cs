@@ -7,6 +7,7 @@ public class EnemyView : CombatantView
     private static readonly Vector2 NormalSpriteLimit = new(2f, 2.4f);
     private static readonly Vector2 EliteSpriteLimit = new(3.3f, 3.8f);
     private static readonly Vector2 BossSpriteLimit = new(4.2f, 5.2f);
+    private const float UiFootGap = 0.05f;
 
     [SerializeField] private TMP_Text attackText;
 
@@ -52,6 +53,7 @@ public class EnemyView : CombatantView
         FitSpriteToLimit(GetSpriteLimit(enemyData.Rank));
         InitializeIdleAnimation();
         UpdateIntentText();
+        UpdateUIAnchorBelowSprite(UiFootGap);
     }
 
     public int GetAttackDamage()
@@ -137,6 +139,7 @@ public class EnemyView : CombatantView
     private void LateUpdate()
     {
         UpdateIntentText();
+        UpdateUIAnchorBelowSprite(UiFootGap);
     }
 
     private Vector2 GetSpriteLimit(EnemyRank rank)
