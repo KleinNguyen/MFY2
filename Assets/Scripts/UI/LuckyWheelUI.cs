@@ -36,6 +36,16 @@ public class LuckyWheelUI : MonoBehaviour
         if (spinButton != null) spinButton.onClick.AddListener(Spin);
         if (continueButton != null) continueButton.onClick.AddListener(Close);
     }
+    private void LateUpdate()
+    {
+        if (wheelRoot == null) return;
+
+        Quaternion counterRotation = Quaternion.Inverse(wheelRoot.localRotation);
+        foreach (TMP_Text label in sliceLabels)
+        {
+            if (label != null) label.rectTransform.localRotation = counterRotation;
+        }
+    }
 
     public bool Show(string[] options, Action<int> onResult, Action onClosed = null, bool canCancel = false, int previousResult = -1, string closeCaption = "Continue")
     {
@@ -70,8 +80,16 @@ public class LuckyWheelUI : MonoBehaviour
             rect.pivot = new Vector2(0.5f, 0.5f);
             rect.anchoredPosition = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * labelRadius;
             rect.localRotation = Quaternion.identity;
+            rect.sizeDelta = new Vector2(170f, 70f);
+
             label.text = labels[i];
             label.alignment = TextAlignmentOptions.Center;
+            label.fontStyle = FontStyles.Bold;
+            label.enableAutoSizing = true;
+            label.fontSizeMin = 20f;
+            label.fontSizeMax = 26f;
+            label.textWrappingMode = TextWrappingModes.NoWrap;
+            label.color = Color.black;
             label.raycastTarget = false;
             label.gameObject.SetActive(true);
         }

@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -16,6 +15,7 @@ public class MapUI : MonoBehaviour
     private const float ConnectionDashGap = 9f;
     private const float ConnectionThickness = 4f;
 
+    [Header("Run interface")]
     [SerializeField] private TMP_Text actNameText;
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text goldText;
@@ -23,334 +23,162 @@ public class MapUI : MonoBehaviour
     [SerializeField] private RectTransform mapLegend;
     [SerializeField] private RectTransform runTimerDisplay;
 
+    [Header("Panels")]
     [SerializeField] private ShopUI shopUI;
     [SerializeField] private RestUI restUI;
 
+    [Header("Map layout")]
     [SerializeField] private ScrollRect mapScrollRect;
     [SerializeField] private RectTransform mapContent;
     [SerializeField] private Button mapPointPrefab;
 
-    [Header("Map Point Icons")]
+    [Header("Map point icons")]
     [SerializeField] private Sprite normalIcon;
     [SerializeField] private Sprite eliteIcon;
     [SerializeField] private Sprite shopIcon;
     [SerializeField] private Sprite restIcon;
     [SerializeField] private Sprite bossIcon;
+    [SerializeField] private Sprite mysteryIcon;
 
     private readonly Dictionary<int, Button> pointButtons = new();
     private float mapMinimumY;
-    private float mapVerticalScale;
+    private TMP_Text runTimerText;
+    private int glowingMapPointId = -1;
     private GameObject currentPointGlow;
     private RectTransform currentPointGlowRect;
     private Image currentPointGlowImage;
     private Outline currentPointGlowOutline;
-    private int glowingMapPointId = -1;
-    private TMP_Text runTimerText;
+    private TMP_Text currentPointGlowText;
 
+    // Unity
     private void Start()
     {
         ConfigureInputModule();
+        RunSystem run = RunSystem.Instance;
+        if (!ValidateSetup(run)) return;
 
-
-        if (RunSystem.Instance == null)
-        {
-            Debug.LogError("No RunSystem in MapScene");
-            return;
-        }
-        RunSystem.Instance.StartRunTimer();
-
+        shopUI.gameObject.SetActive(false);
+        restUI.gameObject.SetActive(false);
         mapScrollRect.horizontal = true;
         mapScrollRect.vertical = true;
         HideScrollbar(mapScrollRect.horizontalScrollbar);
         HideScrollbar(mapScrollRect.verticalScrollbar);
 
-        shopUI.gameObject.SetActive(false);
-        restUI.gameObject.SetActive(false);
-
-        RunSystem.Instance.GenerateMap();
-
-        ActData currentAct = RunSystem.Instance.CurrentAct;
-
-        if (currentAct == null)
+        run.GenerateMap();
+        if (run.MapPoints == null || run.MapPoints.Count == 0)
         {
-            Debug.LogError("Current Act is missing.");
+            Debug.LogError("The map is empty. Check the current Act settings.", this);
             return;
         }
 
+        run.StartRunTimer();
         Canvas.ForceUpdateCanvases();
         StyleMapLegend();
         SetupRunTimer();
-        CreateMapUI();
-        UpdateMapUI();
+        if (!CreateMapUI(run)) return;
 
+        UpdateMapUI();
         Canvas.ForceUpdateCanvases();
         mapScrollRect.verticalNormalizedPosition = 0f;
-    }
-
-    private static void HideScrollbar(Scrollbar scrollbar)
-    {
-        if (scrollbar == null) return;
-
-        CanvasGroup canvasGroup = scrollbar.GetComponent<CanvasGroup>();
-        if (canvasGroup == null)
-        {
-            canvasGroup = scrollbar.gameObject.AddComponent<CanvasGroup>();
-        }
-
-        canvasGroup.alpha = 0f;
-        canvasGroup.interactable = false;
-        canvasGroup.blocksRaycasts = false;
-    }
-
-    private void ConfigureInputModule()
-    {
-        UIInputModuleCompatibility.MonitorAndConfigure(EventSystem.current, this);
-    }
-
-    private void StyleMapLegend()
-    {
-        if (mapLegend == null)
-        {
-            Debug.LogError(
-                "Map Legend is not assigned in MapUI."
-            );
-            return;
-        }
-
-        foreach (Button entry in mapLegend.GetComponentsInChildren<Button>(true))
-        {
-            entry.enabled = false;
-
-            Image icon = entry.GetComponent<Image>();
-            if (icon != null)
-            {
-                icon.raycastTarget = false;
-                icon.preserveAspect = true;
-
-                if (entry.gameObject.name == "MapLegend - Title")
-                {
-                    icon.color = new Color(1f, 1f, 1f, 0f);
-                }
-                else
-                {
-                    icon.color = Color.white;
-
-                    Outline iconOutline = icon.GetComponent<Outline>();
-                    if (iconOutline == null)
-                    {
-                        iconOutline = icon.gameObject.AddComponent<Outline>();
-                    }
-
-                    iconOutline.effectColor = new Color(0.96f, 0.72f, 0.3f, 0.8f);
-                    iconOutline.effectDistance = new Vector2(1.5f, 1.5f);
-                }
-            }
-
-            TMP_Text label = entry.GetComponentInChildren<TMP_Text>(true);
-            if (label == null)
-            {
-                Debug.LogError("Map legend entry is missing its label: " + entry.name);
-                continue;
-            }
-
-            label.font = mapMessageText.font;
-            label.fontStyle = FontStyles.Bold;
-            label.fontSize = entry.gameObject.name == "MapLegend - Title" ? 30f : 24f;
-            label.color = new Color(0.96f, 0.93f, 0.85f);
-            label.alignment = entry.gameObject.name == "MapLegend - Title"
-                ? TextAlignmentOptions.Center
-                : TextAlignmentOptions.MidlineLeft;
-            label.raycastTarget = false;
-
-            Shadow labelShadow = label.GetComponent<Shadow>();
-            if (labelShadow == null)
-            {
-                labelShadow = label.gameObject.AddComponent<Shadow>();
-            }
-
-            labelShadow.effectColor = new Color(0f, 0f, 0f, 0.85f);
-            labelShadow.effectDistance = new Vector2(1f, -1f);
-        }
     }
 
     private void Update()
     {
         ConfigureInputModule();
         UpdateRunTimer();
-
-        if (currentPointGlowImage == null || currentPointGlowRect == null ||
-            currentPointGlowOutline == null)
-        {
-            return;
-        }
-
-        float pulse = (Mathf.Sin(Time.unscaledTime * 3f) + 1f) * 0.5f;
-        currentPointGlowRect.localScale = Vector3.one * Mathf.Lerp(1.08f, 1.2f, pulse);
-        currentPointGlowImage.color = new Color(1f, 0.78f, 0.12f, Mathf.Lerp(0.16f, 0.34f, pulse));
-        currentPointGlowOutline.effectColor = new Color(
-            1f,
-            0.72f,
-            0.12f,
-            Mathf.Lerp(0.3f, 0.75f, pulse)
-        );
+        AnimateCurrentPointGlow();
     }
 
-    private void SetupRunTimer()
+    private void ConfigureInputModule() => UIInputModuleCompatibility.MonitorAndConfigure(EventSystem.current, this);
+
+    private bool ValidateSetup(RunSystem run)
     {
-        if (runTimerDisplay == null)
+        if (run == null || run.HeroData == null || run.CurrentAct == null)
         {
-            Debug.LogError("Run Timer Display is not assigned in MapUI.");
-            return;
+            Debug.LogError("An active run, hero and Act are required for MapUI.", this);
+            return false;
         }
 
-        Transform textTransform = runTimerDisplay.Find("RunTimerText");
-        if (textTransform == null)
+        if (mapScrollRect == null || mapScrollRect.viewport == null || mapContent == null || mapPointPrefab == null || mapMessageText == null || shopUI == null || restUI == null)
         {
-            Debug.LogError("Run Timer Display is missing its RunTimerText object.");
-            return;
+            Debug.LogError("MapUI is missing references. Check the Inspector.", this);
+            return false;
         }
 
-        runTimerText = textTransform.GetComponentInChildren<TMP_Text>(true);
-        if (runTimerText == null)
+        if (mapPointPrefab.GetComponent<Image>() == null)
         {
-            Debug.LogError("RunTimerText must contain a TextMeshPro text object.");
-            return;
+            Debug.LogError("MapPointButton prefab must have an Image component.", this);
+            return false;
         }
 
-        runTimerText.font = mapMessageText.font;
-        runTimerText.fontSize = 34f;
-        runTimerText.fontStyle = FontStyles.Bold;
-        runTimerText.color = Color.white;
-        runTimerText.alignment = TextAlignmentOptions.Center;
-        runTimerText.raycastTarget = false;
-
-        Shadow textShadow = runTimerText.GetComponent<Shadow>();
-        if (textShadow == null)
-        {
-            textShadow = runTimerText.gameObject.AddComponent<Shadow>();
-        }
-
-        textShadow.effectColor = new Color(0f, 0f, 0f, 0.85f);
-        textShadow.effectDistance = new Vector2(1f, -1f);
-
-        Transform iconTransform = runTimerDisplay.Find("RunTimerIcon");
-        if (iconTransform == null)
-        {
-            Debug.LogError("Run Timer Display is missing its RunTimerIcon object.");
-            return;
-        }
-
-        Image icon = iconTransform.GetComponent<Image>();
-        if (icon == null)
-        {
-            Debug.LogError("RunTimerIcon must have an Image component.");
-            return;
-        }
-
-        icon.preserveAspect = true;
-        icon.raycastTarget = false;
-
-        Outline iconOutline = icon.GetComponent<Outline>();
-        if (iconOutline == null)
-        {
-            iconOutline = icon.gameObject.AddComponent<Outline>();
-        }
-
-        iconOutline.effectColor = new Color(0.96f, 0.72f, 0.3f, 0.85f);
-        iconOutline.effectDistance = new Vector2(1.5f, 1.5f);
+        return true;
     }
 
-    private void UpdateRunTimer()
+    // Map creation
+    private bool CreateMapUI(RunSystem run)
     {
-        if (runTimerText == null || RunSystem.Instance == null)
+        float viewportWidth = mapScrollRect.viewport.rect.width;
+        float viewportHeight = mapScrollRect.viewport.rect.height;
+        if (viewportWidth <= 0f || viewportHeight <= 0f)
         {
-            return;
+            Debug.LogError("Map viewport must have a positive width and height.", this);
+            return false;
         }
 
-        int elapsedSeconds = Mathf.FloorToInt(RunSystem.Instance.ElapsedRunTime);
-        int hours = elapsedSeconds / 3600;
-        int minutes = (elapsedSeconds / 60) % 60;
-        int seconds = elapsedSeconds % 60;
-
-        runTimerText.text = hours > 0
-            ? $"{hours:00}:{minutes:00}:{seconds:00}"
-            : $"{elapsedSeconds / 60:00}:{seconds:00}";
-    }
-
-
-    private void CreateMapUI()
-    {
+        ClearCurrentPointGlow();
         pointButtons.Clear();
-
         foreach (Transform child in mapContent)
         {
+            child.gameObject.SetActive(false);
             Destroy(child.gameObject);
         }
 
-        float mapScale = mapScrollRect.viewport.rect.width / MapLayoutWidth;
+        float mapScale = viewportWidth / MapLayoutWidth;
         mapMinimumY = float.MaxValue;
         float mapMaximumY = float.MinValue;
-        foreach (MapPoint point in RunSystem.Instance.MapPoints)
+        foreach (MapPoint point in run.MapPoints)
         {
             mapMinimumY = Mathf.Min(mapMinimumY, point.Position.y);
             mapMaximumY = Mathf.Max(mapMaximumY, point.Position.y);
         }
 
         float mapHeight = mapMaximumY - mapMinimumY + MapEdgePadding * 2f;
-        float contentHeight = Mathf.Max(
-            mapScrollRect.viewport.rect.height / mapScale,
-            mapHeight
-        );
-        mapContent.sizeDelta = new Vector2(MapLayoutWidth, contentHeight);
+        mapContent.sizeDelta = new Vector2(MapLayoutWidth, Mathf.Max(viewportHeight / mapScale, mapHeight));
         mapContent.localScale = Vector3.one * mapScale;
-        mapVerticalScale = 1f;
 
-        foreach (MapPoint point in RunSystem.Instance.MapPoints)
+        foreach (MapPoint point in run.MapPoints)
         {
             foreach (int nextPointId in point.NextPoints)
             {
-                MapPoint nextPoint = RunSystem.Instance.GetMapPoint(nextPointId);
-
-                if (nextPoint == null) continue;
-
-                CreateConnection(GetMapPosition(point), GetMapPosition(nextPoint));
+                MapPoint nextPoint = run.GetMapPoint(nextPointId);
+                if (nextPoint != null) CreateConnection(GetMapPosition(point), GetMapPosition(nextPoint));
             }
         }
 
-        foreach (MapPoint point in RunSystem.Instance.MapPoints)
-        {
-            CreateMapPoint(point);
-        }
+        foreach (MapPoint point in run.MapPoints) CreateMapPoint(point);
+        return true;
     }
 
     private void CreateMapPoint(MapPoint point)
     {
         Button pointButton = Instantiate(mapPointPrefab, mapContent);
-
         pointButton.gameObject.SetActive(true);
-        pointButton.gameObject.name = "MapPoint " + point.Id;
+        pointButton.name = "MapPoint " + point.Id;
 
         RectTransform rect = pointButton.GetComponent<RectTransform>();
-
         rect.anchorMin = Vector2.zero;
         rect.anchorMax = Vector2.zero;
         rect.pivot = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = GetMapPosition(point);
 
         Image pointImage = pointButton.GetComponent<Image>();
-        if (pointImage == null)
-        {
-            Debug.LogError("MapPointButton prefab must have an Image component.");
-            Destroy(pointButton.gameObject);
-            return;
-        }
-
         Sprite pointIcon = GetPointIcon(point.Type);
         pointImage.sprite = pointIcon;
         pointImage.color = pointIcon == null ? new Color(1f, 1f, 1f, 0f) : Color.white;
         pointImage.type = Image.Type.Simple;
         pointImage.preserveAspect = true;
         pointImage.raycastTarget = true;
+        pointButton.targetGraphic = pointImage;
         pointButton.transition = Selectable.Transition.ColorTint;
 
         ColorBlock colors = pointButton.colors;
@@ -362,19 +190,43 @@ public class MapUI : MonoBehaviour
         colors.colorMultiplier = 1f;
         pointButton.colors = colors;
 
+        ConfigurePointText(pointButton, point);
+        pointButton.onClick.RemoveAllListeners();
+        int pointId = point.Id;
+        pointButton.onClick.AddListener(() => SelectMapPoint(pointId));
+        pointButtons.Add(point.Id, pointButton);
+    }
+
+    private void ConfigurePointText(Button pointButton, MapPoint point)
+    {
         TMP_Text pointText = pointButton.GetComponentInChildren<TMP_Text>(true);
-        if (pointText != null)
+        bool showQuestionMark = point.Type == MapPointType.Mystery && mysteryIcon == null;
+        if (pointText == null && showQuestionMark)
         {
-            pointText.gameObject.SetActive(false);
+            GameObject labelObject = new("MysteryLabel", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
+            labelObject.transform.SetParent(pointButton.transform, false);
+            pointText = labelObject.GetComponent<TMP_Text>();
         }
 
-        pointButton.onClick.RemoveAllListeners();
+        if (pointText == null) return;
+        pointText.gameObject.SetActive(showQuestionMark);
+        if (!showQuestionMark) return;
 
-        int pointId = point.Id;
+        RectTransform rect = pointText.rectTransform;
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.pivot = new Vector2(0.5f, 0.5f);
+        rect.anchoredPosition = Vector2.zero;
+        rect.sizeDelta = Vector2.zero;
+        rect.localRotation = Quaternion.identity;
+        rect.localScale = Vector3.one;
 
-        pointButton.onClick.AddListener(() => SelectMapPoint(pointId));
-
-        pointButtons.Add(point.Id, pointButton);
+        pointText.text = "?";
+        StyleText(pointText, 64f, Color.black, TextAlignmentOptions.Center);
+        pointText.enableAutoSizing = true;
+        pointText.fontSizeMin = 24f;
+        pointText.fontSizeMax = 64f;
+        pointText.textWrappingMode = TextWrappingModes.NoWrap;
     }
 
     private void CreateConnection(Vector2 start, Vector2 end)
@@ -382,10 +234,7 @@ public class MapUI : MonoBehaviour
         Vector2 direction = end - start;
         float distance = direction.magnitude;
         float drawableLength = distance - ConnectionIconClearance * 2f;
-        if (drawableLength <= 0f)
-        {
-            return;
-        }
+        if (drawableLength <= 0f) return;
 
         Vector2 directionNormalized = direction / distance;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -394,15 +243,9 @@ public class MapUI : MonoBehaviour
         for (float offset = 0f; offset < drawableLength; offset += dashStep)
         {
             float dashLength = Mathf.Min(ConnectionDashLength, drawableLength - offset);
-            Vector2 dashStart = start
-                + directionNormalized * (ConnectionIconClearance + offset);
-
-            GameObject dashObject = new(
-                "MapConnectionDash",
-                typeof(RectTransform),
-                typeof(CanvasRenderer),
-                typeof(Image)
-            );
+            Vector2 dashStart = start + directionNormalized * (ConnectionIconClearance + offset);
+            GameObject dashObject = new("MapConnectionDash", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            dashObject.layer = mapContent.gameObject.layer;
 
             RectTransform dashRect = dashObject.GetComponent<RectTransform>();
             dashRect.SetParent(mapContent, false);
@@ -411,7 +254,7 @@ public class MapUI : MonoBehaviour
             dashRect.pivot = new Vector2(0f, 0.5f);
             dashRect.anchoredPosition = dashStart;
             dashRect.sizeDelta = new Vector2(dashLength, ConnectionThickness);
-            dashRect.localRotation = Quaternion.Euler(0, 0, angle);
+            dashRect.localRotation = Quaternion.Euler(0f, 0f, angle);
 
             Image dashImage = dashObject.GetComponent<Image>();
             dashImage.color = new Color(0.08f, 0.16f, 0.25f, 0.9f);
@@ -422,196 +265,121 @@ public class MapUI : MonoBehaviour
     private Vector2 GetMapPosition(MapPoint point)
     {
         float centeredX = (point.Position.x - MapLayoutWidth * 0.5f) * MapHorizontalScale;
-        float mappedY = MapEdgePadding + (point.Position.y - mapMinimumY) * mapVerticalScale;
+        float mappedY = MapEdgePadding + point.Position.y - mapMinimumY;
         return new Vector2(MapLayoutWidth * 0.5f + centeredX, mappedY);
     }
 
     private Sprite GetPointIcon(MapPointType type)
     {
-        switch (type)
+        return type switch
         {
-            case MapPointType.Normal:
-                return normalIcon;
-            case MapPointType.Elite:
-                return eliteIcon;
-            case MapPointType.Shop:
-                return shopIcon;
-            case MapPointType.Rest:
-                return restIcon;
-            case MapPointType.Boss:
-                return bossIcon;
-            default:
-                return null;
-        }
+            MapPointType.Normal => normalIcon,
+            MapPointType.Elite => eliteIcon,
+            MapPointType.Shop => shopIcon,
+            MapPointType.Rest => restIcon,
+            MapPointType.Boss => bossIcon,
+            MapPointType.Mystery => mysteryIcon,
+            _ => null
+        };
     }
 
+    // Map state and selection
     public void UpdateMapUI()
     {
-        UpdateCurrentPointGlow();
+        RunSystem run = RunSystem.Instance;
+        if (run == null) return;
 
         foreach (KeyValuePair<int, Button> pair in pointButtons)
         {
-            pair.Value.interactable = RunSystem.Instance.CanSelectMapPoint(pair.Key);
+            if (pair.Value == null) continue;
+            bool canSelect = run.CanSelectMapPoint(pair.Key);
+            pair.Value.interactable = canSelect;
+
+            TMP_Text pointText = pair.Value.GetComponentInChildren<TMP_Text>(true);
+            if (pointText != null && pointText.gameObject.activeSelf) pointText.color = canSelect ? Color.black : new Color(0f, 0f, 0f, 0.4f);
         }
 
-        MapPoint completedPoint = RunSystem.Instance.GetMapPoint(
-            RunSystem.Instance.CompletedMapPointId
-        );
+        if (actNameText != null && run.CurrentAct != null) actNameText.text = run.CurrentAct.ActName;
+        if (healthText != null && run.HeroData != null) healthText.text = $"HP: {run.CurrentHealth}/{run.HeroData.Health}";
+        if (goldText != null) goldText.text = "Gold: " + run.Gold;
 
-        if (completedPoint != null && completedPoint.Type == MapPointType.Boss)
-        {
-            mapMessageText.text = "Run Complete";
-        }
-        else
-        {
-            mapMessageText.text = "Choose your next point";
-        }
-    }
-
-    private void UpdateCurrentPointGlow()
-    {
-        int currentPointId = RunSystem.Instance.CompletedMapPointId;
-        if (currentPointId == glowingMapPointId && currentPointGlow != null)
-        {
-            return;
-        }
-
-        if (currentPointGlow != null)
-        {
-            Destroy(currentPointGlow);
-        }
-
-        currentPointGlow = null;
-        currentPointGlowRect = null;
-        currentPointGlowImage = null;
-        currentPointGlowOutline = null;
-        glowingMapPointId = currentPointId;
-
-        if (currentPointId < 0 ||
-            !pointButtons.TryGetValue(currentPointId, out Button pointButton))
-        {
-            return;
-        }
-
-        Image pointImage = pointButton.GetComponent<Image>();
-        if (pointImage == null || pointImage.sprite == null)
-        {
-            return;
-        }
-
-        GameObject glowObject = new(
-            "CurrentMapPointGlow",
-            typeof(RectTransform),
-            typeof(CanvasRenderer),
-            typeof(Image)
-        );
-
-        currentPointGlow = glowObject;
-        currentPointGlowRect = glowObject.GetComponent<RectTransform>();
-        currentPointGlowRect.SetParent(mapContent, false);
-        currentPointGlowRect.anchorMin = Vector2.zero;
-        currentPointGlowRect.anchorMax = Vector2.zero;
-        RectTransform pointRect = pointButton.GetComponent<RectTransform>();
-        currentPointGlowRect.pivot = pointRect.pivot;
-        currentPointGlowRect.anchoredPosition = pointRect.anchoredPosition;
-        currentPointGlowRect.sizeDelta = pointRect.sizeDelta;
-        currentPointGlowRect.localScale = Vector3.one * 1.08f;
-        currentPointGlowRect.SetSiblingIndex(pointButton.transform.GetSiblingIndex());
-
-        currentPointGlowImage = glowObject.GetComponent<Image>();
-        currentPointGlowImage.sprite = pointImage.sprite;
-        currentPointGlowImage.type = Image.Type.Simple;
-        currentPointGlowImage.preserveAspect = pointImage.preserveAspect;
-        currentPointGlowImage.raycastTarget = false;
-
-        currentPointGlowOutline = glowObject.AddComponent<Outline>();
-        currentPointGlowOutline.effectColor = new Color(1f, 0.72f, 0.12f, 0.6f);
-        currentPointGlowOutline.effectDistance = new Vector2(2f, 2f);
-        currentPointGlowOutline.useGraphicAlpha = true;
+        MapPoint completedPoint = run.GetMapPoint(run.CompletedMapPointId);
+        if (mapMessageText != null) mapMessageText.text = completedPoint != null && completedPoint.Type == MapPointType.Boss ? "Run Complete" : "Choose your next point";
+        UpdateCurrentPointGlow(run);
     }
 
     public void SelectMapPoint(int pointId)
     {
-        if (!RunSystem.Instance.CanSelectMapPoint(pointId)) return;
+        RunSystem run = RunSystem.Instance;
+        if (run == null || !run.CanSelectMapPoint(pointId)) return;
 
-        MapPoint point = RunSystem.Instance.GetMapPoint(pointId);
-
+        MapPoint point = run.GetMapPoint(pointId);
         if (point == null) return;
 
         if (point.Type == MapPointType.Shop)
         {
-            RunSystem.Instance.SelectMapPoint(pointId);
-
+            if (shopUI == null) return;
+            run.SelectMapPoint(pointId);
             shopUI.gameObject.SetActive(true);
             shopUI.Setup();
-
+            UpdateMapUI();
             return;
         }
 
         if (point.Type == MapPointType.Rest)
         {
-            RunSystem.Instance.SelectMapPoint(pointId);
-
+            if (restUI == null) return;
+            run.SelectMapPoint(pointId);
             restUI.gameObject.SetActive(true);
             restUI.Setup();
-
+            UpdateMapUI();
             return;
         }
 
         EncounterData encounter = GetEncounter(point);
-
         if (encounter == null)
         {
-            Debug.LogError("No encounter is assigned for this map point");
+            Debug.LogError("No suitable encounter is assigned for this map point.", this);
             return;
         }
 
-        RunSystem.Instance.SelectMapPoint(pointId);
-        RunSystem.Instance.SetEncounter(encounter);
-
+        run.SelectMapPoint(pointId);
+        run.SetEncounter(encounter);
         SceneManager.LoadScene("InGameScene");
     }
 
+    // Encounter selection
     private EncounterData GetEncounter(MapPoint point)
     {
         RunSystem run = RunSystem.Instance;
-        if (run == null || run.CurrentAct == null || point == null)
-        {
-            Debug.LogError("RunSystem, Current Act or map point is missing.");
-            return null;
-        }
+        if (run == null || run.CurrentAct == null || point == null) return null;
 
         ActData act = run.CurrentAct;
         int floor = point.Floor + 1;
-
         if (point.Type == MapPointType.Boss)
         {
-            if (IsEncounterAvailable(act.BossEncounter, EncounterType.Boss, floor))
-                return act.BossEncounter;
-
-            Debug.LogError($"Invalid Boss encounter at floor {floor} in {act.name}.");
+            if (IsEncounterAvailable(act.BossEncounter, EncounterType.Boss, floor)) return act.BossEncounter;
+            Debug.LogError($"Invalid Boss encounter at floor {floor} in {act.name}.", this);
             return null;
         }
 
-        bool normal = point.Type == MapPointType.Normal;
+        bool normal = point.Type == MapPointType.Normal || point.Type == MapPointType.Mystery;
         if (!normal && point.Type != MapPointType.Elite) return null;
 
         EncounterType type = normal ? EncounterType.Normal : EncounterType.Elite;
         List<EncounterData> pool = normal ? act.NormalEncounters : act.EliteEncounters;
         List<EncounterData> available = new();
-
         if (pool != null)
         {
             foreach (EncounterData encounter in pool)
             {
-                if (IsEncounterAvailable(encounter, type, floor) && !available.Contains(encounter))
-                    available.Add(encounter);
+                if (IsEncounterAvailable(encounter, type, floor) && !available.Contains(encounter)) available.Add(encounter);
             }
         }
 
         if (available.Count == 0)
         {
-            Debug.LogError($"No suitable {type} encounter at floor {floor} in {act.name}.");
+            Debug.LogError($"No suitable {type} encounter at floor {floor} in {act.name}.", this);
             return null;
         }
 
@@ -621,12 +389,10 @@ public class MapUI : MonoBehaviour
         int totalWeight = 0;
         foreach (EncounterData encounter in available) totalWeight += encounter.Weight;
         int roll = Random.Range(0, totalWeight);
-
         foreach (EncounterData encounter in available)
         {
             roll -= encounter.Weight;
             if (roll >= 0) continue;
-
             Debug.Log($"{act.name}, floor {floor}: {available.Count} candidates -> {encounter.name}", encounter);
             return encounter;
         }
@@ -650,10 +416,200 @@ public class MapUI : MonoBehaviour
 
         foreach (EnemyData enemy in encounter.Enemies)
         {
-            if (enemy == null || enemy.Rank != rank || enemy.Health <= 0 || enemy.Moves == null || enemy.Moves.Count == 0)
-                return false;
+            if (enemy == null || enemy.Rank != rank || enemy.Health <= 0 || enemy.Moves == null || enemy.Moves.Count == 0) return false;
         }
 
         return true;
+    }
+
+    // Current point glow
+    private void UpdateCurrentPointGlow(RunSystem run)
+    {
+        int pointId = run.CompletedMapPointId;
+        if (pointId == glowingMapPointId && currentPointGlow != null) return;
+        ClearCurrentPointGlow();
+        glowingMapPointId = pointId;
+        if (pointId < 0 || !pointButtons.TryGetValue(pointId, out Button pointButton) || pointButton == null) return;
+
+        Image pointImage = pointButton.GetComponent<Image>();
+        TMP_Text pointText = pointButton.GetComponentInChildren<TMP_Text>(true);
+        bool useImage = pointImage != null && pointImage.sprite != null;
+        if (!useImage && (pointText == null || !pointText.gameObject.activeSelf)) return;
+
+        currentPointGlow = new GameObject("CurrentMapPointGlow", typeof(RectTransform), typeof(CanvasRenderer));
+        currentPointGlow.layer = mapContent.gameObject.layer;
+        currentPointGlowRect = currentPointGlow.GetComponent<RectTransform>();
+        currentPointGlowRect.SetParent(mapContent, false);
+        currentPointGlowRect.anchorMin = Vector2.zero;
+        currentPointGlowRect.anchorMax = Vector2.zero;
+
+        RectTransform pointRect = pointButton.GetComponent<RectTransform>();
+        currentPointGlowRect.pivot = pointRect.pivot;
+        currentPointGlowRect.anchoredPosition = pointRect.anchoredPosition;
+        currentPointGlowRect.sizeDelta = pointRect.sizeDelta;
+        currentPointGlowRect.localScale = Vector3.one * 1.08f;
+        currentPointGlowRect.SetSiblingIndex(pointButton.transform.GetSiblingIndex());
+
+        if (useImage)
+        {
+            currentPointGlowImage = currentPointGlow.AddComponent<Image>();
+            currentPointGlowImage.sprite = pointImage.sprite;
+            currentPointGlowImage.type = Image.Type.Simple;
+            currentPointGlowImage.preserveAspect = pointImage.preserveAspect;
+            currentPointGlowImage.raycastTarget = false;
+            currentPointGlowOutline = currentPointGlow.AddComponent<Outline>();
+            currentPointGlowOutline.effectDistance = new Vector2(2f, 2f);
+            currentPointGlowOutline.useGraphicAlpha = true;
+        }
+        else
+        {
+            currentPointGlowText = currentPointGlow.AddComponent<TextMeshProUGUI>();
+            currentPointGlowText.font = pointText.font;
+            currentPointGlowText.text = pointText.text;
+            currentPointGlowText.fontSize = pointText.fontSize;
+            currentPointGlowText.fontStyle = pointText.fontStyle;
+            currentPointGlowText.enableAutoSizing = pointText.enableAutoSizing;
+            currentPointGlowText.fontSizeMin = pointText.fontSizeMin;
+            currentPointGlowText.fontSizeMax = pointText.fontSizeMax;
+            currentPointGlowText.alignment = TextAlignmentOptions.Center;
+            currentPointGlowText.raycastTarget = false;
+        }
+
+        AnimateCurrentPointGlow();
+    }
+
+    private void AnimateCurrentPointGlow()
+    {
+        if (currentPointGlowRect == null) return;
+
+        float pulse = (Mathf.Sin(Time.unscaledTime * 3f) + 1f) * 0.5f;
+        currentPointGlowRect.localScale = Vector3.one * Mathf.Lerp(1.08f, 1.2f, pulse);
+        if (currentPointGlowImage != null) currentPointGlowImage.color = new Color(1f, 0.78f, 0.12f, Mathf.Lerp(0.16f, 0.34f, pulse));
+        if (currentPointGlowOutline != null) currentPointGlowOutline.effectColor = new Color(1f, 0.72f, 0.12f, Mathf.Lerp(0.3f, 0.75f, pulse));
+        if (currentPointGlowText != null) currentPointGlowText.color = new Color(1f, 0.78f, 0.12f, Mathf.Lerp(0.3f, 0.7f, pulse));
+    }
+
+    private void ClearCurrentPointGlow()
+    {
+        if (currentPointGlow != null)
+        {
+            currentPointGlow.SetActive(false);
+            Destroy(currentPointGlow);
+        }
+
+        currentPointGlow = null;
+        currentPointGlowRect = null;
+        currentPointGlowImage = null;
+        currentPointGlowOutline = null;
+        currentPointGlowText = null;
+        glowingMapPointId = -1;
+    }
+
+    // Legend and timer
+    private void StyleMapLegend()
+    {
+        if (mapLegend == null) return;
+
+        foreach (Button entry in mapLegend.GetComponentsInChildren<Button>(true))
+        {
+            entry.enabled = false;
+            bool isTitle = entry.name == "MapLegend - Title";
+            Image icon = entry.GetComponent<Image>();
+            if (icon != null)
+            {
+                icon.raycastTarget = false;
+                icon.preserveAspect = true;
+                icon.color = isTitle ? new Color(1f, 1f, 1f, 0f) : Color.white;
+                if (!isTitle) ConfigureIconOutline(icon, new Color(0.96f, 0.72f, 0.3f, 0.8f));
+            }
+
+            TMP_Text label = entry.GetComponentInChildren<TMP_Text>(true);
+            if (label == null)
+            {
+                Debug.LogError("Map legend entry is missing its label: " + entry.name, this);
+                continue;
+            }
+
+            StyleText(label, isTitle ? 30f : 24f, new Color(0.96f, 0.93f, 0.85f), isTitle ? TextAlignmentOptions.Center : TextAlignmentOptions.MidlineLeft);
+            ConfigureTextShadow(label);
+        }
+    }
+
+    private void SetupRunTimer()
+    {
+        if (runTimerDisplay == null) return;
+
+        Transform textTransform = runTimerDisplay.Find("RunTimerText");
+        runTimerText = textTransform != null ? textTransform.GetComponentInChildren<TMP_Text>(true) : null;
+        if (runTimerText == null)
+        {
+            Debug.LogError("Run Timer Display needs a RunTimerText object with a TMP text component.", this);
+            return;
+        }
+
+        StyleText(runTimerText, 34f, Color.white, TextAlignmentOptions.Center);
+        ConfigureTextShadow(runTimerText);
+
+        Transform iconTransform = runTimerDisplay.Find("RunTimerIcon");
+        Image icon = iconTransform != null ? iconTransform.GetComponent<Image>() : null;
+        if (icon == null)
+        {
+            Debug.LogError("Run Timer Display needs a RunTimerIcon object with an Image component.", this);
+            return;
+        }
+
+        icon.preserveAspect = true;
+        icon.raycastTarget = false;
+        ConfigureIconOutline(icon, new Color(0.96f, 0.72f, 0.3f, 0.85f));
+        UpdateRunTimer();
+    }
+
+    private void UpdateRunTimer()
+    {
+        RunSystem run = RunSystem.Instance;
+        if (runTimerText == null || run == null) return;
+
+        int elapsedSeconds = Mathf.FloorToInt(run.ElapsedRunTime);
+        int hours = elapsedSeconds / 3600;
+        int minutes = (elapsedSeconds / 60) % 60;
+        int seconds = elapsedSeconds % 60;
+        runTimerText.text = hours > 0 ? $"{hours:00}:{minutes:00}:{seconds:00}" : $"{minutes:00}:{seconds:00}";
+    }
+
+    // Styling helpers
+    private void StyleText(TMP_Text text, float size, Color color, TextAlignmentOptions alignment)
+    {
+        text.font = mapMessageText.font;
+        text.fontSize = size;
+        text.fontStyle = FontStyles.Bold;
+        text.color = color;
+        text.alignment = alignment;
+        text.raycastTarget = false;
+    }
+
+    private static void ConfigureIconOutline(Image image, Color color)
+    {
+        Outline outline = image.GetComponent<Outline>();
+        if (outline == null) outline = image.gameObject.AddComponent<Outline>();
+        outline.effectColor = color;
+        outline.effectDistance = new Vector2(1.5f, 1.5f);
+    }
+
+    private static void ConfigureTextShadow(TMP_Text text)
+    {
+        Shadow shadow = text.GetComponent<Shadow>();
+        if (shadow == null) shadow = text.gameObject.AddComponent<Shadow>();
+        shadow.effectColor = new Color(0f, 0f, 0f, 0.85f);
+        shadow.effectDistance = new Vector2(1f, -1f);
+    }
+
+    private static void HideScrollbar(Scrollbar scrollbar)
+    {
+        if (scrollbar == null) return;
+        CanvasGroup canvasGroup = scrollbar.GetComponent<CanvasGroup>();
+        if (canvasGroup == null) canvasGroup = scrollbar.gameObject.AddComponent<CanvasGroup>();
+        canvasGroup.alpha = 0f;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
     }
 }

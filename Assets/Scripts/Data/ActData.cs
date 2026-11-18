@@ -31,6 +31,7 @@ public class ActData : ScriptableObject
 
     [field: SerializeField, Min(0)]
     public int RestWeight { get; private set; } = 15;
+    [field: SerializeField, Min(0)] public int MysteryWeight { get; private set; } = 20;
     [field: SerializeField, Min(1)] public int EarlyNormalFloors { get; private set; } = 3;
     [field: SerializeField, Min(2)] public int FirstEliteFloor { get; private set; } = 6;
     [field: SerializeField, Min(0)] public int MinimumElitePoints { get; private set; } = 1;
