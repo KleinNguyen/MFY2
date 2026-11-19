@@ -30,6 +30,10 @@ public class MatchSetupSystem : MonoBehaviour
         HeroSystem.Instance.Setup(run.HeroData);
         HeroSystem.Instance.HeroView.SetCurrentHealth(run.CurrentHealth);
         EnemySystem.Instance.Setup(run.CurrentEncounter);
+        if (run.CurrentEncounter.Type == EncounterType.Boss)
+        {
+            SceneMusicPlayer.PlayBossMusic();
+        }
         CardSystem.Instance.Setup(run.Deck);
 
         MapPoint point = run.GetMapPoint(run.SelectedMapPointId);

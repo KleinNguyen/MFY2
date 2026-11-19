@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67a6147af0c4b19479bdfc1d72ae808b, type: 3}
-  m_Name: green
+  m_Name: N-160805
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 1
+  <CharacterName>k__BackingField: N-160805
   <Image>k__BackingField: {fileID: -7065721614544851415, guid: 081ed05436c2a194fb6b23da02eedd49, type: 3}
   <SelectionBackground>k__BackingField: {fileID: 720118652224413485, guid: dab77ce3c03b62242b1ea2891c117606, type: 3}
   <Description>k__BackingField: A sinister biological experiment specializing in
     toxins and chemical warfare. He spreads poisonous substances to weaken his enemies,
     inflict debilitating effects, and control the battlefield.
+  <StartingPerkDescription>k__BackingField: 15% chance to deal 5 damage to a random enemy when you are attacked.
   <Health>k__BackingField: 75
   <StartingMana>k__BackingField: 3
   <Deck>k__BackingField:
