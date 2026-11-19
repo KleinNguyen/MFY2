@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class StorySlideshowUI : MonoBehaviour
@@ -10,7 +11,9 @@ public class StorySlideshowUI : MonoBehaviour
     [SerializeField] private Sprite[] storyImages;
     [SerializeField] private string[] storyTexts;
     [SerializeField] private float secondsPerImage = 3f;
-    [SerializeField] private float slideDuration = 1.5f;
+    [FormerlySerializedAs("slideDuration")]
+    [SerializeField] private float crossFadeDuration = 0.5f;
+    [SerializeField] private float typewriterDelay = 0.03f;
 
     private IEnumerator Start()
     {
@@ -44,15 +47,7 @@ public class StorySlideshowUI : MonoBehaviour
             yield break;
         }
 
-        RectTransform currentRect = backgroundImage.rectTransform;
-        float width = viewport.rect.width;
-        if (width <= 0f)
-        {
-            Debug.LogError("The story Canvas has no available width.");
-            yield break;
-        }
-
-        Image incomingImage = CreateIncomingImage(currentRect);
+        Image incomingImage = CreateIncomingImage(backgroundImage.rectTransform);
         TMP_Text storyText = CreateStoryText(storyCanvas.transform);
         if (storyText == null)
         {
@@ -64,43 +59,75 @@ public class StorySlideshowUI : MonoBehaviour
 
         backgroundImage.sprite = storyImages[0];
         backgroundImage.raycastTarget = false;
-        storyText.text = storyTexts[0];
+        SetImageAlpha(backgroundImage, 1f);
         incomingImage.sprite = storyImages[0];
-        incomingRect.anchoredPosition = currentRect.anchoredPosition + Vector2.right * width;
+        SetImageAlpha(incomingImage, 0f);
+        storyText.text = storyTexts[0];
 
-        float waitDuration = Mathf.Max(0f, secondsPerImage);
-        float transitionDuration = Mathf.Max(0.01f, slideDuration);
-
-        for (int i = 1; i < storyImages.Length; i++)
+        for (int i = 0; i < storyImages.Length; i++)
         {
-            yield return new WaitForSecondsRealtime(waitDuration);
-
-            Vector2 startPosition = currentRect.anchoredPosition;
-            incomingRect.anchoredPosition = startPosition + Vector2.right * width;
-            incomingImage.sprite = storyImages[i];
-            storyText.text = storyTexts[i];
-
-            float elapsed = 0f;
-            while (elapsed < transitionDuration)
+            if (i > 0)
             {
-                elapsed += Time.unscaledDeltaTime;
-                float progress = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / transitionDuration));
-                currentRect.anchoredPosition = startPosition - Vector2.right * (width * progress);
-                incomingRect.anchoredPosition = startPosition + Vector2.right * (width * (1f - progress));
-                yield return null;
+                incomingRect.SetAsFirstSibling();
+                incomingImage.sprite = storyImages[i];
+                SetImageAlpha(incomingImage, 1f);
+
+                yield return CrossFadeImage(backgroundImage);
+
+                Image previousImage = backgroundImage;
+                backgroundImage = incomingImage;
+                incomingImage = previousImage;
+                incomingRect = incomingImage.rectTransform;
+
+                SetImageAlpha(backgroundImage, 1f);
+                SetImageAlpha(incomingImage, 0f);
+                storyText.text = storyTexts[i];
+                storyText.maxVisibleCharacters = 0;
             }
 
-            currentRect.anchoredPosition = startPosition - Vector2.right * width;
-            incomingRect.anchoredPosition = startPosition;
-
-            Image previousImage = backgroundImage;
-            backgroundImage = incomingImage;
-            incomingImage = previousImage;
-
-            RectTransform previousRect = currentRect;
-            currentRect = incomingRect;
-            incomingRect = previousRect;
+            yield return RevealStoryText(storyText);
+            yield return new WaitForSecondsRealtime(Mathf.Max(0f, secondsPerImage));
         }
+    }
+
+    private IEnumerator CrossFadeImage(Image currentImage)
+    {
+        float duration = Mathf.Max(0.01f, crossFadeDuration);
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float progress = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
+            SetImageAlpha(currentImage, 1f - progress);
+            yield return null;
+        }
+
+        SetImageAlpha(currentImage, 0f);
+    }
+
+    private IEnumerator RevealStoryText(TMP_Text storyText)
+    {
+        storyText.maxVisibleCharacters = 0;
+        storyText.ForceMeshUpdate();
+        int characterCount = storyText.textInfo.characterCount;
+        float delay = Mathf.Max(0f, typewriterDelay);
+
+        for (int visibleCharacters = 1; visibleCharacters <= characterCount; visibleCharacters++)
+        {
+            storyText.maxVisibleCharacters = visibleCharacters;
+            if (delay > 0f)
+            {
+                yield return new WaitForSecondsRealtime(delay);
+            }
+        }
+    }
+
+    private static void SetImageAlpha(Image image, float alpha)
+    {
+        Color color = image.color;
+        color.a = alpha;
+        image.color = color;
     }
 
     private Image CreateIncomingImage(RectTransform sourceRect)

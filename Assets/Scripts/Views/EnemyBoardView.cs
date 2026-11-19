@@ -22,6 +22,7 @@ public class EnemyBoardView : MonoBehaviour
         }
 
         int[] slotIndices = GetSlotIndices(enemyDatas);
+        HeroView heroView = HeroSystem.Instance != null ? HeroSystem.Instance.HeroView : null;
         for (int i = 0; i < enemyDatas.Count; i++)
         {
             Transform slot = slots[slotIndices[i]];
@@ -31,6 +32,7 @@ public class EnemyBoardView : MonoBehaviour
                 slot.rotation
             );
             enemyView.transform.parent = slot;
+            if (heroView != null) enemyView.AlignSpriteBottomTo(heroView);
             EnemyViews.Add(enemyView);
         }
     }

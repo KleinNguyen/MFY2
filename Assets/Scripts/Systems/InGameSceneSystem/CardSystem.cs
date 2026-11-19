@@ -3,9 +3,18 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using DG.Tweening;
+using UnityEngine.Rendering;
 
 public class CardSystem : Singleton<CardSystem>
 {
+    private const float DiscardFlightDuration = 0.40f;
+    private const float EndTurnDiscardDuration = 0.40f;
+    private const float RefillFlightDuration = 0.50f;
+    private const float RefillCardFlightScale = 0.08f;
+    private const float DiscardArcHeight = 5.2f;
+    private const float DiscardTrailLifetime = 0.3f;
+    private const float DiscardSparkLifetime = 0.36f;
+
     [SerializeField] private HandView handView;
     [SerializeField] private Transform drawPilePoint;
     [SerializeField] private Transform discardPilePoint;
@@ -236,7 +245,7 @@ public class CardSystem : Singleton<CardSystem>
         {
             if (drawPile.Count == 0)
             {
-                RefillDeck();
+                yield return RefillDeck();
             }
             if (drawPile.Count == 0)
             {
@@ -253,7 +262,7 @@ public class CardSystem : Singleton<CardSystem>
         {
             //discardPile.Add(card);
             CardView cardView = handView.RemoveCard(card);
-            yield return DiscardCard(cardView);
+            yield return DiscardCard(cardView, EndTurnDiscardDuration);
         }
         hand.Clear();
     }
@@ -432,21 +441,319 @@ public class CardSystem : Singleton<CardSystem>
 
         yield return handView.AddCard(cardView);
     }
-    private void RefillDeck()
+    private IEnumerator RefillDeck()
     {
+        if (discardPile.Count == 0) yield break;
+
+        List<Card> cardsToRefill = new(discardPile);
         drawPile.AddRange(discardPile);
         discardPile.Clear();
         pileUI.UpdateDrawPileText(drawPile.Count);
         pileUI.UpdateDiscardPileText(discardPile.Count);
+
+        if (CardViewCreator.Instance == null || discardPilePoint == null || drawPilePoint == null)
+        {
+            Debug.LogError("Cannot animate the discard pile refill: a card view creator or pile point is missing.", this);
+            yield break;
+        }
+
+        int remainingFlights = 0;
+        float stagger = cardsToRefill.Count > 1
+            ? Mathf.Min(0.06f, 0.3f / (cardsToRefill.Count - 1))
+            : 0f;
+
+        for (int i = 0; i < cardsToRefill.Count; i++)
+        {
+            float pileOffset = (i - (cardsToRefill.Count - 1) * 0.5f) * 0.08f;
+            Vector3 startPosition = discardPilePoint.position + Vector3.right * pileOffset;
+            CardView cardView = CardViewCreator.Instance.CreateCardView(
+                cardsToRefill[i],
+                startPosition,
+                discardPilePoint.rotation
+            );
+
+            if (cardView == null)
+            {
+                Debug.LogError("Could not create a temporary card view for the discard pile refill.", this);
+                continue;
+            }
+
+            cardView.transform.DOKill();
+            cardView.transform.localScale = cardView.DisplayScale * RefillCardFlightScale;
+            cardView.enabled = false;
+            foreach (Collider cardCollider in cardView.GetComponentsInChildren<Collider>())
+            {
+                cardCollider.enabled = false;
+            }
+
+            remainingFlights++;
+            StartCoroutine(AnimateCardToPile(
+                cardView,
+                drawPilePoint,
+                RefillFlightDuration,
+                stagger * i,
+                () => remainingFlights--
+            ));
+        }
+
+        while (remainingFlights > 0) yield return null;
+        yield return null;
     }
-    private IEnumerator DiscardCard(CardView cardView)
+    private IEnumerator DiscardCard(
+        CardView cardView,
+        float duration = DiscardFlightDuration
+    )
     {
+        if (cardView == null || cardView.Card == null)
+        {
+            Debug.LogError("Cannot discard card: CardView or its card is missing.", this);
+            yield break;
+        }
+
         discardPile.Add(cardView.Card);
         pileUI.UpdateDiscardPileText(discardPile.Count);
-        cardView.transform.DOScale(Vector3.zero, 0.15f);
-        Tween tween = cardView.transform.DOMove(discardPilePoint.position, 0.15f);
-        yield return tween.WaitForCompletion();
+
+        yield return AnimateCardToPile(cardView, discardPilePoint, duration);
+    }
+
+    private IEnumerator AnimateCardToPile(
+        CardView cardView,
+        Transform destination,
+        float duration,
+        float startDelay = 0f,
+        System.Action onComplete = null
+    )
+    {
+        if (startDelay > 0f) yield return new WaitForSeconds(startDelay);
+
+        if (cardView == null || cardView.Card == null || destination == null)
+        {
+            Debug.LogError("Cannot animate a card to a missing pile or card view.", this);
+            if (cardView != null) Destroy(cardView.gameObject);
+            if (onComplete != null) onComplete();
+            yield break;
+        }
+
+        Transform cardTransform = cardView.transform;
+        Vector3 startPosition = cardTransform.position;
+        Vector3 endPosition = destination.position;
+        Vector3 startScale = cardTransform.localScale;
+        Quaternion startRotation = cardTransform.rotation;
+        Quaternion endRotation = destination.rotation;
+
+        SortingGroup sortingGroup = cardView.GetComponent<SortingGroup>();
+        int sortingLayerId = sortingGroup != null
+            ? sortingGroup.sortingLayerID
+            : 0;
+        int trailSortingOrder = sortingGroup != null
+            ? sortingGroup.sortingOrder - 1
+            : -1;
+
+        Shader trailShader = Shader.Find("Sprites/Default");
+        Material trailMaterial = null;
+        GameObject trailObject = null;
+        ParticleSystem sparks = null;
+        TrailRenderer glowTrail = null;
+        TrailRenderer coreTrail = null;
+
+        if (trailShader == null)
+        {
+            Debug.LogError("Cannot create the card pile flight trail: Sprites/Default shader was not found.", this);
+        }
+        else
+        {
+            trailMaterial = new Material(trailShader);
+            trailObject = new GameObject("CardPileFlightTrail");
+            trailObject.transform.position = startPosition;
+
+            glowTrail = CreateDiscardTrail(
+                trailObject.transform,
+                "Glow",
+                trailMaterial,
+                new Color(1f, 0.72f, 0.08f),
+                0.28f,
+                0.62f,
+                sortingLayerId,
+                trailSortingOrder
+            );
+            coreTrail = CreateDiscardTrail(
+                trailObject.transform,
+                "Core",
+                trailMaterial,
+                new Color(1f, 0.96f, 0.62f),
+                0.075f,
+                0.95f,
+                sortingLayerId,
+                trailSortingOrder
+            );
+            sparks = CreateDiscardTrailSparks(
+                trailObject,
+                trailMaterial,
+                sortingLayerId,
+                trailSortingOrder
+            );
+        }
+
+        Tween flightTween = DOTween.To(
+            () => 0f,
+            progress =>
+            {
+                Vector3 position = Vector3.Lerp(
+                    startPosition,
+                    endPosition,
+                    progress
+                );
+                position += Vector3.up *
+                    (DiscardArcHeight * 4f * progress * (1f - progress));
+                cardTransform.position = position;
+
+                float scaleProgress = progress <= 0.5f
+                    ? Mathf.SmoothStep(0f, 1f, progress * 2f)
+                    : Mathf.SmoothStep(0f, 1f, (progress - 0.5f) * 2f);
+                float scaleMultiplier = progress <= 0.5f
+                    ? Mathf.Lerp(1f, 1.45f, scaleProgress)
+                    : Mathf.Lerp(1.45f, 0.015f, scaleProgress);
+                cardTransform.localScale = startScale * scaleMultiplier;
+
+                Quaternion rotation = Quaternion.Slerp(
+                    startRotation,
+                    endRotation,
+                    progress
+                );
+                cardTransform.rotation =
+                    rotation *
+                    Quaternion.Euler(
+                        0f,
+                        0f,
+                        Mathf.Sin(progress * Mathf.PI) * 10f
+                    );
+
+                if (trailObject != null)
+                {
+                    trailObject.transform.position = position;
+                }
+            },
+            1f,
+            duration
+        ).SetEase(Ease.InOutSine);
+
+        yield return flightTween.WaitForCompletion();
+
+        if (glowTrail != null)
+        {
+            glowTrail.emitting = false;
+            coreTrail.emitting = false;
+            sparks.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+
+            float cleanupDelay = Mathf.Max(
+                DiscardTrailLifetime,
+                DiscardSparkLifetime
+            );
+            Destroy(trailObject, cleanupDelay);
+            Destroy(trailMaterial, cleanupDelay);
+        }
+
         Destroy(cardView.gameObject);
+        if (onComplete != null) onComplete();
+    }
+
+    private static TrailRenderer CreateDiscardTrail(
+        Transform parent,
+        string objectName,
+        Material material,
+        Color color,
+        float width,
+        float alpha,
+        int sortingLayerId,
+        int sortingOrder
+    )
+    {
+        GameObject trailObject = new(objectName);
+        trailObject.transform.SetParent(parent, false);
+
+        TrailRenderer trail = trailObject.AddComponent<TrailRenderer>();
+        trail.time = DiscardTrailLifetime;
+        trail.startWidth = width;
+        trail.endWidth = width * 0.04f;
+        trail.minVertexDistance = 0.02f;
+        trail.numCornerVertices = 5;
+        trail.numCapVertices = 5;
+        trail.alignment = LineAlignment.View;
+        trail.textureMode = LineTextureMode.Stretch;
+        trail.autodestruct = false;
+        trail.sharedMaterial = material;
+        trail.sortingLayerID = sortingLayerId;
+        trail.sortingOrder = sortingOrder;
+        trail.colorGradient = CreateDiscardTrailGradient(color, alpha);
+        trail.Clear();
+        return trail;
+    }
+
+    private static Gradient CreateDiscardTrailGradient(Color color, float alpha)
+    {
+        Gradient gradient = new();
+        gradient.SetKeys(
+            new[]
+            {
+                new GradientColorKey(color, 0f),
+                new GradientColorKey(color, 1f)
+            },
+            new[]
+            {
+                new GradientAlphaKey(alpha, 0f),
+                new GradientAlphaKey(0f, 1f)
+            }
+        );
+        return gradient;
+    }
+
+    private static ParticleSystem CreateDiscardTrailSparks(
+        GameObject effectObject,
+        Material material,
+        int sortingLayerId,
+        int sortingOrder
+    )
+    {
+        ParticleSystem sparks = effectObject.AddComponent<ParticleSystem>();
+        ParticleSystem.MainModule main = sparks.main;
+        main.loop = true;
+        main.startLifetime = new ParticleSystem.MinMaxCurve(
+            0.16f,
+            DiscardSparkLifetime
+        );
+        main.startSpeed = new ParticleSystem.MinMaxCurve(0.15f, 0.55f);
+        main.startSize = new ParticleSystem.MinMaxCurve(0.025f, 0.075f);
+        main.startColor = new Color(1f, 0.9f, 0.35f);
+        main.gravityModifier = 0f;
+        main.simulationSpace = ParticleSystemSimulationSpace.World;
+        main.maxParticles = 48;
+
+        ParticleSystem.ColorOverLifetimeModule colorOverLifetime =
+            sparks.colorOverLifetime;
+        colorOverLifetime.enabled = true;
+        colorOverLifetime.color = new ParticleSystem.MinMaxGradient(
+            CreateDiscardTrailGradient(
+                new Color(1f, 0.9f, 0.35f),
+                1f
+            )
+        );
+
+        ParticleSystem.EmissionModule emission = sparks.emission;
+        emission.rateOverTime = 28f;
+
+        ParticleSystem.ShapeModule shape = sparks.shape;
+        shape.shapeType = ParticleSystemShapeType.Sphere;
+        shape.radius = 0.05f;
+
+        ParticleSystemRenderer renderer = sparks.GetComponent<ParticleSystemRenderer>();
+        renderer.renderMode = ParticleSystemRenderMode.Stretch;
+        renderer.lengthScale = 2f;
+        renderer.sharedMaterial = material;
+        renderer.sortingLayerID = sortingLayerId;
+        renderer.sortingOrder = sortingOrder;
+
+        sparks.Play();
+        return sparks;
     }
     private IEnumerator ExhaustCard(CardView cardView)
     {

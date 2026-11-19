@@ -144,7 +144,7 @@ MonoBehaviour:
   - "With no way back, they prepared to face the challenge ahead."
   - "The journey begins. Every choice will determine their fate."
   secondsPerImage: 3
-  slideDuration: 1.5
+  crossFadeDuration: 0.5
 --- !u!1 &539627193
 GameObject:
   m_ObjectHideFlags: 0

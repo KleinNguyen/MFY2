@@ -29,6 +29,17 @@ public class CombatantView : MonoBehaviour
     private Vector3 idleAnchorInCombatantSpace;
     private bool idleAnimationInitialized;
 
+    public void AlignSpriteBottomTo(CombatantView target)
+    {
+        if (target == null || spriteRenderer.sprite == null || target.spriteRenderer.sprite == null)
+        {
+            return;
+        }
+
+        float offset = target.spriteRenderer.bounds.min.y - spriteRenderer.bounds.min.y;
+        transform.position += Vector3.up * offset;
+    }
+
     protected void SetupBase(int health, Sprite image)
     {
         MaxHealth = CurrentHealth = health;

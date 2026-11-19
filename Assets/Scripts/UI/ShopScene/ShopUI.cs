@@ -39,8 +39,15 @@ public class ShopUI : MonoBehaviour
     private readonly List<LibraryCardUI> cardViews = new();
     private readonly List<CardData> currentCards = new();
     private readonly List<int> currentPrices = new();
+    private CardexCardFlightEffect cardFlightEffect;
     private bool healthPotionPurchased;
     private bool manaPotionPurchased;
+
+    private void Awake()
+    {
+        cardFlightEffect = GetComponent<CardexCardFlightEffect>();
+        if (cardFlightEffect == null) cardFlightEffect = gameObject.AddComponent<CardexCardFlightEffect>();
+    }
 
     // Prepare a fresh inventory when entering a shop.
     public void Setup()
@@ -97,7 +104,18 @@ public class ShopUI : MonoBehaviour
         button.interactable = false;
 
         RewardCardHoverUI hoverUI = button.GetComponent<RewardCardHoverUI>();
-        if (hoverUI != null) hoverUI.Finish(true);
+        if (hoverUI != null) hoverUI.Finish(false);
+
+        LibraryCardUI cardView = button.GetComponentInChildren<LibraryCardUI>();
+        if (cardView == null)
+        {
+            Debug.LogError("Purchased card has no card view to animate.", this);
+        }
+        else if (!cardFlightEffect.TryFly(cardView.GetComponent<RectTransform>()))
+        {
+            cardView.gameObject.SetActive(false);
+        }
+
         if (index < cardButtonTexts.Length && cardButtonTexts[index] != null) cardButtonTexts[index].text = "Sold";
 
         Debug.Log("Purchased: " + card.name);
