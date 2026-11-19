@@ -39,19 +39,25 @@ public class RewardUI : MonoBehaviour
 
     private readonly List<CardData> currentChoices = new();
     private readonly List<RewardCardHoverUI> choiceViews = new();
+    private CardexCardFlightEffect cardFlightEffect;
     private bool selectionFinished;
     private bool wheelOpen;
+    private bool cardFlightAnimating;
 
     // Unity
     private void Awake()
     {
         if (wheelButton != null) wheelButton.onClick.AddListener(OpenRewardWheel);
+        cardFlightEffect = GetComponent<CardexCardFlightEffect>();
+        if (cardFlightEffect == null) cardFlightEffect = gameObject.AddComponent<CardexCardFlightEffect>();
     }
 
     private void OnDestroy()
     {
         if (wheelButton != null) wheelButton.onClick.RemoveListener(OpenRewardWheel);
     }
+
+    private void OnDisable() => cardFlightAnimating = false;
 
     // Reward setup
     public void Setup()
@@ -148,7 +154,13 @@ public class RewardUI : MonoBehaviour
         if (selectedCard == null) return;
 
         run.ClaimReward(run.PendingRewardGold, selectedCard);
-        if (run.RewardClaimed) FinishSelection("Received: " + selectedCard.name, index);
+        if (run.RewardClaimed)
+        {
+            if (!TryStartCardFlight(index))
+            {
+                FinishSelection("Received: " + selectedCard.name, index);
+            }
+        }
         else messageText.text = "Could not claim this reward.";
     }
 
@@ -165,6 +177,36 @@ public class RewardUI : MonoBehaviour
     private bool CanClaimRewards(RunSystem run)
     {
         return run != null && !run.IsRunFinished && run.RewardsPrepared && !run.RewardClaimed && !selectionFinished && !wheelOpen;
+    }
+
+    private bool TryStartCardFlight(int choiceIndex)
+    {
+        LibraryCardUI card = choiceIndex >= 0 && choiceIndex < choiceViews.Count && choiceViews[choiceIndex] != null
+            ? choiceViews[choiceIndex].GetComponentInChildren<LibraryCardUI>()
+            : null;
+        RectTransform cardRect = card != null ? card.GetComponent<RectTransform>() : null;
+
+        if (cardFlightEffect == null || cardRect == null)
+        {
+            Debug.LogError("Cannot animate the reward card: the selected card is missing.", this);
+            return false;
+        }
+
+        cardFlightAnimating = true;
+        FinishSelection("Received: " + currentChoices[choiceIndex].name, choiceIndex);
+        if (!cardFlightEffect.TryFly(cardRect, () =>
+        {
+            cardFlightAnimating = false;
+            UpdateButtons();
+        }))
+        {
+            cardFlightAnimating = false;
+            UpdateButtons();
+            return false;
+        }
+
+        UpdateButtons();
+        return true;
     }
 
     private void FinishSelection(string message, int selectedIndex = -1)
@@ -302,7 +344,7 @@ public class RewardUI : MonoBehaviour
         bool canChoose = CanClaimRewards(run);
         if (skipButton != null) skipButton.interactable = canChoose;
         if (wheelButton != null) wheelButton.interactable = canChoose && run.RewardWheelResult < 0;
-        if (continueButton != null) continueButton.interactable = run != null && !run.IsRunFinished && run.RewardClaimed && !wheelOpen;
+        if (continueButton != null) continueButton.interactable = run != null && !run.IsRunFinished && run.RewardClaimed && !wheelOpen && !cardFlightAnimating;
 
         foreach (RewardCardHoverUI view in choiceViews)
         {
@@ -367,7 +409,7 @@ public class RewardUI : MonoBehaviour
     public void ContinueToMap()
     {
         RunSystem run = RunSystem.Instance;
-        if (wheelOpen || run == null || run.IsRunFinished || !run.RewardClaimed) return;
+        if (wheelOpen || cardFlightAnimating || run == null || run.IsRunFinished || !run.RewardClaimed) return;
 
         MapPoint selectedPoint = run.GetMapPoint(run.SelectedMapPointId);
         if (selectedPoint == null)

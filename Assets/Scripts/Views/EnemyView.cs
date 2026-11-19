@@ -13,6 +13,7 @@ public class EnemyView : CombatantView
     private const float AttackIconGap = 0.04f;
     private const float AttackIconHeightRatio = 0.12f;
     private const float AttackIconMaxHeight = 0.32f;
+    private const float AttackIconScaleMultiplier = 1.2f;
     private const float AttackFrameHorizontalPadding = 0.08f;
     private const float AttackFrameVerticalPadding = 0.04f;
 
@@ -48,6 +49,7 @@ public class EnemyView : CombatantView
     public void Setup(EnemyData enemyData)
     {
         SetupBase(enemyData.Health, enemyData.Image);
+        if (attackText != null) attackText.color = Color.red;
         attackTextRenderer = attackText != null ? attackText.GetComponent<Renderer>() : null;
 
         moves.Clear();
@@ -256,7 +258,7 @@ public class EnemyView : CombatantView
         );
         float parentScaleY = Mathf.Max(Mathf.Abs(transform.lossyScale.y), 0.0001f);
         float iconScale = desiredHeight / parentScaleY / attackIconSprite.bounds.size.y;
-        attackIcon.transform.localScale = Vector3.one * iconScale;
+        attackIcon.transform.localScale = Vector3.one * iconScale * AttackIconScaleMultiplier;
     }
 
     private void SetupAttackFrame()
