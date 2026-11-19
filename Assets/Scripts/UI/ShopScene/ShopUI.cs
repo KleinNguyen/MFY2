@@ -377,6 +377,36 @@ public class ShopUI : MonoBehaviour
 
         return true;
     }
+    // Called by Event Trigger components on shop potion buttons.
+    public void ShowHealthPotionTooltip()
+    {
+        if (StatusEffectTooltipUI.Instance == null) return;
+
+        UsePotionUI potions = FindFirstObjectByType<UsePotionUI>();
+        string effect = potions != null
+            ? $"Restore {potions.HealthRestoreAmount} HP during combat."
+            : "Restore HP during combat.";
+
+        StatusEffectTooltipUI.Instance.Show(this, "Health Potion", $"{effect}\nPrice: {healthPotionPrice} Gold");
+    }
+
+    public void ShowManaPotionTooltip()
+    {
+        if (StatusEffectTooltipUI.Instance == null) return;
+
+        UsePotionUI potions = FindFirstObjectByType<UsePotionUI>();
+        string effect = potions != null
+            ? $"Restore {potions.ManaRestoreAmount} mana during combat."
+            : "Restore mana during combat.";
+
+        StatusEffectTooltipUI.Instance.Show(this, "Mana Potion", $"{effect}\nPrice: {manaPotionPrice} Gold");
+    }
+
+    public void HidePotionTooltip()
+    {
+        if (StatusEffectTooltipUI.Instance != null)
+            StatusEffectTooltipUI.Instance.Hide(this);
+    }
 
 #if UNITY_EDITOR
     // Populate the card list from project assets in the Unity Editor.

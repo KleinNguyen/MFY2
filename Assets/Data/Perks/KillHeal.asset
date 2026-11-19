@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: KillHeal
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 855641430548220792, guid: d14830d978649944fb4de227a2fb93cc, type: 3}
+  <Title>k__BackingField: Blood Renewal
+  <Description>k__BackingField: Defeating an enemy has a 10% chance to restore 2
+    HP.
   <PerkCondition>k__BackingField:
     rid: 1468093514728341800
   <AutoTargetEffect>k__BackingField:

@@ -8,6 +8,17 @@ public class Perk
     private bool subscribed;
 
     public Sprite Image => data.Image;
+    public string Title
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(data.Title))
+                return data.name;
+
+            return data.Title;
+        }
+    }
+    public string Description => data.Description;
 
     public Perk(PerkData perkData)
     {

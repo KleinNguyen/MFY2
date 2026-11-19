@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: GainAttackCombo
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 6746656899844563084, guid: 9b595e7a9b9cfa24888596e536b51aa5, type: 3}
+  <Title>k__BackingField: Battle Rhythm
+  <Description>k__BackingField: Playing an Attack card has a 10% chance to grant
+    2 Combo.
   <PerkCondition>k__BackingField:
     rid: 1468093514728341796
   <AutoTargetEffect>k__BackingField:

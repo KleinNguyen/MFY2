@@ -19,19 +19,14 @@ MonoBehaviour:
   <Description>k__BackingField: A twisted experimental subject with a monstrous mutated
     fist. He dominates close combat with brutal punches and harnesses his own blood
     to unleash devastating abilities, turning his vitality into a deadly weapon
-  <StartingPerkDescription>k__BackingField: 10% chance to heal 2 HP when you defeat an enemy.
+  <StartingPerkDescription>k__BackingField: 10% chance to heal 2 HP when you defeat
+    an enemy.
   <Health>k__BackingField: 80
   <StartingMana>k__BackingField: 3
   <Deck>k__BackingField:
-  - {fileID: 11400000, guid: 1f6df09cc03f77e4ea041a3ab9b10534, type: 2}
-  - {fileID: 11400000, guid: 9038e06a7cf3c1740bba1b650cc371a4, type: 2}
-  - {fileID: 11400000, guid: 9038e06a7cf3c1740bba1b650cc371a4, type: 2}
-  - {fileID: 11400000, guid: 9038e06a7cf3c1740bba1b650cc371a4, type: 2}
-  - {fileID: 11400000, guid: 9038e06a7cf3c1740bba1b650cc371a4, type: 2}
-  - {fileID: 11400000, guid: 6adcd012999ce3e4eaf5f3caeb8afe58, type: 2}
-  - {fileID: 11400000, guid: 18cef348e160ff845a3ad68d03e0f3fe, type: 2}
-  - {fileID: 11400000, guid: 18cef348e160ff845a3ad68d03e0f3fe, type: 2}
-  - {fileID: 11400000, guid: 18cef348e160ff845a3ad68d03e0f3fe, type: 2}
-  - {fileID: 11400000, guid: 18cef348e160ff845a3ad68d03e0f3fe, type: 2}
-  - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
+  - {fileID: 11400000, guid: c4294a8c17e497d45a5c1b06e3443087, type: 2}
+  - {fileID: 11400000, guid: cbff6786240d2ba49962f4ccee5848f2, type: 2}
+  - {fileID: 11400000, guid: d053968a48919b843b58f9743108c010, type: 2}
+  - {fileID: 11400000, guid: 4e4dcd6b19aee2d4fb1211ba4bf71c32, type: 2}
+  - {fileID: 11400000, guid: 41838691e3995a5499a983e43ad5a07f, type: 2}
   <StartingPerk>k__BackingField: {fileID: 11400000, guid: c6252b4f5ad8b774a9a7bc5bff0539b8, type: 2}

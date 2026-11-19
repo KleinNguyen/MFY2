@@ -11,38 +11,31 @@ public class StatusEffectTooltipUI : Singleton<StatusEffectTooltipUI>
     [SerializeField] private Vector2 mouseOffset = new(24f, -20f);
 
     private RectTransform canvasRect;
-    private StatusEffectUI owner;
+    private MonoBehaviour owner;
 
+    // Configure the tooltip without blocking pointer events.
     protected override void Awake()
     {
         base.Awake();
 
         Canvas canvas = GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 300;
-
+        canvas.sortingOrder = 32760;
         canvasRect = GetComponent<RectTransform>();
 
         if (panel != null)
         {
-            panel.anchorMin = new Vector2(0.5f, 0.5f);
-            panel.anchorMax = new Vector2(0.5f, 0.5f);
+            panel.anchorMin = panel.anchorMax = new Vector2(0.5f, 0.5f);
             panel.pivot = new Vector2(0f, 1f);
 
             CanvasGroup group = panel.GetComponent<CanvasGroup>();
-
-            if (group == null)
-            {
-                group = panel.gameObject.AddComponent<CanvasGroup>();
-            }
+            if (group == null) group = panel.gameObject.AddComponent<CanvasGroup>();
 
             group.interactable = false;
             group.blocksRaycasts = false;
 
             foreach (Graphic graphic in panel.GetComponentsInChildren<Graphic>(true))
-            {
                 graphic.raycastTarget = false;
-            }
         }
 
         Close();
@@ -61,76 +54,54 @@ public class StatusEffectTooltipUI : Singleton<StatusEffectTooltipUI>
         UpdatePosition();
     }
 
-    public void Show(
-        StatusEffectUI source,
-        StatusEffectType statusType,
-        int stackCount
-    )
+    // Preserve existing status effect tooltips.
+    public void Show(StatusEffectUI source, StatusEffectType statusType, int stackCount)
     {
-        if (source == null ||
-            panel == null ||
-            titleText == null ||
-            descriptionText == null)
-        {
-            return;
-        }
+        string title = statusType.ToString().Replace("_", " ") + " (" + stackCount + ")";
+        Show(source, title, GetDescription(statusType));
+    }
+
+    // Display custom content for perks and potions.
+    public void Show(MonoBehaviour source, string title, string description)
+    {
+        if (source == null || !source.isActiveAndEnabled || panel == null || titleText == null || descriptionText == null) return;
 
         owner = source;
 
-        titleText.text =
-            statusType.ToString().Replace("_", " ") +
-            " (" + stackCount + ")";
+        if (titleText.text != title) titleText.text = title;
 
-        descriptionText.text = GetDescription(statusType);
+        string details = string.IsNullOrWhiteSpace(description) ? "No description available." : description;
+        if (descriptionText.text != details) descriptionText.text = details;
 
-        panel.gameObject.SetActive(true);
+        if (!panel.gameObject.activeSelf) panel.gameObject.SetActive(true);
+
         panel.SetAsLastSibling();
-
         UpdatePosition();
     }
 
-    public void Hide(StatusEffectUI source)
+    public void Hide(MonoBehaviour source)
     {
         if (owner != source) return;
-
         Close();
     }
 
     private void Close()
     {
         owner = null;
-
-        if (panel != null)
-        {
-            panel.gameObject.SetActive(false);
-        }
+        if (panel != null) panel.gameObject.SetActive(false);
     }
 
+    // Keep the tooltip inside the screen.
     private void UpdatePosition()
     {
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvasRect,
-            Input.mousePosition,
-            null,
-            out Vector2 position
-        );
-
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, Input.mousePosition, null, out Vector2 position);
         position += mouseOffset;
 
         Rect bounds = canvasRect.rect;
-        float padding = 12f;
+        const float padding = 12f;
 
-        position.x = Mathf.Clamp(
-            position.x,
-            bounds.xMin + padding,
-            bounds.xMax - panel.rect.width - padding
-        );
-
-        position.y = Mathf.Clamp(
-            position.y,
-            bounds.yMin + panel.rect.height + padding,
-            bounds.yMax - padding
-        );
+        position.x = Mathf.Clamp(position.x, bounds.xMin + padding, bounds.xMax - panel.rect.width - padding);
+        position.y = Mathf.Clamp(position.y, bounds.yMin + panel.rect.height + padding, bounds.yMax - padding);
 
         panel.anchoredPosition = position;
     }

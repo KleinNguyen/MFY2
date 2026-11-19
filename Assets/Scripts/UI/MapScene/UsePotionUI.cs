@@ -17,7 +17,57 @@ public class UsePotionUI : MonoBehaviour
     [SerializeField, Min(1)] private int healthRestoreAmount = 15;
     [SerializeField, Min(1)] private int manaRestoreAmount = 1;
 
-    private void Update() => UpdatePotionUI();
+    public int HealthRestoreAmount => healthRestoreAmount;
+    public int ManaRestoreAmount => manaRestoreAmount;
+
+    private int hoveredPotion;
+
+    // Refresh the displayed inventory while the pointer stays over a potion.
+    private void Update()
+    {
+        UpdatePotionUI();
+        UpdatePotionTooltip();
+    }
+
+    public void ShowHealthPotionTooltip()
+    {
+        hoveredPotion = 1;
+        UpdatePotionTooltip();
+    }
+
+    public void ShowManaPotionTooltip()
+    {
+        hoveredPotion = 2;
+        UpdatePotionTooltip();
+    }
+
+    public void HidePotionTooltip()
+    {
+        hoveredPotion = 0;
+
+        if (StatusEffectTooltipUI.Instance != null)
+            StatusEffectTooltipUI.Instance.Hide(this);
+    }
+
+    private void UpdatePotionTooltip()
+    {
+        if (hoveredPotion == 0 || StatusEffectTooltipUI.Instance == null) return;
+
+        RunSystem run = RunSystem.Instance;
+
+        if (hoveredPotion == 1)
+        {
+            StatusEffectTooltipUI.Instance.Show(this, "Health Potion",
+                $"Restore {healthRestoreAmount} HP during combat.\nOwned: {run?.HealthPotionCount ?? 0}");
+        }
+        else
+        {
+            StatusEffectTooltipUI.Instance.Show(this, "Mana Potion",
+                $"Restore {manaRestoreAmount} mana during combat.\nOwned: {run?.ManaPotionCount ?? 0}");
+        }
+    }
+
+    private void OnDisable() => HidePotionTooltip();
 
     // Update inventory counts and button availability.
     private void UpdatePotionUI()
