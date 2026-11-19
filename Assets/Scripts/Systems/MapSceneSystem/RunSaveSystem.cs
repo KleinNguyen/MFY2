@@ -2,7 +2,38 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+[Serializable]
+public class RunSaveData
+{
+    public int version = 1;
+    public CharacterType hero;
+    public string actName, lastNormal, lastElite;
+    public int actIndex, stage, completedPointId = -1;
+    public int health, gold, healthPotions, manaPotions;
+    public float elapsedTime;
+    public bool resumeBattle;
+    public int battlePointId = -1, mysteryResult = -1;
+    public string battleEncounter;
+    public int cardRemovalPrice;
+    public List<SavedDeckCard> deck = new();
+    public List<SavedMapPoint> map = new();
+}
 
+[Serializable]
+public class SavedDeckCard
+{
+    public string id;
+    public bool upgraded;
+}
+
+[Serializable]
+public class SavedMapPoint
+{
+    public int id, floor;
+    public Vector2 position;
+    public MapPointType type;
+    public List<int> next = new();
+}
 public static class RunSaveSystem
 {
     public static string SavePath => Path.Combine(Application.persistentDataPath, "run-save.json");
@@ -67,34 +98,3 @@ public static class RunSaveSystem
     }
 }
 
-[Serializable]
-public class RunSaveData
-{
-    public int version = 1;
-    public CharacterType hero;
-    public string actName, lastNormal, lastElite;
-    public int actIndex, stage, completedPointId = -1;
-    public int health, gold, healthPotions, manaPotions;
-    public float elapsedTime;
-    public bool resumeBattle;
-    public int battlePointId = -1, mysteryResult = -1;
-    public string battleEncounter;
-    public List<SavedDeckCard> deck = new();
-    public List<SavedMapPoint> map = new();
-}
-
-[Serializable]
-public class SavedDeckCard
-{
-    public string id;
-    public bool upgraded;
-}
-
-[Serializable]
-public class SavedMapPoint
-{
-    public int id, floor;
-    public Vector2 position;
-    public MapPointType type;
-    public List<int> next = new();
-}

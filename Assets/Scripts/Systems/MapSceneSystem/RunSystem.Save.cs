@@ -101,6 +101,7 @@ public partial class RunSystem
             completedPointId = CompletedMapPointId,
             health = CurrentHealth,
             gold = Gold,
+            cardRemovalPrice = CardRemovalPrice,
             healthPotions = HealthPotionCount,
             manaPotions = ManaPotionCount,
             elapsedTime = ElapsedRunTime,
@@ -140,6 +141,7 @@ public partial class RunSystem
         CurrentStage = data.stage;
         CurrentHealth = data.health;
         Gold = data.gold;
+        CardRemovalPrice = data.cardRemovalPrice > 0 ? data.cardRemovalPrice : StartingCardRemovalPrice;
         HealthPotionCount = data.healthPotions;
         ManaPotionCount = data.manaPotions;
         ElapsedRunTime = data.elapsedTime;
@@ -177,6 +179,7 @@ public partial class RunSystem
 
     private bool IsSaveValid(RunSaveData data, RunSaveCatalog catalog)
     {
+        if (data.cardRemovalPrice < 0) return false;
         HeroData hero = catalog.FindHero(data.hero);
         if (data.version != 1 || hero == null || acts == null || data.actIndex < 0 || data.actIndex >= acts.Length) return false;
 

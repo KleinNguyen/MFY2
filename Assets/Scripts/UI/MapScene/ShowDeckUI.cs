@@ -22,7 +22,6 @@ public class ShowDeckUI : MonoBehaviour
     [SerializeField] private GameObject removeControls;
     [SerializeField] private Button confirmRemoveButton;
     [SerializeField] private TMP_Text confirmRemoveText;
-    [SerializeField, Min(0)] private int removePrice = 75;
 
     [Header("Upgrade card")]
     [SerializeField] private GameObject upgradeControls;
@@ -37,7 +36,16 @@ public class ShowDeckUI : MonoBehaviour
     private Action<CardData> onUpgradeConfirmed;
     private Func<bool> canUpgradeNow;
 
-    public int RemovePrice => removePrice;
+    public int RemovePrice
+    {
+        get
+        {
+            RunSystem run = RunSystem.Instance;
+            if (run == null) return 0;
+
+            return run.CardRemovalPrice;
+        }
+    }
 
     private void Awake() => CloseDeck();
 
@@ -59,7 +67,7 @@ public class ShowDeckUI : MonoBehaviour
         }
 
         OpenPanel(DeckMode.Remove);
-        confirmRemoveText.text = $"Remove: {removePrice} Gold";
+        confirmRemoveText.text = $"Remove: {RemovePrice} Gold";
     }
 
     public bool OpenUpgradeCard(Action<CardData> onUpgraded, Func<bool> canUpgrade)
@@ -117,7 +125,7 @@ public class ShowDeckUI : MonoBehaviour
             return;
         }
 
-        if (!RunSystem.Instance.RemoveCardFromDeck(selectedCardIndex, removePrice))
+        if (!RunSystem.Instance.RemoveCardFromDeck(selectedCardIndex, RemovePrice))
         {
             confirmRemoveText.text = "Could not remove this card.";
             return;
@@ -125,7 +133,7 @@ public class ShowDeckUI : MonoBehaviour
 
         ClearSelection();
         RefreshCards();
-        confirmRemoveText.text = $"Remove: {removePrice} Gold";
+        confirmRemoveText.text = $"Remove: {RemovePrice} Gold";
     }
 
     private void ExecuteUpgradeCard()
@@ -165,14 +173,14 @@ public class ShowDeckUI : MonoBehaviour
     public void ConfirmRemoveCard()
     {
         RunSystem run = RunSystem.Instance;
-        if (mode != DeckMode.Remove || !IsSelectionValid() || run.IsRunFinished || run.Gold < removePrice) return;
+        if (mode != DeckMode.Remove || !IsSelectionValid() || run.IsRunFinished || run.Gold < RemovePrice) return;
 
         int index = selectedCardIndex;
         CardData card = selectedCard;
-        int price = removePrice;
+        int price = RemovePrice;
 
         ConfirmationDialogUI.Ask(this, $"Do you want to remove {card.name} for {price} Gold?", ExecuteRemoveCard,
-            () => RunSystem.Instance == run && !run.IsRunFinished && removePrice == price && MatchesSelection(index, card, DeckMode.Remove));
+            () => RunSystem.Instance == run && !run.IsRunFinished && RemovePrice == price && MatchesSelection(index, card, DeckMode.Remove));
     }
 
     public void ConfirmUpgradeCard()
@@ -287,9 +295,9 @@ public class ShowDeckUI : MonoBehaviour
 
         if (mode == DeckMode.Remove)
         {
-            bool canAfford = run.Gold >= removePrice;
+            bool canAfford = run.Gold >= RemovePrice;
             confirmRemoveButton.interactable = canAfford;
-            confirmRemoveText.text = canAfford ? $"Remove: {removePrice} Gold" : $"Need {removePrice} Gold";
+            confirmRemoveText.text = canAfford ? $"Remove: {RemovePrice} Gold" : $"Need {RemovePrice} Gold";
             return;
         }
 

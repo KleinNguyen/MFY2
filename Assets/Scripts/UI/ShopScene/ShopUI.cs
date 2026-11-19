@@ -41,6 +41,7 @@ public class ShopUI : MonoBehaviour
     private readonly List<int> currentPrices = new();
     private bool healthPotionPurchased;
     private bool manaPotionPurchased;
+    private int lastRemovePrice = -1;
 
     // Prepare a fresh inventory when entering a shop.
     public void Setup()
@@ -135,6 +136,12 @@ public class ShopUI : MonoBehaviour
 
         UpdatePotionPriceLabels();
         Debug.Log("Purchased: Mana Potion");
+    }
+    // Refresh the shop label when the removal price changes.
+    private void Update()
+    {
+        if (showDeckUI != null && lastRemovePrice != showDeckUI.RemovePrice)
+            UpdatePotionPriceLabels();
     }
 
     // Ask before purchasing or completing the shop visit.
@@ -292,7 +299,10 @@ public class ShopUI : MonoBehaviour
         UpdateItemLabel(manaButton, manaPotionPurchased ? "Mana Potion\nSold" : $"Mana Potion\n{manaPotionPrice} Gold");
 
         if (showDeckUI != null)
-            UpdateItemLabel(removeButton, $"Remove Card\n{showDeckUI.RemovePrice} Gold");
+        {
+            lastRemovePrice = showDeckUI.RemovePrice;
+            UpdateItemLabel(removeButton, $"Remove Card\n{lastRemovePrice} Gold");
+        }
     }
 
     private void UpdateItemLabel(Button button, string text)

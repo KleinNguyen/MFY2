@@ -4,6 +4,7 @@ using UnityEngine;
 public partial class RunSystem : PersistentSingleton<RunSystem>
 {
     private const int StartingGold = 200;
+    private const int StartingCardRemovalPrice = 75;
     private const int WheelSliceCount = 6;
     private const int WheelOutcomeCount = 3;
 
@@ -20,6 +21,7 @@ public partial class RunSystem : PersistentSingleton<RunSystem>
     public List<CardData> Deck { get; private set; }
     public int CurrentHealth { get; private set; }
     public int Gold { get; private set; }
+    public int CardRemovalPrice { get; private set; }
     public int HealthPotionCount { get; private set; }
     public int ManaPotionCount { get; private set; }
 
@@ -79,6 +81,7 @@ public partial class RunSystem : PersistentSingleton<RunSystem>
         Deck = new List<CardData>(HeroData.Deck);
         CurrentHealth = HeroData.Health;
         Gold = StartingGold;
+        CardRemovalPrice = StartingCardRemovalPrice;
         HealthPotionCount = 0;
         ManaPotionCount = 0;
         CurrentActIndex = 0;
@@ -238,8 +241,22 @@ public partial class RunSystem : PersistentSingleton<RunSystem>
         if (!RewardsPrepared || RewardClaimed || IsRunFinished || RewardWheelResult >= 0 || result < 0 || result >= WheelSliceCount) return false;
 
         RewardWheelResult = result;
-        if (result % WheelOutcomeCount == 0) PendingRewardGold *= 2;
-        else if (result % WheelOutcomeCount == 1) ReplaceRewardCard(cardIndex, replacement);
+
+        if (result % WheelOutcomeCount == 0)
+        {
+            PendingRewardGold *= 2;
+        }
+        else if (result % WheelOutcomeCount == 1)
+        {
+            ReplaceRewardCard(cardIndex, replacement);
+        }
+        else
+        {
+            PendingRewardGold = 0;
+            preparedRewardChoices.Clear();
+            RewardClaimed = true;
+        }
+
         return true;
     }
 
@@ -274,10 +291,14 @@ public partial class RunSystem : PersistentSingleton<RunSystem>
 
     public bool RemoveCardFromDeck(int cardIndex, int price)
     {
-        if (price < 0 || Deck == null || cardIndex < 0 || cardIndex >= Deck.Count || Gold < price) return false;
+        if (IsRunFinished || price < 0 || price != CardRemovalPrice || Deck == null ||
+            cardIndex < 0 || cardIndex >= Deck.Count || Gold < price) return false;
 
         Gold -= price;
         Deck.RemoveAt(cardIndex);
+
+        // Increase by 20%, rounded up, without floating-point rounding errors.
+        CardRemovalPrice = (int)System.Math.Min(int.MaxValue, ((long)price * 120 + 99) / 100);
         return true;
     }
 

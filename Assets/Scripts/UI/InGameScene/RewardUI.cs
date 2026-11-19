@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class RewardUI : MonoBehaviour
 {
     private const int WheelOutcomeCount = 3;
-    private static readonly string[] RewardWheelLabels = { "X2 GOLD", "RARITY UP", "UNCHANGED", "X2 GOLD", "RARITY UP", "UNCHANGED" };
+    private static readonly string[] RewardWheelLabels = { "X2 GOLD", "RARITY UP", "LOSE ALL", "X2 GOLD", "RARITY UP", "LOSE ALL" };
 
     [Header("Gold rewards")]
     [SerializeField, Min(0)] private int normalGoldReward = 25;
@@ -67,7 +67,8 @@ public class RewardUI : MonoBehaviour
 
         if (run.RewardClaimed)
         {
-            FinishSelection("Rewards already claimed.");
+            bool lostRewards = run.RewardWheelResult >= 0 && run.RewardWheelResult % WheelOutcomeCount == 2;
+            FinishSelection(lostRewards ? "All rewards lost. Press Continue." : "Rewards already claimed.");
             return;
         }
 
@@ -183,12 +184,20 @@ public class RewardUI : MonoBehaviour
     public void OpenRewardWheel()
     {
         RunSystem run = RunSystem.Instance;
-        if (!CanClaimRewards(run) || run.RewardWheelResult >= 0) return;
+
+        if (run == null || run.IsRunFinished || !run.RewardsPrepared || run.RewardClaimed ||
+            selectionFinished || wheelOpen || run.RewardWheelResult >= 0) return;
+
         if (luckyWheel == null || !luckyWheel.IsConfigured) return;
 
         wheelOpen = true;
         UpdateButtons();
-        if (!luckyWheel.Show(RewardWheelLabels, ApplyWheelResult, OnWheelClosed, canCancel: true, closeCaption: "Back to rewards", character: run.HeroData.Character)) OnWheelClosed();
+
+        if (!luckyWheel.Show(RewardWheelLabels, ApplyWheelResult, OnWheelClosed,
+            canCancel: true, closeCaption: "Back to rewards", character: run.HeroData.Character))
+        {
+            OnWheelClosed();
+        }
     }
 
     private void ApplyWheelResult(int result)
@@ -196,20 +205,34 @@ public class RewardUI : MonoBehaviour
         RunSystem run = RunSystem.Instance;
         if (run == null) return;
 
+        int outcome = result % WheelOutcomeCount;
         int cardIndex = -1;
         CardData replacement = null;
-        if (result % WheelOutcomeCount == 1) TryFindRarityReplacement(out cardIndex, out replacement);
+
+        if (outcome == 1) TryFindRarityReplacement(out cardIndex, out replacement);
         if (!run.ApplyRewardWheel(result, cardIndex, replacement)) return;
 
-        bool cardChanged = replacement != null && cardIndex >= 0 && cardIndex < run.RewardChoices.Count && run.RewardChoices[cardIndex] == replacement;
+        bool cardChanged = replacement != null && cardIndex >= 0 &&
+            cardIndex < run.RewardChoices.Count && run.RewardChoices[cardIndex] == replacement;
+
         RefreshRewardView(run);
-        UpdateButtons();
-        messageText.text = (result % WheelOutcomeCount) switch
+
+        string message = outcome switch
         {
             0 => "Gold reward doubled!",
             1 => cardChanged ? "Higher rarity reward: " + replacement.name : "No higher rarity card available. Rewards unchanged.",
-            _ => "Rewards unchanged."
+            _ => "All rewards lost. Press Continue."
         };
+
+        if (outcome == 2)
+        {
+            FinishSelection(message);
+        }
+        else
+        {
+            messageText.text = message;
+            UpdateButtons();
+        }
     }
 
     private void OnWheelClosed()
