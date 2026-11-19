@@ -21,16 +21,24 @@ public class RunResultUI : MonoBehaviour
             return;
         }
 
-        titleText.text = run.Result == RunResult.Won ? "VICTORY" : "DEFEAT";
+        string heroName = run.HeroData != null ? run.HeroData.CharacterName : "--";
+        titleText.text = run.Result == RunResult.Won ? $"VICTORY - {heroName}" : $"DEFEAT - {heroName}";
         int elapsedSeconds = Mathf.FloorToInt(run.ElapsedRunTime);
         int hours = elapsedSeconds / 3600;
         int minutes = (elapsedSeconds / 60) % 60;
         int seconds = elapsedSeconds % 60;
         string formattedTime = hours > 0 ? $"{hours:00}:{minutes:00}:{seconds:00}" : $"{minutes:00}:{seconds:00}";
-        string heroName = run.HeroData != null ? run.HeroData.Character.ToString() : "--";
         int deckCount = run.Deck != null ? run.Deck.Count : 0;
         summaryText.text = $"Hero: {heroName}\nAct: {run.CurrentActIndex + 1}\nTime: {formattedTime}\nGold: {run.Gold}\nCards: {deckCount}";
 
+        Canvas resultCanvas = GetComponentInParent<Canvas>(true);
+        if (resultCanvas == null)
+        {
+            Debug.LogError("RunResultUI must be placed under a Canvas.", this);
+            return;
+        }
+
+        resultCanvas.gameObject.SetActive(true);
         gameObject.SetActive(true);
         transform.SetAsLastSibling();
     }

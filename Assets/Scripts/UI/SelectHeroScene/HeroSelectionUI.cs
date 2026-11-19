@@ -79,7 +79,7 @@ public class HeroSelectionUI : MonoBehaviour
 
         if (selectedHeroText != null)
         {
-            selectedHeroText.text = "Selected: " + selectedHero.Character;
+            selectedHeroText.text = "Selected: " + selectedHero.CharacterName;
         }
 
         if (backgroundRenderer != null)
@@ -102,7 +102,9 @@ public class HeroSelectionUI : MonoBehaviour
         if (descriptionText != null)
         {
             descriptionText.alignment = TextAlignmentOptions.TopJustified;
-            descriptionText.text = selectedHero.Description +
+            descriptionText.text = "<b>" + selectedHero.CharacterName + "</b>\n\n" +
+                selectedHero.Description +
+                "\n\n<b>Passive:</b> " + selectedHero.StartingPerkDescription +
                 "\n\n<align=left>Health: " + selectedHero.Health +
                 "\nMana: " + selectedHero.StartingMana + "</align>";
         }

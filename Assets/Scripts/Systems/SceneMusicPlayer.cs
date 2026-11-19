@@ -71,6 +71,34 @@ public class SceneMusicPlayer : MonoBehaviour
         }
     }
 
+    public static void PlayBossMusic()
+    {
+        if (instance == null || instance.settings == null)
+        {
+            return;
+        }
+
+        if (instance.settings.BossClip == null)
+        {
+            Debug.LogWarning("No boss music clip is assigned in SceneMusicSettings.");
+            return;
+        }
+
+        instance.audioSource.loop = instance.settings.BossLoop;
+        if (instance.audioSource.clip == instance.settings.BossClip)
+        {
+            if (!instance.audioSource.isPlaying)
+            {
+                instance.audioSource.Play();
+            }
+            return;
+        }
+
+        instance.audioSource.Stop();
+        instance.audioSource.clip = instance.settings.BossClip;
+        instance.audioSource.Play();
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         PlaySceneMusic(scene);

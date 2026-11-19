@@ -175,6 +175,7 @@ public class MapUI : MonoBehaviour
 
         Image pointImage = pointButton.GetComponent<Image>();
         Sprite pointIcon = GetPointIcon(point.Type);
+        if (point.Type == MapPointType.Mystery && pointIcon == null) pointIcon = pointImage.sprite;
         pointImage.sprite = pointIcon;
         pointImage.color = pointIcon == null ? new Color(1f, 1f, 1f, 0f) : Color.white;
         pointImage.type = Image.Type.Simple;
@@ -192,43 +193,18 @@ public class MapUI : MonoBehaviour
         colors.colorMultiplier = 1f;
         pointButton.colors = colors;
 
-        ConfigurePointText(pointButton, point);
+        ConfigurePointText(pointButton);
         pointButton.onClick.RemoveAllListeners();
         int pointId = point.Id;
         pointButton.onClick.AddListener(() => SelectMapPoint(pointId));
         pointButtons.Add(point.Id, pointButton);
     }
 
-    private void ConfigurePointText(Button pointButton, MapPoint point)
+    private void ConfigurePointText(Button pointButton)
     {
         TMP_Text pointText = pointButton.GetComponentInChildren<TMP_Text>(true);
-        bool showQuestionMark = point.Type == MapPointType.Mystery && mysteryIcon == null;
-        if (pointText == null && showQuestionMark)
-        {
-            GameObject labelObject = new("MysteryLabel", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
-            labelObject.transform.SetParent(pointButton.transform, false);
-            pointText = labelObject.GetComponent<TMP_Text>();
-        }
-
         if (pointText == null) return;
-        pointText.gameObject.SetActive(showQuestionMark);
-        if (!showQuestionMark) return;
-
-        RectTransform rect = pointText.rectTransform;
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.pivot = new Vector2(0.5f, 0.5f);
-        rect.anchoredPosition = Vector2.zero;
-        rect.sizeDelta = Vector2.zero;
-        rect.localRotation = Quaternion.identity;
-        rect.localScale = Vector3.one;
-
-        pointText.text = "?";
-        StyleText(pointText, 64f, Color.black, TextAlignmentOptions.Center);
-        pointText.enableAutoSizing = true;
-        pointText.fontSizeMin = 24f;
-        pointText.fontSizeMax = 64f;
-        pointText.textWrappingMode = TextWrappingModes.NoWrap;
+        pointText.gameObject.SetActive(false);
     }
 
     private void CreateConnection(Vector2 start, Vector2 end)

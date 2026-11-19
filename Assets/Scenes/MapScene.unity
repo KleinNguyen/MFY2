@@ -4884,7 +4884,7 @@ MonoBehaviour:
   shopIcon: {fileID: -6222199842612748360, guid: 1a269eebf3aa2214283cbf7b60d496ee, type: 3}
   restIcon: {fileID: -8018582906829244171, guid: 701cd6c3d3b8d9347bc77542f66eb402, type: 3}
   bossIcon: {fileID: 1514522324637093782, guid: 6639a3ec61a23b142910ceff72088605, type: 3}
-  mysteryIcon: {fileID: 0}
+  mysteryIcon: {fileID: 8630833029534501343, guid: 6223156054a28554ba300937b560868b, type: 3}
 --- !u!1 &756402398
 GameObject:
   m_ObjectHideFlags: 0

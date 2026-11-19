@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67a6147af0c4b19479bdfc1d72ae808b, type: 3}
-  m_Name: yellow
+  m_Name: H-010405
   m_EditorClassIdentifier: 
   <Character>k__BackingField: 2
+  <CharacterName>k__BackingField: H-010405
   <Image>k__BackingField: {fileID: -1868591669631162887, guid: 9151f22c7e1aacb4eb49893ceb0803e4, type: 3}
   <SelectionBackground>k__BackingField: {fileID: 2033960975386372411, guid: d63acb12119d0354381efd364381f2b0, type: 3}
   <Description>k__BackingField: 'A relentless experimental subject equipped with
     razor-sharp mechanical claws on both hands. Specializing in swift, consecutive
     strikes, he overwhelms enemies with rapid attacks and relentless combos. '
+  <StartingPerkDescription>k__BackingField: 10% chance to gain 2 Combo when you play an Attack card.
   <Health>k__BackingField: 75
   <StartingMana>k__BackingField: 3
   <Deck>k__BackingField:

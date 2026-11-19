@@ -6,6 +6,11 @@ using UnityEngine;
 public class SceneMusicSettings : ScriptableObject
 {
     [SerializeField] private List<SceneMusicTrack> tracks = new();
+    [SerializeField] private AudioClip bossClip;
+    [SerializeField] private bool bossLoop = true;
+
+    public AudioClip BossClip => bossClip;
+    public bool BossLoop => bossLoop;
 
     public bool TryGetTrack(string sceneName, out SceneMusicTrack track)
     {

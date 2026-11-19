@@ -26,10 +26,16 @@ MonoBehaviour:
     loop: 1
     continueCurrentTrack: 0
   - sceneName: MapScene
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 710898ead31660a46a81d0b277738eaf, type: 3}
     loop: 1
-    continueCurrentTrack: 1
+    continueCurrentTrack: 0
   - sceneName: InGameScene
     clip: {fileID: 8300000, guid: cf39eef447052024180bd1466df581e4, type: 3}
     loop: 1
     continueCurrentTrack: 0
+  - sceneName: EndingScene
+    clip: {fileID: 8300000, guid: af223c60fe1587146a8e2f6c88eaa60a, type: 3}
+    loop: 1
+    continueCurrentTrack: 0
+  bossClip: {fileID: 8300000, guid: ce5798311f5aa3f45bfffb88821bcd7a, type: 3}
+  bossLoop: 1
