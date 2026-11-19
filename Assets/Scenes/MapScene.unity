@@ -1574,15 +1574,68 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4264594206270521992, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 3119428320268000811, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 596236408}
+      addedObject: {fileID: 102751480}
+    - targetCorrespondingSourceObject: {fileID: 2289761518377330237, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1014435334}
   m_SourcePrefab: {fileID: 100100000, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
 --- !u!224 &74781708 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4355656110695361894, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
   m_PrefabInstance: {fileID: 74781707}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &102751475 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3119428320268000811, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+  m_PrefabInstance: {fileID: 74781707}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &102751480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102751475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 596236404}
+          m_TargetAssemblyTypeName: UsePotionUI, Assembly-CSharp
+          m_MethodName: ShowHealthPotionTooltip
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 596236404}
+          m_TargetAssemblyTypeName: UsePotionUI, Assembly-CSharp
+          m_MethodName: HidePotionTooltip
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &149714128
 GameObject:
   m_ObjectHideFlags: 0
@@ -3308,91 +3361,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 591981237}
   m_CullTransparentMesh: 1
---- !u!1 &596236402 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4264594206270521992, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
-  m_PrefabInstance: {fileID: 74781707}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &596236404 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2806928381818511135, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
   m_PrefabInstance: {fileID: 74781707}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 596236402}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e18aff9e95b5b8438d4bebc4c4c5c52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &596236408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 596236402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 596236404}
-          m_TargetAssemblyTypeName: UsePotionUI, Assembly-CSharp
-          m_MethodName: ShowHealthPotionTooltip
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 596236404}
-          m_TargetAssemblyTypeName: UsePotionUI, Assembly-CSharp
-          m_MethodName: ShowManaPotionTooltip
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 596236404}
-          m_TargetAssemblyTypeName: UsePotionUI, Assembly-CSharp
-          m_MethodName: HidePotionTooltip
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 596236404}
-          m_TargetAssemblyTypeName: UsePotionUI, Assembly-CSharp
-          m_MethodName: HidePotionTooltip
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1 &617867510
 GameObject:
   m_ObjectHideFlags: 0
@@ -3812,6 +3791,7 @@ GameObject:
   - component: {fileID: 718223174}
   - component: {fileID: 718223173}
   - component: {fileID: 718223172}
+  - component: {fileID: 718223175}
   m_Layer: 5
   m_Name: ManaButton
   m_TagString: Untagged
@@ -3933,6 +3913,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 718223170}
   m_CullTransparentMesh: 1
+--- !u!114 &718223175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 718223170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2087184319}
+          m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
+          m_MethodName: ShowManaPotionTooltip
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2087184319}
+          m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
+          m_MethodName: HidePotionTooltip
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &723936420
 GameObject:
   m_ObjectHideFlags: 0
@@ -5939,6 +5964,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1006614451}
   m_CullTransparentMesh: 1
+--- !u!1 &1014435329 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2289761518377330237, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+  m_PrefabInstance: {fileID: 74781707}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1014435334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014435329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 596236404}
+          m_TargetAssemblyTypeName: UsePotionUI, Assembly-CSharp
+          m_MethodName: ShowManaPotionTooltip
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 596236404}
+          m_TargetAssemblyTypeName: UsePotionUI, Assembly-CSharp
+          m_MethodName: HidePotionTooltip
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1079364507
 GameObject:
   m_ObjectHideFlags: 0
@@ -9074,6 +9149,7 @@ GameObject:
   - component: {fileID: 1768610685}
   - component: {fileID: 1768610684}
   - component: {fileID: 1768610683}
+  - component: {fileID: 1768610686}
   m_Layer: 5
   m_Name: HealthButton
   m_TagString: Untagged
@@ -9195,6 +9271,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1768610681}
   m_CullTransparentMesh: 1
+--- !u!114 &1768610686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768610681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2087184319}
+          m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
+          m_MethodName: ShowHealthPotionTooltip
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2087184319}
+          m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
+          m_MethodName: HidePotionTooltip
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1853873375
 GameObject:
   m_ObjectHideFlags: 0
@@ -9982,7 +10103,6 @@ GameObject:
   - component: {fileID: 2087184318}
   - component: {fileID: 2087184317}
   - component: {fileID: 2087184319}
-  - component: {fileID: 2087184320}
   m_Layer: 5
   m_Name: ShopPanelUI
   m_TagString: Untagged
@@ -10184,75 +10304,6 @@ MonoBehaviour:
   hoverScale: 1.12
   hoverLift: 20
   hoverDuration: 0.12
---- !u!114 &2087184320
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2087184315}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2087184319}
-          m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
-          m_MethodName: ShowHealthPotionTooltip
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 2087184319}
-          m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
-          m_MethodName: ShowManaPotionTooltip
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2087184319}
-          m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
-          m_MethodName: HidePotionTooltip
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 2087184319}
-          m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
-          m_MethodName: HidePotionTooltip
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1 &2090710330
 GameObject:
   m_ObjectHideFlags: 0
