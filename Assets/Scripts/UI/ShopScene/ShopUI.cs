@@ -70,7 +70,7 @@ public class ShopUI : MonoBehaviour
     public void OpenMerchantInventory() => shopInventoryPanel.SetActive(true);
     public void CloseShopInventory() => shopInventoryPanel.SetActive(false);
 
-    public void LeaveShop()
+    private void ExecuteLeaveShop()
     {
         RunSystem.Instance.CompleteMapPoint();
         gameObject.SetActive(false);
@@ -78,7 +78,7 @@ public class ShopUI : MonoBehaviour
     }
 
     // Purchase cards and potions.
-    public void BuyCard(int index)
+    private void ExecuteBuyCard(int index)
     {
         if (index < 0 || index >= currentCards.Count) return;
 
@@ -103,7 +103,7 @@ public class ShopUI : MonoBehaviour
         Debug.Log("Purchased: " + card.name);
     }
 
-    public void BuyHealthPotion()
+    private void ExecuteBuyHealthPotion()
     {
         if (healthPotionPurchased) return;
 
@@ -120,7 +120,7 @@ public class ShopUI : MonoBehaviour
         Debug.Log("Purchased: Health Potion");
     }
 
-    public void BuyManaPotion()
+    private void ExecuteBuyManaPotion()
     {
         if (manaPotionPurchased) return;
 
@@ -136,6 +136,50 @@ public class ShopUI : MonoBehaviour
         UpdatePotionPriceLabels();
         Debug.Log("Purchased: Mana Potion");
     }
+
+    // Ask before purchasing or completing the shop visit.
+    public void BuyCard(int index)
+    {
+        RunSystem run = RunSystem.Instance;
+        if (!CanShopNow() || index < 0 || index >= currentCards.Count || index >= currentPrices.Count || index >= cardButtons.Length) return;
+
+        CardData card = currentCards[index];
+        int price = currentPrices[index];
+
+        if (card == null || cardButtons[index] == null || !cardButtons[index].interactable || run.Gold < price) return;
+
+        ConfirmationDialogUI.Ask(this, $"Do you want to buy {card.name} for {price} Gold?", () => ExecuteBuyCard(index),
+            () => CanShopNow() && RunSystem.Instance == run && index < currentCards.Count && index < currentPrices.Count && currentCards[index] == card && currentPrices[index] == price);
+    }
+
+    public void BuyHealthPotion() => AskPotionPurchase(true);
+    public void BuyManaPotion() => AskPotionPurchase(false);
+
+    public void LeaveShop()
+    {
+        RunSystem run = RunSystem.Instance;
+        if (!CanShopNow()) return;
+
+        ConfirmationDialogUI.Ask(this, "Do you want to leave the shop?", ExecuteLeaveShop,
+            () => CanShopNow() && RunSystem.Instance == run);
+    }
+
+    private void AskPotionPurchase(bool health)
+    {
+        RunSystem run = RunSystem.Instance;
+        if (!CanShopNow() || (health ? healthPotionPurchased : manaPotionPurchased)) return;
+
+        int price = health ? healthPotionPrice : manaPotionPrice;
+        if (run.Gold < price) return;
+
+        string item = health ? "Health Potion" : "Mana Potion";
+        System.Action purchase = health ? ExecuteBuyHealthPotion : ExecuteBuyManaPotion;
+
+        ConfirmationDialogUI.Ask(this, $"Do you want to buy a {item} for {price} Gold?", purchase,
+            () => CanShopNow() && RunSystem.Instance == run && price == (health ? healthPotionPrice : manaPotionPrice) && !(health ? healthPotionPurchased : manaPotionPurchased));
+    }
+
+    private bool CanShopNow() => isActiveAndEnabled && RunSystem.Instance != null && !RunSystem.Instance.IsRunFinished;
 
     // Filter the card pool and populate the available slots.
     private List<CardData> GetAvailableCards(CharacterType character)

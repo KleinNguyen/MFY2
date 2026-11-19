@@ -70,7 +70,7 @@ public class SettingsPanelUI : MonoBehaviour
         if (leaveButton != null) leaveButton.interactable = !Busy && (!InBattle || BattleSystem.Instance != null && !BattleSystem.Instance.IsPreparingBattle);
     }
 
-    public void SaveGame()
+    private void ExecuteSaveGame()
     {
         if (Busy || InBattle && !BattleReady) return;
 
@@ -79,7 +79,7 @@ public class SettingsPanelUI : MonoBehaviour
         SetMessage(saved ? InBattle ? "Saved. Continue restarts this battle." : "Game saved." : "Could not save. Please try again.");
     }
 
-    public void RestartBattle()
+    private void ExecuteRestartBattle()
     {
         if (Busy || !CanRestartHere || RunSystem.Instance == null) return;
 
@@ -93,7 +93,7 @@ public class SettingsPanelUI : MonoBehaviour
         SceneManager.LoadScene("InGameScene");
     }
 
-    public void ReturnToMenu()
+    private void ExecuteReturnToMenu()
     {
         if (Busy) return;
 
@@ -122,6 +122,57 @@ public class SettingsPanelUI : MonoBehaviour
         if (run != null) run.PauseRunTimer();
         Close();
         SceneManager.LoadScene("MenuScene");
+    }
+    // Confirm save, restart, and menu navigation.
+    public void SaveGame()
+    {
+        RunSystem run = RunSystem.Instance;
+        if (Busy || run == null || run.IsRunFinished) return;
+
+        bool canSave = InBattle ? BattleReady && run.CanRestartBattle : run.SelectedMapPointId < 0 && run.MapPoints.Count > 0;
+        if (!canSave) return;
+
+        string question = InBattle
+            ? "Do you want to save your progress?\nContinuing will restart this battle."
+            : "Do you want to save your progress?";
+
+        ConfirmationDialogUI.Ask(this, question, ExecuteSaveGame,
+            () => RunSystem.Instance == run && !run.IsRunFinished);
+    }
+
+    public void RestartBattle()
+    {
+        RunSystem run = RunSystem.Instance;
+        if (Busy || !CanRestartHere || run == null || run.IsRunFinished || !run.CanRestartBattle) return;
+
+        ConfirmationDialogUI.Ask(this, "Do you want to restart this battle?", ExecuteRestartBattle,
+            () => RunSystem.Instance == run && !run.IsRunFinished && CanRestartHere && run.CanRestartBattle);
+    }
+
+    public void ReturnToMenu()
+    {
+        if (Busy) return;
+
+        RunSystem run = RunSystem.Instance;
+        bool activeRun = run != null && !run.IsRunFinished;
+
+        if (activeRun && !InBattle && run.SelectedMapPointId >= 0)
+        {
+            SetMessage("Finish Shop or Rest before leaving.");
+            return;
+        }
+
+        if (activeRun && InBattle && !BattleReady)
+        {
+            SetMessage("Finish rewards and return to the map first.");
+            return;
+        }
+
+        string question = activeRun ? "Do you want to save and return to the main menu?" : "Do you want to return to the main menu?";
+        if (activeRun && InBattle) question += "\nContinuing will restart this battle.";
+
+        ConfirmationDialogUI.Ask(this, question, ExecuteReturnToMenu,
+            () => RunSystem.Instance == run);
     }
 
     private void Close() => gameObject.SetActive(false);

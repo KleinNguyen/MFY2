@@ -66,6 +66,7 @@ public class UsePotionUI : MonoBehaviour
 
     private bool CanUsePotions()
     {
+        if (ConfirmationDialogUI.IsOpen) return false;
         if (SettingsPanelUI.IsOpen) return false;
         if (SceneManager.GetActiveScene().name != "InGameScene")
         {
