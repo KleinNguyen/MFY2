@@ -33,9 +33,15 @@ public class CardSystem : Singleton<CardSystem>
     public ComboSystem Combo { get; private set; }
     public bool IsChoosingCardToExhaust { get; private set; }
     public bool IsChoosingCardToUpgrade { get; private set; }
-    public bool IsViewingPile => cardSelectionUI != null &&
-        cardSelectionUI.IsOpen && cardSelectionUI.IsReadOnly;
+    public bool IsViewingPile
+    {
+        get
+        {
+            if (cardSelectionUI == null) return false;
 
+            return cardSelectionUI.IsOpen && cardSelectionUI.IsReadOnly;
+        }
+    }
     public void OpenDrawPile()
     {
         OpenPile(drawPile, "Draw Pile");
@@ -83,7 +89,15 @@ public class CardSystem : Singleton<CardSystem>
     private int activeAttackDamageMultiplier = 1;
     private int nextTurnAttackDamageMultiplier = 1;
 
-    public int AttackDamageMultiplier => isPlayerTurn ? activeAttackDamageMultiplier : 1;
+    public int AttackDamageMultiplier
+    {
+        get
+        {
+            if (!isPlayerTurn) return 1;
+
+            return activeAttackDamageMultiplier;
+        }
+    }
 
     public bool CanPlayCard(Card card)
     {
@@ -1109,38 +1123,42 @@ public class CardSystem : Singleton<CardSystem>
         temporarySlyCards.Clear();
     }
 
+    // Select a card type to upgrade during this battle.
     public void ChooseCardToUpgrade(CardView cardView)
     {
-        if (!IsChoosingCardToUpgrade || cardView == null)
-        {
-            return;
-        }
+        if (!IsChoosingCardToUpgrade || cardView == null) return;
 
         Card card = cardView.Card;
-
-        if (card == null || !hand.Contains(card))
-        {
-            return;
-        }
+        if (card == null || !hand.Contains(card)) return;
 
         if (!card.CanUpgradeForCombat())
         {
             Debug.Log("This card cannot be upgraded.");
-
             return;
         }
 
         chosenCardViewToUpgrade = cardView;
     }
-    private IEnumerator ChooseCardToUpgradePerformer(
-    ChooseCardToUpgradeGA action
-)
+
+    // Upgrade matching cards without changing permanent run upgrades.
+    private void UpgradeMatchingCards(IEnumerable<Card> cards, Card selectedCard)
+    {
+        foreach (Card card in cards)
+        {
+            if (card != null && card.IsSameType(selectedCard))
+            {
+                card.UpgradeForCombat();
+            }
+        }
+    }
+
+    private IEnumerator ChooseCardToUpgradePerformer(ChooseCardToUpgradeGA action)
     {
         bool hasUpgradeableCard = false;
 
         foreach (Card card in hand)
         {
-            if (card.CanUpgradeForCombat())
+            if (card != null && card.CanUpgradeForCombat())
             {
                 hasUpgradeableCard = true;
                 break;
@@ -1150,7 +1168,6 @@ public class CardSystem : Singleton<CardSystem>
         if (!hasUpgradeableCard)
         {
             Debug.Log("There are no cards to upgrade.");
-
             yield break;
         }
 
@@ -1159,22 +1176,34 @@ public class CardSystem : Singleton<CardSystem>
 
         Debug.Log("Choose a card in your hand to upgrade.");
 
-        yield return new WaitUntil(
-            () => chosenCardViewToUpgrade != null
-        );
+        while (chosenCardViewToUpgrade == null)
+        {
+            yield return null;
+        }
 
         IsChoosingCardToUpgrade = false;
 
-        CardView cardView = chosenCardViewToUpgrade;
-
+        CardView selectedView = chosenCardViewToUpgrade;
         chosenCardViewToUpgrade = null;
 
-        Card selectedCard = cardView.Card;
+        if (selectedView == null || selectedView.Card == null) yield break;
 
-        selectedCard.UpgradeForCombat();
+        Card selectedCard = selectedView.Card;
+        if (!hand.Contains(selectedCard) || !selectedCard.CanUpgradeForCombat()) yield break;
 
+        UpgradeMatchingCards(hand, selectedCard);
+        UpgradeMatchingCards(drawPile, selectedCard);
+        UpgradeMatchingCards(discardPile, selectedCard);
+        UpgradeMatchingCards(exhaustPile, selectedCard);
+        UpgradeMatchingCards(priorityDrawCards, selectedCard);
+        UpgradeMatchingCards(pendingCopiesForNextTurn, selectedCard);
 
-        cardView.Setup(selectedCard);
+        handView.RefreshCards();
+
+        if (CardViewHoverSystem.Instance != null)
+        {
+            CardViewHoverSystem.Instance.Hide();
+        }
 
         yield return null;
     }

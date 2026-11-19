@@ -369,7 +369,7 @@ public class RewardUI : MonoBehaviour
 
         LibraryCardUI cardUI = Instantiate(cardPrefab.LibraryTemplate, slot.transform);
         cardUI.gameObject.SetActive(true);
-        cardUI.Setup(cardData, false);
+        cardUI.Setup(cardData, RunSystem.Instance != null && RunSystem.Instance.IsCardUpgraded(cardData));
 
         RectTransform cardRect = cardUI.GetComponent<RectTransform>();
         cardRect.anchorMin = Vector2.zero;

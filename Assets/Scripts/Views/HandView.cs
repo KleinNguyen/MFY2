@@ -25,6 +25,16 @@ public class HandView : MonoBehaviour
         StartCoroutine(UpdateCardPositions(0.15f));
         return cardView;
     }
+    public void RefreshCards()
+    {
+        foreach (CardView cardView in cards)
+        {
+            if (cardView != null && cardView.Card != null)
+            {
+                cardView.Setup(cardView.Card);
+            }
+        }
+    }
     private CardView GetCardView(Card card)
     {
         return cards.Where(cardView => cardView.Card == card).FirstOrDefault();

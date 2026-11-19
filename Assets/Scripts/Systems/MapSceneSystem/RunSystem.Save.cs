@@ -105,9 +105,19 @@ public partial class RunSystem
             healthPotions = HealthPotionCount,
             manaPotions = ManaPotionCount,
             elapsedTime = ElapsedRunTime,
+            upgradedCardIds = new List<string>(upgradedCardIds),
             lastNormal = LastNormalEncounter != null ? LastNormalEncounter.name : "",
             lastElite = LastEliteEncounter != null ? LastEliteEncounter.name : ""
         };
+        foreach (string id in upgradedCardIds)
+        {
+            CardData card = catalog.FindCard(id);
+            if (card == null || !card.CanUpgrade)
+            {
+                Debug.LogError("An upgraded card type is missing or invalid. Rebuild Save Catalog.");
+                return null;
+            }
+        }
 
         foreach (CardData card in Deck)
         {
@@ -131,10 +141,13 @@ public partial class RunSystem
         startingHero = HeroData = catalog.FindHero(data.hero);
         Deck = new List<CardData>();
 
+        if (data.upgradedCardIds != null)
+            upgradedCardIds.UnionWith(data.upgradedCardIds);
+
         foreach (SavedDeckCard saved in data.deck)
         {
             Deck.Add(catalog.FindCard(saved.id));
-            if (saved.upgraded) UpgradeDeckCard(Deck.Count - 1);
+            if (saved.upgraded) upgradedCardIds.Add(saved.id);
         }
 
         CurrentActIndex = data.actIndex;
@@ -186,6 +199,17 @@ public partial class RunSystem
         ActData act = acts[data.actIndex];
         if (act == null || act.name != data.actName || data.health <= 0 || data.health > hero.Health || data.gold < 0 || data.healthPotions < 0 || data.manaPotions < 0) return false;
         if (float.IsNaN(data.elapsedTime) || float.IsInfinity(data.elapsedTime) || data.elapsedTime < 0f || data.deck == null || data.map == null || data.map.Count == 0) return false;
+
+        if (data.upgradedCardIds != null)
+        {
+            foreach (string id in data.upgradedCardIds)
+            {
+                if (string.IsNullOrWhiteSpace(id)) return false;
+
+                CardData card = catalog.FindCard(id);
+                if (card == null || !card.CanUpgrade) return false;
+            }
+        }
 
         foreach (SavedDeckCard saved in data.deck)
         {

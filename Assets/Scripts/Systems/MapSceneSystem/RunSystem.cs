@@ -11,8 +11,8 @@ public partial class RunSystem : PersistentSingleton<RunSystem>
     [SerializeField] private HeroData startingHero;
     [SerializeField] private ActData[] acts;
 
-    private readonly HashSet<CardData> upgradedCards = new();
-    private readonly List<CardData> runtimeUpgradedCards = new();
+    // Permanent upgrades unlocked during the current run.
+    private readonly HashSet<string> upgradedCardIds = new();
     private readonly List<CardData> preparedRewardChoices = new();
     private bool isRunTimerRunning;
 
@@ -44,10 +44,46 @@ public partial class RunSystem : PersistentSingleton<RunSystem>
     public int PendingRewardGold { get; private set; }
     public int RewardWheelResult { get; private set; } = -1;
 
-    public ActData CurrentAct => acts != null && CurrentActIndex >= 0 && CurrentActIndex < acts.Length ? acts[CurrentActIndex] : null;
-    public bool IsRunFinished => Result != RunResult.None;
-    public bool IsLastAct => CurrentAct != null && CurrentActIndex == acts.Length - 1;
-    public bool CanMoveToNextAct => CurrentAct != null && CurrentActIndex + 1 < acts.Length && acts[CurrentActIndex + 1] != null;
+    public ActData CurrentAct
+    {
+        get
+        {
+            if (acts == null || CurrentActIndex < 0 || CurrentActIndex >= acts.Length) return null;
+
+            return acts[CurrentActIndex];
+        }
+    }
+
+    public bool IsRunFinished
+    {
+        get
+        {
+            return Result != RunResult.None;
+        }
+    }
+
+    public bool IsLastAct
+    {
+        get
+        {
+            if (CurrentAct == null) return false;
+
+            return CurrentActIndex == acts.Length - 1;
+        }
+    }
+
+    public bool CanMoveToNextAct
+    {
+        get
+        {
+            if (CurrentAct == null) return false;
+
+            int nextActIndex = CurrentActIndex + 1;
+            if (nextActIndex >= acts.Length) return false;
+
+            return acts[nextActIndex] != null;
+        }
+    }
 
     // Unity
     protected override void Awake()
@@ -350,7 +386,13 @@ public partial class RunSystem : PersistentSingleton<RunSystem>
         return false;
     }
 
-    public bool IsCardUpgraded(CardData cardData) => upgradedCards.Contains(cardData);
+    public bool IsCardUpgraded(CardData cardData)
+    {
+        if (cardData == null || !cardData.CanUpgrade) return false;
+        if (string.IsNullOrWhiteSpace(cardData.SaveId)) return false;
+
+        return upgradedCardIds.Contains(cardData.SaveId);
+    }
 
     public bool UpgradeCard(int cardIndex, CardData upgradedCard)
     {
@@ -370,29 +412,23 @@ public partial class RunSystem : PersistentSingleton<RunSystem>
 
     public bool UpgradeDeckCard(int cardIndex)
     {
-        if (Deck == null || cardIndex < 0 || cardIndex >= Deck.Count) return false;
+        if (IsRunFinished || Deck == null || cardIndex < 0 || cardIndex >= Deck.Count) return false;
 
-        CardData originalCard = Deck[cardIndex];
-        if (originalCard == null || !originalCard.CanUpgrade || IsCardUpgraded(originalCard)) return false;
+        CardData card = Deck[cardIndex];
+        if (card == null || !card.CanUpgrade || IsCardUpgraded(card)) return false;
 
-        CardData upgradedInstance = Instantiate(originalCard);
-        upgradedInstance.name = originalCard.name;
-        runtimeUpgradedCards.Add(upgradedInstance);
-        upgradedCards.Add(upgradedInstance);
-        Deck[cardIndex] = upgradedInstance;
-        return true;
+        if (string.IsNullOrWhiteSpace(card.SaveId))
+        {
+            Debug.LogError("Card SaveId is missing. Rebuild Save Catalog before upgrading.");
+            return false;
+        }
+        return upgradedCardIds.Add(card.SaveId);
     }
 
     // Internal helpers
     private void ClearRuntimeUpgrades()
     {
-        foreach (CardData cardData in runtimeUpgradedCards)
-        {
-            if (cardData != null) Destroy(cardData);
-        }
-
-        runtimeUpgradedCards.Clear();
-        upgradedCards.Clear();
+        upgradedCardIds.Clear();
     }
 
     private void ResetMapProgress()

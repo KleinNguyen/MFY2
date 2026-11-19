@@ -15,6 +15,7 @@ public class RunSaveData
     public int battlePointId = -1, mysteryResult = -1;
     public string battleEncounter;
     public int cardRemovalPrice;
+    public List<string> upgradedCardIds = new();
     public List<SavedDeckCard> deck = new();
     public List<SavedMapPoint> map = new();
 }
