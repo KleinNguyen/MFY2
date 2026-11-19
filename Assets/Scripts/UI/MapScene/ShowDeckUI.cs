@@ -106,7 +106,7 @@ public class ShowDeckUI : MonoBehaviour
     }
 
     // Confirm card removal or upgrade.
-    public void ConfirmRemoveCard()
+    private void ExecuteRemoveCard()
     {
         if (mode != DeckMode.Remove) return;
 
@@ -128,7 +128,7 @@ public class ShowDeckUI : MonoBehaviour
         confirmRemoveText.text = $"Remove: {removePrice} Gold";
     }
 
-    public void ConfirmUpgradeCard()
+    private void ExecuteUpgradeCard()
     {
         if (mode != DeckMode.Upgrade) return;
 
@@ -160,6 +160,37 @@ public class ShowDeckUI : MonoBehaviour
 
         CloseDeck();
         callback?.Invoke(upgradedCard);
+    }
+    // Ask after a specific card has been selected.
+    public void ConfirmRemoveCard()
+    {
+        RunSystem run = RunSystem.Instance;
+        if (mode != DeckMode.Remove || !IsSelectionValid() || run.IsRunFinished || run.Gold < removePrice) return;
+
+        int index = selectedCardIndex;
+        CardData card = selectedCard;
+        int price = removePrice;
+
+        ConfirmationDialogUI.Ask(this, $"Do you want to remove {card.name} for {price} Gold?", ExecuteRemoveCard,
+            () => RunSystem.Instance == run && !run.IsRunFinished && removePrice == price && MatchesSelection(index, card, DeckMode.Remove));
+    }
+
+    public void ConfirmUpgradeCard()
+    {
+        RunSystem run = RunSystem.Instance;
+        if (mode != DeckMode.Upgrade || !IsSelectionValid() || run.IsRunFinished || canUpgradeNow == null || !canUpgradeNow()) return;
+
+        int index = selectedCardIndex;
+        CardData card = selectedCard;
+
+        ConfirmationDialogUI.Ask(this, $"Do you want to upgrade {card.name}?", ExecuteUpgradeCard,
+            () => RunSystem.Instance == run && !run.IsRunFinished && MatchesSelection(index, card, DeckMode.Upgrade) && canUpgradeNow != null && canUpgradeNow());
+    }
+
+    private bool MatchesSelection(int index, CardData card, DeckMode expectedMode)
+    {
+        return deckPanel != null && deckPanel.activeInHierarchy && mode == expectedMode &&
+            selectedCardIndex == index && selectedCard == card && IsSelectionValid();
     }
 
     // Rebuild the deck display.

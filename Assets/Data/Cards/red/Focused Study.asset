@@ -21,7 +21,7 @@ MonoBehaviour:
   <ManaTextOffset>k__BackingField: {x: -0.5, y: 5}
   <CardVisualScale>k__BackingField: {x: 1.000582, y: 1}
   <Description>k__BackingField: Draw 3 cards. You cannot draw any more cards this
-    turn.Exhaust.
+    turn. Exhaust.
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
@@ -35,7 +35,7 @@ MonoBehaviour:
       rid: 1468093377958117644
   <CanUpgrade>k__BackingField: 1
   <UpgradedDescription>k__BackingField: Draw 5 cards. You cannot draw any more cards
-    this turn.Exhaust.
+    this turn. Exhaust.
   <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2

@@ -6,6 +6,7 @@ public class InteractionSystem : Singleton<InteractionSystem>
 
     public bool PlayerCanInteract()
     {
+        if (ConfirmationDialogUI.IsOpen) return false;
         if (SettingsPanelUI.IsOpen) return false;
         if (CardSystem.Instance != null && CardSystem.Instance.IsViewingPile) return false;
         if (BattleSystem.Instance == null || BattleSystem.Instance.IsBattleOver || BattleSystem.Instance.IsPreparingBattle) return false;
@@ -15,6 +16,7 @@ public class InteractionSystem : Singleton<InteractionSystem>
 
     public bool PlayerCanHover()
     {
+        if (ConfirmationDialogUI.IsOpen) return false;
         if (SettingsPanelUI.IsOpen) return false;
         if (CardSystem.Instance != null && CardSystem.Instance.IsViewingPile) return false;
         if (BattleSystem.Instance == null || BattleSystem.Instance.IsBattleOver || BattleSystem.Instance.IsPreparingBattle) return false;

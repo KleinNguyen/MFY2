@@ -21,7 +21,7 @@ MonoBehaviour:
   <ManaTextOffset>k__BackingField: {x: 1.5, y: -1}
   <CardVisualScale>k__BackingField: {x: 1.034826, y: 1.0182}
   <Description>k__BackingField: Gain 5 Block. Upgrade a card in your hand for this
-    combat.Exhaust
+    combat. Exhaust
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
@@ -39,7 +39,7 @@ MonoBehaviour:
       rid: 1468093377958117712
   <CanUpgrade>k__BackingField: 1
   <UpgradedDescription>k__BackingField: Gain 10 Block. Upgrade a card in your hand
-    for this combat.Exhaust
+    for this combat. Exhaust
   <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2

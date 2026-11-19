@@ -5,127 +5,85 @@ using UnityEngine.UI;
 
 public class RestUI : MonoBehaviour
 {
-    private const float DefaultRestDuration = 3f;
-
+    [Header("Panels")]
     [SerializeField] private MapUI mapUI;
     [SerializeField] private ShowDeckUI showDeckUI;
+    [SerializeField] private TMP_Text healthText, messageText;
 
-    [SerializeField] private TMP_Text healthText;
-    [SerializeField] private TMP_Text messageText;
-    [SerializeField, Min(0f)] private float restDuration = DefaultRestDuration;
-    [SerializeField] private GameObject confirmationDialog;
+    [Header("Rest animation")]
+    [SerializeField, Min(0f)] private float restDuration = 3f;
     [SerializeField] private GameObject blackoutOverlay;
     [SerializeField] private Image blackoutImage;
 
-    private bool hasRested;
-    private bool hasUpgraded;
-    private bool isResting;
+    private bool hasRested, hasUpgraded, isResting;
     private Coroutine restCoroutine;
+
+    private bool CanUseRest => isActiveAndEnabled && !isResting && RunSystem.Instance != null && !RunSystem.Instance.IsRunFinished;
 
     public void Setup()
     {
-        hasRested = false;
-        hasUpgraded = false;
-        isResting = false;
+        hasRested = hasUpgraded = isResting = false;
 
-        if (confirmationDialog == null || blackoutOverlay == null || blackoutImage == null)
+        if (blackoutOverlay == null || blackoutImage == null)
         {
-            Debug.LogError("Rest confirmation and blackout UI objects must be assigned in RestUI.", this);
+            Debug.LogError("Assign the rest blackout overlay and image.", this);
             return;
         }
 
-        confirmationDialog.SetActive(false);
         blackoutOverlay.SetActive(false);
-
         UpdateRestUI();
     }
 
-    private void UpdateRestUI()
-    {
-        RunSystem run = RunSystem.Instance;
-
-        if (run == null || run.HeroData == null) return;
-
-        if (healthText != null) healthText.text = "HP: " + run.CurrentHealth + " / " + run.HeroData.Health;
-        if (messageText != null) messageText.text = "Rest and upgrade a card.";
-    }
-
-    private void SetMessage(string message)
-    {
-        if (messageText != null) messageText.text = message;
-    }
-
+    // Upgrade selection uses the shared deck confirmation.
     public void OpenUpgradePanel()
     {
-        if (hasUpgraded)
-        {
-            SetMessage("You have already upgraded a card.");
-            return;
-        }
+        if (!CanUseRest || ConfirmationDialogUI.IsOpen) return;
+        if (hasUpgraded) { SetMessage("You have already upgraded a card."); return; }
+        if (showDeckUI == null) { Debug.LogError("Show Deck UI is not assigned in RestUI.", this); return; }
 
-        if (showDeckUI == null)
-        {
-            Debug.LogError("Show Deck UI is not assigned in RestUI.");
-            return;
-        }
-
-        bool opened = showDeckUI.OpenUpgradeCard(OnCardUpgraded, CanUpgradeAtRest);
-
-        if (!opened) SetMessage("Could not open the upgrade screen.");
+        if (!showDeckUI.OpenUpgradeCard(OnCardUpgraded, CanUpgradeAtRest))
+            SetMessage("Could not open the upgrade screen.");
     }
 
-    private bool CanUpgradeAtRest() => isActiveAndEnabled && !hasUpgraded;
+    private bool CanUpgradeAtRest() => CanUseRest && !hasUpgraded;
 
-    private void OnCardUpgraded(CardData cardData)
+    private void OnCardUpgraded(CardData card)
     {
         hasUpgraded = true;
-
         UpdateRestUI();
-        SetMessage("Upgraded: " + cardData.name + "+");
+        SetMessage("Upgraded: " + card.name + "+");
     }
 
     public void CloseUpgradePanel()
     {
-        if (showDeckUI != null) showDeckUI.CloseDeck();
+        if (!ConfirmationDialogUI.IsOpen && showDeckUI != null) showDeckUI.CloseDeck();
     }
 
+    // Recover health only after confirmation.
     public void Rest()
     {
-        if (hasRested)
-        {
-            SetMessage("You have already rested.");
-            return;
-        }
+        if (!CanUseRest) return;
+        if (hasRested) { SetMessage("You have already rested."); return; }
 
-        if (isResting) return;
-        if (RunSystem.Instance == null || RunSystem.Instance.HeroData == null) return;
+        RunSystem run = RunSystem.Instance;
+        if (run.HeroData == null || blackoutOverlay == null || blackoutImage == null) return;
 
-        if (confirmationDialog == null)
-        {
-            Debug.LogError("Rest confirmation dialog is not assigned in RestUI.", this);
-            return;
-        }
+        int amount = Mathf.Max(0, Mathf.Min(Mathf.CeilToInt(run.HeroData.Health * 0.2f), run.HeroData.Health - run.CurrentHealth));
 
-        confirmationDialog.SetActive(true);
-        confirmationDialog.transform.SetAsLastSibling();
+        ConfirmationDialogUI.Ask(this, $"Do you want to rest?\nRestore {amount} HP.", ExecuteRest,
+            () => CanUseRest && !hasRested && RunSystem.Instance == run);
     }
 
-    public void ConfirmRest()
+    private void ExecuteRest()
     {
-        if (hasRested || isResting) return;
+        if (!CanUseRest || hasRested) return;
 
-        confirmationDialog.SetActive(false);
+        isResting = true;
         restCoroutine = StartCoroutine(RestRoutine());
-    }
-
-    public void CancelRest()
-    {
-        if (confirmationDialog != null) confirmationDialog.SetActive(false);
     }
 
     private IEnumerator RestRoutine()
     {
-        isResting = true;
         blackoutImage.color = Color.black;
         blackoutOverlay.SetActive(true);
         blackoutOverlay.transform.SetAsLastSibling();
@@ -134,48 +92,68 @@ public class RestUI : MonoBehaviour
         yield return new WaitForSecondsRealtime(restDuration);
 
         RunSystem run = RunSystem.Instance;
-        if (run == null || run.HeroData == null)
-        {
-            Debug.LogError("Cannot complete rest: RunSystem or HeroData is missing.", this);
-            blackoutOverlay.SetActive(false);
-            isResting = false;
-            restCoroutine = null;
-            yield break;
-        }
 
-        int healAmount = Mathf.CeilToInt(run.HeroData.Health * 0.2f);
-        run.Heal(healAmount);
-        hasRested = true;
+        if (run != null && run.HeroData != null && !run.IsRunFinished)
+        {
+            run.Heal(Mathf.CeilToInt(run.HeroData.Health * 0.2f));
+            hasRested = true;
+            UpdateRestUI();
+            SetMessage("Health restored.");
+        }
 
         blackoutOverlay.SetActive(false);
         isResting = false;
         restCoroutine = null;
-        UpdateRestUI();
-        SetMessage("Health restored.");
     }
 
+    // Mention unused actions before completing the map point.
     public void LeaveRest()
     {
+        if (!CanUseRest) return;
+
+        RunSystem run = RunSystem.Instance;
+        string message = "Do you want to leave the rest site?";
+
+        if (!hasRested && !hasUpgraded) message += "\nYou have not rested or upgraded a card.";
+        else if (!hasRested) message += "\nYou have not rested yet.";
+        else if (!hasUpgraded) message += "\nYou have not upgraded a card yet.";
+
+        ConfirmationDialogUI.Ask(this, message, ExecuteLeaveRest,
+            () => CanUseRest && RunSystem.Instance == run);
+    }
+
+    private void ExecuteLeaveRest()
+    {
+        if (!CanUseRest) return;
+
         if (showDeckUI != null) showDeckUI.CloseDeck();
-        if (RunSystem.Instance == null) return;
-
         RunSystem.Instance.CompleteMapPoint();
-
         gameObject.SetActive(false);
 
         if (mapUI != null) mapUI.UpdateMapUI();
     }
 
+    private void UpdateRestUI()
+    {
+        RunSystem run = RunSystem.Instance;
+        if (run == null || run.HeroData == null) return;
+
+        if (healthText != null) healthText.text = $"HP: {run.CurrentHealth} / {run.HeroData.Health}";
+        SetMessage("Rest and upgrade a card.");
+    }
+
+    private void SetMessage(string message)
+    {
+        if (messageText != null) messageText.text = message;
+    }
+
     private void OnDisable()
     {
-        if (restCoroutine != null)
-        {
-            StopCoroutine(restCoroutine);
-            restCoroutine = null;
-        }
+        if (restCoroutine != null) StopCoroutine(restCoroutine);
 
+        restCoroutine = null;
         isResting = false;
-        if (confirmationDialog != null) confirmationDialog.SetActive(false);
+
         if (blackoutOverlay != null) blackoutOverlay.SetActive(false);
     }
 }
