@@ -10,6 +10,8 @@ public class CombatantView : MonoBehaviour
     private const float IdleCycleDuration = 2.4f;
     private const float IdleSquashAmount = 0.045f;
     private const float IdleWidthAmount = 0.018f;
+    private const float ArmorBreakArmorMultiplier = 0.75f;
+    private bool armorBreakAppliedToCurrentArmor;
 
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private Image healthFillImage;
@@ -230,19 +232,53 @@ public class CombatantView : MonoBehaviour
             stackCount = Mathf.Max(0, stackCount);
             if (stackCount == 0) return;
         }
-        if (statusEffects.ContainsKey(type))
+
+        // Fresh armor can be affected by the next scheduled Armor Break tick.
+        if (type == StatusEffectType.ARMOR && stackCount > 0 && GetStatusEffectStacks(StatusEffectType.ARMOR) <= 0)
         {
-            statusEffects[type] += stackCount;
+            armorBreakAppliedToCurrentArmor = false;
         }
-        else
-        {
-            statusEffects.Add(type, stackCount);
-        }
+
+        statusEffects[type] = GetStatusEffectStacks(type) + stackCount;
         statusEffectsUI.UpdateStatusEffectUI(type, GetStatusEffectStacks(type));
-        if (stackCount > 0)
+
+        if (stackCount <= 0) return;
+
+        if (type == StatusEffectType.ARMOR_BREAK)
         {
-            ShowStatusEffectOverlay(type);
+            ReduceCurrentArmorForArmorBreak();
+            armorBreakAppliedToCurrentArmor = true;
         }
+
+        ShowStatusEffectOverlay(type);
+    }
+    private void ReduceCurrentArmorForArmorBreak()
+    {
+        int currentArmor = GetStatusEffectStacks(StatusEffectType.ARMOR);
+        if (currentArmor <= 0) return;
+
+        int remainingArmor = Mathf.FloorToInt(currentArmor * ArmorBreakArmorMultiplier);
+        RemoveStatusEffect(StatusEffectType.ARMOR, currentArmor - remainingArmor);
+    }
+
+    public void TickArmorBreak()
+    {
+        if (CurrentHealth <= 0) return;
+
+        if (GetStatusEffectStacks(StatusEffectType.ARMOR_BREAK) <= 0)
+        {
+            armorBreakAppliedToCurrentArmor = false;
+            return;
+        }
+
+        // Avoid reducing the same armor again immediately after application.
+        if (!armorBreakAppliedToCurrentArmor)
+        {
+            ReduceCurrentArmorForArmorBreak();
+        }
+
+        armorBreakAppliedToCurrentArmor = false;
+        RemoveStatusEffect(StatusEffectType.ARMOR_BREAK, 1);
     }
 
     private void ShowStatusEffectOverlay(StatusEffectType type)

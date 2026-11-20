@@ -19,14 +19,10 @@ MonoBehaviour:
   <Description>k__BackingField: 'A relentless experimental subject equipped with
     razor-sharp mechanical claws on both hands. Specializing in swift, consecutive
     strikes, he overwhelms enemies with rapid attacks and relentless combos. '
-  <StartingPerkDescription>k__BackingField: 10% chance to gain 2 Combo when you play an Attack card.
+  <StartingPerkDescription>k__BackingField: 10% chance to gain 2 Combo when you play
+    an Attack card.
   <Health>k__BackingField: 75
   <StartingMana>k__BackingField: 3
   <Deck>k__BackingField:
-  - {fileID: 11400000, guid: 0aad0526b5be41946bb67c87713040a0, type: 2}
-  - {fileID: 11400000, guid: 0aad0526b5be41946bb67c87713040a0, type: 2}
-  - {fileID: 11400000, guid: 0aad0526b5be41946bb67c87713040a0, type: 2}
-  - {fileID: 11400000, guid: 0aad0526b5be41946bb67c87713040a0, type: 2}
-  - {fileID: 11400000, guid: 62f21bbc669e444428b483d5c36cc7e1, type: 2}
-  - {fileID: 11400000, guid: 0aad0526b5be41946bb67c87713040a0, type: 2}
+  - {fileID: 11400000, guid: 73960cc567c7a624f9f47bf2bf03e950, type: 2}
   <StartingPerk>k__BackingField: {fileID: 11400000, guid: 524a56f9a39e54e45bd4d4b2da70c8fc, type: 2}

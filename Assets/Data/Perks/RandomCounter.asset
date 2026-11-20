@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 8142696591078814465, guid: e5d23f2e4a3e1a14bb22c6f8542afff6, type: 3}
   <Title>k__BackingField: Reflex Counter
-  <Description>k__BackingField: When an enemy attacks you, there is a 15% chance
-    to counterattack a random enemy for 5 damage.
+  <Description>k__BackingField: 'When attacked: 15% chance to counter a random enemy
+    for 5 damage.'
   <PerkCondition>k__BackingField:
     rid: 1468093514728341802
   <AutoTargetEffect>k__BackingField:
@@ -43,4 +43,4 @@ MonoBehaviour:
       type: {class: HeroPerkEffect, ns: , asm: Assembly-CSharp}
       data:
         effectType: 2
-        amount: 5
+        amount: 3
