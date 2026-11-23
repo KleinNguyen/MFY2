@@ -14,7 +14,9 @@ public class HandView : MonoBehaviour
     public IEnumerator AddCard(CardView cardView)
     {
         cards.Add(cardView);
-        yield return UpdateCardPositions(0.15f);
+        cardView.SetInteractionEnabled(false);
+        yield return UpdateCardPositions(0.10f);
+        cardView.SetInteractionEnabled(true);
     }
 
     public CardView RemoveCard(Card card)
@@ -22,8 +24,17 @@ public class HandView : MonoBehaviour
         CardView cardView = GetCardView(card);
         if(cardView == null) return null;
         cards.Remove(cardView);
-        StartCoroutine(UpdateCardPositions(0.15f));
+        if (cardView != null) cardView.SetInteractionEnabled(false);
+        StartCoroutine(UpdateCardPositions(0.10f));
         return cardView;
+    }
+    public void SetInteractionEnabled(bool enabled)
+    {
+        foreach (CardView cardView in cards)
+        {
+            if (cardView != null)
+                cardView.SetInteractionEnabled(enabled);
+        }
     }
     public void RefreshCards()
     {

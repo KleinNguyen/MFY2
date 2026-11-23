@@ -8,10 +8,12 @@ using Random = UnityEngine.Random;
 public class LuckyWheelUI : MonoBehaviour
 {
     private const int SliceCount = 6;
+    private const float ArrowSize = 150f;
     [SerializeField] private RectTransform wheelRoot;
     [SerializeField] private RectTransform pointerPivot;
     [SerializeField] private Image wheelImage;
     [SerializeField] private Image characterImage;
+    [SerializeField] private Image arrowImage;
     [SerializeField] private TMP_Text wheelText;
     [SerializeField] private TMP_Text resultText;
     [SerializeField] private Button spinButton;
@@ -20,9 +22,15 @@ public class LuckyWheelUI : MonoBehaviour
     [SerializeField] private Sprite redWheelSprite;
     [SerializeField] private Sprite greenWheelSprite;
     [SerializeField] private Sprite yellowWheelSprite;
+    [SerializeField] private Sprite redArrowSprite;
+    [SerializeField] private Sprite greenArrowSprite;
+    [SerializeField] private Sprite yellowArrowSprite;
     [SerializeField] private Sprite redCharacterSprite;
     [SerializeField] private Sprite greenCharacterSprite;
     [SerializeField] private Sprite yellowCharacterSprite;
+    [SerializeField, Min(0.1f)] private float redCharacterScale = 1.12f;
+    [SerializeField, Min(0.1f)] private float greenCharacterScale = 0.92f;
+    [SerializeField, Min(0.1f)] private float yellowCharacterScale = 0.96f;
     [SerializeField, Min(0f)] private float labelRadius = 175f;
     [SerializeField, Min(0.1f)] private float spinDuration = 4f;
 
@@ -38,7 +46,7 @@ public class LuckyWheelUI : MonoBehaviour
 
     public bool IsSpinning => spinning;
     public bool HasResult => hasResult;
-    public bool IsConfigured => wheelRoot != null && pointerPivot != null && wheelImage != null && characterImage != null && wheelText != null && resultText != null && spinButton != null && continueButton != null;
+    public bool IsConfigured => wheelRoot != null && pointerPivot != null && wheelImage != null && characterImage != null && arrowImage != null && wheelText != null && resultText != null && spinButton != null && continueButton != null;
 
     private void Awake()
     {
@@ -125,35 +133,55 @@ public class LuckyWheelUI : MonoBehaviour
     private bool SetCharacterArt(CharacterType character)
     {
         Sprite wheelSprite;
+        Sprite arrowSprite;
         Sprite portraitSprite;
+        float portraitScale;
+        float arrowHorizontalPosition;
 
         switch (character)
         {
             case CharacterType.Red:
                 wheelSprite = redWheelSprite;
+                arrowSprite = redArrowSprite;
                 portraitSprite = redCharacterSprite;
+                portraitScale = redCharacterScale;
+                arrowHorizontalPosition = 315f;
                 break;
             case CharacterType.Green:
                 wheelSprite = greenWheelSprite;
+                arrowSprite = greenArrowSprite;
                 portraitSprite = greenCharacterSprite;
+                portraitScale = greenCharacterScale;
+                arrowHorizontalPosition = 315f;
                 break;
             case CharacterType.Yellow:
                 wheelSprite = yellowWheelSprite;
+                arrowSprite = yellowArrowSprite;
                 portraitSprite = yellowCharacterSprite;
+                portraitScale = yellowCharacterScale;
+                arrowHorizontalPosition = 290f;
                 break;
             default:
                 Debug.LogError("LuckyWheelUI received an unsupported character type: " + character, this);
                 return false;
         }
 
-        if (wheelSprite == null || portraitSprite == null)
+        if (wheelSprite == null || arrowSprite == null || portraitSprite == null)
         {
-            Debug.LogError("Assign the wheel and chibi sprites for " + character + " in LuckyWheelUI.", this);
+            Debug.LogError("Assign the wheel, arrow, and chibi sprites for " + character + " in LuckyWheelUI.", this);
             return false;
         }
 
         wheelImage.sprite = wheelSprite;
+        wheelImage.preserveAspect = true;
+        arrowImage.sprite = arrowSprite;
+        arrowImage.preserveAspect = true;
+        arrowImage.rectTransform.sizeDelta = new Vector2(ArrowSize, ArrowSize);
+        arrowImage.rectTransform.anchoredPosition = new Vector2(arrowHorizontalPosition, 0f);
+        arrowImage.rectTransform.localRotation = Quaternion.Euler(0f, 0f, 180f);
         characterImage.sprite = portraitSprite;
+        characterImage.preserveAspect = true;
+        characterImage.rectTransform.localScale = Vector3.one * portraitScale;
         return true;
     }
 

@@ -8,7 +8,7 @@ using UnityEngine.Rendering;
 public class CardSystem : Singleton<CardSystem>
 {
     private const float DiscardFlightDuration = 0.40f;
-    private const float EndTurnDiscardDuration = 0.40f;
+    private const float EndTurnDiscardDuration = 0.38f;
     private const float RefillFlightDuration = 0.50f;
     private const float RefillCardFlightScale = 0.08f;
     private const float DiscardArcHeight = 5.2f;
@@ -272,12 +272,33 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator DiscardAllCardsPerformer(DiscardAllCardsGA discardAllCardsGA)
     {
-        foreach (var card in hand)
+        if (hand.Count == 0) yield break;
+
+        handView.SetInteractionEnabled(false);
+        List<Card> cardsToDiscard = new(hand);
+        float stagger = cardsToDiscard.Count > 1
+            ? Mathf.Min(0.025f, 0.08f / (cardsToDiscard.Count - 1))
+            : 0f;
+        int remainingFlights = 0;
+
+        for (int i = 0; i < cardsToDiscard.Count; i++)
         {
-            //discardPile.Add(card);
-            CardView cardView = handView.RemoveCard(card);
-            yield return DiscardCard(cardView, EndTurnDiscardDuration);
+            CardView cardView = handView.RemoveCard(cardsToDiscard[i]);
+            if (cardView == null) continue;
+
+            discardPile.Add(cardView.Card);
+            remainingFlights++;
+            StartCoroutine(AnimateCardToPile(
+                cardView,
+                discardPilePoint,
+                EndTurnDiscardDuration,
+                stagger * i,
+                () => remainingFlights--
+            ));
         }
+
+        pileUI.UpdateDiscardPileText(discardPile.Count);
+        while (remainingFlights > 0) yield return null;
         hand.Clear();
     }
 

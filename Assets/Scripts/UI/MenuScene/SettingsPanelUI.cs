@@ -8,7 +8,7 @@ public class SettingsPanelUI : MonoBehaviour
     [SerializeField] private Button closeButton;
     [SerializeField] private Slider masterSlider, musicSlider, soundEffectsSlider;
     [SerializeField] private TMP_Text masterValue, musicValue, soundEffectsValue;
-    [SerializeField] private Button saveButton, restartButton, leaveButton;
+    [SerializeField] private Button restartButton, leaveButton;
     [SerializeField] private TMP_Text messageText;
 
     public static bool IsOpen { get; private set; }
@@ -27,7 +27,6 @@ public class SettingsPanelUI : MonoBehaviour
         }
 
         closeButton.onClick.AddListener(Close);
-        if (saveButton != null) saveButton.onClick.AddListener(SaveGame);
         if (restartButton != null) restartButton.onClick.AddListener(RestartBattle);
         if (leaveButton != null) leaveButton.onClick.AddListener(ReturnToMenu);
 
@@ -56,10 +55,6 @@ public class SettingsPanelUI : MonoBehaviour
     private void UpdateButtons()
     {
         RunSystem run = RunSystem.Instance;
-        bool activeRun = run != null && !run.IsRunFinished;
-        bool canSave = activeRun && (InBattle ? BattleReady && run.CanRestartBattle : run.SelectedMapPointId < 0 && run.MapPoints.Count > 0);
-
-        if (saveButton != null) saveButton.interactable = !Busy && canSave;
 
         if (restartButton != null)
         {
@@ -68,15 +63,6 @@ public class SettingsPanelUI : MonoBehaviour
         }
 
         if (leaveButton != null) leaveButton.interactable = !Busy && (!InBattle || BattleSystem.Instance != null && !BattleSystem.Instance.IsPreparingBattle);
-    }
-
-    private void ExecuteSaveGame()
-    {
-        if (Busy || InBattle && !BattleReady) return;
-
-        RunSystem run = RunSystem.Instance;
-        bool saved = run != null && run.SaveGame();
-        SetMessage(saved ? InBattle ? "Saved. Continue restarts this battle." : "Game saved." : "Could not save. Please try again.");
     }
 
     private void ExecuteRestartBattle()
@@ -123,23 +109,7 @@ public class SettingsPanelUI : MonoBehaviour
         Close();
         SceneManager.LoadScene("MenuScene");
     }
-    // Confirm save, restart, and menu navigation.
-    public void SaveGame()
-    {
-        RunSystem run = RunSystem.Instance;
-        if (Busy || run == null || run.IsRunFinished) return;
-
-        bool canSave = InBattle ? BattleReady && run.CanRestartBattle : run.SelectedMapPointId < 0 && run.MapPoints.Count > 0;
-        if (!canSave) return;
-
-        string question = InBattle
-            ? "Do you want to save your progress?\nContinuing will restart this battle."
-            : "Do you want to save your progress?";
-
-        ConfirmationDialogUI.Ask(this, question, ExecuteSaveGame,
-            () => RunSystem.Instance == run && !run.IsRunFinished);
-    }
-
+    // Confirm restart and menu navigation.
     public void RestartBattle()
     {
         RunSystem run = RunSystem.Instance;
@@ -185,7 +155,6 @@ public class SettingsPanelUI : MonoBehaviour
     private void OnDestroy()
     {
         if (closeButton != null) closeButton.onClick.RemoveListener(Close);
-        if (saveButton != null) saveButton.onClick.RemoveListener(SaveGame);
         if (restartButton != null) restartButton.onClick.RemoveListener(RestartBattle);
         if (leaveButton != null) leaveButton.onClick.RemoveListener(ReturnToMenu);
         if (masterSlider != null) masterSlider.onValueChanged.RemoveListener(SetMasterVolume);

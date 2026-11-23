@@ -17,6 +17,7 @@ public class RestUI : MonoBehaviour
 
     private bool hasRested, hasUpgraded, isResting;
     private Coroutine restCoroutine;
+    private TMP_Text sleepingText;
 
     private bool CanUseRest => isActiveAndEnabled && !isResting && RunSystem.Instance != null && !RunSystem.Instance.IsRunFinished;
 
@@ -30,6 +31,7 @@ public class RestUI : MonoBehaviour
             return;
         }
 
+        EnsureSleepingText();
         blackoutOverlay.SetActive(false);
         UpdateRestUI();
     }
@@ -87,9 +89,28 @@ public class RestUI : MonoBehaviour
         blackoutImage.color = Color.black;
         blackoutOverlay.SetActive(true);
         blackoutOverlay.transform.SetAsLastSibling();
+        ShowSleepingText();
         SfxManager.PlaySfx(SfxId.Rest);
 
-        yield return new WaitForSecondsRealtime(restDuration);
+        float elapsed = 0f;
+        while (elapsed < restDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+
+            if (sleepingText != null)
+            {
+                float pulse = 1f + Mathf.Sin(elapsed * 2f) * 0.04f;
+                sleepingText.transform.localScale = Vector3.one * pulse;
+
+                float phase = elapsed % 1.2f;
+                sleepingText.text = phase < 0.3f ? "Z Z Z"
+                    : phase < 0.6f ? "Z Z Z."
+                    : phase < 0.9f ? "Z Z Z.."
+                    : "Z Z Z...";
+            }
+
+            yield return null;
+        }
 
         RunSystem run = RunSystem.Instance;
 
@@ -101,9 +122,72 @@ public class RestUI : MonoBehaviour
             SetMessage("Health restored.");
         }
 
+        HideSleepingText();
         blackoutOverlay.SetActive(false);
         isResting = false;
         restCoroutine = null;
+    }
+
+    private void EnsureSleepingText()
+    {
+        if (sleepingText != null) return;
+
+        Transform existingText = blackoutOverlay.transform.Find("SleepingZText");
+        if (existingText != null)
+        {
+            sleepingText = existingText.GetComponent<TMP_Text>();
+        }
+
+        if (sleepingText == null)
+        {
+            GameObject textObject = new GameObject(
+                "SleepingZText",
+                typeof(RectTransform),
+                typeof(CanvasRenderer),
+                typeof(TextMeshProUGUI));
+
+            RectTransform textRect = textObject.GetComponent<RectTransform>();
+            textRect.SetParent(blackoutOverlay.transform, false);
+            textRect.anchorMin = new Vector2(0.5f, 0.5f);
+            textRect.anchorMax = new Vector2(0.5f, 0.5f);
+            textRect.pivot = new Vector2(0.5f, 0.5f);
+            textRect.anchoredPosition = Vector2.zero;
+            textRect.sizeDelta = new Vector2(900f, 200f);
+
+            sleepingText = textObject.GetComponent<TextMeshProUGUI>();
+            sleepingText.font = TMP_Settings.defaultFontAsset;
+            if (sleepingText.font == null)
+                sleepingText.font = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
+        }
+
+        sleepingText.text = "Z Z Z...";
+        sleepingText.fontSize = 120f;
+        sleepingText.fontStyle = FontStyles.Bold;
+        sleepingText.alignment = TextAlignmentOptions.Center;
+        sleepingText.color = Color.white;
+        sleepingText.raycastTarget = false;
+        sleepingText.enableWordWrapping = false;
+        sleepingText.gameObject.SetActive(false);
+    }
+
+    private void ShowSleepingText()
+    {
+        if (sleepingText == null) EnsureSleepingText();
+        if (sleepingText == null) return;
+
+        sleepingText.transform.localScale = Vector3.one;
+        sleepingText.text = "Z Z Z...";
+        sleepingText.gameObject.SetActive(true);
+        sleepingText.transform.SetAsLastSibling();
+    }
+
+    private void HideSleepingText()
+    {
+        if (sleepingText != null)
+        {
+            sleepingText.transform.localScale = Vector3.one;
+            sleepingText.gameObject.SetActive(false);
+        }
     }
 
     // Mention unused actions before completing the map point.
@@ -154,6 +238,7 @@ public class RestUI : MonoBehaviour
         restCoroutine = null;
         isResting = false;
 
+        HideSleepingText();
         if (blackoutOverlay != null) blackoutOverlay.SetActive(false);
     }
 }

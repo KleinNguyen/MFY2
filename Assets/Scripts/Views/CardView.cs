@@ -71,6 +71,22 @@ public class CardView : MonoBehaviour
         }
     }
 
+    public void SetInteractionEnabled(bool enabled)
+    {
+        enabled = enabled && gameObject.activeInHierarchy;
+        this.enabled = enabled;
+
+        foreach (Collider cardCollider in GetComponentsInChildren<Collider>())
+            cardCollider.enabled = enabled;
+
+        if (!enabled)
+        {
+            wrapper.SetActive(true);
+            if (CardViewHoverSystem.Instance != null)
+                CardViewHoverSystem.Instance.Hide();
+        }
+    }
+
     private void ApplyTextOffsets(Vector2 titleOffset, Vector2 descriptionOffset, Vector2 manaOffset)
     {
         if (!textBasePositionsInitialized)
@@ -123,7 +139,11 @@ public class CardView : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (!InteractionSystem.Instance.PlayerCanHover()) return;
+        if (InteractionSystem.Instance == null || !InteractionSystem.Instance.PlayerCanHover())
+        {
+            if (wrapper != null) wrapper.SetActive(true);
+            return;
+        }
         wrapper.SetActive(false);
         Vector3 pos = new(transform.position.x, -2, 0);
         CardViewHoverSystem.Instance.Show(Card, pos);

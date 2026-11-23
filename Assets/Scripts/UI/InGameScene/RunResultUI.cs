@@ -22,7 +22,7 @@ public class RunResultUI : MonoBehaviour
         }
 
         string heroName = run.HeroData != null ? run.HeroData.CharacterName : "--";
-        titleText.text = run.Result == RunResult.Won ? $"VICTORY - {heroName}" : $"DEFEAT - {heroName}";
+        titleText.text = run.Result == RunResult.Won ? "VICTORY" : "DEFEAT";
         int elapsedSeconds = Mathf.FloorToInt(run.ElapsedRunTime);
         int hours = elapsedSeconds / 3600;
         int minutes = (elapsedSeconds / 60) % 60;

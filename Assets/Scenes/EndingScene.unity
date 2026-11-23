@@ -173,47 +173,43 @@ MonoBehaviour:
   sceneDuration: 10
   subtitle: After defeating the monster guarding the city, the character located
     the core of the pollution and destroyed it, bringing a new beginning to the world.
-  credits: '
-
-    THANK YOU FOR PLAYING
-
-
-    Developed by
-
-    Pham Minh Tuan
-
-    Nguyen
-    Sy Huong
-
-
-    Game Design
-
-    Pham Minh Tuan
-
-    Nguyen Sy Huong
-
-
-    Programming
-
-    Pham
-    Minh Tuan
-
-    Nguyen Sy Huong
-
-
-    Art & Sound
-
-    Pham Minh Tuan
-
-
-
-    Special
-    Thanks
-
-    To everyone who played
-
-
-    THE END'
+  credits: "The Mutant Heroes\r\nA deck-building roguelike by Tuan Huong Studio\r\n\r\nPROJECT
+    LEAD\r\nProject Direction \u2014 Nguyen Sy Huong\r\nPlanning & Coordination \u2014
+    Pham Minh Tuan\r\n\r\nGAME DESIGN\r\nCore Gameplay & Combat Design \u2014 Pham
+    Minh Tuan & Nguyen Sy Huong\r\nCard Design & Upgrade Effects \u2014 Pham Minh
+    Tuan\r\nHero Abilities & Perk Design \u2014 Pham Minh Tuan & Nguyen Sy Huong\r\nEnemy
+    Moves & Boss Design \u2014 Nguyen Sy Huong\r\nMap & Encounter Design \u2014 Pham
+    Minh Tuan & Nguyen Sy Huong\r\nDifficulty & Combat Balancing \u2014 Pham Minh
+    Tuan & Nguyen Sy Huong\r\nShop Prices & Reward Balancing \u2014 Pham Minh Tuan
+    & Nguyen Sy Huong\r\n\r\nPROGRAMMING\r\nCore Architecture & Game Action System
+    \u2014 Nguyen Sy Huong\r\nCard Effects & Deck Management \u2014 Pham Minh Tuan
+    & Nguyen Sy Huong\r\nStatus Effects System \u2014 Nguyen Sy Huong\r\nEnemy Behavior
+    & Turn System \u2014 Nguyen Sy Huong\r\nAct Progression & Encounter Selection
+    \u2014 Pham Minh Tuan & Nguyen Sy Huong\r\nShop & Rest Systems \u2014 Pham Minh
+    Tuan & Nguyen Sy Huong\r\nRewards & Lucky Wheel \u2014 Pham Minh Tuan & Nguyen
+    Sy Huong\r\nSave, Continue & Battle Restart \u2014 Pham Minh Tuan\r\nUser Interface
+    & Input Handling \u2014 Pham Minh Tuan & Nguyen Sy Huong\r\n\r\n\r\nSTORY & WORLD\r\nStory
+    & Worldbuilding \u2014 Pham Minh Tuan & Nguyen Sy Huong\r\nCharacter Backgrounds
+    \u2014 Pham Minh Tuan & Nguyen Sy Huong\r\n\r\n\r\nART & VISUALS\r\nArt Direction
+    \u2014 Pham Minh Tuan\r\nHero Artwork \u2014 Pham Minh Tuan\r\nEnemy & Boss Artwork
+    \u2014 Pham Minh Tuan\r\nEnvironment Backgrounds \u2014 Pham Minh Tuan\r\nCard
+    Illustrations \u2014 Pham Minh Tuan\r\nCard Frames & Interface Artwork \u2014
+    Pham Minh Tuan\r\nIcons & Status Effect Symbols \u2014 Pham Minh Tuan\r\nAnimation
+    & Visual Effects \u2014 Pham Minh Tuan\r\n\r\n\r\nAUDIO\r\nMusic Selection &
+    Integration \u2014 Pham Minh Tuan\r\nSound Effects \u2014 AI Generator \u2014
+    Elevenlabs\r\nAudio Implementation \u2014 Pham Minh Tuan\r\nJanne Hanhisuanto
+    for Radakan Music\r\nJuhani Junkala For Music\r\n\r\n\r\n\r\nTESTING\r\nCard
+    & Status Effect Testing \u2014 Pham Minh Tuan & Nguyen Sy Huong\r\nCombat & Difficulty
+    Testing \u2014 Pham Minh Tuan & Nguyen Sy Huong\r\nMap & Progression Testing
+    \u2014 Pham Minh Tuan & Nguyen Sy Huong\r\nShop, Rewards & Save System Testing
+    \u2014 Pham Minh Tuan & Nguyen Sy Huong\r\nInterface & Bug Testing \u2014 Pham
+    Minh Tuan & Nguyen Sy Huong\r\n\r\n\r\nTOOLS & TECHNOLOGY\r\nGame Engine \u2014
+    Unity\r\nProgramming Language \u2014 C#\r\nArt Tool \u2014 Krita\nSound Effect
+    Tools \u2014 Elevenlabs AI\t \r\nAI Tool \u2014 ChatGPT, Gemini, Github Copilot\r\n\r\nTHIRD-PARTY
+    ASSETS\r\nCartoon FX Remaster Free \u2014 Jean Moreno\r\nDOTween (HOTween v2)\u2014
+    Demigiant\r\nSerialize Reference Editor \u2014 Makar Osokin \r\n\r\n\r\n\r\nSPECIAL
+    THANKS \r\nNguyen Dinh Tran Long for guidance, feedback, and support throughout
+    this project.\r\n\r\nTHANK YOU FOR PLAYING\r\n"
   creditsScrollSpeed: 55
 --- !u!114 &1003
 MonoBehaviour:

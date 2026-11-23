@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 54c7ff9763ed2504b95e7a62152379c6
+guid: 2721597894134fe1abc94a3121dcc064
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5491576230977644518
-    second: wheelgreee_0
+      213: -844653459830821936
+    second: arrow_yellow_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -96,30 +96,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: wheelgreee_0
+      name: arrow_yellow_0
       rect:
         serializedVersion: 2
-        x: 52
-        y: 263
-        width: 689
-        height: 681
+        x: 0
+        y: 0
+        width: 1024
+        height: 820
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6e7a6688c7ff53c40800000000000000
-      internalID: 5491576230977644518
+      spriteID: 0c1daae2e23845060800000000000000
+      internalID: -844653459830821936
       vertices: []
       indices: 
       edges: []
@@ -138,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      wheelgreee_0: 5491576230977644518
+      arrow_yellow_0: -844653459830821936
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

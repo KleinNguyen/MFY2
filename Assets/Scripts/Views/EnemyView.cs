@@ -16,6 +16,11 @@ public class EnemyView : CombatantView
     private const float AttackIconScaleMultiplier = 1.2f;
     private const float AttackFrameHorizontalPadding = 0.08f;
     private const float AttackFrameVerticalPadding = 0.04f;
+    private const float DamageArrowGap = 0.06f;
+    private const float DamageArrowHeightRatio = 1.1f;
+    private const float DamageArrowMinimumHeight = 0.14f;
+    private static readonly Color DamageUpColor = new(0.25f, 0.95f, 0.32f, 1f);
+    private static readonly Color DamageDownColor = new(1f, 0.22f, 0.18f, 1f);
 
     [SerializeField] private TMP_Text attackText;
     [SerializeField] private Sprite attackIconSprite;
@@ -26,6 +31,8 @@ public class EnemyView : CombatantView
     private SpriteRenderer attackIcon;
     private RectTransform attackFrameRect;
     private Image attackFrameImage;
+    private RectTransform damageArrowRect;
+    private EnemyDamageArrowGraphic damageArrow;
     private Vector3 attackIntentAnchorLocal;
     private bool attackIntentAnchorInitialized;
     private int moveIndex;
@@ -72,6 +79,7 @@ public class EnemyView : CombatantView
         InitializeIdleAnimation();
         CacheAttackIntentAnchor();
         SetupAttackFrame();
+        SetupDamageArrow();
         UpdateIntentText();
         UpdateAttackTextAnchorAboveSprite();
         UpdateUIAnchorBelowSprite(UiFootGap);
@@ -158,6 +166,7 @@ public class EnemyView : CombatantView
     private void LateUpdate()
     {
         UpdateIntentText();
+        UpdateDamageArrow();
         UpdateAttackTextAnchorAboveSprite();
         UpdateUIAnchorBelowSprite(UiFootGap);
     }
@@ -171,33 +180,62 @@ public class EnemyView : CombatantView
             : new Bounds(attackText.transform.position, Vector3.zero);
         bool showAttackIcon = CurrentMoveAttacks && attackIcon != null;
         if (attackIcon != null) attackIcon.enabled = showAttackIcon;
+        bool showDamageArrow = CurrentMoveAttacks && damageArrow != null && damageArrow.gameObject.activeSelf;
 
         float iconHalfHeight = showAttackIcon ? attackIcon.bounds.extents.y : 0f;
         float textHalfHeight = textBounds.extents.y;
         float textWidth = textBounds.size.x;
         float iconWidth = showAttackIcon ? attackIcon.bounds.size.x : 0f;
-        float groupGap = showAttackIcon ? AttackIconGap : 0f;
+        float arrowHeight = showDamageArrow
+            ? Mathf.Max(textBounds.size.y * DamageArrowHeightRatio, DamageArrowMinimumHeight)
+            : 0f;
+        float arrowWidth = showDamageArrow ? arrowHeight * 0.72f : 0f;
+        float iconTextGap = showAttackIcon ? AttackIconGap : 0f;
+        float textArrowGap = showDamageArrow ? DamageArrowGap : 0f;
         float contentHeight = Mathf.Max(iconHalfHeight, textHalfHeight) * 2f;
         float frameHeight = contentHeight + AttackFrameVerticalPadding * 2f;
+        if (showDamageArrow) frameHeight = Mathf.Max(frameHeight, arrowHeight + AttackFrameVerticalPadding * 2f);
         Vector3 anchor = transform.TransformPoint(attackIntentAnchorLocal);
         float labelY = anchor.y + UiHeadGap + frameHeight * 0.5f;
         Vector3 textPosition = attackText.transform.position;
+        float groupWidth = textWidth + iconWidth + arrowWidth + iconTextGap + textArrowGap;
+        float groupLeft = anchor.x - groupWidth * 0.5f;
 
         if (showAttackIcon)
         {
             Vector3 iconPosition = attackIcon.transform.position;
             attackIcon.transform.position = new Vector3(
-                anchor.x - (textWidth + groupGap) * 0.5f,
+                groupLeft + iconWidth * 0.5f,
                 labelY,
                 iconPosition.z
             );
         }
 
+        float textCenterX = groupLeft + (showAttackIcon ? iconWidth + iconTextGap : 0f) + textWidth * 0.5f;
         attackText.transform.position = new Vector3(
-            anchor.x + (showAttackIcon ? (iconWidth + groupGap) * 0.5f : 0f),
+            textCenterX,
             labelY,
             textPosition.z
         );
+
+        if (damageArrowRect != null)
+        {
+            damageArrowRect.gameObject.SetActive(showDamageArrow);
+            if (showDamageArrow)
+            {
+                RectTransform parentRect = damageArrowRect.parent as RectTransform;
+                Vector3 parentScale = parentRect != null ? parentRect.lossyScale : Vector3.one;
+                damageArrowRect.sizeDelta = new Vector2(
+                    arrowWidth / Mathf.Max(Mathf.Abs(parentScale.x), 0.0001f),
+                    arrowHeight / Mathf.Max(Mathf.Abs(parentScale.y), 0.0001f)
+                );
+                damageArrowRect.position = new Vector3(
+                    textCenterX + textWidth * 0.5f + textArrowGap + arrowWidth * 0.5f,
+                    labelY,
+                    textPosition.z
+                );
+            }
+        }
 
         bool showFrame = !string.IsNullOrEmpty(attackText.text);
         if (attackFrameRect != null)
@@ -206,7 +244,7 @@ public class EnemyView : CombatantView
             if (showFrame)
             {
                 Vector3 parentScale = attackFrameRect.parent.lossyScale;
-                float frameWidth = textWidth + iconWidth + groupGap + AttackFrameHorizontalPadding * 2f;
+                float frameWidth = groupWidth + AttackFrameHorizontalPadding * 2f;
                 attackFrameRect.sizeDelta = new Vector2(
                     frameWidth / Mathf.Max(Mathf.Abs(parentScale.x), 0.0001f),
                     frameHeight / Mathf.Max(Mathf.Abs(parentScale.y), 0.0001f)
@@ -214,6 +252,47 @@ public class EnemyView : CombatantView
                 attackFrameRect.position = new Vector3(anchor.x, labelY, textPosition.z);
             }
         }
+    }
+
+    private void SetupDamageArrow()
+    {
+        if (attackText == null || attackText.transform.parent == null) return;
+
+        GameObject arrowObject = new GameObject(
+            "DamageModifierArrow",
+            typeof(RectTransform),
+            typeof(CanvasRenderer),
+            typeof(EnemyDamageArrowGraphic)
+        );
+        arrowObject.layer = attackText.gameObject.layer;
+        arrowObject.transform.SetParent(attackText.transform.parent, false);
+
+        damageArrowRect = arrowObject.GetComponent<RectTransform>();
+        damageArrowRect.anchorMin = new Vector2(0.5f, 0.5f);
+        damageArrowRect.anchorMax = new Vector2(0.5f, 0.5f);
+        damageArrowRect.pivot = new Vector2(0.5f, 0.5f);
+
+        damageArrow = arrowObject.GetComponent<EnemyDamageArrowGraphic>();
+        damageArrow.raycastTarget = false;
+        damageArrow.gameObject.SetActive(false);
+    }
+
+    private void UpdateDamageArrow()
+    {
+        if (damageArrow == null) return;
+
+        int weakStacks = GetStatusEffectStacks(StatusEffectType.WEAK);
+        HeroView hero = HeroSystem.Instance != null ? HeroSystem.Instance.HeroView : null;
+        bool isDamageReduced = weakStacks > 0;
+        bool isDamageIncreased = hero != null &&
+            hero.GetStatusEffectStacks(StatusEffectType.EXPOSED) > 0;
+        bool showArrow = CurrentMoveAttacks && (isDamageReduced || isDamageIncreased);
+
+        damageArrow.gameObject.SetActive(showArrow);
+        if (!showArrow) return;
+
+        damageArrow.PointsUp = isDamageIncreased;
+        damageArrow.color = isDamageIncreased ? DamageUpColor : DamageDownColor;
     }
 
     private void CacheAttackIntentAnchor()
