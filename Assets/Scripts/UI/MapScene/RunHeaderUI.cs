@@ -7,6 +7,7 @@ public class RunHeaderUI : MonoBehaviour
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text goldText;
     [SerializeField] private TMP_Text floorText;
+    [SerializeField] private TMP_Text actText;
     [SerializeField] private TMP_Text potionText;
     [SerializeField] private TMP_Text timeText;
 
@@ -19,6 +20,7 @@ public class RunHeaderUI : MonoBehaviour
             SetText(healthText, "HP: -- / --");
             SetText(goldText, "Gold: --");
             SetText(floorText, "Floor: --");
+            SetText(actText, "Act: --");
             SetText(timeText, "Time: 00:00");
 
             SetText(
@@ -79,17 +81,9 @@ public class RunHeaderUI : MonoBehaviour
             );
         }
 
-        if (currentPoint != null)
-        {
-            SetText(
-                floorText,
-                "Floor: " + (currentPoint.Floor + 1)
-            );
-        }
-        else
-        {
-            SetText(floorText, "Floor: 1");
-        }
+        int currentFloor = currentPoint != null ? currentPoint.Floor + 1 : 1;
+        SetText(floorText, "Floor: " + currentFloor);
+        SetText(actText, "Act: " + (run.CurrentActIndex + 1));
 
         SetText(
             potionText,
