@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class StatusEffectSystem : MonoBehaviour
 {
-    private const float ARMOR_BREAK_REDUCTION = 0.25f;
     private int cardBlockMultiplier = 1;
     private bool heroHadExposedAtEnemyTurnStart;
 
@@ -103,17 +102,7 @@ public class StatusEffectSystem : MonoBehaviour
         CombatantView target = action.Target;
         if (target == null || target.CurrentHealth <= 0) yield break;
 
-        int stacks = target.GetStatusEffectStacks(StatusEffectType.ARMOR_BREAK);
-        if (stacks <= 0) yield break;
-
-        int currentArmor = target.GetStatusEffectStacks(StatusEffectType.ARMOR);
-        if (currentArmor > 0)
-        {
-            int remainingArmor = Mathf.FloorToInt(currentArmor * (1f - ARMOR_BREAK_REDUCTION));
-            target.RemoveStatusEffect(StatusEffectType.ARMOR, currentArmor - remainingArmor);
-        }
-
-        target.RemoveStatusEffect(StatusEffectType.ARMOR_BREAK, 1);
+        target.TickArmorBreak();
         yield return null;
     }
     private void EndPlayerTurnReaction(EnemyTurnGA action)

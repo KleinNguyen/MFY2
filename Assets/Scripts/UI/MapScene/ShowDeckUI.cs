@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -206,6 +207,8 @@ public class ShowDeckUI : MonoBehaviour
     {
         if (!CanOpenPanel()) return;
 
+        ClearSelection();
+
         for (int i = cardContent.childCount - 1; i >= 0; i--)
         {
             GameObject oldCard = cardContent.GetChild(i).gameObject;
@@ -214,6 +217,8 @@ public class ShowDeckUI : MonoBehaviour
         }
 
         RunSystem run = RunSystem.Instance;
+        HashSet<string> displayedCardIds = new HashSet<string>();
+        HashSet<CardData> displayedCardAssets = new HashSet<CardData>();
         bool hasUpgradeableCard = false;
 
         for (int i = 0; i < run.Deck.Count; i++)
@@ -224,12 +229,30 @@ public class ShowDeckUI : MonoBehaviour
             bool isUpgraded = run.IsCardUpgraded(cardData);
             bool canUpgrade = cardData.CanUpgrade && !isUpgraded;
 
-            if (canUpgrade) hasUpgradeableCard = true;
+            if (mode == DeckMode.Upgrade)
+            {
+                if (!canUpgrade) continue;
+                if (!displayedCardAssets.Add(cardData)) continue;
+                if (!string.IsNullOrWhiteSpace(cardData.SaveId) && !displayedCardIds.Add(cardData.SaveId)) continue;
+
+                hasUpgradeableCard = true;
+            }
+
+            // Keep the original deck index after filtering duplicate types.
             CreateDeckCard(cardData, i, isUpgraded, canUpgrade);
         }
 
         if (mode == DeckMode.Upgrade)
-            upgradeInfoText.text = hasUpgradeableCard ? "Choose a card to preview its upgrade." : "No cards available to upgrade.";
+        {
+            if (hasUpgradeableCard)
+            {
+                upgradeInfoText.text = "Choose a card type to preview its upgrade.";
+            }
+            else
+            {
+                upgradeInfoText.text = "No cards available to upgrade.";
+            }
+        }
 
         Canvas.ForceUpdateCanvases();
 

@@ -55,17 +55,20 @@ public class MapUI : MonoBehaviour
     private void Start()
     {
         ConfigureInputModule();
+
         RunSystem run = RunSystem.Instance;
         if (!ValidateSetup(run)) return;
 
         shopUI.gameObject.SetActive(false);
         restUI.gameObject.SetActive(false);
+
         mapScrollRect.horizontal = false;
         mapScrollRect.vertical = true;
         HideScrollbar(mapScrollRect.horizontalScrollbar);
         HideScrollbar(mapScrollRect.verticalScrollbar);
 
         run.GenerateMap();
+
         if (run.MapPoints == null || run.MapPoints.Count == 0)
         {
             Debug.LogError("The map is empty. Check the current Act settings.", this);
@@ -74,14 +77,15 @@ public class MapUI : MonoBehaviour
 
         run.StartRunTimer();
         run.SaveCheckpoint();
+
         Canvas.ForceUpdateCanvases();
         StyleMapLegend();
         SetupRunTimer();
+
         if (!CreateMapUI(run)) return;
 
+        // UpdateMapUI also scrolls to the current map point.
         UpdateMapUI();
-        Canvas.ForceUpdateCanvases();
-        mapScrollRect.verticalNormalizedPosition = 0f;
     }
 
     private void Update()

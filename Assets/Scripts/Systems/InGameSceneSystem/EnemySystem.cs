@@ -1,15 +1,24 @@
-using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class EnemySystem : Singleton<EnemySystem>
 {
     [SerializeField] private EnemyBoardView enemyBoardView;
-    public List<EnemyView> Enemies => enemyBoardView.EnemyViews;
+
     private int thornsDamage;
     private int extraOpeningTurns;
 
+    public List<EnemyView> Enemies
+    {
+        get
+        {
+            return enemyBoardView.EnemyViews;
+        }
+    }
+
+    // Lifecycle
     private void OnEnable()
     {
         ActionSystem.AttachPerformer<EnemyTurnGA>(EnemyTurnPerformer);
@@ -34,45 +43,25 @@ public class EnemySystem : Singleton<EnemySystem>
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
+    // Battle setup
     public void Setup(EncounterData encounter)
     {
-        extraOpeningTurns = 0;
         thornsDamage = 0;
+        extraOpeningTurns = 0;
         enemyBoardView.AddEnemies(encounter.Enemies);
         GrantTurnArmor(true);
     }
-    public void SetExtraOpeningTurns(int amount) => extraOpeningTurns = Mathf.Max(0, amount);
-    private void GrantTurnArmor(bool immediate)
+
+    public void SetExtraOpeningTurns(int amount)
     {
-        foreach (EnemyView enemy in Enemies)
-        {
-            if (enemy == null || enemy.CurrentHealth <= 0) continue;
-
-            int armor = enemy.CurrentArmorGain;
-            if (armor <= 0) continue;
-
-            if (immediate)
-            {
-                enemy.AddStatusEffect(StatusEffectType.ARMOR, armor);
-            }
-            else
-            {
-                AddStatusEffectGA gainArmor = new(StatusEffectType.ARMOR, armor, new List<CombatantView> { enemy });
-                ActionSystem.Instance.AddReaction(gainArmor);
-            }
-        }
+        extraOpeningTurns = Mathf.Max(0, amount);
     }
 
-    private bool CanAct(EnemyView enemy)
-    {
-        HeroView hero = HeroSystem.Instance != null ? HeroSystem.Instance.HeroView : null;
-        return enemy != null && enemy.CurrentHealth > 0 && hero != null && hero.CurrentHealth > 0 &&
-            (BattleSystem.Instance == null || !BattleSystem.Instance.IsBattleOver);
-    }
-
+    // Enemy actions
     private IEnumerator EnemyTurnPerformer(EnemyTurnGA action)
     {
         action.WasSkipped = extraOpeningTurns > 0;
+
         if (action.WasSkipped)
         {
             extraOpeningTurns--;
@@ -84,9 +73,11 @@ public class EnemySystem : Singleton<EnemySystem>
             if (!CanAct(enemy)) continue;
 
             int poison = enemy.GetStatusEffectStacks(StatusEffectType.POISON);
-            if (poison > 0) ActionSystem.Instance.AddReaction(new ApplyPoisonGA(poison, enemy));
+            if (poison > 0)
+            {
+                ActionSystem.Instance.AddReaction(new ApplyPoisonGA(poison, enemy));
+            }
 
-            ActionSystem.Instance.AddReaction(new ArmorBreakTickGA(enemy));
             ActionSystem.Instance.AddReaction(new EnemyMoveGA(enemy));
         }
 
@@ -105,7 +96,7 @@ public class EnemySystem : Singleton<EnemySystem>
 
         for (int hit = 0; hit < enemy.CurrentHitCount; hit++)
         {
-            AttackHeroGA attack = new(enemy);
+            AttackHeroGA attack = new AttackHeroGA(enemy);
             action.Attacks.Add(attack);
             ActionSystem.Instance.AddReaction(attack);
         }
@@ -130,7 +121,9 @@ public class EnemySystem : Singleton<EnemySystem>
         if (!CanAct(attacker)) yield break;
 
         action.WasExecuted = true;
-        DealDamageGA damage = new(attacker.GetAttackDamage(), new List<CombatantView> { HeroSystem.Instance.HeroView }, attacker);
+
+        HeroView hero = HeroSystem.Instance.HeroView;
+        DealDamageGA damage = new DealDamageGA(attacker.GetAttackDamage(), new List<CombatantView> { hero }, attacker);
         ActionSystem.Instance.AddReaction(damage);
     }
 
@@ -143,27 +136,12 @@ public class EnemySystem : Singleton<EnemySystem>
 
         EnemyView enemy = move.Enemy;
         if (enemy.GetStatusEffectStacks(StatusEffectType.WEAK) > 0)
+        {
             enemy.RemoveStatusEffect(StatusEffectType.WEAK, 1);
+        }
 
         enemy.AdvanceMove();
         yield return null;
-    }
-    private void TryApplyMoveDebuff(EnemyMoveGA action)
-    {
-        EnemyView enemy = action.Enemy;
-        EnemyMoveData move = action.Move;
-        if (!CanAct(enemy) || move == null || !enemy.CanApplyRandomDebuff) return;
-        if (!action.Attacks.Exists(attack => attack.WasExecuted)) return;
-
-        float chance = Mathf.Clamp(move.DebuffChancePercent, 0f, 100f);
-        if (chance <= 0f || (chance < 100f && Random.value * 100f >= chance)) return;
-
-        int index = Random.Range(0, enemy.AllowedDebuffs.Count);
-        StatusEffectType effect = enemy.AllowedDebuffs[index];
-        HeroView hero = HeroSystem.Instance.HeroView;
-
-        AddStatusEffectGA debuff = new(effect, Mathf.Max(1, move.DebuffStacks), new List<CombatantView> { hero });
-        ActionSystem.Instance.AddReaction(debuff);
     }
 
     private IEnumerator KillEnemyPerformer(KillEnemyGA action)
@@ -178,14 +156,17 @@ public class EnemySystem : Singleton<EnemySystem>
     private IEnumerator GainThornsPerformer(GainThornsGA action)
     {
         if (action.Amount > 0) thornsDamage += action.Amount;
+
         yield return null;
     }
 
+    // Reactions
     private void AttackHeroPostReaction(AttackHeroGA action)
     {
         if (!action.WasExecuted || thornsDamage <= 0 || !CanAct(action.Attacker)) return;
 
-        DealDamageGA damage = new(thornsDamage, new List<CombatantView> { action.Attacker }, HeroSystem.Instance.HeroView, false);
+        HeroView hero = HeroSystem.Instance.HeroView;
+        DealDamageGA damage = new DealDamageGA(thornsDamage, new List<CombatantView> { action.Attacker }, hero, false);
         ActionSystem.Instance.AddReaction(damage);
     }
 
@@ -193,5 +174,89 @@ public class EnemySystem : Singleton<EnemySystem>
     {
         thornsDamage = 0;
         if (!action.WasSkipped) GrantTurnArmor(false);
+    }
+
+    // Turn armor
+    private void GrantTurnArmor(bool immediate)
+    {
+        foreach (EnemyView enemy in Enemies)
+        {
+            if (enemy == null || enemy.CurrentHealth <= 0) continue;
+
+            int currentArmor = enemy.GetStatusEffectStacks(StatusEffectType.ARMOR);
+            int newArmor = enemy.CurrentArmorGain;
+
+            if (immediate)
+            {
+                if (currentArmor > 0) enemy.RemoveStatusEffect(StatusEffectType.ARMOR, currentArmor);
+                if (newArmor > 0) enemy.AddStatusEffect(StatusEffectType.ARMOR, newArmor);
+                continue;
+            }
+
+            List<CombatantView> targets = new List<CombatantView> { enemy };
+
+            if (currentArmor > 0)
+            {
+                RemoveStatusEffectGA removeArmor = new RemoveStatusEffectGA(StatusEffectType.ARMOR, currentArmor, targets);
+                ActionSystem.Instance.AddReaction(removeArmor);
+            }
+
+            if (newArmor > 0)
+            {
+                AddStatusEffectGA gainArmor = new AddStatusEffectGA(StatusEffectType.ARMOR, newArmor, targets);
+                ActionSystem.Instance.AddReaction(gainArmor);
+            }
+
+            // Apply Armor Break after old armor is cleared and new armor is granted.
+            ActionSystem.Instance.AddReaction(new ArmorBreakTickGA(enemy));
+        }
+    }
+
+    // Attack debuffs
+    private void TryApplyMoveDebuff(EnemyMoveGA action)
+    {
+        if (action == null || !action.WasExecuted) return;
+
+        EnemyView enemy = action.Enemy;
+        EnemyMoveData move = action.Move;
+        if (!CanAct(enemy) || move == null || !move.ApplyRandomDebuff) return;
+        if (action.MoveType != EnemyMoveType.Attack && action.MoveType != EnemyMoveType.AttackAndDefend) return;
+        if (!HasExecutedAttack(action) || enemy.AllowedDebuffs.Count == 0) return;
+
+        float chance = Mathf.Clamp(move.DebuffChancePercent, 0f, 100f);
+        if (chance <= 0f) return;
+        if (chance < 100f && Random.value * 100f >= chance) return;
+
+        int index = Random.Range(0, enemy.AllowedDebuffs.Count);
+        StatusEffectType effect = enemy.AllowedDebuffs[index];
+        HeroView hero = HeroSystem.Instance.HeroView;
+        int stacks = Mathf.Max(1, move.DebuffStacks);
+
+        AddStatusEffectGA debuff = new AddStatusEffectGA(effect, stacks, new List<CombatantView> { hero });
+        ActionSystem.Instance.AddReaction(debuff);
+    }
+
+    private bool HasExecutedAttack(EnemyMoveGA action)
+    {
+        foreach (AttackHeroGA attack in action.Attacks)
+        {
+            if (attack != null && attack.Attacker == action.Enemy && attack.WasExecuted)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // Action validation
+    private bool CanAct(EnemyView enemy)
+    {
+        if (enemy == null || enemy.CurrentHealth <= 0) return false;
+        if (HeroSystem.Instance == null || HeroSystem.Instance.HeroView == null) return false;
+        if (HeroSystem.Instance.HeroView.CurrentHealth <= 0) return false;
+        if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver) return false;
+
+        return true;
     }
 }

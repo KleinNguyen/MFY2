@@ -21,7 +21,7 @@ MonoBehaviour:
   <ManaTextOffset>k__BackingField: {x: 1.5, y: 2}
   <CardVisualScale>k__BackingField: {x: 1.021917, y: 1.004386}
   <Description>k__BackingField: Each turn, after playing your third Attack, gain
-    2 Combo.Exhaust
+    2 Combo. Exhaust
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
@@ -35,7 +35,7 @@ MonoBehaviour:
       rid: 1468093488209330325
   <CanUpgrade>k__BackingField: 1
   <UpgradedDescription>k__BackingField: Each turn, after playing your third Attack,
-    gain 4 Combo.Exhaust
+    gain 4 Combo. Exhaust
   <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2

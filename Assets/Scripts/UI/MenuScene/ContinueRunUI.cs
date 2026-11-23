@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class ContinueRunUI : MonoBehaviour
 {
     [SerializeField] private RunSystem runPrefab;
+
     private Button button;
+    private bool loading;
 
     private void Awake()
     {
@@ -17,14 +19,19 @@ public class ContinueRunUI : MonoBehaviour
     private void OnEnable()
     {
         if (button == null) button = GetComponent<Button>();
+
+        loading = false;
         button.interactable = RunSaveSystem.HasSave;
     }
 
-    private void OnDestroy() => button.onClick.RemoveListener(ContinueRun);
-        
+    private void OnDestroy()
+    {
+        if (button != null) button.onClick.RemoveListener(ContinueRun);
+    }
+
     private void ContinueRun()
     {
-        if (!RunSaveSystem.HasSave) return;
+        if (loading || !RunSaveSystem.HasSave) return;
 
         if (RunSystem.Instance == null)
         {
@@ -37,7 +44,20 @@ public class ContinueRunUI : MonoBehaviour
             Instantiate(runPrefab);
         }
 
-        if (RunSystem.Instance != null && RunSystem.Instance.TryLoadCheckpoint())
-            SceneManager.LoadScene(RunSystem.Instance.ContinueSceneName);
+        RunSystem run = RunSystem.Instance;
+        if (run == null) return;
+
+        loading = true;
+        button.interactable = false;
+
+        if (!run.ContinueFromSave())
+        {
+            loading = false;
+            button.interactable = RunSaveSystem.HasSave;
+            Debug.LogError("Could not continue the saved run.", this);
+            return;
+        }
+
+        SceneManager.LoadScene("MapScene");
     }
 }

@@ -108,17 +108,34 @@ public class StatusEffectTooltipUI : Singleton<StatusEffectTooltipUI>
 
     private string GetDescription(StatusEffectType statusType)
     {
-        return statusType switch
+        switch (statusType)
         {
-            StatusEffectType.ARMOR => "Absorbs incoming damage. Each point of Armor blocks 1 damage.",
-            StatusEffectType.WEAK => "Reduces attack damage by 25%. Each stack lasts one turn.",
-            StatusEffectType.POISON => "At the start of its turn, takes damage equal to its Poison stacks, then loses 1 stack.",
-            StatusEffectType.EXPOSED => "Takes 50% more damage from attacks. Stacks track duration in turns.",
-            StatusEffectType.ARMOR_BREAK => "Each turn, retains 75% of current Armor, rounded down, then loses 1 stack. Stacks still count down at 0 Armor.",
-            StatusEffectType.STRENGTH => "Each stack adds 1 damage to attacks.",
-            StatusEffectType.DEXTERITY => "Each stack adds 1 Armor to Armor gained from cards.",
-            StatusEffectType.COMBO => "Resource used by Yellow Hero. Kept between turns and spent by card effects. Resets each combat.",
-            _ => "No description available."
-        };
+            case StatusEffectType.ARMOR:
+                return "Blocks 1 damage per Armor.";
+
+            case StatusEffectType.WEAK:
+                return "Deal 25% less Attack damage. 1 turn per stack.";
+
+            case StatusEffectType.POISON:
+                return "At turn start, take 1 damage per stack, then clear all Poison. Blocked by Armor.";
+
+            case StatusEffectType.EXPOSED:
+                return "Take 50% more Attack damage. 1 turn per stack.";
+
+            case StatusEffectType.ARMOR_BREAK:
+                return "Breaks 25% of current Armor (rounded up). Repeats on later turns. Loses 1 stack at turn end.";
+
+            case StatusEffectType.STRENGTH:
+                return "+1 Attack damage per stack.";
+
+            case StatusEffectType.DEXTERITY:
+                return "+1 Armor from cards per stack.";
+
+            case StatusEffectType.COMBO:
+                return "Yellow Hero resource spent by cards. Kept between turns; resets each battle.";
+
+            default:
+                return "No description available.";
+        }
     }
 }

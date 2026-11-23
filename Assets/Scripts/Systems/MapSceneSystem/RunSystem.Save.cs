@@ -251,4 +251,15 @@ public partial class RunSystem
 
         return FindSavedEncounter(data) != null;
     }
+    public bool ContinueFromSave()
+    {
+        if (!TryLoadCheckpoint()) return false;
+
+        // Return to the map without completing the unfinished battle.
+        SelectedMapPointId = -1;
+        CurrentEncounter = null;
+        battleStartSave = null;
+
+        return true;
+    }
 }
