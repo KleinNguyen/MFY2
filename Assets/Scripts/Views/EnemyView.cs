@@ -41,12 +41,45 @@ public class EnemyView : CombatantView
 
     public EnemyMoveData CurrentMove => moves.Count > 0 ? moves[moveIndex] : null;
     public IReadOnlyList<StatusEffectType> AllowedDebuffs => allowedDebuffs;
-    public EnemyMoveType CurrentMoveType => CurrentMove?.MoveType ?? EnemyMoveType.Rest;
+    public EnemyMoveType CurrentMoveType
+    {
+        get
+        {
+            if (CurrentMove == null)
+            {
+                return EnemyMoveType.Attack;
+            }
 
-    public bool CurrentMoveAttacks => CurrentMoveType == EnemyMoveType.Attack ||
-        CurrentMoveType == EnemyMoveType.AttackAndDefend;
+            return CurrentMove.MoveType;
+        }
+    }
 
-    public int CurrentHitCount => CurrentMoveAttacks ? Mathf.Max(1, CurrentMove.HitCount) : 0;
+    public bool CurrentMoveAttacks
+    {
+        get
+        {
+            if (CurrentMove == null)
+            {
+                return false;
+            }
+
+            return CurrentMoveType == EnemyMoveType.Attack ||
+                   CurrentMoveType == EnemyMoveType.AttackAndDefend;
+        }
+    }
+
+    public int CurrentHitCount
+    {
+        get
+        {
+            if (!CurrentMoveAttacks)
+            {
+                return 0;
+            }
+
+            return Mathf.Max(1, CurrentMove.HitCount);
+        }
+    }
 
     public int CurrentArmorGain => CurrentMoveType == EnemyMoveType.Defend ||
         CurrentMoveType == EnemyMoveType.AttackAndDefend
@@ -140,16 +173,6 @@ public class EnemyView : CombatantView
 
         if (CurrentMoveType == EnemyMoveType.Defend)
             lines.Add("DEFEND");
-
-        if (CurrentMoveType == EnemyMoveType.Rest)
-            lines.Add("REST");
-
-        //if (CanApplyRandomDebuff)
-        //{
-        //    int stacks = Mathf.Max(1, CurrentMove.DebuffStacks);
-        //    float chance = Mathf.Clamp(CurrentMove.DebuffChancePercent, 0f, 100f);
-        //    lines.Add($"DEBUFF: ? x {stacks} ({chance:0.#}%)");
-        //}
 
         string intent = string.Join("\n", lines);
         if (lastIntentText == intent) return;

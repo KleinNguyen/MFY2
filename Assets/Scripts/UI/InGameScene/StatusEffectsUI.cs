@@ -4,15 +4,18 @@ using UnityEngine;
 public class StatusEffectsUI : MonoBehaviour
 {
     [SerializeField] private StatusEffectUI statusEffectUIPrefab;
+
     [SerializeField] private Sprite armorSprite;
     [SerializeField] private Sprite poisonSprite;
     [SerializeField] private Sprite weakSprite;
     [SerializeField] private Sprite strengthSprite;
-    [SerializeField] private Sprite dexteritySprite;
     [SerializeField] private Sprite exposedSprite;
     [SerializeField] private Sprite armorBreakSprite;
     [SerializeField] private Sprite comboSprite;
-    private Dictionary<StatusEffectType, StatusEffectUI> statusEffectUIs = new();
+
+    private Dictionary<StatusEffectType, StatusEffectUI> statusEffectUIs =
+        new Dictionary<StatusEffectType, StatusEffectUI>();
+
     public void UpdateStatusEffectUI(
         StatusEffectType statusEffectType,
         int stackCount
@@ -20,13 +23,16 @@ public class StatusEffectsUI : MonoBehaviour
     {
         if (stackCount <= 0)
         {
-            if (statusEffectUIs.TryGetValue(
-                statusEffectType,
-                out StatusEffectUI statusEffectUI
-            ))
+            if (
+                statusEffectUIs.TryGetValue(
+                    statusEffectType,
+                    out StatusEffectUI statusEffectUI
+                )
+            )
             {
                 statusEffectUI.gameObject.SetActive(false);
                 Destroy(statusEffectUI.gameObject);
+
                 statusEffectUIs.Remove(statusEffectType);
             }
 
@@ -40,7 +46,10 @@ public class StatusEffectsUI : MonoBehaviour
                 transform
             );
 
-            statusEffectUIs.Add(statusEffectType, statusEffectUI);
+            statusEffectUIs.Add(
+                statusEffectType,
+                statusEffectUI
+            );
         }
 
         Sprite sprite = GetSpriteByType(statusEffectType);
@@ -51,27 +60,34 @@ public class StatusEffectsUI : MonoBehaviour
             stackCount
         );
     }
+
     private Sprite GetSpriteByType(StatusEffectType statusEffectType)
     {
-        return statusEffectType switch
+        switch (statusEffectType)
         {
-            StatusEffectType.ARMOR => armorSprite,
+            case StatusEffectType.ARMOR:
+                return armorSprite;
 
-            StatusEffectType.POISON => poisonSprite,
+            case StatusEffectType.POISON:
+                return poisonSprite;
 
-            StatusEffectType.WEAK => weakSprite,
+            case StatusEffectType.WEAK:
+                return weakSprite;
 
-            StatusEffectType.STRENGTH => strengthSprite,
+            case StatusEffectType.STRENGTH:
+                return strengthSprite;
 
-            StatusEffectType.DEXTERITY => dexteritySprite,
+            case StatusEffectType.EXPOSED:
+                return exposedSprite;
 
-            StatusEffectType.EXPOSED => exposedSprite,
+            case StatusEffectType.ARMOR_BREAK:
+                return armorBreakSprite;
 
-            StatusEffectType.ARMOR_BREAK => armorBreakSprite,
+            case StatusEffectType.COMBO:
+                return comboSprite;
 
-            StatusEffectType.COMBO => comboSprite,
-
-            _ => null
-        };
+            default:
+                return null;
+        }
     }
 }

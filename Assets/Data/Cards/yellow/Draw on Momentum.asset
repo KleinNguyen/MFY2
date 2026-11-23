@@ -21,7 +21,7 @@ MonoBehaviour:
   <ManaTextOffset>k__BackingField: {x: -2.5, y: 0}
   <CardVisualScale>k__BackingField: {x: 1.006259, y: 0.982134}
   <Description>k__BackingField: Spend up to 3 Combo. Draw 1 card for each Combo spent.
-    Exhaust,
+    Exhaust.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 1
   <IsSly>k__BackingField: 0
@@ -35,7 +35,7 @@ MonoBehaviour:
       rid: 1468093488209330302
   <CanUpgrade>k__BackingField: 1
   <UpgradedDescription>k__BackingField: Spend up to 5 Combo. Draw 1 card for each
-    Combo spent. Exhaust
+    Combo spent. Exhaust.
   <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2

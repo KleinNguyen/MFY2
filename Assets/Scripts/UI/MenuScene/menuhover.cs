@@ -95,14 +95,33 @@ public class MenuHoverManager : MonoBehaviour
 
     private void SetItemState(MenuItem item, bool hovered)
     {
+        if (item == null)
+        {
+            return;
+        }
+
+        bool canHighlight = false;
+
+        if (item.button != null && item.button.isActiveAndEnabled)
+        {
+            canHighlight = item.button.IsInteractable() && hovered;
+        }
+
         if (item.highlight != null)
-            item.highlight.SetActive(hovered);
+        {
+            item.highlight.SetActive(canHighlight);
+        }
 
         if (item.label != null)
         {
-            item.label.color = hovered
-                ? hoverTextColor
-                : normalTextColor;
+            if (canHighlight)
+            {
+                item.label.color = hoverTextColor;
+            }
+            else
+            {
+                item.label.color = normalTextColor;
+            }
         }
     }
 }
