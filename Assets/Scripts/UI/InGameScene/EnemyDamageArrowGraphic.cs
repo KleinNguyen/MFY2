@@ -1,79 +1,83 @@
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Rendering;
 
-[RequireComponent(typeof(CanvasRenderer))]
-public sealed class EnemyDamageArrowGraphic : MaskableGraphic
+[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
+public sealed class EnemyDamageArrowGraphic : MonoBehaviour
 {
-    private bool pointsUp = true;
+    private MeshRenderer arrowRenderer;
+    private Mesh arrowMesh;
+    private Material arrowMaterial;
+    private bool pointsUp;
 
-    public bool PointsUp
+    public MeshRenderer Renderer => arrowRenderer;
+
+    public void Initialize(int sortingLayerId, int sortingOrder)
     {
-        get => pointsUp;
-        set
+        arrowRenderer = GetComponent<MeshRenderer>();
+        arrowRenderer.sortingLayerID = sortingLayerId;
+        arrowRenderer.sortingOrder = sortingOrder;
+        arrowRenderer.shadowCastingMode = ShadowCastingMode.Off;
+        arrowRenderer.receiveShadows = false;
+
+        Shader arrowShader = Shader.Find("Sprites/Default");
+        if (arrowShader == null)
         {
-            if (pointsUp == value) return;
-            pointsUp = value;
-            SetVerticesDirty();
+            Debug.LogError("Cannot create the enemy damage arrow: Sprites/Default shader was not found.", this);
+            return;
         }
-    }
 
-    protected override void OnPopulateMesh(VertexHelper vertexHelper)
-    {
-        vertexHelper.Clear();
+        arrowMesh = new Mesh { name = "EnemyDamageArrowMesh" };
+        arrowMesh.MarkDynamic();
+        GetComponent<MeshFilter>().sharedMesh = arrowMesh;
 
-        Rect rect = GetPixelAdjustedRect();
-        float shaftLeft = Mathf.Lerp(rect.xMin, rect.xMax, 0.34f);
-        float shaftRight = Mathf.Lerp(rect.xMin, rect.xMax, 0.66f);
-        float shaftStart = Mathf.Lerp(rect.yMin, rect.yMax, 0.42f);
-        float shaftEnd = Mathf.Lerp(rect.yMin, rect.yMax, 0.58f);
-
-        if (pointsUp)
+        arrowMaterial = new Material(arrowShader)
         {
-            AddQuad(vertexHelper, shaftLeft, rect.yMin, shaftRight, shaftEnd);
-            AddTriangle(
-                vertexHelper,
-                new Vector2(rect.xMin, shaftStart),
-                new Vector2(rect.xMax, shaftStart),
-                new Vector2(rect.center.x, rect.yMax)
-            );
-        }
-        else
+            mainTexture = Texture2D.whiteTexture,
+            color = Color.white
+        };
+        arrowRenderer.sharedMaterial = arrowMaterial;
+        RebuildMesh(false);
+    }
+
+    public void SetAppearance(bool pointsUp, Color color)
+    {
+        if (arrowMaterial == null || arrowMesh == null) return;
+
+        if (this.pointsUp != pointsUp)
+            RebuildMesh(pointsUp);
+
+        arrowMaterial.color = color;
+    }
+
+    private void RebuildMesh(bool pointsUp)
+    {
+        if (arrowMesh == null) return;
+
+        float direction = pointsUp ? -1f : 1f;
+        arrowMesh.Clear();
+        arrowMesh.vertices = new[]
         {
-            AddQuad(vertexHelper, shaftLeft, shaftStart, shaftRight, rect.yMax);
-            AddTriangle(
-                vertexHelper,
-                new Vector2(rect.xMin, shaftEnd),
-                new Vector2(rect.xMax, shaftEnd),
-                new Vector2(rect.center.x, rect.yMin)
-            );
-        }
+            new Vector3(-0.16f, -0.05f * direction, 0f),
+            new Vector3(-0.16f, 0.5f * direction, 0f),
+            new Vector3(0.16f, 0.5f * direction, 0f),
+            new Vector3(0.16f, -0.05f * direction, 0f),
+            new Vector3(-0.5f, 0.1f * direction, 0f),
+            new Vector3(0.5f, 0.1f * direction, 0f),
+            new Vector3(0f, -0.5f * direction, 0f)
+        };
+        arrowMesh.colors = new[]
+        {
+            Color.white, Color.white, Color.white, Color.white,
+            Color.white, Color.white, Color.white
+        };
+        arrowMesh.triangles = new[] { 0, 1, 2, 0, 2, 3, 4, 5, 6 };
+        arrowMesh.RecalculateBounds();
+        this.pointsUp = pointsUp;
     }
 
-    private void AddQuad(VertexHelper vertexHelper, float left, float bottom, float right, float top)
+    private void OnDestroy()
     {
-        int firstVertex = vertexHelper.currentVertCount;
-        AddVertex(vertexHelper, new Vector2(left, bottom));
-        AddVertex(vertexHelper, new Vector2(left, top));
-        AddVertex(vertexHelper, new Vector2(right, top));
-        AddVertex(vertexHelper, new Vector2(right, bottom));
-        vertexHelper.AddTriangle(firstVertex, firstVertex + 1, firstVertex + 2);
-        vertexHelper.AddTriangle(firstVertex, firstVertex + 2, firstVertex + 3);
-    }
-
-    private void AddTriangle(VertexHelper vertexHelper, Vector2 first, Vector2 second, Vector2 third)
-    {
-        int firstVertex = vertexHelper.currentVertCount;
-        AddVertex(vertexHelper, first);
-        AddVertex(vertexHelper, second);
-        AddVertex(vertexHelper, third);
-        vertexHelper.AddTriangle(firstVertex, firstVertex + 1, firstVertex + 2);
-    }
-
-    private void AddVertex(VertexHelper vertexHelper, Vector2 position)
-    {
-        UIVertex vertex = UIVertex.simpleVert;
-        vertex.position = position;
-        vertex.color = color;
-        vertexHelper.AddVert(vertex);
+        if (arrowMesh != null) Destroy(arrowMesh);
+        if (arrowMaterial != null) Destroy(arrowMaterial);
     }
 }

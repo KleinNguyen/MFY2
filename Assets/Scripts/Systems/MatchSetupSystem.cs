@@ -20,6 +20,7 @@ public class MatchSetupSystem : MonoBehaviour
         yield return null;
 
         RunSystem run = RunSystem.Instance;
+        if (run != null && run.IsRunFinished) yield break;
         if (!ValidateSetup(run)) yield break;
         if (!run.CaptureBattleStart()) yield break;
 

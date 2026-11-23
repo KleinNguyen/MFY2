@@ -97,6 +97,30 @@ public class MapUI : MonoBehaviour
 
     private void ConfigureInputModule() => UIInputModuleCompatibility.MonitorAndConfigure(EventSystem.current, this);
 
+    public bool OpenShopForDemo()
+    {
+        RunSystem run = RunSystem.Instance;
+        if (run == null || run.IsRunFinished || shopUI == null || shopUI.gameObject.activeSelf ||
+            (restUI != null && restUI.gameObject.activeSelf))
+            return false;
+
+        shopUI.gameObject.SetActive(true);
+        shopUI.Setup();
+        return true;
+    }
+
+    public bool OpenRestForDemo()
+    {
+        RunSystem run = RunSystem.Instance;
+        if (run == null || run.IsRunFinished || restUI == null || restUI.gameObject.activeSelf ||
+            (shopUI != null && shopUI.gameObject.activeSelf))
+            return false;
+
+        restUI.gameObject.SetActive(true);
+        restUI.Setup();
+        return true;
+    }
+
     private bool ValidateSetup(RunSystem run)
     {
         if (run == null || run.HeroData == null || run.CurrentAct == null)
