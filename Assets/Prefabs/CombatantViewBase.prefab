@@ -154,6 +154,7 @@ MonoBehaviour:
   dexteritySprite: {fileID: -7970918616379683773, guid: aff185a62e73cbc4d96b8249cdad7899, type: 3}
   exposedSprite: {fileID: -5754475345937512655, guid: 46c481e72fa238b4fb27be462eba8112, type: 3}
   armorBreakSprite: {fileID: -7174787612386221633, guid: ecf54430462b8654d88ca96aea6f0297, type: 3}
+  comboSprite: {fileID: -7204300847262918128, guid: 815b023b0dc48b845a8b7b6b8f5077ee, type: 3}
 --- !u!114 &4123165889703333067
 MonoBehaviour:
   m_ObjectHideFlags: 0

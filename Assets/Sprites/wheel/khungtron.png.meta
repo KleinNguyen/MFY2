@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0ac132142baf6b34f80169a465fd51e8
+guid: ba52c12890158a34ea248d08282ab413
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8042527844365315562
-    second: vongxanh_0
+      213: 8782728463799511904
+    second: khungtron_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: vongxanh_0
+      name: khungtron_0
       rect:
         serializedVersion: 2
-        x: 565
-        y: 387
-        width: 446
-        height: 438
+        x: 23
+        y: 230
+        width: 742
+        height: 729
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: aed259b967ccc9f60800000000000000
-      internalID: 8042527844365315562
+      spriteID: 06b6b73410582e970800000000000000
+      internalID: 8782728463799511904
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      vongxanh_0: 8042527844365315562
+      khungtron_0: 8782728463799511904
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1301,9 +1301,9 @@ MonoBehaviour:
   resultText: {fileID: 4704566166584669635}
   spinButton: {fileID: 1120632028665721495}
   continueButton: {fileID: 8915072201539461839}
-  redWheelSprite: {fileID: 739163026571121036, guid: e187ed823a440ac4e94f9705c22f83fe, type: 3}
-  greenWheelSprite: {fileID: -5852077096306646113, guid: c17a5bf8f5e8d534597ee87c20ebf0a7, type: 3}
-  yellowWheelSprite: {fileID: 5757747039477961363, guid: 0b4ce2b267142924ba0e7c1fd86d522f, type: 3}
+  redWheelSprite: {fileID: -1419708808089863935, guid: 39aadc1c9a581ae438674386e8d59f12, type: 3}
+  greenWheelSprite: {fileID: 5491576230977644518, guid: 54c7ff9763ed2504b95e7a62152379c6, type: 3}
+  yellowWheelSprite: {fileID: -6618965950372809597, guid: 1dd9e5da4cf17a0479b380a792a39019, type: 3}
   redCharacterSprite: {fileID: 7965326477056250597, guid: cf7970d87165cef4eba9aecf8a9583e0, type: 3}
   greenCharacterSprite: {fileID: 6267639708585598454, guid: b288e792d4d7f4a42943201c79d60a99, type: 3}
   yellowCharacterSprite: {fileID: 6018700894052236706, guid: e1ca74ba31e849945b7db54a68bfde96, type: 3}

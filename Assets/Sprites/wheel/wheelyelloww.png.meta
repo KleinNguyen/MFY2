@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 8f0c49b59d3c5cc469034cb4712e0add
+guid: 1dd9e5da4cf17a0479b380a792a39019
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -796532338301480130
-    second: arrred_0
+      213: -6618965950372809597
+    second: wheelyelloww_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: arrred_0
+      name: wheelyelloww_0
       rect:
         serializedVersion: 2
-        x: 932
-        y: 386
-        width: 816
-        height: 602
+        x: 52
+        y: 264
+        width: 683
+        height: 667
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e33dd6bfe0622f4f0800000000000000
-      internalID: -796532338301480130
+      spriteID: 3847f937985b424a0800000000000000
+      internalID: -6618965950372809597
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      arrred_0: -796532338301480130
+      wheelyelloww_0: -6618965950372809597
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
