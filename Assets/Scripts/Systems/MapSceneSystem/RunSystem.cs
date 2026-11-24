@@ -100,7 +100,10 @@ public partial class RunSystem : PersistentSingleton<RunSystem>
 
     private void Update()
     {
-        if (isRunTimerRunning) ElapsedRunTime += Time.unscaledDeltaTime;
+        if (isRunTimerRunning && !NewRunTutorialUI.IsOpen)
+        {
+            ElapsedRunTime += Time.unscaledDeltaTime;
+        }
     }
 
     // Run lifecycle

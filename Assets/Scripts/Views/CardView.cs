@@ -156,25 +156,18 @@ public class CardView : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if (CardSystem.Instance != null && CardSystem.Instance.IsCardInHand(Card))
-        {
-            SfxManager.PlaySfx(SfxId.CardPlayed);
-        }
+        if (NewRunTutorialUI.IsOpen) return;
 
-        if (
-            CardSystem.Instance != null &&
-            CardSystem.Instance.IsChoosingCardToUpgrade
-        )
+        if (CardSystem.Instance != null && CardSystem.Instance.IsCardInHand(Card)) SfxManager.PlaySfx(SfxId.CardPlayed);
+
+        if (CardSystem.Instance != null && CardSystem.Instance.IsChoosingCardToUpgrade)
         {
             selectedForExhaust = true;
             wrapper.SetActive(true);
 
-            if (CardViewHoverSystem.Instance != null)
-            {
-                CardViewHoverSystem.Instance.Hide();
-            }
-            CardSystem.Instance.ChooseCardToUpgrade(this);
+            if (CardViewHoverSystem.Instance != null) CardViewHoverSystem.Instance.Hide();
 
+            CardSystem.Instance.ChooseCardToUpgrade(this);
             return;
         }
 
@@ -183,30 +176,27 @@ public class CardView : MonoBehaviour
             selectedForExhaust = true;
             wrapper.SetActive(true);
 
-            if (CardViewHoverSystem.Instance != null)
-            {
-                CardViewHoverSystem.Instance.Hide();
-            }
-            CardSystem.Instance.ChooseCardToExhaust(Card);
+            if (CardViewHoverSystem.Instance != null) CardViewHoverSystem.Instance.Hide();
 
+            CardSystem.Instance.ChooseCardToExhaust(Card);
             return;
         }
+
         if (!InteractionSystem.Instance.PlayerCanInteract()) return;
-        if (Card.ManualTargetEffect != null)
-        {
-            ManualTargetSystem.Instance.StartTargeting(transform.position);
-        }
+
+        if (Card.ManualTargetEffect != null) ManualTargetSystem.Instance.StartTargeting(transform.position);
         else
         {
             InteractionSystem.Instance.PlayerIsDragging = true;
             wrapper.SetActive(true);
             CardViewHoverSystem.Instance.Hide();
+
             dragStartPosition = transform.position;
             dragStartRotation = transform.rotation;
+
             transform.rotation = Quaternion.Euler(0, 0, 0);
             transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
         }
-
     }
     private void OnMouseDrag()
     {
