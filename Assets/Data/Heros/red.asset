@@ -30,4 +30,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
   - {fileID: 11400000, guid: 3ec9e463b2e226b43b7b33ba9dd676ce, type: 2}
   - {fileID: 11400000, guid: c1fcd465b3a5df64f886390bdf2123f1, type: 2}
+  - {fileID: 11400000, guid: 1f6df09cc03f77e4ea041a3ab9b10534, type: 2}
   <StartingPerk>k__BackingField: {fileID: 11400000, guid: c6252b4f5ad8b774a9a7bc5bff0539b8, type: 2}

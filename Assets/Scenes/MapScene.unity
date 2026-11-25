@@ -1507,6 +1507,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9100000000000000004, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
+      propertyPath: restartButton
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 9100000000000000024, guid: 8a4b81e99f11a7644af283cba01e94b9, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -4745,7 +4749,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &910000002
 RectTransform:
   m_ObjectHideFlags: 0
