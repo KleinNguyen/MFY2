@@ -317,6 +317,8 @@ public class MapUI : MonoBehaviour
 
     public void SelectMapPoint(int pointId)
     {
+        if (NewRunTutorialUI.IsOpen) return;
+
         RunSystem run = RunSystem.Instance;
         if (run == null || !run.CanSelectMapPoint(pointId)) return;
 
@@ -326,6 +328,7 @@ public class MapUI : MonoBehaviour
         if (point.Type == MapPointType.Shop)
         {
             if (shopUI == null) return;
+
             run.SelectMapPoint(pointId);
             shopUI.gameObject.SetActive(true);
             shopUI.Setup();
@@ -336,6 +339,7 @@ public class MapUI : MonoBehaviour
         if (point.Type == MapPointType.Rest)
         {
             if (restUI == null) return;
+
             run.SelectMapPoint(pointId);
             restUI.gameObject.SetActive(true);
             restUI.Setup();
@@ -344,6 +348,7 @@ public class MapUI : MonoBehaviour
         }
 
         EncounterData encounter = GetEncounter(point);
+
         if (encounter == null)
         {
             Debug.LogError("No suitable encounter is assigned for this map point.", this);

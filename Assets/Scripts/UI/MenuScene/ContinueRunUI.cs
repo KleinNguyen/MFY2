@@ -18,26 +18,45 @@ public class ContinueRunUI : MonoBehaviour
 
     private void OnEnable()
     {
-        if (button == null) button = GetComponent<Button>();
-
         loading = false;
-        button.interactable = RunSaveSystem.HasSave;
+        RefreshAvailability();
     }
 
     private void OnDestroy()
     {
-        if (button != null) button.onClick.RemoveListener(ContinueRun);
+        if (button != null)
+        {
+            button.onClick.RemoveListener(ContinueRun);
+        }
+    }
+
+    // Update availability after save data changes.
+    public void RefreshAvailability()
+    {
+        if (button == null)
+        {
+            button = GetComponent<Button>();
+        }
+
+        button.interactable = !loading && RunSaveSystem.HasSave;
     }
 
     private void ContinueRun()
     {
-        if (loading || !RunSaveSystem.HasSave) return;
+        if (loading || !RunSaveSystem.HasSave)
+        {
+            return;
+        }
 
         if (RunSystem.Instance == null)
         {
             if (runPrefab == null)
             {
-                Debug.LogError("Assign the configured RunSystem prefab in ContinueRunUI.", this);
+                Debug.LogError(
+                    "Assign the configured RunSystem prefab in ContinueRunUI.",
+                    this
+                );
+
                 return;
             }
 
@@ -45,7 +64,11 @@ public class ContinueRunUI : MonoBehaviour
         }
 
         RunSystem run = RunSystem.Instance;
-        if (run == null) return;
+
+        if (run == null)
+        {
+            return;
+        }
 
         loading = true;
         button.interactable = false;
@@ -53,8 +76,13 @@ public class ContinueRunUI : MonoBehaviour
         if (!run.ContinueFromSave())
         {
             loading = false;
-            button.interactable = RunSaveSystem.HasSave;
-            Debug.LogError("Could not continue the saved run.", this);
+            RefreshAvailability();
+
+            Debug.LogError(
+                "Could not continue the saved run.",
+                this
+            );
+
             return;
         }
 

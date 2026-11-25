@@ -185,7 +185,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
     m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
-    m_DisabledColor: {r: 1, g: 1, b: 1, a: 0.5019608}
+    m_DisabledColor: {r: 0.3584906, g: 0.31621575, b: 0.31621575, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -734,6 +734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82c926e00c4718447a86302390f66c97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tutorialPrefab: {fileID: 3148496764808052019, guid: 6a32bf8f2029bac4dae343a90f854de1, type: 3}
 --- !u!1 &125276726
 GameObject:
   m_ObjectHideFlags: 0
@@ -2381,7 +2382,6 @@ MonoBehaviour:
   masterValue: {fileID: 548342828}
   musicValue: {fileID: 795134707}
   soundEffectsValue: {fileID: 234224306}
-  saveButton: {fileID: 0}
   restartButton: {fileID: 0}
   leaveButton: {fileID: 0}
   messageText: {fileID: 0}

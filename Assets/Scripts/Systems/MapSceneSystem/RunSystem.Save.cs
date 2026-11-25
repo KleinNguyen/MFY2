@@ -253,13 +253,50 @@ public partial class RunSystem
     }
     public bool ContinueFromSave()
     {
-        if (!TryLoadCheckpoint()) return false;
+        RunSaveCatalog catalog = Resources.Load<RunSaveCatalog>(
+            "RunSaveCatalog"
+        );
 
-        // Return to the map without completing the unfinished battle.
-        SelectedMapPointId = -1;
-        CurrentEncounter = null;
-        battleStartSave = null;
+        if (catalog == null)
+        {
+            Debug.LogError("RunSaveCatalog is missing.");
+            return false;
+        }
 
+        bool saveLoaded = RunSaveSystem.TryRead(
+            out RunSaveData data,
+            candidate => IsMapContinueSaveValid(candidate, catalog)
+        );
+
+        if (!saveLoaded)
+        {
+            Debug.LogError(
+                "Run save is missing, invalid, or incompatible. Check the save catalog."
+            );
+
+            return false;
+        }
+
+        ApplySaveData(data, catalog);
         return true;
+    }
+
+    // Continue restores map progress without resuming a battle.
+    private bool IsMapContinueSaveValid(
+        RunSaveData data,
+        RunSaveCatalog catalog
+    )
+    {
+        if (data == null)
+        {
+            return false;
+        }
+
+        data.resumeBattle = false;
+        data.battlePointId = -1;
+        data.battleEncounter = null;
+        data.mysteryResult = -1;
+
+        return IsSaveValid(data, catalog);
     }
 }

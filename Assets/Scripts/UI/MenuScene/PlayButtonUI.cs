@@ -2,8 +2,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public class PlayButtonUI: MonoBehaviour
+public class PlayButtonUI : MonoBehaviour
 {
+    [SerializeField] private NewRunTutorialUI tutorialPrefab;
+
     private void Start()
     {
         UIInputModuleCompatibility.MonitorAndConfigure(EventSystem.current, this);
@@ -16,6 +18,7 @@ public class PlayButtonUI: MonoBehaviour
 
     public void PlayGame()
     {
+        NewRunTutorialUI.BeginNewGame(tutorialPrefab);
         SceneManager.LoadScene("SelectHeroScene");
     }
 }

@@ -1,8 +1,7 @@
-
-using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
+using UnityEngine;
 using UnityEngine.Rendering;
 
 public class CardSystem : Singleton<CardSystem>
@@ -21,27 +20,246 @@ public class CardSystem : Singleton<CardSystem>
     [SerializeField] private PileUI pileUI;
     [SerializeField] private CardSelectionUI cardSelectionUI;
 
-    private readonly Stack<Card> priorityDrawCards = new();
-    private readonly List<Card> drawPile = new();
-    private readonly List<Card> discardPile = new();
-    private readonly List<Card> hand = new();
-    private readonly List<Card> exhaustPile = new();
-    private readonly Dictionary<Card, int> additionalManaCostsThisTurn = new();
-    private readonly HashSet<Card> temporarySlyCards = new();
-    private readonly List<Card> pendingCopiesForNextTurn = new();
+    private readonly Stack<Card> priorityDrawCards = new Stack<Card>();
+
+    private readonly List<Card> drawPile = new List<Card>();
+    private readonly List<Card> discardPile = new List<Card>();
+    private readonly List<Card> hand = new List<Card>();
+    private readonly List<Card> exhaustPile = new List<Card>();
+
+    private readonly Dictionary<Card, int> additionalManaCostsThisTurn =
+        new Dictionary<Card, int>();
+
+    private readonly List<Card> pendingCopiesForNextTurn =
+        new List<Card>();
+
+    private CardView chosenCardViewToUpgrade;
+    private Card chosenCardToExhaust;
+
+    private bool drawLocked;
+    private bool isPlayerTurn = true;
+    private bool nextCardFree;
+
+    private int activeAttackDamageMultiplier = 1;
+    private int nextTurnAttackDamageMultiplier = 1;
+
     public int CardsDrawnThisCombat { get; private set; }
+
     public ComboSystem Combo { get; private set; }
+
     public bool IsChoosingCardToExhaust { get; private set; }
+
     public bool IsChoosingCardToUpgrade { get; private set; }
+
     public bool IsViewingPile
     {
         get
         {
-            if (cardSelectionUI == null) return false;
+            if (cardSelectionUI == null)
+            {
+                return false;
+            }
 
-            return cardSelectionUI.IsOpen && cardSelectionUI.IsReadOnly;
+            return cardSelectionUI.IsOpen &&
+                   cardSelectionUI.IsReadOnly;
         }
     }
+
+    public int AttackDamageMultiplier
+    {
+        get
+        {
+            if (!isPlayerTurn)
+            {
+                return 1;
+            }
+
+            return activeAttackDamageMultiplier;
+        }
+    }
+
+    private void OnEnable()
+    {
+        ActionSystem.AttachPerformer<DrawCardsGA>(
+            DrawCardsPerformer
+        );
+
+        ActionSystem.AttachPerformer<DiscardAllCardsGA>(
+            DiscardAllCardsPerformer
+        );
+
+        ActionSystem.AttachPerformer<PlayCardGA>(
+            PlayCardPerformer
+        );
+
+        ActionSystem.AttachPerformer<ExhaustRandomCardGA>(
+            ExhaustRandomCardPerformer
+        );
+
+        ActionSystem.AttachPerformer<FocusedStudyGA>(
+            FocusedStudyPerformer
+        );
+
+        ActionSystem.AttachPerformer<LockDrawGA>(
+            LockDrawPerformer
+        );
+
+        ActionSystem.AttachPerformer<ExhaustHandAndDamageGA>(
+            ExhaustHandAndDamagePerformer
+        );
+
+        ActionSystem.SubscribeReaction<EnemyTurnGA>(
+            EnemyTurnPostReaction,
+            ReactionTiming.POST
+        );
+
+        ActionSystem.AttachPerformer<ChooseCardToExhaustGA>(
+            ChooseCardToExhaustPerformer
+        );
+
+        ActionSystem.AttachPerformer<PocketedDoubleGA>(
+            PocketedDoublePerformer
+        );
+
+        ActionSystem.AttachPerformer<AddCardsToHandGA>(
+            AddCardsToHandPerformer
+        );
+
+        ActionSystem.AttachPerformer<ChooseCardToUpgradeGA>(
+            ChooseCardToUpgradePerformer
+        );
+
+        ActionSystem.AttachPerformer<ReclaimingBlowGA>(
+            ReclaimingBlowPerformer
+        );
+
+        ActionSystem.AttachPerformer<RecoverDiscardCardGA>(
+            RecoverDiscardCardPerformer
+        );
+
+        ActionSystem.AttachPerformer<RecoveredTechniqueGA>(
+            RecoveredTechniquePerformer
+        );
+
+        ActionSystem.AttachPerformer<DiscardCardsGA>(
+            DiscardCardsPerformer
+        );
+
+        ActionSystem.AttachPerformer<ToxicRequisitionGA>(
+            ToxicRequisitionPerformer
+        );
+
+        ActionSystem.AttachPerformer<CleanSweepGA>(
+            CleanSweepPerformer
+        );
+
+        ActionSystem.AttachPerformer<GrandDisappearanceGA>(
+            GrandDisappearancePerformer
+        );
+
+        ActionSystem.AttachPerformer<NextCardFreeGA>(
+            NextCardFreePerformer
+        );
+
+        ActionSystem.SubscribeReaction<EnemyTurnGA>(
+            EnemyTurnPreReaction,
+            ReactionTiming.PRE
+        );
+
+        ActionSystem.AttachPerformer<ExhaustCardsForComboGA>(
+            ExhaustCardsForComboPerformer
+        );
+
+        Combo = GetComponent<ComboSystem>();
+
+        if (Combo == null)
+        {
+            Combo = gameObject.AddComponent<ComboSystem>();
+        }
+
+        Combo.enabled = true;
+    }
+
+    private void OnDisable()
+    {
+        if (Combo != null)
+        {
+            Combo.enabled = false;
+        }
+
+        activeAttackDamageMultiplier = 1;
+        nextTurnAttackDamageMultiplier = 1;
+        pendingCopiesForNextTurn.Clear();
+        nextCardFree = false;
+        additionalManaCostsThisTurn.Clear();
+
+        ActionSystem.DetachPerformer<DrawCardsGA>();
+        ActionSystem.DetachPerformer<DiscardAllCardsGA>();
+        ActionSystem.DetachPerformer<PlayCardGA>();
+        ActionSystem.DetachPerformer<ExhaustRandomCardGA>();
+        ActionSystem.DetachPerformer<FocusedStudyGA>();
+        ActionSystem.DetachPerformer<LockDrawGA>();
+        ActionSystem.DetachPerformer<ExhaustHandAndDamageGA>();
+        ActionSystem.DetachPerformer<ChooseCardToExhaustGA>();
+        ActionSystem.DetachPerformer<PocketedDoubleGA>();
+        ActionSystem.DetachPerformer<AddCardsToHandGA>();
+        ActionSystem.DetachPerformer<ChooseCardToUpgradeGA>();
+        ActionSystem.DetachPerformer<ReclaimingBlowGA>();
+        ActionSystem.DetachPerformer<RecoverDiscardCardGA>();
+        ActionSystem.DetachPerformer<RecoveredTechniqueGA>();
+        ActionSystem.DetachPerformer<DiscardCardsGA>();
+        ActionSystem.DetachPerformer<ToxicRequisitionGA>();
+        ActionSystem.DetachPerformer<CleanSweepGA>();
+        ActionSystem.DetachPerformer<GrandDisappearanceGA>();
+        ActionSystem.DetachPerformer<NextCardFreeGA>();
+        ActionSystem.DetachPerformer<ExhaustCardsForComboGA>();
+
+        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(
+            EnemyTurnPostReaction,
+            ReactionTiming.POST
+        );
+
+        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(
+            EnemyTurnPreReaction,
+            ReactionTiming.PRE
+        );
+    }
+
+    public void Setup(List<CardData> deckData)
+    {
+        if (Combo != null)
+        {
+            Combo.ResetCombat();
+        }
+
+        activeAttackDamageMultiplier = 1;
+        nextTurnAttackDamageMultiplier = 1;
+        pendingCopiesForNextTurn.Clear();
+        CardsDrawnThisCombat = 0;
+        nextCardFree = false;
+        additionalManaCostsThisTurn.Clear();
+        isPlayerTurn = true;
+        priorityDrawCards.Clear();
+
+        IsChoosingCardToUpgrade = false;
+        chosenCardViewToUpgrade = null;
+
+        IsChoosingCardToExhaust = false;
+        chosenCardToExhaust = null;
+
+        drawLocked = false;
+        exhaustPile.Clear();
+
+        foreach (CardData cardData in deckData)
+        {
+            Card card = new Card(cardData);
+            drawPile.Add(card);
+        }
+
+        pileUI.UpdateDrawPileText(drawPile.Count);
+        pileUI.UpdateDiscardPileText(discardPile.Count);
+    }
+
     public void OpenDrawPile()
     {
         OpenPile(drawPile, "Draw Pile");
@@ -54,56 +272,105 @@ public class CardSystem : Singleton<CardSystem>
 
     private void OpenPile(List<Card> pile, string title)
     {
-        if (!isPlayerTurn || IsChoosingCardToExhaust || IsChoosingCardToUpgrade) return;
-        if (BattleSystem.Instance == null || BattleSystem.Instance.IsBattleOver || BattleSystem.Instance.IsPreparingBattle) return;
-        if (ActionSystem.Instance == null || ActionSystem.Instance.IsPerforming) return;
-        if (InteractionSystem.Instance == null || InteractionSystem.Instance.PlayerIsDragging) return;
-
-        if (cardSelectionUI == null)
+        if (
+            !isPlayerTurn ||
+            IsChoosingCardToExhaust ||
+            IsChoosingCardToUpgrade
+        )
         {
-            Debug.LogError("Card Selection UI is not assigned in CardSystem.", this);
             return;
         }
 
-        if (cardSelectionUI.IsOpen) return;
+        if (
+            BattleSystem.Instance == null ||
+            BattleSystem.Instance.IsBattleOver ||
+            BattleSystem.Instance.IsPreparingBattle
+        )
+        {
+            return;
+        }
+
+        if (
+            ActionSystem.Instance == null ||
+            ActionSystem.Instance.IsPerforming
+        )
+        {
+            return;
+        }
+
+        if (
+            InteractionSystem.Instance == null ||
+            InteractionSystem.Instance.PlayerIsDragging
+        )
+        {
+            return;
+        }
+
+        if (cardSelectionUI == null)
+        {
+            Debug.LogError(
+                "Card Selection UI is not assigned in CardSystem.",
+                this
+            );
+
+            return;
+        }
+
+        if (cardSelectionUI.IsOpen)
+        {
+            return;
+        }
 
         List<Card> cards = pile.FindAll(card => card != null);
-        cards.Sort((left, right) => string.Compare(
-            left.Title, right.Title, System.StringComparison.OrdinalIgnoreCase));
+
+        cards.Sort(
+            (left, right) => string.Compare(
+                left.Title,
+                right.Title,
+                System.StringComparison.OrdinalIgnoreCase
+            )
+        );
 
         string message = title + " (" + cards.Count + ")";
-        if (cards.Count == 0) message += "\nNo cards in this pile.";
 
-        if (cardSelectionUI.Open(cards, message, null, readOnly: true))
+        if (cards.Count == 0)
         {
-            if (CardViewHoverSystem.Instance != null) CardViewHoverSystem.Instance.Hide();
-            if (ManualTargetSystem.Instance != null) ManualTargetSystem.Instance.CancelTargeting();
+            message += "\nNo cards in this pile.";
         }
-    }
 
-    private CardView chosenCardViewToUpgrade;
-    private Card chosenCardToExhaust;
-    private bool drawLocked;
-    private bool isPlayerTurn = true;
-    private bool nextCardFree;
-    private int activeAttackDamageMultiplier = 1;
-    private int nextTurnAttackDamageMultiplier = 1;
+        bool opened = cardSelectionUI.Open(
+            cards,
+            message,
+            null,
+            readOnly: true
+        );
 
-    public int AttackDamageMultiplier
-    {
-        get
+        if (opened)
         {
-            if (!isPlayerTurn) return 1;
+            if (CardViewHoverSystem.Instance != null)
+            {
+                CardViewHoverSystem.Instance.Hide();
+            }
 
-            return activeAttackDamageMultiplier;
+            if (ManualTargetSystem.Instance != null)
+            {
+                ManualTargetSystem.Instance.CancelTargeting();
+            }
         }
     }
 
     public bool CanPlayCard(Card card)
     {
-        return card != null && !card.IsUnplayable && isPlayerTurn && hand.Contains(card) &&
-            BattleSystem.Instance != null && !BattleSystem.Instance.IsBattleOver && !BattleSystem.Instance.IsPreparingBattle &&
-            MeetsCardPlayConditions(card) && ManaSystem.Instance != null && ManaSystem.Instance.HasEnoughMana(GetManaCost(card));
+        return card != null &&
+               !card.IsUnplayable &&
+               isPlayerTurn &&
+               hand.Contains(card) &&
+               BattleSystem.Instance != null &&
+               !BattleSystem.Instance.IsBattleOver &&
+               !BattleSystem.Instance.IsPreparingBattle &&
+               MeetsCardPlayConditions(card) &&
+               ManaSystem.Instance != null &&
+               ManaSystem.Instance.HasEnoughMana(GetManaCost(card));
     }
 
     public bool IsCardInHand(Card card)
@@ -113,10 +380,17 @@ public class CardSystem : Singleton<CardSystem>
 
     private bool MeetsCardPlayConditions(Card card)
     {
-        int otherCardsInHand = hand.Count - (hand.Contains(card) ? 1 : 0);
+        int otherCardsInHand = hand.Count;
 
-        if (card.ManualTargetEffect is ICardPlayCondition manualCondition &&
-            !manualCondition.CanPlay(otherCardsInHand))
+        if (hand.Contains(card))
+        {
+            otherCardsInHand--;
+        }
+
+        if (
+            card.ManualTargetEffect is ICardPlayCondition manualCondition &&
+            !manualCondition.CanPlay(otherCardsInHand)
+        )
         {
             return false;
         }
@@ -125,8 +399,11 @@ public class CardSystem : Singleton<CardSystem>
         {
             foreach (AutoTargetEffect effectWrapper in card.OtherEffects)
             {
-                if (effectWrapper != null && effectWrapper.Effect is ICardPlayCondition condition &&
-                    !condition.CanPlay(otherCardsInHand))
+                if (
+                    effectWrapper != null &&
+                    effectWrapper.Effect is ICardPlayCondition condition &&
+                    !condition.CanPlay(otherCardsInHand)
+                )
                 {
                     return false;
                 }
@@ -138,222 +415,142 @@ public class CardSystem : Singleton<CardSystem>
 
     public int GetManaCost(Card card)
     {
-        if (card == null) return 0;
-        if (nextCardFree && isPlayerTurn && hand.Contains(card)) return 0;
-
-        additionalManaCostsThisTurn.TryGetValue(card, out int additionalManaCost);
-        return Mathf.Max(0, card.Mana + additionalManaCost);
-    }
-
-    private void OnEnable()
-    {
-        ActionSystem.AttachPerformer<DrawCardsGA>(DrawCardsPerformer);
-        ActionSystem.AttachPerformer<DiscardAllCardsGA>(DiscardAllCardsPerformer);
-        ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
-        ActionSystem.AttachPerformer<ExhaustRandomCardGA>(ExhaustRandomCardPerformer);
-        ActionSystem.AttachPerformer<FocusedStudyGA>(FocusedStudyPerformer);
-        ActionSystem.AttachPerformer<LockDrawGA>(LockDrawPerformer);
-        ActionSystem.AttachPerformer<ExhaustHandAndDamageGA>(ExhaustHandAndDamagePerformer);
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
-        ActionSystem.AttachPerformer<ChooseCardToExhaustGA>(ChooseCardToExhaustPerformer);
-        ActionSystem.AttachPerformer<ChooseCardToGrantSlyGA>(ChooseCardToGrantSlyPerformer);
-        ActionSystem.AttachPerformer<PocketedDoubleGA>(PocketedDoublePerformer);
-        ActionSystem.AttachPerformer<AddCardsToHandGA>(AddCardsToHandPerformer);
-        ActionSystem.AttachPerformer<ChooseCardToUpgradeGA>(ChooseCardToUpgradePerformer);
-        ActionSystem.AttachPerformer<ReclaimingBlowGA>(ReclaimingBlowPerformer);
-        ActionSystem.AttachPerformer<RecoverDiscardCardGA>(RecoverDiscardCardPerformer);
-        ActionSystem.AttachPerformer<RecoveredTechniqueGA>(RecoveredTechniquePerformer);
-        ActionSystem.AttachPerformer<DiscardCardsGA>(DiscardCardsPerformer);
-        ActionSystem.AttachPerformer<ToxicRequisitionGA>(ToxicRequisitionPerformer);
-        ActionSystem.AttachPerformer<CleanSweepGA>(CleanSweepPerformer);
-        ActionSystem.AttachPerformer<GrandDisappearanceGA>(GrandDisappearancePerformer);
-        ActionSystem.AttachPerformer<NextCardFreeGA>(NextCardFreePerformer);
-        ActionSystem.AttachPerformer<PlayDiscardedSlyCardsGA>(PlayDiscardedSlyCardsPerformer);
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
-        ActionSystem.AttachPerformer<ExhaustCardsForComboGA>(ExhaustCardsForComboPerformer);
-
-        Combo = GetComponent<ComboSystem>();
-        if (Combo == null) Combo = gameObject.AddComponent<ComboSystem>();
-        Combo.enabled = true;
-    }
-
-    private void OnDisable()
-    {
-        if (Combo != null) Combo.enabled = false;
-        activeAttackDamageMultiplier = 1;
-        nextTurnAttackDamageMultiplier = 1;
-        ResetTemporarySlyCards();
-        pendingCopiesForNextTurn.Clear();
-        nextCardFree = false;
-        additionalManaCostsThisTurn.Clear();
-        ActionSystem.DetachPerformer<DrawCardsGA>();
-        ActionSystem.DetachPerformer<DiscardAllCardsGA>();
-        ActionSystem.DetachPerformer<PlayCardGA>();
-        ActionSystem.DetachPerformer<ExhaustRandomCardGA>();
-        ActionSystem.DetachPerformer<FocusedStudyGA>();
-        ActionSystem.DetachPerformer<LockDrawGA>();
-        ActionSystem.DetachPerformer<ExhaustHandAndDamageGA>();
-        ActionSystem.DetachPerformer<ChooseCardToExhaustGA>();
-        ActionSystem.DetachPerformer<ChooseCardToGrantSlyGA>();
-        ActionSystem.DetachPerformer<PocketedDoubleGA>();
-        ActionSystem.DetachPerformer<AddCardsToHandGA>();
-        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
-        ActionSystem.DetachPerformer<ChooseCardToUpgradeGA>();
-        ActionSystem.DetachPerformer<ReclaimingBlowGA>();
-        ActionSystem.DetachPerformer<RecoverDiscardCardGA>();
-        ActionSystem.DetachPerformer<RecoveredTechniqueGA>();
-        ActionSystem.DetachPerformer<DiscardCardsGA>();
-        ActionSystem.DetachPerformer<ToxicRequisitionGA>();
-        ActionSystem.DetachPerformer<CleanSweepGA>();
-        ActionSystem.DetachPerformer<GrandDisappearanceGA>();
-        ActionSystem.DetachPerformer<NextCardFreeGA>();
-        ActionSystem.DetachPerformer<PlayDiscardedSlyCardsGA>();
-        ActionSystem.DetachPerformer<ExhaustCardsForComboGA>();
-        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
-    }
-    //public
-    public void Setup(List<CardData> deckData)
-    {
-        if (Combo != null) Combo.ResetCombat();
-        activeAttackDamageMultiplier = 1;
-        nextTurnAttackDamageMultiplier = 1;
-        ResetTemporarySlyCards();
-        pendingCopiesForNextTurn.Clear();
-        CardsDrawnThisCombat = 0;
-        nextCardFree = false;
-        additionalManaCostsThisTurn.Clear();
-        isPlayerTurn = true;
-        priorityDrawCards.Clear();
-        IsChoosingCardToUpgrade = false;
-        chosenCardViewToUpgrade = null;
-        IsChoosingCardToExhaust = false;
-        chosenCardToExhaust = null;
-        drawLocked = false;
-        exhaustPile.Clear();
-        foreach (var cardData in deckData)
+        if (card == null)
         {
-            Card card = new(cardData);
-            drawPile.Add(card);
+            return 0;
         }
-        pileUI.UpdateDrawPileText(drawPile.Count);
-        pileUI.UpdateDiscardPileText(discardPile.Count);
+
+        if (nextCardFree && isPlayerTurn && hand.Contains(card))
+        {
+            return 0;
+        }
+
+        additionalManaCostsThisTurn.TryGetValue(
+            card,
+            out int additionalManaCost
+        );
+
+        return Mathf.Max(
+            0,
+            card.Mana + additionalManaCost
+        );
     }
+
     public void AddJunkCards(int amount, Sprite image)
     {
-        if (amount <= 0) return;
+        if (amount <= 0)
+        {
+            return;
+        }
 
-        for (int i = 0; i < amount; i++) drawPile.Add(Card.CreateJunk(image));
+        for (int i = 0; i < amount; i++)
+        {
+            drawPile.Add(Card.CreateJunk(image));
+        }
+
         pileUI.UpdateDrawPileText(drawPile.Count);
     }
 
-    //performers
     private IEnumerator DrawCardsPerformer(DrawCardsGA drawCardsGA)
     {
         if (drawLocked)
         {
             Debug.Log("Cannot draw more cards this turn.");
-
             yield break;
         }
+
         for (int i = 0; i < drawCardsGA.Amount; i++)
         {
             if (drawPile.Count == 0)
             {
                 yield return RefillDeck();
             }
+
             if (drawPile.Count == 0)
             {
                 yield break;
             }
+
             yield return DrawCard();
         }
     }
 
-
-    private IEnumerator DiscardAllCardsPerformer(DiscardAllCardsGA discardAllCardsGA)
+    private IEnumerator DiscardAllCardsPerformer(
+        DiscardAllCardsGA discardAllCardsGA
+    )
     {
-        if (hand.Count == 0) yield break;
+        if (hand.Count == 0)
+        {
+            yield break;
+        }
 
         handView.SetInteractionEnabled(false);
-        List<Card> cardsToDiscard = new(hand);
-        float stagger = cardsToDiscard.Count > 1
-            ? Mathf.Min(0.025f, 0.08f / (cardsToDiscard.Count - 1))
-            : 0f;
+
+        List<Card> cardsToDiscard = new List<Card>(hand);
+
+        float stagger = 0f;
+
+        if (cardsToDiscard.Count > 1)
+        {
+            stagger = Mathf.Min(
+                0.025f,
+                0.08f / (cardsToDiscard.Count - 1)
+            );
+        }
+
         int remainingFlights = 0;
 
         for (int i = 0; i < cardsToDiscard.Count; i++)
         {
             CardView cardView = handView.RemoveCard(cardsToDiscard[i]);
-            if (cardView == null) continue;
+
+            if (cardView == null)
+            {
+                continue;
+            }
 
             discardPile.Add(cardView.Card);
             remainingFlights++;
-            StartCoroutine(AnimateCardToPile(
-                cardView,
-                discardPilePoint,
-                EndTurnDiscardDuration,
-                stagger * i,
-                () => remainingFlights--
-            ));
+
+            StartCoroutine(
+                AnimateCardToPile(
+                    cardView,
+                    discardPilePoint,
+                    EndTurnDiscardDuration,
+                    stagger * i,
+                    () => remainingFlights--
+                )
+            );
         }
 
         pileUI.UpdateDiscardPileText(discardPile.Count);
-        while (remainingFlights > 0) yield return null;
+
+        while (remainingFlights > 0)
+        {
+            yield return null;
+        }
+
         hand.Clear();
     }
 
     private IEnumerator PlayCardPerformer(PlayCardGA action)
     {
         action.ResetPlayResult();
-        if (action.Card == null || action.Card.IsUnplayable || !isPlayerTurn || BattleSystem.Instance == null || BattleSystem.Instance.IsBattleOver || BattleSystem.Instance.IsPreparingBattle)
+
+        if (!CanPlayCard(action.Card))
         {
             yield break;
         }
 
-        bool cardIsInHand = hand.Contains(action.Card);
         int manaCost = GetManaCost(action.Card);
 
-        if (action.IsSlyPlay)
-        {
-
-            if (!action.Card.IsSly || (!cardIsInHand && !discardPile.Contains(action.Card)) ||
-                !MeetsCardPlayConditions(action.Card))
-            {
-                yield break;
-            }
-
-            if (action.Card.ManualTargetEffect != null)
-            {
-                List<EnemyView> validTargets = new();
-
-                if (EnemySystem.Instance != null)
-                {
-                    foreach (EnemyView enemy in EnemySystem.Instance.Enemies)
-                    {
-                        if (enemy != null && enemy.CurrentHealth > 0)
-                        {
-                            validTargets.Add(enemy);
-                        }
-                    }
-                }
-                if (validTargets.Count == 0)
-                {
-                    yield break;
-                }
-
-                int randomIndex = Random.Range(0, validTargets.Count);
-                action.SetManualTarget(validTargets[randomIndex]);
-            }
-        }
-        else
-        {
-            if (!CanPlayCard(action.Card))
-            {
-                yield break;
-            }
-        }
-
-        if (action.Card.ManualTargetEffect != null && (action.ManualTarget == null || action.ManualTarget.CurrentHealth <= 0))
+        if (
+            action.Card.ManualTargetEffect != null &&
+            (
+                action.ManualTarget == null ||
+                action.ManualTarget.CurrentHealth <= 0
+            )
+        )
         {
             yield break;
         }
@@ -363,58 +560,48 @@ public class CardSystem : Singleton<CardSystem>
             CardViewHoverSystem.Instance.Hide();
         }
 
-        if (cardIsInHand)
+        CardView cardView = handView.RemoveCard(action.Card);
+
+        if (cardView == null)
         {
-            CardView cardView = handView.RemoveCard(action.Card);
+            Debug.LogError(
+                "Cannot play card: CardView was not found in hand."
+            );
 
-            if (cardView == null)
-            {
-                Debug.LogError("Cannot play card: CardView was not found in hand.");
-                yield break;
-            }
+            yield break;
+        }
 
-            if (!action.IsSlyPlay)
-            {
-                nextCardFree = false;
-            }
+        nextCardFree = false;
+        hand.Remove(action.Card);
 
-            hand.Remove(action.Card);
-
-            if (action.Card.ExhaustOnPlay)
-            {
-                yield return ExhaustCard(cardView);
-            }
-            else
-            {
-                yield return DiscardCard(cardView);
-            }
+        if (action.Card.ExhaustOnPlay)
+        {
+            yield return ExhaustCard(cardView);
         }
         else
         {
-            if (action.Card.ExhaustOnPlay)
-            {
-                discardPile.Remove(action.Card);
-                exhaustPile.Add(action.Card);
-
-                pileUI.UpdateDiscardPileText(discardPile.Count);
-            }
+            yield return DiscardCard(cardView);
         }
 
-        if (Combo != null) Combo.RecordCardPlay(action);
-
-        if (action.IsSlyPlay)
+        if (Combo != null)
         {
-            Debug.Log("Sly auto-play: " + action.Card.Title);
+            Combo.RecordCardPlay(action);
         }
-        else
-        {
-            SpendManaGA spendManaGA = new(manaCost);
-            ActionSystem.Instance.AddReaction(spendManaGA);
-        }
+
+        SpendManaGA spendManaGA = new SpendManaGA(manaCost);
+        ActionSystem.Instance.AddReaction(spendManaGA);
 
         if (action.Card.ManualTargetEffect != null)
         {
-            PerformEffectGA manualEffectGA = new(action.Card.ManualTargetEffect, new List<CombatantView> { action.ManualTarget }, action.Card);
+            PerformEffectGA manualEffectGA = new PerformEffectGA(
+                action.Card.ManualTargetEffect,
+                new List<CombatantView>
+                {
+                    action.ManualTarget
+                },
+                action.Card
+            );
+
             ActionSystem.Instance.AddReaction(manualEffectGA);
         }
 
@@ -425,22 +612,33 @@ public class CardSystem : Singleton<CardSystem>
 
         foreach (AutoTargetEffect effectWrapper in action.Card.OtherEffects)
         {
-            if (effectWrapper == null || effectWrapper.TargetMode == null || effectWrapper.Effect == null)
+            if (
+                effectWrapper == null ||
+                effectWrapper.TargetMode == null ||
+                effectWrapper.Effect == null
+            )
             {
-                Debug.LogError("A card has an incomplete Other Effects entry: " + action.Card.Title);
+                Debug.LogError(
+                    "A card has an incomplete Other Effects entry: " +
+                    action.Card.Title
+                );
+
                 continue;
             }
 
-            List<CombatantView> targets = effectWrapper.TargetMode.GetTargets();
+            List<CombatantView> targets =
+                effectWrapper.TargetMode.GetTargets();
 
-            PerformEffectGA otherEffectGA = new(effectWrapper.Effect, targets, action.Card);
+            PerformEffectGA otherEffectGA = new PerformEffectGA(
+                effectWrapper.Effect,
+                targets,
+                action.Card
+            );
+
             ActionSystem.Instance.AddReaction(otherEffectGA);
         }
     }
-    //reactions
 
-
-    //helpers
     private IEnumerator DrawCard()
     {
         Card card = null;
@@ -468,39 +666,68 @@ public class CardSystem : Singleton<CardSystem>
 
         hand.Add(card);
         CardsDrawnThisCombat++;
+
         SfxManager.PlaySfx(SfxId.CardDrawn);
 
         pileUI.UpdateDrawPileText(drawPile.Count);
 
-        CardView cardView = CardViewCreator.Instance.CreateCardView(card, drawPilePoint.position, drawPilePoint.rotation);
+        CardView cardView = CardViewCreator.Instance.CreateCardView(
+            card,
+            drawPilePoint.position,
+            drawPilePoint.rotation
+        );
 
         yield return handView.AddCard(cardView);
     }
+
     private IEnumerator RefillDeck()
     {
-        if (discardPile.Count == 0) yield break;
+        if (discardPile.Count == 0)
+        {
+            yield break;
+        }
 
-        List<Card> cardsToRefill = new(discardPile);
+        List<Card> cardsToRefill = new List<Card>(discardPile);
+
         drawPile.AddRange(discardPile);
         discardPile.Clear();
+
         pileUI.UpdateDrawPileText(drawPile.Count);
         pileUI.UpdateDiscardPileText(discardPile.Count);
 
-        if (CardViewCreator.Instance == null || discardPilePoint == null || drawPilePoint == null)
+        if (
+            CardViewCreator.Instance == null ||
+            discardPilePoint == null ||
+            drawPilePoint == null
+        )
         {
-            Debug.LogError("Cannot animate the discard pile refill: a card view creator or pile point is missing.", this);
+            Debug.LogError(
+                "Cannot animate the discard pile refill: a card view creator or pile point is missing.",
+                this
+            );
+
             yield break;
         }
 
         int remainingFlights = 0;
-        float stagger = cardsToRefill.Count > 1
-            ? Mathf.Min(0.06f, 0.3f / (cardsToRefill.Count - 1))
-            : 0f;
+        float stagger = 0f;
+
+        if (cardsToRefill.Count > 1)
+        {
+            stagger = Mathf.Min(
+                0.06f,
+                0.3f / (cardsToRefill.Count - 1)
+            );
+        }
 
         for (int i = 0; i < cardsToRefill.Count; i++)
         {
-            float pileOffset = (i - (cardsToRefill.Count - 1) * 0.5f) * 0.08f;
-            Vector3 startPosition = discardPilePoint.position + Vector3.right * pileOffset;
+            float pileOffset =
+                (i - (cardsToRefill.Count - 1) * 0.5f) * 0.08f;
+
+            Vector3 startPosition =
+                discardPilePoint.position + Vector3.right * pileOffset;
+
             CardView cardView = CardViewCreator.Instance.CreateCardView(
                 cardsToRefill[i],
                 startPosition,
@@ -509,31 +736,49 @@ public class CardSystem : Singleton<CardSystem>
 
             if (cardView == null)
             {
-                Debug.LogError("Could not create a temporary card view for the discard pile refill.", this);
+                Debug.LogError(
+                    "Could not create a temporary card view for the discard pile refill.",
+                    this
+                );
+
                 continue;
             }
 
             cardView.transform.DOKill();
-            cardView.transform.localScale = cardView.DisplayScale * RefillCardFlightScale;
+            cardView.transform.localScale =
+                cardView.DisplayScale * RefillCardFlightScale;
+
             cardView.enabled = false;
-            foreach (Collider cardCollider in cardView.GetComponentsInChildren<Collider>())
+
+            foreach (
+                Collider cardCollider in
+                cardView.GetComponentsInChildren<Collider>()
+            )
             {
                 cardCollider.enabled = false;
             }
 
             remainingFlights++;
-            StartCoroutine(AnimateCardToPile(
-                cardView,
-                drawPilePoint,
-                RefillFlightDuration,
-                stagger * i,
-                () => remainingFlights--
-            ));
+
+            StartCoroutine(
+                AnimateCardToPile(
+                    cardView,
+                    drawPilePoint,
+                    RefillFlightDuration,
+                    stagger * i,
+                    () => remainingFlights--
+                )
+            );
         }
 
-        while (remainingFlights > 0) yield return null;
+        while (remainingFlights > 0)
+        {
+            yield return null;
+        }
+
         yield return null;
     }
+
     private IEnumerator DiscardCard(
         CardView cardView,
         float duration = DiscardFlightDuration
@@ -541,14 +786,22 @@ public class CardSystem : Singleton<CardSystem>
     {
         if (cardView == null || cardView.Card == null)
         {
-            Debug.LogError("Cannot discard card: CardView or its card is missing.", this);
+            Debug.LogError(
+                "Cannot discard card: CardView or its card is missing.",
+                this
+            );
+
             yield break;
         }
 
         discardPile.Add(cardView.Card);
         pileUI.UpdateDiscardPileText(discardPile.Count);
 
-        yield return AnimateCardToPile(cardView, discardPilePoint, duration);
+        yield return AnimateCardToPile(
+            cardView,
+            discardPilePoint,
+            duration
+        );
     }
 
     private IEnumerator AnimateCardToPile(
@@ -559,41 +812,71 @@ public class CardSystem : Singleton<CardSystem>
         System.Action onComplete = null
     )
     {
-        if (startDelay > 0f) yield return new WaitForSeconds(startDelay);
-
-        if (cardView == null || cardView.Card == null || destination == null)
+        if (startDelay > 0f)
         {
-            Debug.LogError("Cannot animate a card to a missing pile or card view.", this);
-            if (cardView != null) Destroy(cardView.gameObject);
-            if (onComplete != null) onComplete();
+            yield return new WaitForSeconds(startDelay);
+        }
+
+        if (
+            cardView == null ||
+            cardView.Card == null ||
+            destination == null
+        )
+        {
+            Debug.LogError(
+                "Cannot animate a card to a missing pile or card view.",
+                this
+            );
+
+            if (cardView != null)
+            {
+                Destroy(cardView.gameObject);
+            }
+
+            if (onComplete != null)
+            {
+                onComplete();
+            }
+
             yield break;
         }
 
         Transform cardTransform = cardView.transform;
+
         Vector3 startPosition = cardTransform.position;
         Vector3 endPosition = destination.position;
         Vector3 startScale = cardTransform.localScale;
+
         Quaternion startRotation = cardTransform.rotation;
         Quaternion endRotation = destination.rotation;
 
-        SortingGroup sortingGroup = cardView.GetComponent<SortingGroup>();
-        int sortingLayerId = sortingGroup != null
-            ? sortingGroup.sortingLayerID
-            : 0;
-        int trailSortingOrder = sortingGroup != null
-            ? sortingGroup.sortingOrder - 1
-            : -1;
+        SortingGroup sortingGroup =
+            cardView.GetComponent<SortingGroup>();
+
+        int sortingLayerId = 0;
+        int trailSortingOrder = -1;
+
+        if (sortingGroup != null)
+        {
+            sortingLayerId = sortingGroup.sortingLayerID;
+            trailSortingOrder = sortingGroup.sortingOrder - 1;
+        }
 
         Shader trailShader = Shader.Find("Sprites/Default");
+
         Material trailMaterial = null;
         GameObject trailObject = null;
+
         ParticleSystem sparks = null;
         TrailRenderer glowTrail = null;
         TrailRenderer coreTrail = null;
 
         if (trailShader == null)
         {
-            Debug.LogError("Cannot create the card pile flight trail: Sprites/Default shader was not found.", this);
+            Debug.LogError(
+                "Cannot create the card pile flight trail: Sprites/Default shader was not found.",
+                this
+            );
         }
         else
         {
@@ -611,6 +894,7 @@ public class CardSystem : Singleton<CardSystem>
                 sortingLayerId,
                 trailSortingOrder
             );
+
             coreTrail = CreateDiscardTrail(
                 trailObject.transform,
                 "Core",
@@ -621,6 +905,7 @@ public class CardSystem : Singleton<CardSystem>
                 sortingLayerId,
                 trailSortingOrder
             );
+
             sparks = CreateDiscardTrailSparks(
                 trailObject,
                 trailMaterial,
@@ -638,23 +923,53 @@ public class CardSystem : Singleton<CardSystem>
                     endPosition,
                     progress
                 );
+
                 position += Vector3.up *
                     (DiscardArcHeight * 4f * progress * (1f - progress));
+
                 cardTransform.position = position;
 
-                float scaleProgress = progress <= 0.5f
-                    ? Mathf.SmoothStep(0f, 1f, progress * 2f)
-                    : Mathf.SmoothStep(0f, 1f, (progress - 0.5f) * 2f);
-                float scaleMultiplier = progress <= 0.5f
-                    ? Mathf.Lerp(1f, 1.45f, scaleProgress)
-                    : Mathf.Lerp(1.45f, 0.015f, scaleProgress);
-                cardTransform.localScale = startScale * scaleMultiplier;
+                float scaleProgress;
+                float scaleMultiplier;
+
+                if (progress <= 0.5f)
+                {
+                    scaleProgress = Mathf.SmoothStep(
+                        0f,
+                        1f,
+                        progress * 2f
+                    );
+
+                    scaleMultiplier = Mathf.Lerp(
+                        1f,
+                        1.45f,
+                        scaleProgress
+                    );
+                }
+                else
+                {
+                    scaleProgress = Mathf.SmoothStep(
+                        0f,
+                        1f,
+                        (progress - 0.5f) * 2f
+                    );
+
+                    scaleMultiplier = Mathf.Lerp(
+                        1.45f,
+                        0.015f,
+                        scaleProgress
+                    );
+                }
+
+                cardTransform.localScale =
+                    startScale * scaleMultiplier;
 
                 Quaternion rotation = Quaternion.Slerp(
                     startRotation,
                     endRotation,
                     progress
                 );
+
                 cardTransform.rotation =
                     rotation *
                     Quaternion.Euler(
@@ -678,18 +993,27 @@ public class CardSystem : Singleton<CardSystem>
         {
             glowTrail.emitting = false;
             coreTrail.emitting = false;
-            sparks.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+
+            sparks.Stop(
+                true,
+                ParticleSystemStopBehavior.StopEmitting
+            );
 
             float cleanupDelay = Mathf.Max(
                 DiscardTrailLifetime,
                 DiscardSparkLifetime
             );
+
             Destroy(trailObject, cleanupDelay);
             Destroy(trailMaterial, cleanupDelay);
         }
 
         Destroy(cardView.gameObject);
-        if (onComplete != null) onComplete();
+
+        if (onComplete != null)
+        {
+            onComplete();
+        }
     }
 
     private static TrailRenderer CreateDiscardTrail(
@@ -703,10 +1027,12 @@ public class CardSystem : Singleton<CardSystem>
         int sortingOrder
     )
     {
-        GameObject trailObject = new(objectName);
+        GameObject trailObject = new GameObject(objectName);
         trailObject.transform.SetParent(parent, false);
 
-        TrailRenderer trail = trailObject.AddComponent<TrailRenderer>();
+        TrailRenderer trail =
+            trailObject.AddComponent<TrailRenderer>();
+
         trail.time = DiscardTrailLifetime;
         trail.startWidth = width;
         trail.endWidth = width * 0.04f;
@@ -719,14 +1045,24 @@ public class CardSystem : Singleton<CardSystem>
         trail.sharedMaterial = material;
         trail.sortingLayerID = sortingLayerId;
         trail.sortingOrder = sortingOrder;
-        trail.colorGradient = CreateDiscardTrailGradient(color, alpha);
+
+        trail.colorGradient = CreateDiscardTrailGradient(
+            color,
+            alpha
+        );
+
         trail.Clear();
+
         return trail;
     }
 
-    private static Gradient CreateDiscardTrailGradient(Color color, float alpha)
+    private static Gradient CreateDiscardTrailGradient(
+        Color color,
+        float alpha
+    )
     {
-        Gradient gradient = new();
+        Gradient gradient = new Gradient();
+
         gradient.SetKeys(
             new[]
             {
@@ -739,6 +1075,7 @@ public class CardSystem : Singleton<CardSystem>
                 new GradientAlphaKey(0f, 1f)
             }
         );
+
         return gradient;
     }
 
@@ -749,15 +1086,28 @@ public class CardSystem : Singleton<CardSystem>
         int sortingOrder
     )
     {
-        ParticleSystem sparks = effectObject.AddComponent<ParticleSystem>();
+        ParticleSystem sparks =
+            effectObject.AddComponent<ParticleSystem>();
+
         ParticleSystem.MainModule main = sparks.main;
+
         main.loop = true;
+
         main.startLifetime = new ParticleSystem.MinMaxCurve(
             0.16f,
             DiscardSparkLifetime
         );
-        main.startSpeed = new ParticleSystem.MinMaxCurve(0.15f, 0.55f);
-        main.startSize = new ParticleSystem.MinMaxCurve(0.025f, 0.075f);
+
+        main.startSpeed = new ParticleSystem.MinMaxCurve(
+            0.15f,
+            0.55f
+        );
+
+        main.startSize = new ParticleSystem.MinMaxCurve(
+            0.025f,
+            0.075f
+        );
+
         main.startColor = new Color(1f, 0.9f, 0.35f);
         main.gravityModifier = 0f;
         main.simulationSpace = ParticleSystemSimulationSpace.World;
@@ -765,7 +1115,9 @@ public class CardSystem : Singleton<CardSystem>
 
         ParticleSystem.ColorOverLifetimeModule colorOverLifetime =
             sparks.colorOverLifetime;
+
         colorOverLifetime.enabled = true;
+
         colorOverLifetime.color = new ParticleSystem.MinMaxGradient(
             CreateDiscardTrailGradient(
                 new Color(1f, 0.9f, 0.35f),
@@ -780,7 +1132,9 @@ public class CardSystem : Singleton<CardSystem>
         shape.shapeType = ParticleSystemShapeType.Sphere;
         shape.radius = 0.05f;
 
-        ParticleSystemRenderer renderer = sparks.GetComponent<ParticleSystemRenderer>();
+        ParticleSystemRenderer renderer =
+            sparks.GetComponent<ParticleSystemRenderer>();
+
         renderer.renderMode = ParticleSystemRenderMode.Stretch;
         renderer.lengthScale = 2f;
         renderer.sharedMaterial = material;
@@ -788,8 +1142,10 @@ public class CardSystem : Singleton<CardSystem>
         renderer.sortingOrder = sortingOrder;
 
         sparks.Play();
+
         return sparks;
     }
+
     private IEnumerator ExhaustCard(CardView cardView)
     {
         exhaustPile.Add(cardView.Card);
@@ -798,7 +1154,11 @@ public class CardSystem : Singleton<CardSystem>
             "Exhausted: " + cardView.Card.Title +
             " | Exhaust pile: " + exhaustPile.Count
         );
-        cardView.transform.DOScale(Vector3.zero, 0.15f);
+
+        cardView.transform.DOScale(
+            Vector3.zero,
+            0.15f
+        );
 
         Tween tween = cardView.transform.DOMove(
             discardPilePoint.position,
@@ -809,9 +1169,10 @@ public class CardSystem : Singleton<CardSystem>
 
         Destroy(cardView.gameObject);
     }
+
     private IEnumerator ExhaustRandomCardPerformer(
-    ExhaustRandomCardGA action
-)
+        ExhaustRandomCardGA action
+    )
     {
         if (hand.Count == 0)
         {
@@ -821,7 +1182,6 @@ public class CardSystem : Singleton<CardSystem>
         int randomIndex = Random.Range(0, hand.Count);
 
         Card selectedCard = hand[randomIndex];
-
         CardView selectedCardView = handView.RemoveCard(selectedCard);
 
         if (selectedCardView == null)
@@ -837,17 +1197,21 @@ public class CardSystem : Singleton<CardSystem>
 
         yield return ExhaustCard(selectedCardView);
     }
+
     private IEnumerator FocusedStudyPerformer(FocusedStudyGA action)
     {
-        DrawCardsGA drawCardsGA = new(action.DrawAmount);
+        DrawCardsGA drawCardsGA = new DrawCardsGA(
+            action.DrawAmount
+        );
 
         ActionSystem.Instance.AddReaction(drawCardsGA);
-        LockDrawGA lockDrawGA = new();
 
+        LockDrawGA lockDrawGA = new LockDrawGA();
         ActionSystem.Instance.AddReaction(lockDrawGA);
 
         yield return null;
     }
+
     private IEnumerator LockDrawPerformer(LockDrawGA action)
     {
         drawLocked = true;
@@ -856,23 +1220,31 @@ public class CardSystem : Singleton<CardSystem>
 
         yield return null;
     }
+
     private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
     {
-        activeAttackDamageMultiplier = nextTurnAttackDamageMultiplier;
+        activeAttackDamageMultiplier =
+            nextTurnAttackDamageMultiplier;
+
         nextTurnAttackDamageMultiplier = 1;
         drawLocked = false;
         isPlayerTurn = true;
 
         if (pendingCopiesForNextTurn.Count > 0)
         {
-            AddCardsToHandGA addCopiesGA = new(pendingCopiesForNextTurn);
+            AddCardsToHandGA addCopiesGA = new AddCardsToHandGA(
+                pendingCopiesForNextTurn
+            );
+
             pendingCopiesForNextTurn.Clear();
+
             ActionSystem.Instance.AddReaction(addCopiesGA);
         }
     }
+
     private IEnumerator ExhaustHandAndDamagePerformer(
-    ExhaustHandAndDamageGA action
-)
+        ExhaustHandAndDamageGA action
+    )
     {
         if (action.Targets == null || action.Targets.Count == 0)
         {
@@ -881,7 +1253,7 @@ public class CardSystem : Singleton<CardSystem>
 
         int exhaustedCount = 0;
 
-        List<Card> cardsToExhaust = new(hand);
+        List<Card> cardsToExhaust = new List<Card>(hand);
 
         foreach (Card card in cardsToExhaust)
         {
@@ -905,7 +1277,7 @@ public class CardSystem : Singleton<CardSystem>
 
         for (int i = 0; i < exhaustedCount; i++)
         {
-            DealDamageGA dealDamageGA = new(
+            DealDamageGA dealDamageGA = new DealDamageGA(
                 action.DamagePerCard,
                 action.Targets,
                 action.Caster
@@ -914,6 +1286,7 @@ public class CardSystem : Singleton<CardSystem>
             ActionSystem.Instance.AddReaction(dealDamageGA);
         }
     }
+
     public void ChooseCardToExhaust(Card card)
     {
         if (!IsChoosingCardToExhaust)
@@ -928,9 +1301,10 @@ public class CardSystem : Singleton<CardSystem>
 
         chosenCardToExhaust = card;
     }
+
     private IEnumerator ChooseCardToExhaustPerformer(
-    ChooseCardToExhaustGA action
-)
+        ChooseCardToExhaustGA action
+    )
     {
         if (action.RequireExhaust && hand.Count == 0)
         {
@@ -946,7 +1320,10 @@ public class CardSystem : Singleton<CardSystem>
 
             while (chosenCardToExhaust == null)
             {
-                if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+                if (
+                    BattleSystem.Instance != null &&
+                    BattleSystem.Instance.IsBattleOver
+                )
                 {
                     IsChoosingCardToExhaust = false;
                     yield break;
@@ -978,7 +1355,10 @@ public class CardSystem : Singleton<CardSystem>
 
         if (action.DrawAmount > 0)
         {
-            DrawCardsGA drawCardsGA = new(action.DrawAmount);
+            DrawCardsGA drawCardsGA = new DrawCardsGA(
+                action.DrawAmount
+            );
+
             drawCardsGA.CardCaster = action.CardCaster;
             drawCardsGA.SourceCard = action.SourceCard;
 
@@ -987,83 +1367,46 @@ public class CardSystem : Singleton<CardSystem>
 
         if (action.BlockAmount > 0 && action.CardCaster != null)
         {
-            AddStatusEffectGA blockGA = new(
+            AddStatusEffectGA blockGA = new AddStatusEffectGA(
                 StatusEffectType.ARMOR,
                 action.BlockAmount,
-                new List<CombatantView> { action.CardCaster }
+                new List<CombatantView>
+                {
+                    action.CardCaster
+                }
             );
+
             blockGA.CardCaster = action.CardCaster;
             blockGA.SourceCard = action.SourceCard;
+
             ActionSystem.Instance.AddReaction(blockGA);
         }
     }
-    private IEnumerator ChooseCardToGrantSlyPerformer(ChooseCardToGrantSlyGA action)
+
+    private IEnumerator PocketedDoublePerformer(
+        PocketedDoubleGA action
+    )
     {
-        if (!isPlayerTurn || hand.Count == 0)
+        if (
+            !isPlayerTurn ||
+            hand.Count == 0 ||
+            action.CopyAmount <= 0
+        )
         {
             yield break;
         }
 
         if (cardSelectionUI == null)
         {
-            Debug.LogError("Card Selection UI is not assigned in CardSystem.");
+            Debug.LogError(
+                "Card Selection UI is not assigned in CardSystem."
+            );
+
             yield break;
         }
 
         Card selectedCard = null;
-        List<Card> choices = new(hand);
-
-        bool opened = cardSelectionUI.Open(
-            choices,
-            "Choose a card to gain Sly this turn",
-            card => selectedCard = card
-        );
-
-        if (!opened)
-        {
-            yield break;
-        }
-
-        while (selectedCard == null && cardSelectionUI != null && cardSelectionUI.IsOpen)
-        {
-            if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
-            {
-                cardSelectionUI.Close();
-                yield break;
-            }
-
-            yield return null;
-        }
-
-        if (cardSelectionUI != null)
-        {
-            cardSelectionUI.Close();
-        }
-
-        if (selectedCard == null || !hand.Contains(selectedCard))
-        {
-            yield break;
-        }
-
-        selectedCard.GrantTemporarySly();
-        temporarySlyCards.Add(selectedCard);
-    }
-
-    private IEnumerator PocketedDoublePerformer(PocketedDoubleGA action)
-    {
-        if (!isPlayerTurn || hand.Count == 0 || action.CopyAmount <= 0)
-        {
-            yield break;
-        }
-
-        if (cardSelectionUI == null)
-        {
-            Debug.LogError("Card Selection UI is not assigned in CardSystem.");
-            yield break;
-        }
-
-        Card selectedCard = null;
-        List<Card> choices = new(hand);
+        List<Card> choices = new List<Card>(hand);
 
         bool opened = cardSelectionUI.Open(
             choices,
@@ -1076,9 +1419,16 @@ public class CardSystem : Singleton<CardSystem>
             yield break;
         }
 
-        while (selectedCard == null && cardSelectionUI != null && cardSelectionUI.IsOpen)
+        while (
+            selectedCard == null &&
+            cardSelectionUI != null &&
+            cardSelectionUI.IsOpen
+        )
         {
-            if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+            if (
+                BattleSystem.Instance != null &&
+                BattleSystem.Instance.IsBattleOver
+            )
             {
                 cardSelectionUI.Close();
                 yield break;
@@ -1099,11 +1449,15 @@ public class CardSystem : Singleton<CardSystem>
 
         for (int i = 0; i < action.CopyAmount; i++)
         {
-            pendingCopiesForNextTurn.Add(selectedCard.CreateCombatCopy());
+            pendingCopiesForNextTurn.Add(
+                selectedCard.CreateCombatCopy()
+            );
         }
     }
 
-    private IEnumerator AddCardsToHandPerformer(AddCardsToHandGA action)
+    private IEnumerator AddCardsToHandPerformer(
+        AddCardsToHandGA action
+    )
     {
         if (!isPlayerTurn || action.Cards == null)
         {
@@ -1112,7 +1466,10 @@ public class CardSystem : Singleton<CardSystem>
 
         foreach (Card card in action.Cards)
         {
-            if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+            if (
+                BattleSystem.Instance != null &&
+                BattleSystem.Instance.IsBattleOver
+            )
             {
                 yield break;
             }
@@ -1124,33 +1481,30 @@ public class CardSystem : Singleton<CardSystem>
 
             hand.Add(card);
 
-            CardView cardView = CardViewCreator.Instance.CreateCardView(
-                card,
-                drawPilePoint.position,
-                drawPilePoint.rotation
-            );
+            CardView cardView =
+                CardViewCreator.Instance.CreateCardView(
+                    card,
+                    drawPilePoint.position,
+                    drawPilePoint.rotation
+                );
 
             yield return handView.AddCard(cardView);
         }
     }
 
-    private void ResetTemporarySlyCards()
-    {
-        foreach (Card card in temporarySlyCards)
-        {
-            card.ClearTemporarySly();
-        }
-
-        temporarySlyCards.Clear();
-    }
-
-    // Select a card type to upgrade during this battle.
     public void ChooseCardToUpgrade(CardView cardView)
     {
-        if (!IsChoosingCardToUpgrade || cardView == null) return;
+        if (!IsChoosingCardToUpgrade || cardView == null)
+        {
+            return;
+        }
 
         Card card = cardView.Card;
-        if (card == null || !hand.Contains(card)) return;
+
+        if (card == null || !hand.Contains(card))
+        {
+            return;
+        }
 
         if (!card.CanUpgradeForCombat())
         {
@@ -1161,8 +1515,10 @@ public class CardSystem : Singleton<CardSystem>
         chosenCardViewToUpgrade = cardView;
     }
 
-    // Upgrade matching cards without changing permanent run upgrades.
-    private void UpgradeMatchingCards(IEnumerable<Card> cards, Card selectedCard)
+    private void UpgradeMatchingCards(
+        IEnumerable<Card> cards,
+        Card selectedCard
+    )
     {
         foreach (Card card in cards)
         {
@@ -1173,7 +1529,9 @@ public class CardSystem : Singleton<CardSystem>
         }
     }
 
-    private IEnumerator ChooseCardToUpgradePerformer(ChooseCardToUpgradeGA action)
+    private IEnumerator ChooseCardToUpgradePerformer(
+        ChooseCardToUpgradeGA action
+    )
     {
         bool hasUpgradeableCard = false;
 
@@ -1207,10 +1565,20 @@ public class CardSystem : Singleton<CardSystem>
         CardView selectedView = chosenCardViewToUpgrade;
         chosenCardViewToUpgrade = null;
 
-        if (selectedView == null || selectedView.Card == null) yield break;
+        if (selectedView == null || selectedView.Card == null)
+        {
+            yield break;
+        }
 
         Card selectedCard = selectedView.Card;
-        if (!hand.Contains(selectedCard) || !selectedCard.CanUpgradeForCombat()) yield break;
+
+        if (
+            !hand.Contains(selectedCard) ||
+            !selectedCard.CanUpgradeForCombat()
+        )
+        {
+            yield break;
+        }
 
         UpgradeMatchingCards(hand, selectedCard);
         UpgradeMatchingCards(drawPile, selectedCard);
@@ -1228,26 +1596,43 @@ public class CardSystem : Singleton<CardSystem>
 
         yield return null;
     }
-    private IEnumerator ReclaimingBlowPerformer(ReclaimingBlowGA action)
+
+    private IEnumerator ReclaimingBlowPerformer(
+        ReclaimingBlowGA action
+    )
     {
-        if (action.Caster == null || action.Targets == null || action.Targets.Count == 0)
+        if (
+            action.Caster == null ||
+            action.Targets == null ||
+            action.Targets.Count == 0
+        )
         {
             yield break;
         }
 
-        DealDamageGA damageGA = new(action.DamageAmount, action.Targets, action.Caster);
+        DealDamageGA damageGA = new DealDamageGA(
+            action.DamageAmount,
+            action.Targets,
+            action.Caster
+        );
+
         damageGA.CardCaster = action.CardCaster;
         damageGA.SourceCard = action.SourceCard;
 
         ActionSystem.Instance.AddReaction(damageGA);
 
-        RecoverDiscardCardGA recoverGA = new(action.SourceCard);
+        RecoverDiscardCardGA recoverGA = new RecoverDiscardCardGA(
+            action.SourceCard
+        );
 
         ActionSystem.Instance.AddReaction(recoverGA);
 
         yield return null;
     }
-    private IEnumerator RecoveredTechniquePerformer(RecoveredTechniqueGA action)
+
+    private IEnumerator RecoveredTechniquePerformer(
+        RecoveredTechniqueGA action
+    )
     {
         if (!isPlayerTurn)
         {
@@ -1263,13 +1648,21 @@ public class CardSystem : Singleton<CardSystem>
             yield break;
         }
 
-        Card recoveredCard = choices[Random.Range(0, choices.Count)];
+        Card recoveredCard = choices[
+            Random.Range(0, choices.Count)
+        ];
+
         discardPile.Remove(recoveredCard);
 
         if (action.AdditionalManaCost > 0)
         {
-            additionalManaCostsThisTurn.TryGetValue(recoveredCard, out int currentAdditionalCost);
-            additionalManaCostsThisTurn[recoveredCard] = currentAdditionalCost + action.AdditionalManaCost;
+            additionalManaCostsThisTurn.TryGetValue(
+                recoveredCard,
+                out int currentAdditionalCost
+            );
+
+            additionalManaCostsThisTurn[recoveredCard] =
+                currentAdditionalCost + action.AdditionalManaCost;
         }
 
         hand.Add(recoveredCard);
@@ -1284,9 +1677,11 @@ public class CardSystem : Singleton<CardSystem>
         yield return handView.AddCard(cardView);
     }
 
-    private IEnumerator RecoverDiscardCardPerformer(RecoverDiscardCardGA action)
+    private IEnumerator RecoverDiscardCardPerformer(
+        RecoverDiscardCardGA action
+    )
     {
-        List<Card> choices = new();
+        List<Card> choices = new List<Card>();
 
         foreach (Card card in discardPile)
         {
@@ -1303,22 +1698,36 @@ public class CardSystem : Singleton<CardSystem>
 
         if (cardSelectionUI == null)
         {
-            Debug.LogError("Card Selection UI is not assigned in CardSystem.");
+            Debug.LogError(
+                "Card Selection UI is not assigned in CardSystem."
+            );
+
             yield break;
         }
 
         Card selectedCard = null;
 
-        bool opened = cardSelectionUI.Open(choices, "Choose a card to put on top of your Draw Pile", card => selectedCard = card);
+        bool opened = cardSelectionUI.Open(
+            choices,
+            "Choose a card to put on top of your Draw Pile",
+            card => selectedCard = card
+        );
 
         if (!opened)
         {
             yield break;
         }
 
-        while (selectedCard == null && cardSelectionUI != null && cardSelectionUI.IsOpen)
+        while (
+            selectedCard == null &&
+            cardSelectionUI != null &&
+            cardSelectionUI.IsOpen
+        )
         {
-            if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+            if (
+                BattleSystem.Instance != null &&
+                BattleSystem.Instance.IsBattleOver
+            )
             {
                 cardSelectionUI.Close();
                 yield break;
@@ -1332,7 +1741,10 @@ public class CardSystem : Singleton<CardSystem>
             cardSelectionUI.Close();
         }
 
-        if (selectedCard == null || !discardPile.Remove(selectedCard))
+        if (
+            selectedCard == null ||
+            !discardPile.Remove(selectedCard)
+        )
         {
             yield break;
         }
@@ -1343,33 +1755,52 @@ public class CardSystem : Singleton<CardSystem>
         pileUI.UpdateDrawPileText(drawPile.Count);
         pileUI.UpdateDiscardPileText(discardPile.Count);
     }
-    private IEnumerator DiscardCardsPerformer(DiscardCardsGA action)
+
+    private IEnumerator DiscardCardsPerformer(
+        DiscardCardsGA action
+    )
     {
-        int discardCount = Mathf.Clamp(action.Amount, 0, hand.Count);
+        int discardCount = Mathf.Clamp(
+            action.Amount,
+            0,
+            hand.Count
+        );
 
         if (discardCount > 0 && cardSelectionUI == null)
         {
-            Debug.LogError("Card Selection UI is not assigned in CardSystem.");
+            Debug.LogError(
+                "Card Selection UI is not assigned in CardSystem."
+            );
+
             yield break;
         }
 
-        List<Card> discardedCards = new();
-
         for (int i = 0; i < discardCount; i++)
         {
-            List<Card> choices = new(hand);
+            List<Card> choices = new List<Card>(hand);
             Card selectedCard = null;
 
-            bool opened = cardSelectionUI.Open(choices, "Choose a card to discard", card => selectedCard = card);
+            bool opened = cardSelectionUI.Open(
+                choices,
+                "Choose a card to discard",
+                card => selectedCard = card
+            );
 
             if (!opened)
             {
                 yield break;
             }
 
-            while (selectedCard == null && cardSelectionUI != null && cardSelectionUI.IsOpen)
+            while (
+                selectedCard == null &&
+                cardSelectionUI != null &&
+                cardSelectionUI.IsOpen
+            )
             {
-                if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+                if (
+                    BattleSystem.Instance != null &&
+                    BattleSystem.Instance.IsBattleOver
+                )
                 {
                     cardSelectionUI.Close();
                     yield break;
@@ -1383,7 +1814,10 @@ public class CardSystem : Singleton<CardSystem>
                 cardSelectionUI.Close();
             }
 
-            if (selectedCard == null || !hand.Contains(selectedCard))
+            if (
+                selectedCard == null ||
+                !hand.Contains(selectedCard)
+            )
             {
                 yield break;
             }
@@ -1397,56 +1831,72 @@ public class CardSystem : Singleton<CardSystem>
 
             if (cardView == null)
             {
-                Debug.LogError("Cannot discard card: CardView was not found in hand.");
+                Debug.LogError(
+                    "Cannot discard card: CardView was not found in hand."
+                );
+
                 yield break;
             }
 
             hand.Remove(selectedCard);
 
             yield return DiscardCard(cardView);
-
-            discardedCards.Add(selectedCard);
         }
 
         if (action.DrawAfterDiscard > 0)
         {
-            DrawCardsGA drawCardsGA = new(action.DrawAfterDiscard);
+            DrawCardsGA drawCardsGA = new DrawCardsGA(
+                action.DrawAfterDiscard
+            );
+
             ActionSystem.Instance.AddReaction(drawCardsGA);
         }
-
-        if (isPlayerTurn && discardedCards.Count > 0)
-        {
-            PlayDiscardedSlyCardsGA slyGA = new(discardedCards);
-            ActionSystem.Instance.AddReaction(slyGA);
-        }
     }
-    private IEnumerator ToxicRequisitionPerformer(ToxicRequisitionGA action)
+
+    private IEnumerator ToxicRequisitionPerformer(
+        ToxicRequisitionGA action
+    )
     {
-        if (!isPlayerTurn || action.Caster == null || action.Targets == null ||
-            !action.Targets.Exists(target => target != null && target.CurrentHealth > 0))
+        if (
+            !isPlayerTurn ||
+            action.Caster == null ||
+            action.Targets == null ||
+            !action.Targets.Exists(
+                target => target != null && target.CurrentHealth > 0
+            )
+        )
         {
             yield break;
         }
 
-        int discardLimit = Mathf.Clamp(action.MaxDiscard, 0, hand.Count);
+        int discardLimit = Mathf.Clamp(
+            action.MaxDiscard,
+            0,
+            hand.Count
+        );
 
         if (discardLimit > 0 && cardSelectionUI == null)
         {
-            Debug.LogError("Card Selection UI is not assigned in CardSystem.");
+            Debug.LogError(
+                "Card Selection UI is not assigned in CardSystem."
+            );
+
             yield break;
         }
 
-        List<Card> discardedCards = new();
+        List<Card> discardedCards = new List<Card>();
         bool finished = false;
 
         for (int i = 0; i < discardLimit; i++)
         {
             Card selectedCard = null;
-            List<Card> choices = new(hand);
+            List<Card> choices = new List<Card>(hand);
 
             bool opened = cardSelectionUI.Open(
                 choices,
-                "Discard up to " + discardLimit + " cards (" + discardedCards.Count + " discarded). Done to finish.",
+                "Discard up to " + discardLimit +
+                " cards (" + discardedCards.Count +
+                " discarded). Done to finish.",
                 card => selectedCard = card,
                 onFinished: () => finished = true
             );
@@ -1456,9 +1906,17 @@ public class CardSystem : Singleton<CardSystem>
                 break;
             }
 
-            while (!finished && selectedCard == null && cardSelectionUI != null && cardSelectionUI.IsOpen)
+            while (
+                !finished &&
+                selectedCard == null &&
+                cardSelectionUI != null &&
+                cardSelectionUI.IsOpen
+            )
             {
-                if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+                if (
+                    BattleSystem.Instance != null &&
+                    BattleSystem.Instance.IsBattleOver
+                )
                 {
                     cardSelectionUI.Close();
                     yield break;
@@ -1467,12 +1925,19 @@ public class CardSystem : Singleton<CardSystem>
                 yield return null;
             }
 
-            if (cardSelectionUI != null && cardSelectionUI.IsOpen)
+            if (
+                cardSelectionUI != null &&
+                cardSelectionUI.IsOpen
+            )
             {
                 cardSelectionUI.Close();
             }
 
-            if (finished || selectedCard == null || !hand.Contains(selectedCard))
+            if (
+                finished ||
+                selectedCard == null ||
+                !hand.Contains(selectedCard)
+            )
             {
                 break;
             }
@@ -1486,39 +1951,56 @@ public class CardSystem : Singleton<CardSystem>
 
             if (cardView == null)
             {
-                Debug.LogError("Cannot discard card: CardView was not found in hand.");
+                Debug.LogError(
+                    "Cannot discard card: CardView was not found in hand."
+                );
+
                 break;
             }
 
             hand.Remove(selectedCard);
+
             yield return DiscardCard(cardView);
+
             discardedCards.Add(selectedCard);
         }
 
-        if (discardedCards.Count == 0 ||
-            (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver))
+        if (
+            discardedCards.Count == 0 ||
+            (
+                BattleSystem.Instance != null &&
+                BattleSystem.Instance.IsBattleOver
+            )
+        )
         {
             yield break;
         }
 
-        DealDamageGA damageGA = new(
-            Mathf.Max(0, action.DamagePerCard * discardedCards.Count),
+        int damage = Mathf.Max(
+            0,
+            action.DamagePerCard * discardedCards.Count
+        );
+
+        DealDamageGA damageGA = new DealDamageGA(
+            damage,
             action.Targets,
             action.Caster
         );
+
         damageGA.CardCaster = action.CardCaster;
         damageGA.SourceCard = action.SourceCard;
-        ActionSystem.Instance.AddReaction(damageGA);
 
-        PlayDiscardedSlyCardsGA slyGA = new(discardedCards);
-        slyGA.CardCaster = action.CardCaster;
-        slyGA.SourceCard = action.SourceCard;
-        ActionSystem.Instance.AddReaction(slyGA);
+        ActionSystem.Instance.AddReaction(damageGA);
     }
 
-    private IEnumerator GrandDisappearancePerformer(GrandDisappearanceGA action)
+    private IEnumerator GrandDisappearancePerformer(
+        GrandDisappearanceGA action
+    )
     {
-        if (!isPlayerTurn || hand.Count < action.RequiredOtherCards)
+        if (
+            !isPlayerTurn ||
+            hand.Count < action.RequiredOtherCards
+        )
         {
             yield break;
         }
@@ -1528,12 +2010,15 @@ public class CardSystem : Singleton<CardSystem>
             CardViewHoverSystem.Instance.Hide();
         }
 
-        List<Card> cardsToDiscard = new(hand);
-        List<Card> discardedCards = new();
+        List<Card> cardsToDiscard = new List<Card>(hand);
+        List<Card> discardedCards = new List<Card>();
 
         foreach (Card card in cardsToDiscard)
         {
-            if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+            if (
+                BattleSystem.Instance != null &&
+                BattleSystem.Instance.IsBattleOver
+            )
             {
                 yield break;
             }
@@ -1542,26 +2027,23 @@ public class CardSystem : Singleton<CardSystem>
 
             if (cardView == null)
             {
-                Debug.LogError("Cannot discard card: CardView was not found in hand.");
+                Debug.LogError(
+                    "Cannot discard card: CardView was not found in hand."
+                );
+
                 continue;
             }
 
             hand.Remove(card);
+
             yield return DiscardCard(cardView);
+
             discardedCards.Add(card);
         }
 
         if (discardedCards.Count >= action.RequiredOtherCards)
         {
             nextTurnAttackDamageMultiplier *= 2;
-        }
-
-        if (discardedCards.Count > 0)
-        {
-            PlayDiscardedSlyCardsGA slyGA = new(discardedCards);
-            slyGA.CardCaster = action.CardCaster;
-            slyGA.SourceCard = action.SourceCard;
-            ActionSystem.Instance.AddReaction(slyGA);
         }
     }
 
@@ -1577,12 +2059,15 @@ public class CardSystem : Singleton<CardSystem>
             CardViewHoverSystem.Instance.Hide();
         }
 
-        List<Card> cardsToDiscard = new(hand);
-        List<Card> discardedCards = new();
+        List<Card> cardsToDiscard = new List<Card>(hand);
+        List<Card> discardedCards = new List<Card>();
 
         foreach (Card card in cardsToDiscard)
         {
-            if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)
+            if (
+                BattleSystem.Instance != null &&
+                BattleSystem.Instance.IsBattleOver
+            )
             {
                 yield break;
             }
@@ -1591,12 +2076,17 @@ public class CardSystem : Singleton<CardSystem>
 
             if (cardView == null)
             {
-                Debug.LogError("Cannot discard card: CardView was not found in hand.");
+                Debug.LogError(
+                    "Cannot discard card: CardView was not found in hand."
+                );
+
                 continue;
             }
 
             hand.Remove(card);
+
             yield return DiscardCard(cardView);
+
             discardedCards.Add(card);
         }
 
@@ -1605,39 +2095,19 @@ public class CardSystem : Singleton<CardSystem>
             yield break;
         }
 
-        PlayDiscardedSlyCardsGA slyGA = new(discardedCards);
-        slyGA.CardCaster = action.CardCaster;
-        slyGA.SourceCard = action.SourceCard;
-        ActionSystem.Instance.AddReaction(slyGA);
+        DrawCardsGA drawCardsGA = new DrawCardsGA(
+            discardedCards.Count
+        );
 
-        DrawCardsGA drawCardsGA = new(discardedCards.Count);
         drawCardsGA.CardCaster = action.CardCaster;
         drawCardsGA.SourceCard = action.SourceCard;
+
         ActionSystem.Instance.AddReaction(drawCardsGA);
     }
 
-    private IEnumerator PlayDiscardedSlyCardsPerformer(PlayDiscardedSlyCardsGA action)
-    {
-        if (!isPlayerTurn || action.Cards == null)
-        {
-            yield break;
-        }
-
-        foreach (Card card in action.Cards)
-        {
-            if (card == null || !card.IsSly)
-            {
-                continue;
-            }
-
-            PlayCardGA playCardGA = new(card, null, true);
-
-            ActionSystem.Instance.AddReaction(playCardGA);
-        }
-
-        yield return null;
-    }
-    private IEnumerator NextCardFreePerformer(NextCardFreeGA action)
+    private IEnumerator NextCardFreePerformer(
+        NextCardFreeGA action
+    )
     {
         if (isPlayerTurn)
         {
@@ -1650,25 +2120,31 @@ public class CardSystem : Singleton<CardSystem>
     private void EnemyTurnPreReaction(EnemyTurnGA action)
     {
         activeAttackDamageMultiplier = 1;
-        ResetTemporarySlyCards();
         nextCardFree = false;
         additionalManaCostsThisTurn.Clear();
         isPlayerTurn = false;
     }
+
     private IEnumerator ExhaustCardsForComboPerformer(
-    ExhaustCardsForComboGA action
-)
+        ExhaustCardsForComboGA action
+    )
     {
         action.ActualExhausted = 0;
 
-        if (!isPlayerTurn ||
+        if (
+            !isPlayerTurn ||
             action.CardCaster == null ||
-            action.CardCaster.CurrentHealth <= 0)
+            action.CardCaster.CurrentHealth <= 0
+        )
         {
             yield break;
         }
 
-        int exhaustLimit = Mathf.Clamp(action.MaxExhaust, 0, hand.Count);
+        int exhaustLimit = Mathf.Clamp(
+            action.MaxExhaust,
+            0,
+            hand.Count
+        );
 
         if (exhaustLimit == 0)
         {
@@ -1677,7 +2153,10 @@ public class CardSystem : Singleton<CardSystem>
 
         if (cardSelectionUI == null)
         {
-            Debug.LogError("Card Selection UI is not assigned in CardSystem.");
+            Debug.LogError(
+                "Card Selection UI is not assigned in CardSystem."
+            );
+
             yield break;
         }
 
@@ -1689,8 +2168,9 @@ public class CardSystem : Singleton<CardSystem>
 
             bool opened = cardSelectionUI.Open(
                 new List<Card>(hand),
-                "Exhaust up to " + exhaustLimit + " cards (" +
-                    action.ActualExhausted + " exhausted). Done to finish.",
+                "Exhaust up to " + exhaustLimit +
+                " cards (" + action.ActualExhausted +
+                " exhausted). Done to finish.",
                 card => selectedCard = card,
                 onFinished: () => finished = true
             );
@@ -1700,13 +2180,17 @@ public class CardSystem : Singleton<CardSystem>
                 break;
             }
 
-            while (!finished &&
-                   selectedCard == null &&
-                   cardSelectionUI != null &&
-                   cardSelectionUI.IsOpen)
+            while (
+                !finished &&
+                selectedCard == null &&
+                cardSelectionUI != null &&
+                cardSelectionUI.IsOpen
+            )
             {
-                if (BattleSystem.Instance != null &&
-                    BattleSystem.Instance.IsBattleOver)
+                if (
+                    BattleSystem.Instance != null &&
+                    BattleSystem.Instance.IsBattleOver
+                )
                 {
                     cardSelectionUI.Close();
                     yield break;
@@ -1715,14 +2199,19 @@ public class CardSystem : Singleton<CardSystem>
                 yield return null;
             }
 
-            if (cardSelectionUI != null && cardSelectionUI.IsOpen)
+            if (
+                cardSelectionUI != null &&
+                cardSelectionUI.IsOpen
+            )
             {
                 cardSelectionUI.Close();
             }
 
-            if (finished ||
+            if (
+                finished ||
                 selectedCard == null ||
-                !hand.Contains(selectedCard))
+                !hand.Contains(selectedCard)
+            )
             {
                 break;
             }
@@ -1750,18 +2239,25 @@ public class CardSystem : Singleton<CardSystem>
             action.ActualExhausted++;
         }
 
-        if (action.ActualExhausted <= 0 ||
+        if (
+            action.ActualExhausted <= 0 ||
             action.ComboPerCard <= 0 ||
-            (BattleSystem.Instance != null &&
-             BattleSystem.Instance.IsBattleOver))
+            (
+                BattleSystem.Instance != null &&
+                BattleSystem.Instance.IsBattleOver
+            )
+        )
         {
             yield break;
         }
 
-        AddStatusEffectGA gain = new(
+        AddStatusEffectGA gain = new AddStatusEffectGA(
             StatusEffectType.COMBO,
             action.ActualExhausted * action.ComboPerCard,
-            new List<CombatantView> { action.CardCaster }
+            new List<CombatantView>
+            {
+                action.CardCaster
+            }
         );
 
         gain.CardCaster = action.CardCaster;

@@ -21,10 +21,9 @@ MonoBehaviour:
   <ManaTextOffset>k__BackingField: {x: -4.5, y: 6}
   <CardVisualScale>k__BackingField: {x: 1, y: 1}
   <Description>k__BackingField: Each turn, the first time you lose HP from a card,
-    gain 1 Strength and 1 Dexterity for that turn. Exhaust
+    gain 1 Strength for that turn. Exhaust.
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 1
-  <IsSly>k__BackingField: 0
   <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
@@ -35,7 +34,7 @@ MonoBehaviour:
       rid: 1468093405773430884
   <CanUpgrade>k__BackingField: 1
   <UpgradedDescription>k__BackingField: Each turn, the first time you lose HP from
-    a card, gain 2 Strength and 2 Dexterity for that turn. Exhaust
+    a card, gain 2 Strength for that turn. Exhaust.
   <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2

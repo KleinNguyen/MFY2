@@ -94,10 +94,12 @@ public class UsePotionUI : MonoBehaviour
     // Block potion use during dialogs, battle setup, and ongoing actions.
     private bool CanUsePotions()
     {
+        if (NewRunTutorialUI.IsOpen) return false;
         if (ConfirmationDialogUI.IsOpen || SettingsPanelUI.IsOpen) return false;
         if (SceneManager.GetActiveScene().name != "InGameScene" || RunSystem.Instance == null) return false;
 
         BattleSystem battle = BattleSystem.Instance;
+
         if (battle == null || battle.IsBattleOver || battle.IsPreparingBattle) return false;
         if (ActionSystem.Instance == null || ActionSystem.Instance.IsPerforming) return false;
         if (InteractionSystem.Instance != null && InteractionSystem.Instance.PlayerIsDragging) return false;

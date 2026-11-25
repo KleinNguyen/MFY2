@@ -5,19 +5,29 @@ public class Card
 {
     private readonly CardData data;
     private readonly Sprite junkImage;
+
     private bool upgradedForCombat;
 
-    // Card state
     public bool IsUnplayable { get; }
-    public bool HasTemporarySly { get; private set; }
 
     public bool IsUpgraded
     {
         get
         {
-            if (IsUnplayable) return false;
-            if (upgradedForCombat) return true;
-            if (RunSystem.Instance == null) return false;
+            if (IsUnplayable)
+            {
+                return false;
+            }
+
+            if (upgradedForCombat)
+            {
+                return true;
+            }
+
+            if (RunSystem.Instance == null)
+            {
+                return false;
+            }
 
             return RunSystem.Instance.IsCardUpgraded(data);
         }
@@ -27,8 +37,15 @@ public class Card
     {
         get
         {
-            if (IsUnplayable) return "Junk";
-            if (IsUpgraded) return data.name + "+";
+            if (IsUnplayable)
+            {
+                return "Junk";
+            }
+
+            if (IsUpgraded)
+            {
+                return data.name + "+";
+            }
 
             return data.name;
         }
@@ -38,8 +55,15 @@ public class Card
     {
         get
         {
-            if (IsUnplayable) return 0;
-            if (IsUpgraded) return data.UpgradedMana;
+            if (IsUnplayable)
+            {
+                return 0;
+            }
+
+            if (IsUpgraded)
+            {
+                return data.UpgradedMana;
+            }
 
             return data.Mana;
         }
@@ -49,8 +73,15 @@ public class Card
     {
         get
         {
-            if (IsUnplayable) return null;
-            if (IsUpgraded) return data.UpgradedManualTargetEffect;
+            if (IsUnplayable)
+            {
+                return null;
+            }
+
+            if (IsUpgraded)
+            {
+                return data.UpgradedManualTargetEffect;
+            }
 
             return data.ManualTargetEffect;
         }
@@ -60,8 +91,15 @@ public class Card
     {
         get
         {
-            if (IsUnplayable) return null;
-            if (IsUpgraded) return data.UpgradedOtherEffects;
+            if (IsUnplayable)
+            {
+                return null;
+            }
+
+            if (IsUpgraded)
+            {
+                return data.UpgradedOtherEffects;
+            }
 
             return data.OtherEffects;
         }
@@ -71,22 +109,28 @@ public class Card
     {
         get
         {
-            if (IsUnplayable) return "Unplayable.\nRemoved after this battle.";
+            if (IsUnplayable)
+            {
+                return "Unplayable.\nRemoved after this battle.";
+            }
 
-            string description = data.Description;
-            if (IsUpgraded) description = data.UpgradedDescription;
-            if (HasTemporarySly && !data.IsSly) description += "\nSly (this turn).";
+            if (IsUpgraded)
+            {
+                return data.UpgradedDescription;
+            }
 
-            return description;
+            return data.Description;
         }
     }
 
-    // Card visuals
     public Sprite Image
     {
         get
         {
-            if (IsUnplayable) return junkImage;
+            if (IsUnplayable)
+            {
+                return junkImage;
+            }
 
             return data.CardImage;
         }
@@ -96,7 +140,10 @@ public class Card
     {
         get
         {
-            if (IsUnplayable) return Vector2.zero;
+            if (IsUnplayable)
+            {
+                return Vector2.zero;
+            }
 
             return data.TitleTextOffset;
         }
@@ -106,7 +153,10 @@ public class Card
     {
         get
         {
-            if (IsUnplayable) return Vector2.zero;
+            if (IsUnplayable)
+            {
+                return Vector2.zero;
+            }
 
             return data.DescriptionTextOffset;
         }
@@ -116,7 +166,10 @@ public class Card
     {
         get
         {
-            if (IsUnplayable) return Vector2.zero;
+            if (IsUnplayable)
+            {
+                return Vector2.zero;
+            }
 
             return data.ManaTextOffset;
         }
@@ -126,18 +179,23 @@ public class Card
     {
         get
         {
-            if (IsUnplayable) return Vector2.one;
+            if (IsUnplayable)
+            {
+                return Vector2.one;
+            }
 
             return data.CardVisualScale;
         }
     }
 
-    // Play rules
     public bool IsAttack
     {
         get
         {
-            if (IsUnplayable) return false;
+            if (IsUnplayable)
+            {
+                return false;
+            }
 
             return data.IsAttack;
         }
@@ -147,23 +205,15 @@ public class Card
     {
         get
         {
-            if (IsUnplayable) return false;
+            if (IsUnplayable)
+            {
+                return false;
+            }
 
             return data.ExhaustOnPlay;
         }
     }
 
-    public bool IsSly
-    {
-        get
-        {
-            if (IsUnplayable) return false;
-
-            return data.IsSly || HasTemporarySly;
-        }
-    }
-
-    // Construction
     public Card(CardData cardData)
     {
         data = cardData;
@@ -182,7 +232,10 @@ public class Card
 
     public Card CreateCombatCopy()
     {
-        if (IsUnplayable) return CreateJunk(junkImage);
+        if (IsUnplayable)
+        {
+            return CreateJunk(junkImage);
+        }
 
         Card copy = new Card(data);
         copy.upgradedForCombat = IsUpgraded;
@@ -190,37 +243,47 @@ public class Card
         return copy;
     }
 
-    // Combat upgrades
     public bool CanUpgradeForCombat()
     {
-        if (IsUnplayable) return false;
-        if (!data.CanUpgrade) return false;
+        if (IsUnplayable)
+        {
+            return false;
+        }
+
+        if (!data.CanUpgrade)
+        {
+            return false;
+        }
 
         return !IsUpgraded;
     }
 
     public bool IsSameType(Card other)
     {
-        if (other == null || IsUnplayable || other.IsUnplayable) return false;
-        if (data == null || other.data == null) return false;
-        if (data == other.data) return true;
+        if (other == null || IsUnplayable || other.IsUnplayable)
+        {
+            return false;
+        }
 
-        return !string.IsNullOrWhiteSpace(data.SaveId) && data.SaveId == other.data.SaveId;
+        if (data == null || other.data == null)
+        {
+            return false;
+        }
+
+        if (data == other.data)
+        {
+            return true;
+        }
+
+        return !string.IsNullOrWhiteSpace(data.SaveId) &&
+               data.SaveId == other.data.SaveId;
     }
 
     public void UpgradeForCombat()
     {
-        if (CanUpgradeForCombat()) upgradedForCombat = true;
-    }
-
-    // Temporary effects
-    public void GrantTemporarySly()
-    {
-        if (!IsUnplayable) HasTemporarySly = true;
-    }
-
-    public void ClearTemporarySly()
-    {
-        HasTemporarySly = false;
+        if (CanUpgradeForCombat())
+        {
+            upgradedForCombat = true;
+        }
     }
 }

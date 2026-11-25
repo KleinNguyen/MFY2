@@ -20,11 +20,10 @@ MonoBehaviour:
   <DescriptionTextOffset>k__BackingField: {x: 0.5, y: -0.5}
   <ManaTextOffset>k__BackingField: {x: 1.5, y: 0}
   <CardVisualScale>k__BackingField: {x: 1.001479, y: 1.011962}
-  <Description>k__BackingField: Apply 2 Armor Break to all enemies. Enemies that
-    already have Poison receive 1 additional Armor Break. Sly.
+  <Description>k__BackingField: "Scheme\tApply 2 Armor Break to all enemies. Enemies
+    that already have Poison receive 1 additional Armor Break."
   <Mana>k__BackingField: 2
   <ExhaustOnPlay>k__BackingField: 0
-  <IsSly>k__BackingField: 1
   <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
@@ -35,7 +34,7 @@ MonoBehaviour:
       rid: 1468093466301694056
   <CanUpgrade>k__BackingField: 1
   <UpgradedDescription>k__BackingField: Apply 4 Armor Break to all enemies. Enemies
-    that already have Poison receive 2 additional Armor Break. Sly.
+    that already have Poison receive 2 additional Armor Break.
   <UpgradedMana>k__BackingField: 2
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2

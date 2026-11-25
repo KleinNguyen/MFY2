@@ -20,10 +20,9 @@ MonoBehaviour:
   <DescriptionTextOffset>k__BackingField: {x: -1, y: 0}
   <ManaTextOffset>k__BackingField: {x: -0.5, y: -3}
   <CardVisualScale>k__BackingField: {x: 1.004663, y: 1.01722}
-  <Description>k__BackingField: Deal 5 damage to all enemies. Sly.
+  <Description>k__BackingField: 'Deal 5 damage to all enemies. '
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
-  <IsSly>k__BackingField: 1
   <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
@@ -33,7 +32,7 @@ MonoBehaviour:
     <Effect>k__BackingField:
       rid: 1468093405773430915
   <CanUpgrade>k__BackingField: 1
-  <UpgradedDescription>k__BackingField: Deal 8 damage to all enemies. Sly.
+  <UpgradedDescription>k__BackingField: 'Deal 8 damage to all enemies. '
   <UpgradedMana>k__BackingField: 1
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2

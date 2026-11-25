@@ -20,10 +20,9 @@ MonoBehaviour:
   <DescriptionTextOffset>k__BackingField: {x: 2.5, y: 1}
   <ManaTextOffset>k__BackingField: {x: 3.5, y: 1}
   <CardVisualScale>k__BackingField: {x: 1.00561, y: 1.01722}
-  <Description>k__BackingField: Gain 6 Block. Sly.
+  <Description>k__BackingField: Gain 6 Block.
   <Mana>k__BackingField: 1
   <ExhaustOnPlay>k__BackingField: 0
-  <IsSly>k__BackingField: 1
   <IsAttack>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
@@ -33,7 +32,7 @@ MonoBehaviour:
     <Effect>k__BackingField:
       rid: 1468093405773430914
   <CanUpgrade>k__BackingField: 1
-  <UpgradedDescription>k__BackingField: Gain 8 Block. Sly.
+  <UpgradedDescription>k__BackingField: 'Gain 8 Block. '
   <UpgradedMana>k__BackingField: 0
   <UpgradedManualTargetEffect>k__BackingField:
     rid: -2

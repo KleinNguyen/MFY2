@@ -11,61 +11,118 @@ public class StatusEffectSystem : MonoBehaviour
     {
         cardBlockMultiplier = 1;
         heroHadExposedAtEnemyTurnStart = false;
-        ActionSystem.AttachPerformer<FortifiedTrapGA>(FortifiedTrapPerformer);
-        ActionSystem.AttachPerformer<AddStatusEffectGA>(AddStatusEffectPerformer);
-        ActionSystem.AttachPerformer<RemoveStatusEffectGA>(RemoveStatusEffectPerformer);
-        ActionSystem.AttachPerformer<ArmorBreakTickGA>(ArmorBreakTickPerformer);
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EndPlayerTurnReaction, ReactionTiming.PRE);
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EndEnemyTurnReaction, ReactionTiming.POST);
+
+        ActionSystem.AttachPerformer<FortifiedTrapGA>(
+            FortifiedTrapPerformer
+        );
+
+        ActionSystem.AttachPerformer<AddStatusEffectGA>(
+            AddStatusEffectPerformer
+        );
+
+        ActionSystem.AttachPerformer<RemoveStatusEffectGA>(
+            RemoveStatusEffectPerformer
+        );
+
+        ActionSystem.AttachPerformer<ArmorBreakTickGA>(
+            ArmorBreakTickPerformer
+        );
+
+        ActionSystem.SubscribeReaction<EnemyTurnGA>(
+            EndPlayerTurnReaction,
+            ReactionTiming.PRE
+        );
+
+        ActionSystem.SubscribeReaction<EnemyTurnGA>(
+            EndEnemyTurnReaction,
+            ReactionTiming.POST
+        );
     }
 
     private void OnDisable()
     {
         cardBlockMultiplier = 1;
+
         ActionSystem.DetachPerformer<FortifiedTrapGA>();
         ActionSystem.DetachPerformer<AddStatusEffectGA>();
         ActionSystem.DetachPerformer<RemoveStatusEffectGA>();
         ActionSystem.DetachPerformer<ArmorBreakTickGA>();
-        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EndPlayerTurnReaction, ReactionTiming.PRE);
-        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EndEnemyTurnReaction, ReactionTiming.POST);
+
+        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(
+            EndPlayerTurnReaction,
+            ReactionTiming.PRE
+        );
+
+        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(
+            EndEnemyTurnReaction,
+            ReactionTiming.POST
+        );
     }
 
     private IEnumerator AddStatusEffectPerformer(AddStatusEffectGA action)
     {
-        if (action.Targets == null) yield break;
+        if (action.Targets == null)
+        {
+            yield break;
+        }
 
         foreach (CombatantView target in action.Targets)
         {
-            if (target == null || target.CurrentHealth <= 0) continue;
+            if (target == null || target.CurrentHealth <= 0)
+            {
+                continue;
+            }
 
             int finalStackCount = action.StackCount;
 
             if (action.StatusEffectType == StatusEffectType.ARMOR)
             {
-                if (action.CardCaster != null)
-                    finalStackCount += action.CardCaster.GetStatusEffectStacks(StatusEffectType.DEXTERITY);
-
                 finalStackCount = Mathf.Max(0, finalStackCount);
 
-                if (action.CardCaster is HeroView && target == action.CardCaster)
+                if (
+                    action.CardCaster is HeroView &&
+                    target == action.CardCaster
+                )
+                {
                     finalStackCount *= cardBlockMultiplier;
+                }
             }
 
-            if (finalStackCount <= 0) continue;
-
-            target.AddStatusEffect(action.StatusEffectType, finalStackCount);
-
-            SfxId? sfxId = action.StatusEffectType switch
+            if (finalStackCount <= 0)
             {
-                StatusEffectType.ARMOR => SfxId.ArmorGained,
-                StatusEffectType.WEAK => SfxId.WeakApplied,
-                StatusEffectType.POISON => SfxId.PoisonApplied,
-                StatusEffectType.ARMOR_BREAK => SfxId.ArmorBreakApplied,
-                _ => null
-            };
+                continue;
+            }
+
+            target.AddStatusEffect(
+                action.StatusEffectType,
+                finalStackCount
+            );
+
+            SfxId? sfxId = null;
+
+            switch (action.StatusEffectType)
+            {
+                case StatusEffectType.ARMOR:
+                    sfxId = SfxId.ArmorGained;
+                    break;
+
+                case StatusEffectType.WEAK:
+                    sfxId = SfxId.WeakApplied;
+                    break;
+
+                case StatusEffectType.POISON:
+                    sfxId = SfxId.PoisonApplied;
+                    break;
+
+                case StatusEffectType.ARMOR_BREAK:
+                    sfxId = SfxId.ArmorBreakApplied;
+                    break;
+            }
 
             if (sfxId.HasValue)
+            {
                 SfxManager.PlayCombatEffectSfx(sfxId.Value);
+            }
 
             yield return null;
         }
@@ -74,10 +131,13 @@ public class StatusEffectSystem : MonoBehaviour
     private IEnumerator FortifiedTrapPerformer(FortifiedTrapGA action)
     {
         cardBlockMultiplier *= 2;
+
         yield return null;
     }
 
-    private IEnumerator RemoveStatusEffectPerformer(RemoveStatusEffectGA action)
+    private IEnumerator RemoveStatusEffectPerformer(
+        RemoveStatusEffectGA action
+    )
     {
         if (action.Targets == null)
         {
@@ -91,7 +151,10 @@ public class StatusEffectSystem : MonoBehaviour
                 continue;
             }
 
-            target.RemoveStatusEffect(action.StatusEffectType, action.StackCount);
+            target.RemoveStatusEffect(
+                action.StatusEffectType,
+                action.StackCount
+            );
 
             yield return null;
         }
@@ -100,22 +163,42 @@ public class StatusEffectSystem : MonoBehaviour
     private IEnumerator ArmorBreakTickPerformer(ArmorBreakTickGA action)
     {
         CombatantView target = action.Target;
-        if (target == null || target.CurrentHealth <= 0) yield break;
+
+        if (target == null || target.CurrentHealth <= 0)
+        {
+            yield break;
+        }
 
         target.TickArmorBreak();
+
         yield return null;
     }
+
     private void EndPlayerTurnReaction(EnemyTurnGA action)
     {
         cardBlockMultiplier = 1;
         heroHadExposedAtEnemyTurnStart = false;
 
-        HeroView hero = HeroSystem.Instance != null ? HeroSystem.Instance.HeroView : null;
-        if (hero == null || hero.CurrentHealth <= 0) return;
+        HeroView hero = null;
 
-        heroHadExposedAtEnemyTurnStart = hero.GetStatusEffectStacks(StatusEffectType.EXPOSED) > 0;
+        if (HeroSystem.Instance != null)
+        {
+            hero = HeroSystem.Instance.HeroView;
+        }
+
+        if (hero == null || hero.CurrentHealth <= 0)
+        {
+            return;
+        }
+
+        heroHadExposedAtEnemyTurnStart =
+            hero.GetStatusEffectStacks(StatusEffectType.EXPOSED) > 0;
+
         ReduceStatusByOne(hero, StatusEffectType.WEAK);
-        ActionSystem.Instance.AddReaction(new ArmorBreakTickGA(hero));
+
+        ActionSystem.Instance.AddReaction(
+            new ArmorBreakTickGA(hero)
+        );
     }
 
     private void EndEnemyTurnReaction(EnemyTurnGA action)
@@ -125,16 +208,33 @@ public class StatusEffectSystem : MonoBehaviour
             heroHadExposedAtEnemyTurnStart = false;
             return;
         }
-        HeroView hero = HeroSystem.Instance != null ? HeroSystem.Instance.HeroView : null;
+
+        HeroView hero = null;
+
+        if (HeroSystem.Instance != null)
+        {
+            hero = HeroSystem.Instance.HeroView;
+        }
+
         if (heroHadExposedAtEnemyTurnStart)
+        {
             ReduceStatusByOne(hero, StatusEffectType.EXPOSED);
+        }
 
         heroHadExposedAtEnemyTurnStart = false;
-        if (EnemySystem.Instance == null) return;
+
+        if (EnemySystem.Instance == null)
+        {
+            return;
+        }
 
         foreach (EnemyView enemy in EnemySystem.Instance.Enemies)
         {
-            if (enemy == null || enemy.CurrentHealth <= 0) continue;
+            if (enemy == null || enemy.CurrentHealth <= 0)
+            {
+                continue;
+            }
+
             ReduceTemporaryStatuses(enemy);
         }
     }
@@ -144,7 +244,10 @@ public class StatusEffectSystem : MonoBehaviour
         ReduceStatusByOne(target, StatusEffectType.EXPOSED);
     }
 
-    private void ReduceStatusByOne(CombatantView target, StatusEffectType statusType)
+    private void ReduceStatusByOne(
+        CombatantView target,
+        StatusEffectType statusType
+    )
     {
         if (target == null || target.CurrentHealth <= 0)
         {
@@ -156,7 +259,14 @@ public class StatusEffectSystem : MonoBehaviour
             return;
         }
 
-        RemoveStatusEffectGA removeStatusGA = new(statusType, 1, new List<CombatantView> { target });
+        RemoveStatusEffectGA removeStatusGA = new RemoveStatusEffectGA(
+            statusType,
+            1,
+            new List<CombatantView>
+            {
+                target
+            }
+        );
 
         ActionSystem.Instance.AddReaction(removeStatusGA);
     }
