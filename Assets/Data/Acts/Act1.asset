@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Act1
   m_EditorClassIdentifier: 
   <ActName>k__BackingField: act1
+  <ChapterTitle>k__BackingField: The experiment
   <MapBackground>k__BackingField: {fileID: 155299207258630942, guid: b75aed43d1abe7844b6a94b33e165484, type: 3}
   <NormalEncounters>k__BackingField:
   - {fileID: 11400000, guid: a5d9c0f10b5ac1345afb3bea324385f9, type: 2}

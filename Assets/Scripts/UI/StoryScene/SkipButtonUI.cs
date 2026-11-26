@@ -12,6 +12,7 @@ public class SkipButtonUI : MonoBehaviour
         }
 
         RunSystem.Instance.StartRunTimer();
+        ActTransitionBanner.RequestCurrentActIntro();
         SceneManager.LoadScene("MapScene");
     }
 }

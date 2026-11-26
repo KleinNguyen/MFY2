@@ -5,6 +5,7 @@ using UnityEngine;
 public class ActData : ScriptableObject
 {
     [field: SerializeField] public string ActName { get; private set; }
+    [field: SerializeField] public string ChapterTitle { get; private set; }
 
     [field: SerializeField] public Sprite MapBackground { get; private set; }
 

@@ -54,6 +54,7 @@ public class RunResultUI : MonoBehaviour
 
         HeroData selectedHero = run.HeroData;
         run.StartNewRun(selectedHero);
+        ActTransitionBanner.RequestCurrentActIntro();
         SceneManager.LoadScene("MapScene");
     }
 

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Act3
   m_EditorClassIdentifier: 
   <ActName>k__BackingField: act3
+  <ChapterTitle>k__BackingField: The old city
   <MapBackground>k__BackingField: {fileID: -5617259153379837496, guid: 0875fa4a173c9e94d94babe75f66730c, type: 3}
   <NormalEncounters>k__BackingField:
   - {fileID: 11400000, guid: d923d5f2bdfb435aa35836a8a2d86420, type: 2}

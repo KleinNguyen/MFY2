@@ -190,6 +190,7 @@ public partial class RunSystem : PersistentSingleton<RunSystem>
         ResetRewards();
         GenerateMap();
         SaveCheckpoint();
+        ActTransitionBanner.RequestCurrentActIntro();
         return true;
     }
 

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Act2
   m_EditorClassIdentifier: 
   <ActName>k__BackingField: act2
+  <ChapterTitle>k__BackingField: The forest
   <MapBackground>k__BackingField: {fileID: -8860827843204355718, guid: e1ba69caeaea89a43b6da93ac7f511e3, type: 3}
   <NormalEncounters>k__BackingField:
   - {fileID: 11400000, guid: 2fba65984f0f48b09ec2a0d43346ada6, type: 2}
