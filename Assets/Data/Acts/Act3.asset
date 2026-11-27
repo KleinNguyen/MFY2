@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ActName>k__BackingField: act3
   <ChapterTitle>k__BackingField: The old city
-  <MapBackground>k__BackingField: {fileID: -5617259153379837496, guid: 0875fa4a173c9e94d94babe75f66730c, type: 3}
+  <MapBackground>k__BackingField: {fileID: -6130804197190415003, guid: d7132436ff9fd9748931ed8c246a8e5a, type: 3}
   <NormalEncounters>k__BackingField:
   - {fileID: 11400000, guid: d923d5f2bdfb435aa35836a8a2d86420, type: 2}
   - {fileID: 11400000, guid: 65d4c71a04274abaab1cbf6ddf0eb574, type: 2}
@@ -34,6 +34,7 @@ MonoBehaviour:
   <EliteWeight>k__BackingField: 40
   <ShopWeight>k__BackingField: 15
   <RestWeight>k__BackingField: 15
+  <MysteryWeight>k__BackingField: 20
   <EarlyNormalFloors>k__BackingField: 2
   <FirstEliteFloor>k__BackingField: 3
   <MinimumElitePoints>k__BackingField: 3
