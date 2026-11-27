@@ -181,6 +181,11 @@ public class DemoShortcutTool : MonoBehaviour
             RequestBattleOutcome(BattleOutcome.Victory);
         }
 
+        if (GUILayout.Button("Open Reward Screen"))
+        {
+            RequestBattleOutcome(BattleOutcome.Victory);
+        }
+
         if (GUILayout.Button("Win Entire Game (Ctrl+F7)"))
         {
             FinishWholeGame();

@@ -21,7 +21,7 @@ MonoBehaviour:
     <HitCount>k__BackingField: 1
     <ArmorGain>k__BackingField: 0
     <ApplyRandomDebuff>k__BackingField: 1
-    <DebuffChancePercent>k__BackingField: 100
+    <DebuffChancePercent>k__BackingField: 0
     <DebuffStacks>k__BackingField: 1
   - <MoveType>k__BackingField: 0
     <DamagePerHit>k__BackingField: 2
