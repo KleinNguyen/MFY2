@@ -15,20 +15,28 @@ public class BattleSystem : Singleton<BattleSystem>
         UIInputModuleCompatibility.MonitorAndConfigure(EventSystem.current, this);
         victoryPanel.SetActive(false);
         defeatPanel.SetActive(false);
-        if (runResultUI != null) runResultUI.gameObject.SetActive(false);
+        if (runResultUI != null)
+        {
+            runResultUI.gameObject.SetActive(false);
+        }
     }
 
     private void Update()
     {
         UIInputModuleCompatibility.MonitorAndConfigure(EventSystem.current, this);
     }
+
     public void BeginBattle()
     {
-        if (!IsBattleOver) IsPreparingBattle = false;
+        if (!IsBattleOver)
+        {
+            IsPreparingBattle = false;
+        }
     }
 
     public void Victory()
     {
+        // Ignore duplicate end-state notifications.
         if (IsBattleOver) return;
         IsBattleOver = true;
         RunSystem.Instance.SaveHealth(HeroSystem.Instance.HeroView.CurrentHealth);
@@ -39,6 +47,7 @@ public class BattleSystem : Singleton<BattleSystem>
 
     public void Defeat()
     {
+        // Ignore duplicate end-state notifications.
         if (IsBattleOver) return;
         IsBattleOver = true;
         SfxManager.PlaySfx(SfxId.Defeat);

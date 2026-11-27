@@ -33,7 +33,9 @@ public class DamageSystem : MonoBehaviour
         {
             PlayCombatAttackSfx(dealDamageGA.Caster);
 
-            if (dealDamageGA.Caster is HeroView heroCaster && HeroSystem.Instance != null && HeroSystem.Instance.CurrentCharacter == CharacterType.Red)
+            if (dealDamageGA.Caster is HeroView heroCaster &&
+                HeroSystem.Instance != null &&
+                HeroSystem.Instance.CurrentCharacter == CharacterType.Red)
             {
                 yield return heroCaster.PlayPunchAnimation();
             }
@@ -56,9 +58,12 @@ public class DamageSystem : MonoBehaviour
                 finalDamage *= CardSystem.Instance.AttackDamageMultiplier;
             }
 
+            // Modifier order is intentional: weak reduces damage before exposed increases it.
             finalDamage = Mathf.Max(0, finalDamage);
 
-            if (dealDamageGA.IsAttack && dealDamageGA.Caster is HeroView weakHero && weakHero.GetStatusEffectStacks(StatusEffectType.WEAK) > 0)
+            if (dealDamageGA.IsAttack &&
+                dealDamageGA.Caster is HeroView weakHero &&
+                weakHero.GetStatusEffectStacks(StatusEffectType.WEAK) > 0)
             {
                 finalDamage = Mathf.FloorToInt(finalDamage * 0.75f);
             }
@@ -93,9 +98,15 @@ public class DamageSystem : MonoBehaviour
             {
                 if (target is EnemyView enemyView)
                 {
-                    if (dealDamageGA.ComboOnKill > 0 && dealDamageGA.Caster is HeroView comboHero && comboHero.CurrentHealth > 0)
+                    if (dealDamageGA.ComboOnKill > 0 &&
+                        dealDamageGA.Caster is HeroView comboHero &&
+                        comboHero.CurrentHealth > 0)
                     {
-                        AddStatusEffectGA gainComboGA = new(StatusEffectType.COMBO, dealDamageGA.ComboOnKill, new List<CombatantView> { comboHero });
+                        AddStatusEffectGA gainComboGA = new(
+                            StatusEffectType.COMBO,
+                            dealDamageGA.ComboOnKill,
+                            new List<CombatantView> { comboHero }
+                        );
                         gainComboGA.CardCaster = dealDamageGA.CardCaster;
                         gainComboGA.SourceCard = dealDamageGA.SourceCard;
                         ActionSystem.Instance.AddReaction(gainComboGA);

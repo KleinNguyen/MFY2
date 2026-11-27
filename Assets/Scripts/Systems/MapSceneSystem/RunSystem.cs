@@ -278,7 +278,9 @@ public partial class RunSystem : PersistentSingleton<RunSystem>
 
     public bool ApplyRewardWheel(int result, int cardIndex = -1, CardData replacement = null)
     {
-        if (!RewardsPrepared || RewardClaimed || IsRunFinished || RewardWheelResult >= 0 || result < 0 || result >= WheelSliceCount) return false;
+        if (!RewardsPrepared || RewardClaimed || IsRunFinished ||
+            RewardWheelResult >= 0 || result < 0 || result >= WheelSliceCount)
+            return false;
 
         RewardWheelResult = result;
 
@@ -384,7 +386,12 @@ public partial class RunSystem : PersistentSingleton<RunSystem>
         foreach (CardData ownedCard in Deck)
         {
             if (ownedCard == null) continue;
-            if (ownedCard == cardData || (ownedCard.Character == cardData.Character && ownedCard.name == cardData.name)) return true;
+
+            // Treat matching character/name assets as the same card even if references differ.
+            if (ownedCard == cardData ||
+                (ownedCard.Character == cardData.Character &&
+                 ownedCard.name == cardData.name))
+                return true;
         }
 
         return false;
@@ -449,11 +456,14 @@ public partial class RunSystem : PersistentSingleton<RunSystem>
 
     private void ReplaceRewardCard(int cardIndex, CardData replacement)
     {
-        if (HeroData == null || replacement == null || cardIndex < 0 || cardIndex >= preparedRewardChoices.Count) return;
+        if (HeroData == null || replacement == null ||
+            cardIndex < 0 || cardIndex >= preparedRewardChoices.Count)
+            return;
         if (replacement.Character != HeroData.Character || preparedRewardChoices.Contains(replacement)) return;
 
         CardData original = preparedRewardChoices[cardIndex];
-        if (original != null && IsHigherRarity(original.Rarity, replacement.Rarity)) preparedRewardChoices[cardIndex] = replacement;
+        if (original != null && IsHigherRarity(original.Rarity, replacement.Rarity))
+            preparedRewardChoices[cardIndex] = replacement;
     }
 
     private static bool IsHigherRarity(CardRarity original, CardRarity replacement)

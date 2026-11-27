@@ -42,6 +42,7 @@ public class CardSelectionUI : MonoBehaviour
 
     private void LateUpdate()
     {
+        // Close read-only piles if their battle context ends while they are open.
         if (IsOpen && IsReadOnly &&
             ((ActionSystem.Instance != null && ActionSystem.Instance.IsPerforming) ||
              (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver)))
@@ -56,8 +57,13 @@ public class CardSelectionUI : MonoBehaviour
         }
     }
 
-    public bool Open(List<Card> cards, string message, Action<Card> onSelected,
-        bool readOnly = false, Action onFinished = null)
+    public bool Open(
+        List<Card> cards,
+        string message,
+        Action<Card> onSelected,
+        bool readOnly = false,
+        Action onFinished = null
+    )
     {
         if (IsOpen)
         {
@@ -66,7 +72,8 @@ public class CardSelectionUI : MonoBehaviour
         }
 
         if (panel == null || cardContent is not RectTransform || cardViewPrefab == null ||
-            cardViewPrefab.LibraryTemplate == null || scrollRect == null || scrollRect.viewport == null)
+            cardViewPrefab.LibraryTemplate == null ||
+            scrollRect == null || scrollRect.viewport == null)
         {
             Debug.LogError("CardSelectionUI is missing references in the Inspector.");
             return false;
@@ -79,13 +86,19 @@ public class CardSelectionUI : MonoBehaviour
 
         if ((readOnly || onFinished != null) && closeButton == null)
         {
-            Debug.LogError("Assign the Close Button in CardSelectionUI before viewing a pile or allowing Done.", this);
+            Debug.LogError(
+                "Assign the Close Button in CardSelectionUI before viewing a pile or allowing Done.",
+                this
+            );
             return false;
         }
 
         if (onFinished != null && closeButton.GetComponent<Button>() == null)
         {
-            Debug.LogError("The Close Button needs a Button component to finish card selection.", this);
+            Debug.LogError(
+                "The Close Button needs a Button component to finish card selection.",
+                this
+            );
             return false;
         }
 

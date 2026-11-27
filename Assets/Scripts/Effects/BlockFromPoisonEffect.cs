@@ -14,6 +14,7 @@ public class BlockFromPoisonEffect : Effect
         int blockAmount = 0;
         int blockLimit = Mathf.Max(0, maxBlock);
 
+        // Count poison from active enemies, up to the configured block limit.
         if (EnemySystem.Instance != null &&
             EnemySystem.Instance.Enemies != null)
         {
@@ -36,7 +37,10 @@ public class BlockFromPoisonEffect : Effect
                     blockLimit - blockAmount
                 );
 
-                if (blockAmount >= blockLimit) break;
+                if (blockAmount >= blockLimit)
+                {
+                    break;
+                }
             }
         }
 

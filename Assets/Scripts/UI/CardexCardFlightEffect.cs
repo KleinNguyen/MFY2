@@ -50,15 +50,31 @@ public sealed class CardexCardFlightEffect : MonoBehaviour
         Canvas.ForceUpdateCanvases();
         RectTransform overlayRect = overlayCanvas.transform as RectTransform;
 
-        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(overlayRect, startScreenPosition, null, out Vector2 startPosition)
-            || !RectTransformUtility.ScreenPointToLocalPointInRectangle(overlayRect, targetScreenPosition, null, out Vector2 endPosition))
+        // Convert both endpoints into overlay space before animating the card.
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                overlayRect,
+                startScreenPosition,
+                null,
+                out Vector2 startPosition
+            ) ||
+            !RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                overlayRect,
+                targetScreenPosition,
+                null,
+                out Vector2 endPosition
+            ))
         {
             Debug.LogError("Cannot calculate the Cardex flight path.", this);
             CompleteFlight(overlayObject, onComplete);
             yield break;
         }
 
-        GameObject trailObject = new("CardexFlightTrail", typeof(RectTransform), typeof(CanvasRenderer), typeof(CardexFlightTrailGraphic));
+        GameObject trailObject = new(
+            "CardexFlightTrail",
+            typeof(RectTransform),
+            typeof(CanvasRenderer),
+            typeof(CardexFlightTrailGraphic)
+        );
         trailObject.layer = overlayObject.layer;
         trailObject.transform.SetParent(overlayRect, false);
 
@@ -124,7 +140,12 @@ public sealed class CardexCardFlightEffect : MonoBehaviour
 
     private Canvas CreateFlightOverlay(RectTransform card, RectTransform target)
     {
-        GameObject overlayObject = new("CardexFlightOverlay", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler));
+        GameObject overlayObject = new(
+            "CardexFlightOverlay",
+            typeof(RectTransform),
+            typeof(Canvas),
+            typeof(CanvasScaler)
+        );
         overlayObject.layer = card.gameObject.layer;
 
         Canvas overlayCanvas = overlayObject.GetComponent<Canvas>();

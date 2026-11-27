@@ -51,19 +51,28 @@ public class UsePotionUI : MonoBehaviour
 
     private void UpdatePotionTooltip()
     {
-        if (hoveredPotion == 0 || StatusEffectTooltipUI.Instance == null) return;
+        if (hoveredPotion == 0 ||
+            StatusEffectTooltipUI.Instance == null) return;
 
         RunSystem run = RunSystem.Instance;
 
         if (hoveredPotion == 1)
         {
-            StatusEffectTooltipUI.Instance.Show(this, "Health Potion",
-                $"Restore {healthRestoreAmount} HP during combat.\nOwned: {run?.HealthPotionCount ?? 0}");
+            StatusEffectTooltipUI.Instance.Show(
+                this,
+                "Health Potion",
+                $"Restore {healthRestoreAmount} HP during combat.\n" +
+                $"Owned: {run?.HealthPotionCount ?? 0}"
+            );
         }
         else
         {
-            StatusEffectTooltipUI.Instance.Show(this, "Mana Potion",
-                $"Restore {manaRestoreAmount} mana during combat.\nOwned: {run?.ManaPotionCount ?? 0}");
+            StatusEffectTooltipUI.Instance.Show(
+                this,
+                "Mana Potion",
+                $"Restore {manaRestoreAmount} mana during combat.\n" +
+                $"Owned: {run?.ManaPotionCount ?? 0}"
+            );
         }
     }
 
@@ -96,13 +105,17 @@ public class UsePotionUI : MonoBehaviour
     {
         if (NewRunTutorialUI.IsOpen) return false;
         if (ConfirmationDialogUI.IsOpen || SettingsPanelUI.IsOpen) return false;
-        if (SceneManager.GetActiveScene().name != "InGameScene" || RunSystem.Instance == null) return false;
+        if (SceneManager.GetActiveScene().name != "InGameScene" ||
+            RunSystem.Instance == null) return false;
 
         BattleSystem battle = BattleSystem.Instance;
 
-        if (battle == null || battle.IsBattleOver || battle.IsPreparingBattle) return false;
+        if (battle == null ||
+            battle.IsBattleOver ||
+            battle.IsPreparingBattle) return false;
         if (ActionSystem.Instance == null || ActionSystem.Instance.IsPerforming) return false;
-        if (InteractionSystem.Instance != null && InteractionSystem.Instance.PlayerIsDragging) return false;
+        if (InteractionSystem.Instance != null &&
+            InteractionSystem.Instance.PlayerIsDragging) return false;
 
         return true;
     }
@@ -131,7 +144,12 @@ public class UsePotionUI : MonoBehaviour
 
         if (!run.TryConsumeHealthPotion()) return;
 
-        hero.SetCurrentHealth(Mathf.Min(hero.CurrentHealth + healthRestoreAmount, hero.MaxHealth));
+        hero.SetCurrentHealth(
+            Mathf.Min(
+                hero.CurrentHealth + healthRestoreAmount,
+                hero.MaxHealth
+            )
+        );
         run.SaveHealth(hero.CurrentHealth);
         UpdatePotionUI();
     }
@@ -175,6 +193,9 @@ public class UsePotionUI : MonoBehaviour
 
     private void SetInteractable(Button button, bool value)
     {
-        if (button != null && button.interactable != value) button.interactable = value;
+        if (button != null && button.interactable != value)
+        {
+            button.interactable = value;
+        }
     }
 }

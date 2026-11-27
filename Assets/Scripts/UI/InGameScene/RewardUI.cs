@@ -5,10 +5,14 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class RewardUI : MonoBehaviour
+public partial class RewardUI : MonoBehaviour
 {
     private const int WheelOutcomeCount = 3;
-    private static readonly string[] RewardWheelLabels = { "X2 GOLD", "RARITY UP", "LOSE ALL", "X2 GOLD", "RARITY UP", "LOSE ALL" };
+    private static readonly string[] RewardWheelLabels =
+    {
+        "X2 GOLD", "RARITY UP", "LOSE ALL",
+        "X2 GOLD", "RARITY UP", "LOSE ALL"
+    };
 
     [Header("Gold rewards")]
     [SerializeField, Min(0)] private int normalGoldReward = 25;
@@ -73,13 +77,17 @@ public class RewardUI : MonoBehaviour
 
         if (run.RewardClaimed)
         {
-            bool lostRewards = run.RewardWheelResult >= 0 && run.RewardWheelResult % WheelOutcomeCount == 2;
+            bool lostRewards = run.RewardWheelResult >= 0 &&
+                run.RewardWheelResult % WheelOutcomeCount == 2;
             FinishSelection(lostRewards ? "All rewards lost. Press Continue." : "Rewards already claimed.");
             return;
         }
 
-        messageText.text = run.RewardWheelResult >= 0 ? "Wheel already used. Choose one card or skip." : "Spin the wheel, choose one card or skip.";
-        if (currentChoices.Count == 0) messageText.text = "No reward cards available. Press Skip to claim the gold.";
+        messageText.text = run.RewardWheelResult >= 0
+            ? "Wheel already used. Choose one card or skip."
+            : "Spin the wheel, choose one card or skip.";
+        if (currentChoices.Count == 0)
+            messageText.text = "No reward cards available. Press Skip to claim the gold.";
         UpdateButtons();
     }
 
@@ -93,7 +101,10 @@ public class RewardUI : MonoBehaviour
 
         if (run.IsRunFinished) return false;
 
-        if (cardContent == null || cardPrefab == null || cardPrefab.LibraryTemplate == null || goldRewardText == null || messageText == null || skipButton == null || continueButton == null || luckyWheel == null || !luckyWheel.IsConfigured || wheelButton == null)
+        if (cardContent == null || cardPrefab == null ||
+            cardPrefab.LibraryTemplate == null || goldRewardText == null ||
+            messageText == null || skipButton == null || continueButton == null ||
+            luckyWheel == null || !luckyWheel.IsConfigured || wheelButton == null)
         {
             Debug.LogError("RewardUI is missing references. Check the Inspector.", this);
             return false;
@@ -127,7 +138,9 @@ public class RewardUI : MonoBehaviour
 
         foreach (CardData card in rewardCards)
         {
-            if (card == null || card.Character != character || card.Rarity == CardRarity.Basic || availableCards.Contains(card)) continue;
+            if (card == null || card.Character != character ||
+                card.Rarity == CardRarity.Basic || availableCards.Contains(card))
+                continue;
             availableCards.Add(card);
         }
 
@@ -176,234 +189,37 @@ public class RewardUI : MonoBehaviour
 
     private bool CanClaimRewards(RunSystem run)
     {
-        return run != null && !run.IsRunFinished && run.RewardsPrepared && !run.RewardClaimed && !selectionFinished && !wheelOpen;
+        return run != null &&
+            !run.IsRunFinished &&
+            run.RewardsPrepared &&
+            !run.RewardClaimed &&
+            !selectionFinished &&
+            !wheelOpen;
     }
 
-    private bool TryStartCardFlight(int choiceIndex)
-    {
-        LibraryCardUI card = choiceIndex >= 0 && choiceIndex < choiceViews.Count && choiceViews[choiceIndex] != null
-            ? choiceViews[choiceIndex].GetComponentInChildren<LibraryCardUI>()
-            : null;
-        RectTransform cardRect = card != null ? card.GetComponent<RectTransform>() : null;
 
-        if (cardFlightEffect == null || cardRect == null)
-        {
-            Debug.LogError("Cannot animate the reward card: the selected card is missing.", this);
-            return false;
-        }
 
-        cardFlightAnimating = true;
-        FinishSelection("Received: " + currentChoices[choiceIndex].name, choiceIndex);
-        if (!cardFlightEffect.TryFly(cardRect, () =>
-        {
-            cardFlightAnimating = false;
-            UpdateButtons();
-        }))
-        {
-            cardFlightAnimating = false;
-            UpdateButtons();
-            return false;
-        }
 
-        UpdateButtons();
-        return true;
-    }
 
-    private void FinishSelection(string message, int selectedIndex = -1)
-    {
-        selectionFinished = true;
-        messageText.text = message;
 
-        for (int i = 0; i < choiceViews.Count; i++)
-        {
-            if (choiceViews[i] != null) choiceViews[i].Finish(i == selectedIndex);
-        }
 
-        UpdateButtons();
-    }
 
-    // Lucky wheel
-    public void OpenRewardWheel()
-    {
-        RunSystem run = RunSystem.Instance;
 
-        if (run == null || run.IsRunFinished || !run.RewardsPrepared || run.RewardClaimed ||
-            selectionFinished || wheelOpen || run.RewardWheelResult >= 0) return;
 
-        if (luckyWheel == null || !luckyWheel.IsConfigured) return;
 
-        wheelOpen = true;
-        UpdateButtons();
 
-        if (!luckyWheel.Show(RewardWheelLabels, ApplyWheelResult, OnWheelClosed,
-            canCancel: true, closeCaption: "Back to rewards", character: run.HeroData.Character))
-        {
-            OnWheelClosed();
-        }
-    }
 
-    private void ApplyWheelResult(int result)
-    {
-        RunSystem run = RunSystem.Instance;
-        if (run == null) return;
 
-        int outcome = result % WheelOutcomeCount;
-        int cardIndex = -1;
-        CardData replacement = null;
 
-        if (outcome == 1) TryFindRarityReplacement(out cardIndex, out replacement);
-        if (!run.ApplyRewardWheel(result, cardIndex, replacement)) return;
 
-        bool cardChanged = replacement != null && cardIndex >= 0 &&
-            cardIndex < run.RewardChoices.Count && run.RewardChoices[cardIndex] == replacement;
 
-        RefreshRewardView(run);
 
-        string message = outcome switch
-        {
-            0 => "Gold reward doubled!",
-            1 => cardChanged ? "Higher rarity reward: " + replacement.name : "No higher rarity card available. Rewards unchanged.",
-            _ => "All rewards lost. Press Continue."
-        };
 
-        if (outcome == 2)
-        {
-            FinishSelection(message);
-        }
-        else
-        {
-            messageText.text = message;
-            UpdateButtons();
-        }
-    }
 
-    private void OnWheelClosed()
-    {
-        wheelOpen = false;
-        UpdateButtons();
-    }
 
-    // Rarity replacement
-    private bool TryFindRarityReplacement(out int cardIndex, out CardData replacement)
-    {
-        cardIndex = -1;
-        replacement = null;
-        List<int> eligibleIndices = new();
 
-        for (int i = 0; i < currentChoices.Count; i++)
-        {
-            if (GetHigherRarityCards(currentChoices[i]).Count > 0) eligibleIndices.Add(i);
-        }
 
-        if (eligibleIndices.Count == 0) return false;
-        cardIndex = eligibleIndices[Random.Range(0, eligibleIndices.Count)];
-        List<CardData> candidates = GetHigherRarityCards(currentChoices[cardIndex]);
-        replacement = candidates[Random.Range(0, candidates.Count)];
-        return true;
-    }
 
-    private List<CardData> GetHigherRarityCards(CardData original)
-    {
-        List<CardData> candidates = new();
-        if (original == null || rewardCards == null) return candidates;
-
-        foreach (CardData card in rewardCards)
-        {
-            if (card == null || card.Character != original.Character || currentChoices.Contains(card) || candidates.Contains(card)) continue;
-            if (IsHigherRarity(original.Rarity, card.Rarity)) candidates.Add(card);
-        }
-
-        return candidates;
-    }
-
-    private static bool IsHigherRarity(CardRarity original, CardRarity replacement)
-    {
-        return original switch
-        {
-            CardRarity.Common => replacement == CardRarity.Uncommon || replacement == CardRarity.Rare,
-            CardRarity.Uncommon => replacement == CardRarity.Rare,
-            _ => false
-        };
-    }
-
-    // Interface
-    private void RefreshRewardView(RunSystem run)
-    {
-        ClearCardViews();
-        currentChoices.Clear();
-        currentChoices.AddRange(run.RewardChoices);
-        goldRewardText.text = "Gold reward: " + run.PendingRewardGold;
-
-        for (int i = 0; i < currentChoices.Count; i++) CreateRewardCard(currentChoices[i], i);
-        Canvas.ForceUpdateCanvases();
-    }
-
-    private void UpdateButtons()
-    {
-        RunSystem run = RunSystem.Instance;
-        bool canChoose = CanClaimRewards(run);
-        if (skipButton != null) skipButton.interactable = canChoose;
-        if (wheelButton != null) wheelButton.interactable = canChoose && run.RewardWheelResult < 0;
-        if (continueButton != null) continueButton.interactable = run != null && !run.IsRunFinished && run.RewardClaimed && !wheelOpen && !cardFlightAnimating;
-
-        foreach (RewardCardHoverUI view in choiceViews)
-        {
-            if (view != null) view.GetComponent<Button>().interactable = canChoose;
-        }
-    }
-
-    private void CreateRewardCard(CardData cardData, int choiceIndex)
-    {
-        GameObject slot = new("RewardSlot_" + choiceIndex, typeof(RectTransform), typeof(Image), typeof(Button), typeof(RewardCardHoverUI));
-        slot.layer = cardContent.gameObject.layer;
-        slot.transform.SetParent(cardContent, false);
-
-        Image slotImage = slot.GetComponent<Image>();
-        slotImage.color = new Color(1f, 1f, 1f, 0f);
-        slotImage.raycastTarget = true;
-
-        Button button = slot.GetComponent<Button>();
-        button.targetGraphic = slotImage;
-        button.transition = Selectable.Transition.None;
-        button.interactable = true;
-
-        LibraryCardUI cardUI = Instantiate(cardPrefab.LibraryTemplate, slot.transform);
-        cardUI.gameObject.SetActive(true);
-        cardUI.Setup(cardData, RunSystem.Instance != null && RunSystem.Instance.IsCardUpgraded(cardData));
-
-        RectTransform cardRect = cardUI.GetComponent<RectTransform>();
-        cardRect.anchorMin = Vector2.zero;
-        cardRect.anchorMax = Vector2.one;
-        cardRect.pivot = new Vector2(0.5f, 0.5f);
-        cardRect.offsetMin = Vector2.zero;
-        cardRect.offsetMax = Vector2.zero;
-        cardUI.SetLayoutScale(Vector3.one);
-        cardRect.localRotation = Quaternion.identity;
-
-        CanvasGroup canvasGroup = cardUI.GetComponent<CanvasGroup>();
-        if (canvasGroup == null) canvasGroup = cardUI.gameObject.AddComponent<CanvasGroup>();
-        canvasGroup.alpha = 1f;
-        canvasGroup.interactable = false;
-        canvasGroup.blocksRaycasts = false;
-
-        RewardCardHoverUI hoverUI = slot.GetComponent<RewardCardHoverUI>();
-        hoverUI.Initialize(cardRect, hoverScale, hoverLift, hoverDuration);
-        button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(() => SelectCard(choiceIndex));
-        choiceViews.Add(hoverUI);
-    }
-
-    private void ClearCardViews()
-    {
-        choiceViews.Clear();
-
-        for (int i = cardContent.childCount - 1; i >= 0; i--)
-        {
-            GameObject oldCard = cardContent.GetChild(i).gameObject;
-            oldCard.SetActive(false);
-            Destroy(oldCard);
-        }
-    }
 
     // Stage transition
     public void ContinueToMap()

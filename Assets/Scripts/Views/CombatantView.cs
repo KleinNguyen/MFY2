@@ -80,7 +80,11 @@ public class CombatantView : MonoBehaviour
         Transform spriteTransform = spriteRenderer.transform;
         idleBaseScale = spriteTransform.localScale;
         idleAnchorInCombatantSpace =
-            transform.InverseTransformPoint(spriteTransform.TransformPoint(GetSpriteBottomCenter(spriteRenderer.sprite)));
+            transform.InverseTransformPoint(
+                spriteTransform.TransformPoint(
+                    GetSpriteBottomCenter(spriteRenderer.sprite)
+                )
+            );
         idleAnimationInitialized = true;
     }
 

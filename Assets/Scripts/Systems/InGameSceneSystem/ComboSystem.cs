@@ -264,6 +264,7 @@ public class ComboSystem : MonoBehaviour
             return;
         }
 
+        // This perk can trigger only once per player turn, even if several enemies are exposed.
         exposedComboTriggeredThisTurn = true;
         foreach (GainExposedComboPowerGA power in exposedComboPowers)
         {

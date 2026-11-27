@@ -95,11 +95,30 @@ public class DemoShortcutTool : MonoBehaviour
             SetPanelOpen(!isPanelOpen);
         }
 
-        if (keyboard.f2Key.wasPressedThisFrame) OpenRest();
-        if (keyboard.f3Key.wasPressedThisFrame) StartMysteryEncounter();
-        if (keyboard.f4Key.wasPressedThisFrame) OpenAct(0);
-        if (keyboard.f5Key.wasPressedThisFrame) OpenAct(1);
-        if (keyboard.f6Key.wasPressedThisFrame) OpenAct(2);
+        if (keyboard.f2Key.wasPressedThisFrame)
+        {
+            OpenRest();
+        }
+
+        if (keyboard.f3Key.wasPressedThisFrame)
+        {
+            StartMysteryEncounter();
+        }
+
+        if (keyboard.f4Key.wasPressedThisFrame)
+        {
+            OpenAct(0);
+        }
+
+        if (keyboard.f5Key.wasPressedThisFrame)
+        {
+            OpenAct(1);
+        }
+
+        if (keyboard.f6Key.wasPressedThisFrame)
+        {
+            OpenAct(2);
+        }
 
         bool controlPressed =
             keyboard.leftCtrlKey.isPressed ||
@@ -117,17 +136,35 @@ public class DemoShortcutTool : MonoBehaviour
             }
         }
 
-        if (keyboard.f8Key.wasPressedThisFrame) OpenShop();
+        if (keyboard.f8Key.wasPressedThisFrame)
+        {
+            OpenShop();
+        }
 
         if (keyboard.f9Key.wasPressedThisFrame)
         {
             RequestBattleOutcome(BattleOutcome.Defeat);
         }
 
-        if (keyboard.f10Key.wasPressedThisFrame) StartBossEncounter(0);
-        if (keyboard.f11Key.wasPressedThisFrame) StartBossEncounter(1);
-        if (keyboard.f12Key.wasPressedThisFrame) StartBossEncounter(2);
-        if (keyboard.eKey.wasPressedThisFrame) StartEliteEncounter();
+        if (keyboard.f10Key.wasPressedThisFrame)
+        {
+            StartBossEncounter(0);
+        }
+
+        if (keyboard.f11Key.wasPressedThisFrame)
+        {
+            StartBossEncounter(1);
+        }
+
+        if (keyboard.f12Key.wasPressedThisFrame)
+        {
+            StartBossEncounter(2);
+        }
+
+        if (keyboard.eKey.wasPressedThisFrame)
+        {
+            StartEliteEncounter();
+        }
     }
 
     // Keep the tool window and pointer blocker aligned.
@@ -168,13 +205,35 @@ public class DemoShortcutTool : MonoBehaviour
             panelScrollPosition
         );
 
-        if (GUILayout.Button("Open Shop (F8)")) OpenShop();
-        if (GUILayout.Button("Open Rest (F2)")) OpenRest();
-        if (GUILayout.Button("Start Mystery (F3)")) StartMysteryEncounter();
+        if (GUILayout.Button("Open Shop (F8)"))
+        {
+            OpenShop();
+        }
 
-        if (GUILayout.Button("Go to Act 1 - fresh run (F4)")) OpenAct(0);
-        if (GUILayout.Button("Go to Act 2 - fresh run (F5)")) OpenAct(1);
-        if (GUILayout.Button("Go to Act 3 - fresh run (F6)")) OpenAct(2);
+        if (GUILayout.Button("Open Rest (F2)"))
+        {
+            OpenRest();
+        }
+
+        if (GUILayout.Button("Start Mystery (F3)"))
+        {
+            StartMysteryEncounter();
+        }
+
+        if (GUILayout.Button("Go to Act 1 - fresh run (F4)"))
+        {
+            OpenAct(0);
+        }
+
+        if (GUILayout.Button("Go to Act 2 - fresh run (F5)"))
+        {
+            OpenAct(1);
+        }
+
+        if (GUILayout.Button("Go to Act 3 - fresh run (F6)"))
+        {
+            OpenAct(2);
+        }
 
         if (GUILayout.Button("Show Victory (F7)"))
         {
@@ -196,10 +255,25 @@ public class DemoShortcutTool : MonoBehaviour
             RequestBattleOutcome(BattleOutcome.Defeat);
         }
 
-        if (GUILayout.Button("Start Act 1 Boss (F10)")) StartBossEncounter(0);
-        if (GUILayout.Button("Start Act 2 Boss (F11)")) StartBossEncounter(1);
-        if (GUILayout.Button("Start Act 3 Boss (F12)")) StartBossEncounter(2);
-        if (GUILayout.Button("Start Elite (E)")) StartEliteEncounter();
+        if (GUILayout.Button("Start Act 1 Boss (F10)"))
+        {
+            StartBossEncounter(0);
+        }
+
+        if (GUILayout.Button("Start Act 2 Boss (F11)"))
+        {
+            StartBossEncounter(1);
+        }
+
+        if (GUILayout.Button("Start Act 3 Boss (F12)"))
+        {
+            StartBossEncounter(2);
+        }
+
+        if (GUILayout.Button("Start Elite (E)"))
+        {
+            StartEliteEncounter();
+        }
 
         GUILayout.Space(12f);
         GUILayout.Label("SAVE DATA");

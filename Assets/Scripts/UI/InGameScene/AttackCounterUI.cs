@@ -18,8 +18,11 @@ public class AttackCounterUI : MonoBehaviour
     {
         HeroSystem hero = HeroSystem.Instance;
         CardSystem cards = CardSystem.Instance;
-        bool visible = hero != null && hero.CurrentCharacter == CharacterType.Yellow &&
-            cards != null && cards.Combo != null;
+        bool visible =
+            hero != null &&
+            hero.CurrentCharacter == CharacterType.Yellow &&
+            cards != null &&
+            cards.Combo != null;
 
         counterText.enabled = visible;
         if (!visible) return;

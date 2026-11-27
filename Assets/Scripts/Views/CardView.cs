@@ -158,7 +158,9 @@ public class CardView : MonoBehaviour
     {
         if (NewRunTutorialUI.IsOpen) return;
 
-        if (CardSystem.Instance != null && CardSystem.Instance.IsCardInHand(Card)) SfxManager.PlaySfx(SfxId.CardPlayed);
+        if (CardSystem.Instance != null &&
+            CardSystem.Instance.IsCardInHand(Card))
+            SfxManager.PlaySfx(SfxId.CardPlayed);
 
         if (CardSystem.Instance != null && CardSystem.Instance.IsChoosingCardToUpgrade)
         {
@@ -184,7 +186,9 @@ public class CardView : MonoBehaviour
 
         if (!InteractionSystem.Instance.PlayerCanInteract()) return;
 
-        if (Card.ManualTargetEffect != null) ManualTargetSystem.Instance.StartTargeting(transform.position);
+        // Targeted cards select an enemy instead of entering the drag-and-drop flow.
+        if (Card.ManualTargetEffect != null)
+            ManualTargetSystem.Instance.StartTargeting(transform.position);
         else
         {
             InteractionSystem.Instance.PlayerIsDragging = true;
@@ -224,7 +228,14 @@ public class CardView : MonoBehaviour
         }
         else
         {
-            if (CardSystem.Instance.CanPlayCard(Card) && Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, dropLayer))
+            if (CardSystem.Instance.CanPlayCard(Card) &&
+                Physics.Raycast(
+                    transform.position,
+                    Vector3.forward,
+                    out RaycastHit hit,
+                    10f,
+                    dropLayer
+                ))
             {
                 PlayCardGA playCardGA = new(Card);
                 ActionSystem.Instance.Perform(playCardGA);

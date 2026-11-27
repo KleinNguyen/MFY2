@@ -81,11 +81,18 @@ public class EnemyView : CombatantView
         }
     }
 
-    public int CurrentArmorGain => CurrentMoveType == EnemyMoveType.Defend ||
+    public int CurrentArmorGain =>
+        CurrentMoveType == EnemyMoveType.Defend ||
         CurrentMoveType == EnemyMoveType.AttackAndDefend
-        ? Mathf.Max(0, CurrentMove.ArmorGain) : 0;
-    public bool CanApplyRandomDebuff => CurrentMoveAttacks && CurrentMove != null &&
-        CurrentMove.ApplyRandomDebuff && CurrentMove.DebuffChancePercent > 0f && allowedDebuffs.Count > 0;
+            ? Mathf.Max(0, CurrentMove.ArmorGain)
+            : 0;
+
+    public bool CanApplyRandomDebuff =>
+        CurrentMoveAttacks &&
+        CurrentMove != null &&
+        CurrentMove.ApplyRandomDebuff &&
+        CurrentMove.DebuffChancePercent > 0f &&
+        allowedDebuffs.Count > 0;
 
     public void Setup(EnemyData enemyData)
     {
@@ -124,10 +131,13 @@ public class EnemyView : CombatantView
         if (!CurrentMoveAttacks || CurrentMove == null) return 0;
 
         int damage = Mathf.Max(0, CurrentMove.DamagePerHit);
-        return GetStatusEffectStacks(StatusEffectType.WEAK) > 0 ? Mathf.FloorToInt(damage * 0.75f) : damage;
+        return GetStatusEffectStacks(StatusEffectType.WEAK) > 0
+            ? Mathf.FloorToInt(damage * 0.75f)
+            : damage;
     }
     private int GetAttackPreviewDamage()
     {
+        // Keep the displayed preview consistent with the damage modifiers used in combat.
         int damage = GetAttackDamage();
         HeroView hero = HeroSystem.Instance != null ? HeroSystem.Instance.HeroView : null;
 
@@ -204,7 +214,9 @@ public class EnemyView : CombatantView
             : new Bounds(attackText.transform.position, Vector3.zero);
         bool showAttackIcon = CurrentMoveAttacks && attackIcon != null;
         if (attackIcon != null) attackIcon.enabled = showAttackIcon;
-        bool showDamageArrow = CurrentMoveAttacks && damageArrow != null && damageArrow.Renderer.enabled;
+        bool showDamageArrow = CurrentMoveAttacks &&
+            damageArrow != null &&
+            damageArrow.Renderer.enabled;
 
         float iconHalfHeight = showAttackIcon ? attackIcon.bounds.extents.y : 0f;
         float textHalfHeight = textBounds.extents.y;
@@ -218,7 +230,13 @@ public class EnemyView : CombatantView
         float textArrowGap = showDamageArrow ? DamageArrowGap : 0f;
         float contentHeight = Mathf.Max(iconHalfHeight, textHalfHeight) * 2f;
         float frameHeight = contentHeight + AttackFrameVerticalPadding * 2f;
-        if (showDamageArrow) frameHeight = Mathf.Max(frameHeight, arrowHeight + AttackFrameVerticalPadding * 2f);
+        if (showDamageArrow)
+        {
+            frameHeight = Mathf.Max(
+                frameHeight,
+                arrowHeight + AttackFrameVerticalPadding * 2f
+            );
+        }
         Vector3 anchor = transform.TransformPoint(attackIntentAnchorLocal);
         float labelY = anchor.y + UiHeadGap + frameHeight * 0.5f;
         Vector3 textPosition = attackText.transform.position;
@@ -235,7 +253,10 @@ public class EnemyView : CombatantView
             );
         }
 
-        float textCenterX = groupLeft + (showAttackIcon ? iconWidth + iconTextGap : 0f) + textWidth * 0.5f;
+        // Offset damage text after the optional icon and its gap.
+        float textCenterX = groupLeft +
+            (showAttackIcon ? iconWidth + iconTextGap : 0f) +
+            textWidth * 0.5f;
         attackText.transform.position = new Vector3(
             textCenterX,
             labelY,

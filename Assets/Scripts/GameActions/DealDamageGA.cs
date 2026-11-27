@@ -11,6 +11,7 @@ public class DealDamageGA : GameAction, IHaveCaster
     public int HealAfterDamage { get; set; }
     public int ComboOnKill { get; set; }
     private readonly Dictionary<CombatantView, int> bonusDamageByTarget = new();
+
     public DealDamageGA(int amount, List<CombatantView> targets, CombatantView caster, bool isAttack = true)
     {
         Amount = amount;
@@ -28,7 +29,6 @@ public class DealDamageGA : GameAction, IHaveCaster
     public int GetDamageForTarget(CombatantView target)
     {
         int bonusDamage = 0;
-
         if (target != null)
         {
             bonusDamageByTarget.TryGetValue(target, out bonusDamage);

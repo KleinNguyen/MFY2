@@ -13,7 +13,12 @@ public static class CardRaritySelector
         };
     }
 
-    public static CardData TakeRandomCard(List<CardData> availableCards, int commonWeight = 60, int uncommonWeight = 30, int rareWeight = 10)
+    public static CardData TakeRandomCard(
+        List<CardData> availableCards,
+        int commonWeight = 60,
+        int uncommonWeight = 30,
+        int rareWeight = 10
+    )
     {
         if (availableCards == null || availableCards.Count == 0) return null;
 
@@ -41,16 +46,22 @@ public static class CardRaritySelector
 
         if (total == 0)
         {
+            // Fall back to the highest available rarity if all configured weights are zero.
             selectedGroup = rare.Count > 0 ? rare : uncommon.Count > 0 ? uncommon : common;
             if (selectedGroup.Count == 0) return null;
         }
         else
         {
             int roll = Random.Range(0, total);
-            selectedGroup = roll < commonWeight ? common : roll < commonWeight + uncommonWeight ? uncommon : rare;
+            selectedGroup = roll < commonWeight
+                ? common
+                : roll < commonWeight + uncommonWeight
+                    ? uncommon
+                    : rare;
         }
 
         CardData selected = selectedGroup[Random.Range(0, selectedGroup.Count)];
+        // Remove the pick so a reward set cannot offer the same card twice.
         availableCards.Remove(selected);
         return selected;
     }

@@ -7,11 +7,13 @@ public class EffectSystem : MonoBehaviour
     {
         ActionSystem.AttachPerformer<PerformEffectGA>(PerformEffectPerformer);
     }
+
     private void OnDisable()
     {
         ActionSystem.DetachPerformer<PerformEffectGA>();
     }
-    //performer
+
+    // Convert the selected effect into a game action and queue it for resolution.
     private IEnumerator PerformEffectPerformer(
         PerformEffectGA performEffectGA
     )

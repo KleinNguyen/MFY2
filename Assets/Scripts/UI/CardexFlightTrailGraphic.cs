@@ -29,7 +29,10 @@ public sealed class CardexFlightTrailGraphic : MaskableGraphic
     protected override void OnPopulateMesh(VertexHelper vertexHelper)
     {
         vertexHelper.Clear();
-        if (points == null || points.Length < 2) return;
+        if (points == null || points.Length < 2)
+        {
+            return;
+        }
 
         AddRibbon(vertexHelper, 44f, new Color(1f, 0.43f, 0.015f, 0.95f));
         AddRibbon(vertexHelper, 13f, new Color(1f, 0.94f, 0.55f, 1f));
@@ -37,6 +40,7 @@ public sealed class CardexFlightTrailGraphic : MaskableGraphic
 
     private void AddRibbon(VertexHelper vertexHelper, float halfWidth, Color tint)
     {
+        // Build a strip from the path cross-sections, tapering and fading toward the start.
         int firstVertex = vertexHelper.currentVertCount;
         int pointCount = points.Length;
 

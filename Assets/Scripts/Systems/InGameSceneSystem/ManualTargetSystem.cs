@@ -19,7 +19,10 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
 
     private void LateUpdate()
     {
-        if (!isTargeting) return;
+        if (!isTargeting)
+        {
+            return;
+        }
 
         bool battleOver = BattleSystem.Instance != null &&
             BattleSystem.Instance.IsBattleOver;
@@ -72,7 +75,10 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
 
     public EnemyView EndTargeting(Vector3 endPosition)
     {
-        if (!isTargeting) return null;
+        if (!isTargeting)
+        {
+            return null;
+        }
 
         EnemyView target = GetTarget(endPosition);
 

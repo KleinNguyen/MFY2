@@ -5,7 +5,6 @@ public static class MapGeneratorSystem
 {
     private const int FLOOR_COUNT = 9;
     private const float FLOOR_SPACING = 300f;
-    //private const int COLUMN_COUNT = 7;
 
     public static List<MapPoint> GenerateMap(ActData actData)
     {
@@ -76,7 +75,13 @@ public static class MapGeneratorSystem
 
         return points;
     }
-    private static MapPointType GetRandomPointType(ActData actData, bool allowElite, bool allowShop, bool allowRest, bool allowMystery)
+    private static MapPointType GetRandomPointType(
+        ActData actData,
+        bool allowElite,
+        bool allowShop,
+        bool allowRest,
+        bool allowMystery
+    )
     {
         int normal = Mathf.Max(0, actData.NormalWeight);
         int elite = allowElite ? Mathf.Max(0, actData.EliteWeight) : 0;
@@ -182,7 +187,17 @@ public static class MapGeneratorSystem
             {
                 bool isEarly = floor < earlyFloors;
                 bool isLast = floor == lastFloor;
-                point.SetType(isEarly ? MapPointType.Normal : GetRandomPointType(actData, floor >= firstEliteIndex && !isLast, !isLast, true, !isLast));
+                point.SetType(
+                    isEarly
+                        ? MapPointType.Normal
+                        : GetRandomPointType(
+                            actData,
+                            floor >= firstEliteIndex && !isLast,
+                            !isLast,
+                            true,
+                            !isLast
+                        )
+                );
             }
 
             MapPoint normal = points[Random.Range(0, points.Count)];
@@ -239,7 +254,13 @@ public static class MapGeneratorSystem
         EnsureMysteryPoint(floors, actData, reserved, earlyFloors, lastFloor);
         RepairPointConnections(floors);
     }
-    private static void EnsureMysteryPoint(List<List<MapPoint>> floors, ActData actData, HashSet<MapPoint> reserved, int earlyFloors, int lastFloor)
+    private static void EnsureMysteryPoint(
+        List<List<MapPoint>> floors,
+        ActData actData,
+        HashSet<MapPoint> reserved,
+        int earlyFloors,
+        int lastFloor
+    )
     {
         if (actData.MysteryWeight <= 0) return;
 

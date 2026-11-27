@@ -64,7 +64,9 @@ public class RewardCardHoverUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (locked || visual == null || slotButton == null || !slotButton.IsInteractable()) return;
+        if (locked || visual == null || slotButton == null ||
+            !slotButton.IsInteractable())
+            return;
 
         AnimateHover(true);
     }
@@ -82,6 +84,7 @@ public class RewardCardHoverUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         if (hovered && visualCanvas != null)
         {
+            // Raise the card above neighboring UI while it is hovered.
             Canvas parentCanvas = GetComponentInParent<Canvas>();
 
             visualCanvas.overrideSorting = true;

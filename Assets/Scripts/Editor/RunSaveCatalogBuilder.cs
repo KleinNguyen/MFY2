@@ -10,7 +10,10 @@ public static class RunSaveCatalogBuilder
         const string folder = "Assets/Resources";
         const string path = folder + "/RunSaveCatalog.asset";
 
-        if (!AssetDatabase.IsValidFolder(folder)) AssetDatabase.CreateFolder("Assets", "Resources");
+        if (!AssetDatabase.IsValidFolder(folder))
+        {
+            AssetDatabase.CreateFolder("Assets", "Resources");
+        }
 
         RunSaveCatalog catalog = AssetDatabase.LoadAssetAtPath<RunSaveCatalog>(path);
         if (catalog == null)
@@ -22,9 +25,15 @@ public static class RunSaveCatalogBuilder
         catalog.cards = new List<CardData>();
         catalog.heroes = new List<HeroData>();
 
-        foreach (string guid in AssetDatabase.FindAssets("t:CardData", new[] { "Assets/Data/Cards" }))
+        // Use Unity GUIDs as save IDs so card references survive asset renames.
+        foreach (string guid in AssetDatabase.FindAssets(
+            "t:CardData",
+            new[] { "Assets/Data/Cards" }
+        ))
         {
-            CardData card = AssetDatabase.LoadAssetAtPath<CardData>(AssetDatabase.GUIDToAssetPath(guid));
+            CardData card = AssetDatabase.LoadAssetAtPath<CardData>(
+                AssetDatabase.GUIDToAssetPath(guid)
+            );
             SerializedObject serialized = new(card);
             serialized.FindProperty("<SaveId>k__BackingField").stringValue = guid;
             serialized.ApplyModifiedPropertiesWithoutUndo();
@@ -33,12 +42,22 @@ public static class RunSaveCatalogBuilder
             catalog.cards.Add(card);
         }
 
-        foreach (string guid in AssetDatabase.FindAssets("t:HeroData", new[] { "Assets/Data" }))
-            catalog.heroes.Add(AssetDatabase.LoadAssetAtPath<HeroData>(AssetDatabase.GUIDToAssetPath(guid)));
+        foreach (string guid in AssetDatabase.FindAssets(
+            "t:HeroData",
+            new[] { "Assets/Data" }
+        ))
+        {
+            catalog.heroes.Add(AssetDatabase.LoadAssetAtPath<HeroData>(
+                AssetDatabase.GUIDToAssetPath(guid)
+            ));
+        }
 
         EditorUtility.SetDirty(catalog);
         AssetDatabase.SaveAssets();
         Selection.activeObject = catalog;
-        Debug.Log($"Save catalog: {catalog.cards.Count} cards, {catalog.heroes.Count} heroes.", catalog);
+        Debug.Log(
+            $"Save catalog: {catalog.cards.Count} cards, {catalog.heroes.Count} heroes.",
+            catalog
+        );
     }
 }

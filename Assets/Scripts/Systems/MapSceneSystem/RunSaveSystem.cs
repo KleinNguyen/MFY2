@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+
 [Serializable]
 public class RunSaveData
 {
@@ -47,6 +48,7 @@ public static class RunSaveSystem
             Directory.CreateDirectory(Application.persistentDataPath);
             File.WriteAllText(SavePath + ".tmp", JsonUtility.ToJson(data, true));
 
+            // Preserve the last known save before replacing it.
             if (File.Exists(SavePath)) File.Copy(SavePath, SavePath + ".bak", true);
 
             File.Copy(SavePath + ".tmp", SavePath, true);
@@ -64,6 +66,7 @@ public static class RunSaveSystem
     {
         data = null;
 
+        // Try the backup if the primary save is missing or invalid.
         foreach (string path in new[] { SavePath, SavePath + ".bak" })
         {
             if (!File.Exists(path)) continue;

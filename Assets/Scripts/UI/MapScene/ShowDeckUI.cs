@@ -180,20 +180,37 @@ public class ShowDeckUI : MonoBehaviour
         CardData card = selectedCard;
         int price = RemovePrice;
 
-        ConfirmationDialogUI.Ask(this, $"Do you want to remove {card.name} for {price} Gold?", ExecuteRemoveCard,
-            () => RunSystem.Instance == run && !run.IsRunFinished && RemovePrice == price && MatchesSelection(index, card, DeckMode.Remove));
+        ConfirmationDialogUI.Ask(
+            this,
+            $"Do you want to remove {card.name} for {price} Gold?",
+            ExecuteRemoveCard,
+            () => RunSystem.Instance == run &&
+                !run.IsRunFinished &&
+                RemovePrice == price &&
+                MatchesSelection(index, card, DeckMode.Remove)
+        );
     }
 
     public void ConfirmUpgradeCard()
     {
         RunSystem run = RunSystem.Instance;
-        if (mode != DeckMode.Upgrade || !IsSelectionValid() || run.IsRunFinished || canUpgradeNow == null || !canUpgradeNow()) return;
+        if (mode != DeckMode.Upgrade || !IsSelectionValid() ||
+            run.IsRunFinished || canUpgradeNow == null || !canUpgradeNow())
+            return;
 
         int index = selectedCardIndex;
         CardData card = selectedCard;
 
-        ConfirmationDialogUI.Ask(this, $"Do you want to upgrade {card.name}?", ExecuteUpgradeCard,
-            () => RunSystem.Instance == run && !run.IsRunFinished && MatchesSelection(index, card, DeckMode.Upgrade) && canUpgradeNow != null && canUpgradeNow());
+        ConfirmationDialogUI.Ask(
+            this,
+            $"Do you want to upgrade {card.name}?",
+            ExecuteUpgradeCard,
+            () => RunSystem.Instance == run &&
+                !run.IsRunFinished &&
+                MatchesSelection(index, card, DeckMode.Upgrade) &&
+                canUpgradeNow != null &&
+                canUpgradeNow()
+        );
     }
 
     private bool MatchesSelection(int index, CardData card, DeckMode expectedMode)
@@ -265,7 +282,13 @@ public class ShowDeckUI : MonoBehaviour
 
     private void CreateDeckCard(CardData cardData, int cardIndex, bool isUpgraded, bool canUpgrade)
     {
-        GameObject slot = new("DeckCardSlot_" + cardIndex, typeof(RectTransform), typeof(Image), typeof(Button), typeof(RewardCardHoverUI));
+        GameObject slot = new(
+            "DeckCardSlot_" + cardIndex,
+            typeof(RectTransform),
+            typeof(Image),
+            typeof(Button),
+            typeof(RewardCardHoverUI)
+        );
         slot.layer = cardContent.gameObject.layer;
         slot.transform.SetParent(cardContent, false);
 
@@ -325,7 +348,10 @@ public class ShowDeckUI : MonoBehaviour
         }
 
         selectedCardUI.Setup(cardData, true);
-        upgradeInfoText.text = $"{cardData.name} → {cardData.name}+\nMana: {cardData.Mana} → {cardData.UpgradedMana}\n{cardData.UpgradedDescription}";
+        upgradeInfoText.text =
+            $"{cardData.name} → {cardData.name}+\n" +
+            $"Mana: {cardData.Mana} → {cardData.UpgradedMana}\n" +
+            cardData.UpgradedDescription;
         confirmUpgradeButton.interactable = true;
     }
 

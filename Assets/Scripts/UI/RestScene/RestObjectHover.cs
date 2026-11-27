@@ -55,7 +55,12 @@ public class RestObjectHover : MonoBehaviour,
         hintRect.anchoredPosition = hintOffset;
         hintRect.sizeDelta = new Vector2(220f, 100f);
 
-        GameObject textObject = new GameObject("HintText", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
+        GameObject textObject = new GameObject(
+            "HintText",
+            typeof(RectTransform),
+            typeof(CanvasRenderer),
+            typeof(TextMeshProUGUI)
+        );
         RectTransform textRect = (RectTransform)textObject.transform;
         textRect.SetParent(hintRect, false);
         textRect.anchorMin = new Vector2(0.5f, 0.5f);
@@ -70,7 +75,12 @@ public class RestObjectHover : MonoBehaviour,
         text.alignment = TextAlignmentOptions.Center;
         text.raycastTarget = false;
 
-        GameObject arrowObject = new GameObject("HintArrow", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+        GameObject arrowObject = new GameObject(
+            "HintArrow",
+            typeof(RectTransform),
+            typeof(CanvasRenderer),
+            typeof(Image)
+        );
         RectTransform arrowRect = (RectTransform)arrowObject.transform;
         arrowRect.SetParent(hintRect, false);
         arrowRect.anchorMin = new Vector2(0.5f, 0.5f);

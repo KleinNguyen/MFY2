@@ -24,6 +24,7 @@ public class MapPoint
 
         NextPoints.Add(pointId);
     }
+
     public void SetType(MapPointType type)
     {
         Type = type;

@@ -25,7 +25,7 @@ public class MenuHoverManager : MonoBehaviour
 
     private void Start()
     {
-        // Thiết lập trạng thái ban đầu
+        // Set the initial visual state for each menu item.
         foreach (MenuItem item in items)
         {
             if (item.button != null)
@@ -49,7 +49,7 @@ public class MenuHoverManager : MonoBehaviour
 
     private void Update()
     {
-        // Xác định vị trí chuột trên UI mỗi frame
+        // Find the UI element currently under the pointer.
         if (EventSystem.current == null)
             return;
 
@@ -72,7 +72,7 @@ public class MenuHoverManager : MonoBehaviour
                 if (item.button == null)
                     continue;
 
-                // Kiểm tra con trỏ có nằm trên nút hay không
+                // Treat child graphics as part of their parent button.
                 if (result.gameObject == item.button.gameObject ||
                     result.gameObject.transform.IsChildOf(
                         item.button.transform))
@@ -86,7 +86,7 @@ public class MenuHoverManager : MonoBehaviour
                 break;
         }
 
-        // Chỉ bật sáng nút đang được trỏ tới
+        // Highlight only the item currently under the pointer.
         foreach (MenuItem item in items)
         {
             SetItemState(item, item == hoveredItem);

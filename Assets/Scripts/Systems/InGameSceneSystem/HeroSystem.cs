@@ -335,6 +335,7 @@ public class HeroSystem : Singleton<HeroSystem>
             return;
         }
 
+        // Adversity grants strength once per turn after card-caused health loss.
         adversityTriggeredThisTurn = true;
         temporaryAdversityStats += adversityPower;
 

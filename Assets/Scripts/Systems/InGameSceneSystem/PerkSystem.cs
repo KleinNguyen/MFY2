@@ -48,9 +48,14 @@ public class PerkSystem : Singleton<PerkSystem>
 
         if (enemies.Count == 0) yield break;
 
+        // Pick from living, active enemies so the counter never targets a defeated unit.
         EnemyView target = enemies[Random.Range(0, enemies.Count)];
         ActionSystem.Instance.AddReaction(new DealDamageGA(
-            action.Damage, new List<CombatantView> { target }, action.Caster, false));
+            action.Damage,
+            new List<CombatantView> { target },
+            action.Caster,
+            false
+        ));
         yield return null;
     }
 }

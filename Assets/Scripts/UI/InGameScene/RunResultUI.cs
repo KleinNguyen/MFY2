@@ -29,7 +29,12 @@ public class RunResultUI : MonoBehaviour
         int seconds = elapsedSeconds % 60;
         string formattedTime = hours > 0 ? $"{hours:00}:{minutes:00}:{seconds:00}" : $"{minutes:00}:{seconds:00}";
         int deckCount = run.Deck != null ? run.Deck.Count : 0;
-        summaryText.text = $"Hero: {heroName}\nAct: {run.CurrentActIndex + 1}\nTime: {formattedTime}\nGold: {run.Gold}\nCards: {deckCount}";
+        summaryText.text =
+            $"Hero: {heroName}\n" +
+            $"Act: {run.CurrentActIndex + 1}\n" +
+            $"Time: {formattedTime}\n" +
+            $"Gold: {run.Gold}\n" +
+            $"Cards: {deckCount}";
 
         Canvas resultCanvas = GetComponentInParent<Canvas>(true);
         if (resultCanvas == null)

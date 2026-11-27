@@ -166,15 +166,26 @@ public class ShopUI : MonoBehaviour
     public void BuyCard(int index)
     {
         RunSystem run = RunSystem.Instance;
-        if (!CanShopNow() || index < 0 || index >= currentCards.Count || index >= currentPrices.Count || index >= cardButtons.Length) return;
+        if (!CanShopNow() || index < 0 || index >= currentCards.Count ||
+            index >= currentPrices.Count || index >= cardButtons.Length)
+            return;
 
         CardData card = currentCards[index];
         int price = currentPrices[index];
 
         if (card == null || cardButtons[index] == null || !cardButtons[index].interactable || run.Gold < price) return;
 
-        ConfirmationDialogUI.Ask(this, $"Do you want to buy {card.name} for {price} Gold?", () => ExecuteBuyCard(index),
-            () => CanShopNow() && RunSystem.Instance == run && index < currentCards.Count && index < currentPrices.Count && currentCards[index] == card && currentPrices[index] == price);
+        ConfirmationDialogUI.Ask(
+            this,
+            $"Do you want to buy {card.name} for {price} Gold?",
+            () => ExecuteBuyCard(index),
+            () => CanShopNow() &&
+                RunSystem.Instance == run &&
+                index < currentCards.Count &&
+                index < currentPrices.Count &&
+                currentCards[index] == card &&
+                currentPrices[index] == price
+        );
     }
 
     public void BuyHealthPotion() => AskPotionPurchase(true);
@@ -200,8 +211,15 @@ public class ShopUI : MonoBehaviour
         string item = health ? "Health Potion" : "Mana Potion";
         System.Action purchase = health ? ExecuteBuyHealthPotion : ExecuteBuyManaPotion;
 
-        ConfirmationDialogUI.Ask(this, $"Do you want to buy a {item} for {price} Gold?", purchase,
-            () => CanShopNow() && RunSystem.Instance == run && price == (health ? healthPotionPrice : manaPotionPrice) && !(health ? healthPotionPurchased : manaPotionPurchased));
+        ConfirmationDialogUI.Ask(
+            this,
+            $"Do you want to buy a {item} for {price} Gold?",
+            purchase,
+            () => CanShopNow() &&
+                RunSystem.Instance == run &&
+                price == (health ? healthPotionPrice : manaPotionPrice) &&
+                !(health ? healthPotionPurchased : manaPotionPurchased)
+        );
     }
 
     private bool CanShopNow() => isActiveAndEnabled && RunSystem.Instance != null && !RunSystem.Instance.IsRunFinished;
@@ -313,8 +331,18 @@ public class ShopUI : MonoBehaviour
     // Update item names, prices, and sold labels.
     private void UpdatePotionPriceLabels()
     {
-        UpdateItemLabel(healthButton, healthPotionPurchased ? "Health Potion\nSold" : $"Health Potion\n{healthPotionPrice} Gold");
-        UpdateItemLabel(manaButton, manaPotionPurchased ? "Mana Potion\nSold" : $"Mana Potion\n{manaPotionPrice} Gold");
+        UpdateItemLabel(
+            healthButton,
+            healthPotionPurchased
+                ? "Health Potion\nSold"
+                : $"Health Potion\n{healthPotionPrice} Gold"
+        );
+        UpdateItemLabel(
+            manaButton,
+            manaPotionPurchased
+                ? "Mana Potion\nSold"
+                : $"Mana Potion\n{manaPotionPrice} Gold"
+        );
 
         if (showDeckUI != null)
         {
@@ -369,7 +397,9 @@ public class ShopUI : MonoBehaviour
 
     private bool CanSetupShop(RunSystem run)
     {
-        if (run == null || run.HeroData == null || shopInventoryPanel == null || cardPrefab == null || cardPrefab.LibraryTemplate == null || cardButtons == null || cardButtonTexts == null)
+        if (run == null || run.HeroData == null || shopInventoryPanel == null ||
+            cardPrefab == null || cardPrefab.LibraryTemplate == null ||
+            cardButtons == null || cardButtonTexts == null)
         {
             Debug.LogError("ShopUI is missing references. Check the Inspector.", this);
             return false;

@@ -12,10 +12,14 @@ public static class MouseUtil
             return Vector3.zero;
         }
 
+        // Project the pointer onto a plane at the requested world-space depth.
         Plane dragPlane = new(camera.transform.forward, new Vector3(0, 0, zValue));
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
 
-        if (dragPlane.Raycast(ray, out float distance)) return ray.GetPoint(distance);
+        if (dragPlane.Raycast(ray, out float distance))
+        {
+            return ray.GetPoint(distance);
+        }
 
         return Vector3.zero;
     }

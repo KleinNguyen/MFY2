@@ -197,7 +197,11 @@ public class EnemySystem : Singleton<EnemySystem>
 
             if (currentArmor > 0)
             {
-                RemoveStatusEffectGA removeArmor = new RemoveStatusEffectGA(StatusEffectType.ARMOR, currentArmor, targets);
+                RemoveStatusEffectGA removeArmor = new(
+                    StatusEffectType.ARMOR,
+                    currentArmor,
+                    targets
+                );
                 ActionSystem.Instance.AddReaction(removeArmor);
             }
 

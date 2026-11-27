@@ -54,6 +54,7 @@ public sealed class EnemyDamageArrowGraphic : MonoBehaviour
         if (arrowMesh == null) return;
 
         float direction = pointsUp ? -1f : 1f;
+        // Build the vertices for the requested arrow direction.
         arrowMesh.Clear();
         arrowMesh.vertices = new[]
         {

@@ -15,12 +15,18 @@ public class SettingsPanelUI : MonoBehaviour
 
     private bool Busy => ActionSystem.Instance != null && ActionSystem.Instance.IsPerforming;
     private bool InBattle => SceneManager.GetActiveScene().name == "InGameScene";
-    private bool BattleReady => InBattle && BattleSystem.Instance != null && !BattleSystem.Instance.IsPreparingBattle && !BattleSystem.Instance.IsBattleOver;
+    private bool BattleReady =>
+        InBattle &&
+        BattleSystem.Instance != null &&
+        !BattleSystem.Instance.IsPreparingBattle &&
+        !BattleSystem.Instance.IsBattleOver;
     private bool CanRestartHere => BattleReady;
 
     private void Awake()
     {
-        if (closeButton == null || masterSlider == null || musicSlider == null || soundEffectsSlider == null || masterValue == null || musicValue == null || soundEffectsValue == null)
+        if (closeButton == null || masterSlider == null ||
+            musicSlider == null || soundEffectsSlider == null ||
+            masterValue == null || musicValue == null || soundEffectsValue == null)
         {
             Debug.LogError("Settings panel UI references are not fully assigned.", this);
             return;
@@ -62,7 +68,13 @@ public class SettingsPanelUI : MonoBehaviour
             restartButton.interactable = !Busy && CanRestartHere && run != null && run.CanRestartBattle;
         }
 
-        if (leaveButton != null) leaveButton.interactable = !Busy && (!InBattle || BattleSystem.Instance != null && !BattleSystem.Instance.IsPreparingBattle);
+        if (leaveButton != null)
+        {
+            leaveButton.interactable = !Busy &&
+                (!InBattle ||
+                 BattleSystem.Instance != null &&
+                 !BattleSystem.Instance.IsPreparingBattle);
+        }
     }
 
     private void ExecuteRestartBattle()
@@ -138,7 +150,9 @@ public class SettingsPanelUI : MonoBehaviour
             return;
         }
 
-        string question = activeRun ? "Do you want to save and return to the main menu?" : "Do you want to return to the main menu?";
+        string question = activeRun
+            ? "Do you want to save and return to the main menu?"
+            : "Do you want to return to the main menu?";
         if (activeRun && InBattle) question += "\nContinuing will restart this battle.";
 
         ConfirmationDialogUI.Ask(this, question, ExecuteReturnToMenu,
@@ -147,9 +161,23 @@ public class SettingsPanelUI : MonoBehaviour
 
     private void Close() => gameObject.SetActive(false);
     private void SetMessage(string message) { if (messageText != null) messageText.text = message; }
-    private void SetMasterVolume(float value) { GameAudioSettings.SetMasterVolume(value); UpdateValue(value, masterValue); }
-    private void SetMusicVolume(float value) { GameAudioSettings.SetMusicVolume(value); UpdateValue(value, musicValue); }
-    private void SetSoundEffectsVolume(float value) { GameAudioSettings.SetSoundEffectsVolume(value); UpdateValue(value, soundEffectsValue); }
+    private void SetMasterVolume(float value)
+    {
+        GameAudioSettings.SetMasterVolume(value);
+        UpdateValue(value, masterValue);
+    }
+
+    private void SetMusicVolume(float value)
+    {
+        GameAudioSettings.SetMusicVolume(value);
+        UpdateValue(value, musicValue);
+    }
+
+    private void SetSoundEffectsVolume(float value)
+    {
+        GameAudioSettings.SetSoundEffectsVolume(value);
+        UpdateValue(value, soundEffectsValue);
+    }
     private void UpdateValue(float value, TMP_Text label) => label.text = Mathf.RoundToInt(value * 100f) + "%";
 
     private void OnDestroy()

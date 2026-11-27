@@ -63,12 +63,12 @@ public class RunHeaderUI : MonoBehaviour
         int minutes = (elapsedSeconds / 60) % 60;
         int seconds = elapsedSeconds % 60;
 
+        // Show hours only after the run exceeds one hour.
         string formattedTime = hours > 0
             ? $"{hours:00}:{minutes:00}:{seconds:00}"
             : $"{minutes:00}:{seconds:00}";
 
         SetText(timeText, "Time: " + formattedTime);
-
 
         MapPoint currentPoint = run.GetMapPoint(
             run.SelectedMapPointId

@@ -43,6 +43,7 @@ public class Perk
 
     private void Reaction(GameAction gameAction)
     {
+        // Ignore stale callbacks when the perk, battle, or hero is no longer active.
         if (!subscribed || data.AutoTargetEffect?.Effect == null) return;
         if (ActionSystem.Instance == null || HeroSystem.Instance == null) return;
         if (BattleSystem.Instance != null && BattleSystem.Instance.IsBattleOver) return;
@@ -51,7 +52,10 @@ public class Perk
         if (hero == null || hero.CurrentHealth <= 0) return;
         if (!data.PerkCondition.SubConditionIsMet(gameAction)) return;
 
-        GameAction action = data.AutoTargetEffect.Effect.GetGameAction(new List<CombatantView>(), hero);
+        GameAction action = data.AutoTargetEffect.Effect.GetGameAction(
+            new List<CombatantView>(),
+            hero
+        );
         if (action != null) ActionSystem.Instance.AddReaction(action);
     }
 }

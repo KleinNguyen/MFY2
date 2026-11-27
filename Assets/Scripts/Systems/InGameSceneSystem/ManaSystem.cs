@@ -55,6 +55,7 @@ public class ManaSystem : Singleton<ManaSystem>
 
     public void SetBattleManaBonus(int amount)
     {
+        // Adjust current mana by the same amount as the new battle maximum.
         int newMax = Mathf.Max(0, RunSystem.Instance.HeroData.StartingMana + Mathf.Max(0, amount));
         int difference = newMax - maxMana;
 

@@ -16,7 +16,12 @@ public class ConfirmationDialogUI : MonoBehaviour
     private bool isOpen;
 
     public static bool IsOpen => instance != null && instance.isOpen;
-    private bool IsConfigured => panel != null && panel != gameObject && messageText != null && yesButton != null && noButton != null;
+    private bool IsConfigured =>
+        panel != null &&
+        panel != gameObject &&
+        messageText != null &&
+        yesButton != null &&
+        noButton != null;
 
     private void Awake()
     {
@@ -26,7 +31,10 @@ public class ConfirmationDialogUI : MonoBehaviour
 
         if (!IsConfigured)
         {
-            Debug.LogError("Assign the confirmation panel, text and buttons. Keep the controller outside the panel.", this);
+            Debug.LogError(
+                "Assign the confirmation panel, text and buttons. Keep the controller outside the panel.",
+                this
+            );
             return;
         }
 

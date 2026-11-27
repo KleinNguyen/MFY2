@@ -6,15 +6,26 @@ public partial class RunSystem
 {
     private RunSaveData battleStartSave;
 
-    public string ContinueSceneName => CurrentEncounter != null && SelectedMapPointId >= 0 ? "InGameScene" : "MapScene";
+    public string ContinueSceneName =>
+        CurrentEncounter != null && SelectedMapPointId >= 0
+            ? "InGameScene"
+            : "MapScene";
     public int SavedMysteryResult => battleStartSave?.mysteryResult ?? -1;
-    public bool CanRestartBattle => !IsRunFinished && battleStartSave != null && CurrentEncounter != null && SelectedMapPointId == battleStartSave.battlePointId && CurrentEncounter.name == battleStartSave.battleEncounter;
+    public bool CanRestartBattle =>
+        !IsRunFinished &&
+        battleStartSave != null &&
+        CurrentEncounter != null &&
+        SelectedMapPointId == battleStartSave.battlePointId &&
+        CurrentEncounter.name == battleStartSave.battleEncounter;
 
     public void PauseRunTimer() => isRunTimerRunning = false;
 
     public bool SaveCheckpoint()
     {
-        if (IsRunFinished || HeroData == null || CurrentHealth <= 0 || CurrentAct == null || Deck == null || MapPoints.Count == 0 || SelectedMapPointId >= 0) return false;
+        if (IsRunFinished || HeroData == null || CurrentHealth <= 0 ||
+            CurrentAct == null || Deck == null || MapPoints.Count == 0 ||
+            SelectedMapPointId >= 0)
+            return false;
         if (GetMapPoint(CompletedMapPointId)?.Type == MapPointType.Boss) return false;
 
         RunSaveData data = CreateSaveData();
@@ -49,7 +60,9 @@ public partial class RunSystem
 
     public void SaveMysteryResult(int result)
     {
-        if (!CanRestartBattle || result < 0 || result > 5 || GetMapPoint(SelectedMapPointId)?.Type != MapPointType.Mystery) return;
+        if (!CanRestartBattle || result < 0 || result > 5 ||
+            GetMapPoint(SelectedMapPointId)?.Type != MapPointType.Mystery)
+            return;
         if (battleStartSave.mysteryResult >= 0) return;
 
         battleStartSave.mysteryResult = result;
@@ -73,7 +86,11 @@ public partial class RunSystem
     public bool TryLoadCheckpoint()
     {
         RunSaveCatalog catalog = Resources.Load<RunSaveCatalog>("RunSaveCatalog");
-        if (catalog == null || !RunSaveSystem.TryRead(out RunSaveData data, candidate => IsSaveValid(candidate, catalog)))
+        if (catalog == null ||
+            !RunSaveSystem.TryRead(
+                out RunSaveData data,
+                candidate => IsSaveValid(candidate, catalog)
+            ))
         {
             Debug.LogError("Run save is missing, invalid, or incompatible. Check the save catalog.");
             return false;
@@ -130,7 +147,16 @@ public partial class RunSystem
         }
 
         foreach (MapPoint point in MapPoints)
-            data.map.Add(new SavedMapPoint { id = point.Id, floor = point.Floor, position = point.Position, type = point.Type, next = new List<int>(point.NextPoints) });
+        {
+            data.map.Add(new SavedMapPoint
+            {
+                id = point.Id,
+                floor = point.Floor,
+                position = point.Position,
+                type = point.Type,
+                next = new List<int>(point.NextPoints)
+            });
+        }
 
         return data;
     }
@@ -166,8 +192,12 @@ public partial class RunSystem
         ResetRewards();
 
         battleStartSave = data.resumeBattle ? data : null;
-        LastNormalEncounter = CurrentAct.NormalEncounters?.Find(encounter => encounter != null && encounter.name == data.lastNormal);
-        LastEliteEncounter = CurrentAct.EliteEncounters?.Find(encounter => encounter != null && encounter.name == data.lastElite);
+        LastNormalEncounter = CurrentAct.NormalEncounters?.Find(
+            encounter => encounter != null && encounter.name == data.lastNormal
+        );
+        LastEliteEncounter = CurrentAct.EliteEncounters?.Find(
+            encounter => encounter != null && encounter.name == data.lastElite
+        );
 
         MapPoints = new List<MapPoint>();
         foreach (SavedMapPoint saved in data.map)
@@ -184,7 +214,11 @@ public partial class RunSystem
         ActData act = acts[data.actIndex];
 
         if (type == MapPointType.Boss)
-            return act.BossEncounter != null && act.BossEncounter.name == data.battleEncounter ? act.BossEncounter : null;
+        {
+            return act.BossEncounter != null && act.BossEncounter.name == data.battleEncounter
+                ? act.BossEncounter
+                : null;
+        }
 
         List<EncounterData> pool = type == MapPointType.Elite ? act.EliteEncounters : act.NormalEncounters;
         return pool?.Find(encounter => encounter != null && encounter.name == data.battleEncounter);
@@ -194,11 +228,20 @@ public partial class RunSystem
     {
         if (data.cardRemovalPrice < 0) return false;
         HeroData hero = catalog.FindHero(data.hero);
-        if (data.version != 1 || hero == null || acts == null || data.actIndex < 0 || data.actIndex >= acts.Length) return false;
+        if (data.version != 1 || hero == null || acts == null ||
+            data.actIndex < 0 || data.actIndex >= acts.Length)
+            return false;
 
         ActData act = acts[data.actIndex];
-        if (act == null || act.name != data.actName || data.health <= 0 || data.health > hero.Health || data.gold < 0 || data.healthPotions < 0 || data.manaPotions < 0) return false;
-        if (float.IsNaN(data.elapsedTime) || float.IsInfinity(data.elapsedTime) || data.elapsedTime < 0f || data.deck == null || data.map == null || data.map.Count == 0) return false;
+        if (act == null || act.name != data.actName ||
+            data.health <= 0 || data.health > hero.Health ||
+            data.gold < 0 || data.healthPotions < 0 || data.manaPotions < 0)
+            return false;
+
+        if (float.IsNaN(data.elapsedTime) || float.IsInfinity(data.elapsedTime) ||
+            data.elapsedTime < 0f || data.deck == null ||
+            data.map == null || data.map.Count == 0)
+            return false;
 
         if (data.upgradedCardIds != null)
         {
@@ -222,10 +265,17 @@ public partial class RunSystem
         int bosses = 0;
         bool hasStart = false;
 
+        // Build the point index before validating links between map nodes.
         foreach (SavedMapPoint point in data.map)
         {
-            if (point == null || point.id < 0 || point.floor < 0 || points.ContainsKey(point.id) || point.next == null || !Enum.IsDefined(typeof(MapPointType), point.type)) return false;
-            if (float.IsNaN(point.position.x) || float.IsNaN(point.position.y) || float.IsInfinity(point.position.x) || float.IsInfinity(point.position.y)) return false;
+            if (point == null || point.id < 0 || point.floor < 0 ||
+                points.ContainsKey(point.id) || point.next == null ||
+                !Enum.IsDefined(typeof(MapPointType), point.type))
+                return false;
+
+            if (float.IsNaN(point.position.x) || float.IsNaN(point.position.y) ||
+                float.IsInfinity(point.position.x) || float.IsInfinity(point.position.y))
+                return false;
 
             points.Add(point.id, point);
             if (point.floor == 0) hasStart = true;
@@ -233,20 +283,38 @@ public partial class RunSystem
         }
 
         if (!hasStart || bosses != 1 || data.completedPointId < -1) return false;
-        if (data.completedPointId == -1 ? data.stage != 0 : !points.TryGetValue(data.completedPointId, out SavedMapPoint completed) || completed.type == MapPointType.Boss || data.stage != completed.floor + 1) return false;
+        if (data.completedPointId == -1
+            ? data.stage != 0
+            : !points.TryGetValue(data.completedPointId, out SavedMapPoint completed) ||
+                completed.type == MapPointType.Boss ||
+                data.stage != completed.floor + 1)
+            return false;
 
         foreach (SavedMapPoint point in data.map)
         {
             if (point.type == MapPointType.Boss ? point.next.Count != 0 : point.next.Count == 0) return false;
 
             foreach (int next in point.next)
-                if (!points.TryGetValue(next, out SavedMapPoint target) || target.floor != point.floor + 1) return false;
+            {
+                if (!points.TryGetValue(next, out SavedMapPoint target) ||
+                    target.floor != point.floor + 1)
+                    return false;
+            }
         }
 
         if (!data.resumeBattle) return true;
-        if (!points.TryGetValue(data.battlePointId, out SavedMapPoint battle) || data.mysteryResult < -1 || data.mysteryResult > 5) return false;
-        if (battle.type != MapPointType.Normal && battle.type != MapPointType.Elite && battle.type != MapPointType.Boss && battle.type != MapPointType.Mystery) return false;
-        if (data.completedPointId == -1 ? battle.floor != 0 : !points[data.completedPointId].next.Contains(battle.id)) return false;
+        if (!points.TryGetValue(data.battlePointId, out SavedMapPoint battle) ||
+            data.mysteryResult < -1 || data.mysteryResult > 5)
+            return false;
+        if (battle.type != MapPointType.Normal &&
+            battle.type != MapPointType.Elite &&
+            battle.type != MapPointType.Boss &&
+            battle.type != MapPointType.Mystery)
+            return false;
+        if (data.completedPointId == -1
+            ? battle.floor != 0
+            : !points[data.completedPointId].next.Contains(battle.id))
+            return false;
         if (battle.type != MapPointType.Mystery && data.mysteryResult != -1) return false;
 
         return FindSavedEncounter(data) != null;

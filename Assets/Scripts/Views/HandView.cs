@@ -22,7 +22,7 @@ public class HandView : MonoBehaviour
     public CardView RemoveCard(Card card)
     {
         CardView cardView = GetCardView(card);
-        if(cardView == null) return null;
+        if (cardView == null) return null;
         cards.Remove(cardView);
         if (cardView != null) cardView.SetInteractionEnabled(false);
         StartCoroutine(UpdateCardPositions(0.10f));
@@ -55,10 +55,13 @@ public class HandView : MonoBehaviour
         if (cards.Count == 0) yield break;
 
         const float minPosition = 0.05f, maxPosition = 0.95f;
-        float cardSpacing = cards.Count > 1 ? Mathf.Min(0.1f, (maxPosition - minPosition) / (cards.Count - 1)) : 0f;
+        float cardSpacing = cards.Count > 1
+            ? Mathf.Min(0.1f, (maxPosition - minPosition) / (cards.Count - 1))
+            : 0f;
         float firstCardPosition = 0.5f - (cards.Count - 1) * cardSpacing / 2;
         Spline spline = splineContainer.Spline;
 
+        // Clamp card positions so the hand stays within the visible part of the spline.
         for (int i = 0; i < cards.Count; i++)
         {
             float p = Mathf.Clamp(firstCardPosition + i * cardSpacing, minPosition, maxPosition);
@@ -67,7 +70,11 @@ public class HandView : MonoBehaviour
             Vector3 up = spline.EvaluateUpVector(p);
             Quaternion rotation = Quaternion.LookRotation(-up, Vector3.Cross(-up, forward).normalized);
 
-            cards[i].transform.DOMove(splinePosition + transform.position + 0.01f * i * Vector3.back + Vector3.down * 0.45f, duration);
+            cards[i].transform.DOMove(
+                splinePosition + transform.position +
+                0.01f * i * Vector3.back + Vector3.down * 0.45f,
+                duration
+            );
             cards[i].transform.DORotate(rotation.eulerAngles, duration);
         }
 

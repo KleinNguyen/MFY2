@@ -70,7 +70,11 @@ public static class EncounterSetupTool
         if (EditorApplication.isPlayingOrWillChangePlaymode) return;
 
         Group[][] groups = GetGroups();
-        string[] names = { "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "elite1", "elite2", "elite3", "boss" };
+        string[] names =
+        {
+            "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9",
+            "elite1", "elite2", "elite3", "boss"
+        };
         ActData[] acts = new ActData[3];
         EnemyData[,] enemies = new EnemyData[3, 13];
 
@@ -84,10 +88,15 @@ public static class EncounterSetupTool
 
                 for (int i = 0; i < names.Length; i++)
                 {
-                    enemies[act, i] = Load<EnemyData>($"Assets/Data/Enemies/act{act + 1}/act{act + 1}_{names[i]}.asset");
+                    enemies[act, i] = Load<EnemyData>(
+                        $"Assets/Data/Enemies/act{act + 1}/act{act + 1}_{names[i]}.asset"
+                    );
                     EnemyRank rank = i < 9 ? EnemyRank.Normal : i < 12 ? EnemyRank.Elite : EnemyRank.Boss;
 
-                    if (enemies[act, i].Rank != rank || enemies[act, i].Health <= 0 || enemies[act, i].Moves == null || enemies[act, i].Moves.Count == 0)
+                    if (enemies[act, i].Rank != rank ||
+                        enemies[act, i].Health <= 0 ||
+                        enemies[act, i].Moves == null ||
+                        enemies[act, i].Moves.Count == 0)
                         throw new Exception($"Invalid rank, Health or Moves: {enemies[act, i].name}");
                 }
 
@@ -97,11 +106,20 @@ public static class EncounterSetupTool
 
                     foreach (int id in group.Ids)
                     {
-                        if (enemies[act, id - 1].Moves.Exists(move => move != null && move.ApplyRandomDebuff && move.DebuffChancePercent > 0f))
+                        if (enemies[act, id - 1].Moves.Exists(
+                                move => move != null &&
+                                    move.ApplyRandomDebuff &&
+                                    move.DebuffChancePercent > 0f
+                            ))
                             debuffers++;
                     }
 
-                    if (debuffers > 1) throw new Exception($"A normal group in Act {act + 1} has more than one debuff enemy.");
+                    if (debuffers > 1)
+                    {
+                        throw new Exception(
+                            $"A normal group in Act {act + 1} has more than one debuff enemy."
+                        );
+                    }
                 }
             }
         }
@@ -111,6 +129,7 @@ public static class EncounterSetupTool
             return;
         }
 
+        // Keep all generated asset changes together in one undo operation.
         Undo.IncrementCurrentGroup();
         int undoGroup = Undo.GetCurrentGroup();
         Undo.SetCurrentGroupName("Apply All Encounters");
@@ -127,16 +146,37 @@ public static class EncounterSetupTool
                 {
                     Group group = groups[act][i];
                     EnemyData[] members = Array.ConvertAll(group.Ids, id => enemies[act, id - 1]);
-                    normals.Add(Write(act + 1, $"Normal_{i + 1:00}", EncounterType.Normal, group, members, created));
+                    normals.Add(Write(
+                        act + 1,
+                        $"Normal_{i + 1:00}",
+                        EncounterType.Normal,
+                        group,
+                        members,
+                        created
+                    ));
                 }
 
                 for (int i = 0; i < 3; i++)
                 {
                     Group group = new(Mathf.Clamp(acts[act].FirstEliteFloor, 1, 9), 9, 1);
-                    elites.Add(Write(act + 1, $"Elite_{i + 1:00}", EncounterType.Elite, group, new[] { enemies[act, 9 + i] }, created));
+                    elites.Add(Write(
+                        act + 1,
+                        $"Elite_{i + 1:00}",
+                        EncounterType.Elite,
+                        group,
+                        new[] { enemies[act, 9 + i] },
+                        created
+                    ));
                 }
 
-                EncounterData boss = Write(act + 1, "Boss", EncounterType.Boss, new Group(10, 10, 1), new[] { enemies[act, 12] }, created);
+                EncounterData boss = Write(
+                    act + 1,
+                    "Boss",
+                    EncounterType.Boss,
+                    new Group(10, 10, 1),
+                    new[] { enemies[act, 12] },
+                    created
+                );
                 Undo.RegisterCompleteObjectUndo(acts[act], "Configure Act Encounters");
 
                 SerializedObject serialized = new(acts[act]);
@@ -168,7 +208,14 @@ public static class EncounterSetupTool
         return asset;
     }
 
-    private static EncounterData Write(int act, string suffix, EncounterType type, Group group, EnemyData[] members, List<string> created)
+    private static EncounterData Write(
+        int act,
+        string suffix,
+        EncounterType type,
+        Group group,
+        EnemyData[] members,
+        List<string> created
+    )
     {
         string path = $"Assets/Data/Encounters/Act{act}/Act{act}_{suffix}.asset";
         UnityEngine.Object existing = AssetDatabase.LoadMainAssetAtPath(path);
@@ -197,7 +244,11 @@ public static class EncounterSetupTool
         return encounter;
     }
 
-    private static void SetRefs<T>(SerializedObject serialized, string name, IList<T> values) where T : UnityEngine.Object
+    private static void SetRefs<T>(
+        SerializedObject serialized,
+        string name,
+        IList<T> values
+    ) where T : UnityEngine.Object
     {
         SerializedProperty list = serialized.FindProperty($"<{name}>k__BackingField");
         list.arraySize = values.Count;

@@ -46,7 +46,16 @@ public class LuckyWheelUI : MonoBehaviour
 
     public bool IsSpinning => spinning;
     public bool HasResult => hasResult;
-    public bool IsConfigured => wheelRoot != null && pointerPivot != null && wheelImage != null && characterImage != null && arrowImage != null && wheelText != null && resultText != null && spinButton != null && continueButton != null;
+    public bool IsConfigured =>
+        wheelRoot != null &&
+        pointerPivot != null &&
+        wheelImage != null &&
+        characterImage != null &&
+        arrowImage != null &&
+        wheelText != null &&
+        resultText != null &&
+        spinButton != null &&
+        continueButton != null;
 
     private void Awake()
     {
@@ -57,6 +66,7 @@ public class LuckyWheelUI : MonoBehaviour
     {
         if (wheelRoot == null) return;
 
+        // Keep each label upright while its parent wheel rotates.
         Quaternion counterRotation = Quaternion.Inverse(wheelRoot.localRotation);
         foreach (TMP_Text label in sliceLabels)
         {
@@ -64,7 +74,15 @@ public class LuckyWheelUI : MonoBehaviour
         }
     }
 
-    public bool Show(string[] options, Action<int> onResult, Action onClosed = null, bool canCancel = false, int previousResult = -1, string closeCaption = "Continue", CharacterType character = CharacterType.Red)
+    public bool Show(
+        string[] options,
+        Action<int> onResult,
+        Action onClosed = null,
+        bool canCancel = false,
+        int previousResult = -1,
+        string closeCaption = "Continue",
+        CharacterType character = CharacterType.Red
+    )
     {
         if (!IsConfigured || options == null || options.Length != SliceCount)
         {
@@ -199,8 +217,16 @@ public class LuckyWheelUI : MonoBehaviour
         float target = Mathf.Repeat(selectedIndex * 60f, 360f);
         float travel = 360f * Random.Range(4, 7) + Mathf.Repeat(current - target, 360f);
 
-        spinTween = wheelRoot.DOLocalRotate(new Vector3(0f, 0f, current - travel), spinDuration, RotateMode.FastBeyond360)
-            .SetEase(Ease.OutCubic).SetUpdate(true).SetLink(gameObject).OnComplete(CompleteSpin);
+        spinTween = wheelRoot
+            .DOLocalRotate(
+                new Vector3(0f, 0f, current - travel),
+                spinDuration,
+                RotateMode.FastBeyond360
+            )
+            .SetEase(Ease.OutCubic)
+            .SetUpdate(true)
+            .SetLink(gameObject)
+            .OnComplete(CompleteSpin);
     }
 
     private void CompleteSpin()
@@ -250,7 +276,15 @@ public class LuckyWheelUI : MonoBehaviour
     {
         if (!Application.isPlaying) return;
 
-        string[] options = { "FULL HEAL", "EXTRA TURN", "+2 MANA", "5 JUNK", "LOSE 30% HP", "GET ALL DEBUFFS\n3 TURNS" };
+        string[] options =
+        {
+            "FULL HEAL",
+            "EXTRA TURN",
+            "+2 MANA",
+            "5 JUNK",
+            "LOSE 30% HP",
+            "GET ALL DEBUFFS\n3 TURNS"
+        };
         Show(options, index => Debug.Log($"Wheel result {index}: {options[index]}", this));
     }
 #endif

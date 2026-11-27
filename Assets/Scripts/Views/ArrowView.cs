@@ -8,7 +8,7 @@ public class ArrowView : MonoBehaviour
     private const float ArrowBodySegmentGap = 0.06f;
     private const float ArrowBodySpriteAxisAngle = 63.327f;
 
-  private const float ArrowHeadToBodyRotationOffset = 166.673f;
+    private const float ArrowHeadToBodyRotationOffset = 166.673f;
 
     private static readonly Vector2 ArrowHeadTipPosition =
         new(0.5f, 0f);
@@ -73,7 +73,7 @@ public class ArrowView : MonoBehaviour
 
         float bodyLength = Mathf.Max(0f, distance - arrowHeadLength);
 
-        // Một hướng duy nhất cho toàn bộ mũi tên.
+        // Use the same direction for the entire arrow.
         Quaternion bodyRotation =
             Quaternion.FromToRotation(Vector3.up, direction) *
             Quaternion.Euler(0f, 0f, ArrowBodyRotationOffset);
@@ -114,11 +114,11 @@ public class ArrowView : MonoBehaviour
             return;
         }
 
-        // Giữ nguyên kích thước thân ban đầu.
+        // Preserve the original body size.
         float uniformScale = arrowBodyWidth / sprite.bounds.size.x;
         float segmentLength = sprite.bounds.size.y * uniformScale;
 
-        // Các đoạn tách nhau nhưng cùng nằm trên một đường thẳng.
+        // Keep the spaced segments aligned along one straight line.
         float segmentPitch = segmentLength + ArrowBodySegmentGap;
 
         int segmentCount = Mathf.CeilToInt(bodyLength / segmentPitch);
@@ -134,8 +134,7 @@ public class ArrowView : MonoBehaviour
         {
             float segmentStart = i * segmentPitch;
 
-            // Không tính vị trí dựa trên đoạn trước.
-            // Tất cả đều tính từ cùng một điểm bắt đầu.
+            // Calculate each segment from the same start point to avoid accumulated drift.
             Vector3 segmentCenter =
                 arrowStartPosition +
                 direction * (segmentStart + segmentLength * 0.5f);
@@ -154,43 +153,43 @@ public class ArrowView : MonoBehaviour
         SetBodyRenderersActive(segmentCount);
     }
 
-private void UpdateArrowHead(
-    Vector3 endPosition,
-    Quaternion bodyRotation
-)
-{
-    if (arrowHeadRenderer == null ||
-        arrowHeadRenderer.sprite == null)
-        return;
+    private void UpdateArrowHead(
+        Vector3 endPosition,
+        Quaternion bodyRotation
+    )
+    {
+        if (arrowHeadRenderer == null ||
+            arrowHeadRenderer.sprite == null)
+            return;
 
-    Quaternion rotation =
-        bodyRotation *
-        Quaternion.Euler(
-            0f,
-            0f,
-            ArrowHeadToBodyRotationOffset
+        Quaternion rotation =
+            bodyRotation *
+            Quaternion.Euler(
+                0f,
+                0f,
+                ArrowHeadToBodyRotationOffset
+            );
+
+        Bounds bounds = arrowHeadRenderer.sprite.bounds;
+
+        Vector3 tipOffset =
+            bounds.min +
+            Vector3.Scale(
+                bounds.size,
+                new Vector3(0.5f, 0f, 0f)
+            );
+
+        Vector3 worldTipOffset =
+            Vector3.Scale(
+                tipOffset,
+                arrowHeadRenderer.transform.lossyScale
+            );
+
+        arrowHead.transform.SetPositionAndRotation(
+            endPosition - rotation * worldTipOffset,
+            rotation
         );
-
-    Bounds bounds = arrowHeadRenderer.sprite.bounds;
-
-    Vector3 tipOffset =
-        bounds.min +
-        Vector3.Scale(
-            bounds.size,
-            new Vector3(0.5f, 0f, 0f)
-        );
-
-    Vector3 worldTipOffset =
-        Vector3.Scale(
-            tipOffset,
-            arrowHeadRenderer.transform.lossyScale
-        );
-
-    arrowHead.transform.SetPositionAndRotation(
-        endPosition - rotation * worldTipOffset,
-        rotation
-    );
-}
+    }
 
     private void EnsureBodyRendererCount(int count)
     {

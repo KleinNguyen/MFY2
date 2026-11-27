@@ -19,7 +19,11 @@ public class RestUI : MonoBehaviour
     private Coroutine restCoroutine;
     private TMP_Text sleepingText;
 
-    private bool CanUseRest => isActiveAndEnabled && !isResting && RunSystem.Instance != null && !RunSystem.Instance.IsRunFinished;
+    private bool CanUseRest =>
+        isActiveAndEnabled &&
+        !isResting &&
+        RunSystem.Instance != null &&
+        !RunSystem.Instance.IsRunFinished;
 
     public void Setup()
     {
@@ -70,10 +74,20 @@ public class RestUI : MonoBehaviour
         RunSystem run = RunSystem.Instance;
         if (run.HeroData == null || blackoutOverlay == null || blackoutImage == null) return;
 
-        int amount = Mathf.Max(0, Mathf.Min(Mathf.CeilToInt(run.HeroData.Health * 0.2f), run.HeroData.Health - run.CurrentHealth));
+        int amount = Mathf.Max(
+            0,
+            Mathf.Min(
+                Mathf.CeilToInt(run.HeroData.Health * 0.2f),
+                run.HeroData.Health - run.CurrentHealth
+            )
+        );
 
-        ConfirmationDialogUI.Ask(this, $"Do you want to rest?\nRestore {amount} HP.", ExecuteRest,
-            () => CanUseRest && !hasRested && RunSystem.Instance == run);
+        ConfirmationDialogUI.Ask(
+            this,
+            $"Do you want to rest?\nRestore {amount} HP.",
+            ExecuteRest,
+            () => CanUseRest && !hasRested && RunSystem.Instance == run
+        );
     }
 
     private void ExecuteRest()

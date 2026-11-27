@@ -13,13 +13,17 @@ public static class EnemyMovesSetupTool
             return;
         }
 
-        string[] names = { "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "elite1", "elite2", "elite3", "boss" };
+        string[] names =
+        {
+            "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9",
+            "elite1", "elite2", "elite3", "boss"
+        };
         int[][] healthByAct =
         {
-        new[] { 18, 16, 14, 12, 16, 10, 22, 14, 18, 42, 52, 36, 90 },
-        new[] { 24, 20, 18, 16, 22, 14, 28, 18, 22, 56, 64, 46, 120 },
-        new[] { 30, 24, 22, 20, 26, 18, 34, 22, 26, 72, 80, 60, 150 }
-    };
+            new[] { 18, 16, 14, 12, 16, 10, 22, 14, 18, 42, 52, 36, 90 },
+            new[] { 24, 20, 18, 16, 22, 14, 28, 18, 22, 56, 64, 46, 120 },
+            new[] { 30, 24, 22, 20, 26, 18, 34, 22, 26, 72, 80, 60, 150 }
+        };
 
         EnemyData[] enemies = new EnemyData[healthByAct.Length * names.Length];
 
@@ -52,6 +56,7 @@ public static class EnemyMovesSetupTool
             }
         }
 
+        // Health updates are applied as one undoable editor operation.
         Undo.IncrementCurrentGroup();
         int undoGroup = Undo.GetCurrentGroup();
         Undo.SetCurrentGroupName("Apply All Enemy Health");
@@ -63,7 +68,8 @@ public static class EnemyMovesSetupTool
             {
                 SerializedObject serialized = new(enemies[i]);
                 serialized.Update();
-                serialized.FindProperty("<Health>k__BackingField").intValue = healthByAct[i / names.Length][i % names.Length];
+                serialized.FindProperty("<Health>k__BackingField").intValue =
+                    healthByAct[i / names.Length][i % names.Length];
                 serialized.ApplyModifiedPropertiesWithoutUndo();
                 EditorUtility.SetDirty(enemies[i]);
             }
@@ -107,9 +113,18 @@ public static class EnemyMovesSetupTool
         }
     }
 
-    private static MoveSpec A(int damage, int hits = 1, float chance = 0f) => new(EnemyMoveType.Attack, damage, hits, 0, chance);
+    private static MoveSpec A(
+        int damage,
+        int hits = 1,
+        float chance = 0f
+    ) => new(EnemyMoveType.Attack, damage, hits, 0, chance);
     private static MoveSpec D(int armor) => new(EnemyMoveType.Defend, 0, 1, armor, 0f);
-    private static MoveSpec AD(int damage, int armor, int hits = 1, float chance = 0f) => new(EnemyMoveType.AttackAndDefend, damage, hits, armor, chance);
+    private static MoveSpec AD(
+        int damage,
+        int armor,
+        int hits = 1,
+        float chance = 0f
+    ) => new(EnemyMoveType.AttackAndDefend, damage, hits, armor, chance);
 
     private static EnemySpec[] GetSpecs() => new EnemySpec[]
     {
@@ -214,7 +229,8 @@ public static class EnemyMovesSetupTool
                     SetInt(move, "ArmorGain", spec.Armor);
                     SetInt(move, "DebuffStacks", 1);
                     move.FindPropertyRelative("<ApplyRandomDebuff>k__BackingField").boolValue = spec.Chance > 0f;
-                    move.FindPropertyRelative("<DebuffChancePercent>k__BackingField").floatValue = spec.Chance > 0f ? 100f : 0f;
+                    move.FindPropertyRelative("<DebuffChancePercent>k__BackingField").floatValue =
+                        spec.Chance > 0f ? 100f : 0f;
                 }
 
                 serialized.ApplyModifiedPropertiesWithoutUndo();

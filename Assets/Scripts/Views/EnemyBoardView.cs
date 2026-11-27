@@ -53,6 +53,7 @@ public class EnemyBoardView : MonoBehaviour
         int[] slotIndices = new int[enemyDatas.Count];
         slotIndices[bossIndex] = middleIndex;
 
+        // Reserve the center slot for the boss, then fill the remaining slots in order.
         List<int> sideSlots = Enumerable.Range(0, slots.Count)
             .Where(index => index != middleIndex)
             .ToList();

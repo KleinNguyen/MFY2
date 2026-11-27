@@ -1,8 +1,7 @@
-using System.Collections.Generic;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-
 
 public class ActionSystem : Singleton<ActionSystem>
 {
@@ -35,6 +34,7 @@ public class ActionSystem : Singleton<ActionSystem>
         {
             yield break;
         }
+        // Process pre-reactions, performer-generated reactions, then post-reactions.
         reactions = action.PreReactions;
         PerformSubscribers(action, preSubs);
         yield return PerformReactions();
@@ -97,6 +97,8 @@ public class ActionSystem : Singleton<ActionSystem>
         Dictionary<Type, List<Action<GameAction>>> subs = timing == ReactionTiming.PRE ? preSubs : postSubs;
         var key = (typeof(T), timing, (Delegate)reaction);
         if (wrappedDelegates.ContainsKey(key)) return;
+
+        // Keep the wrapper so unsubscribe can remove the exact delegate instance.
         void wrappedReaction(GameAction action) => reaction((T)action);
         wrappedDelegates.Add(key, wrappedReaction);
 
@@ -108,14 +110,13 @@ public class ActionSystem : Singleton<ActionSystem>
         {
             subs.Add(typeof(T), new());
             subs[typeof(T)].Add(wrappedReaction);
-
         }
     }
     public static void UnsubscribeReaction<T>(Action<T> reaction, ReactionTiming timing) where T : GameAction
     {
         Dictionary<Type, List<Action<GameAction>>> subs = timing == ReactionTiming.PRE ? preSubs : postSubs;
         var key = (typeof(T), timing, (Delegate)reaction);
-        if(wrappedDelegates.TryGetValue(key, out var wrappedReaction))
+        if (wrappedDelegates.TryGetValue(key, out var wrappedReaction))
         {
             if (subs.ContainsKey(typeof(T)))
             {
@@ -123,7 +124,6 @@ public class ActionSystem : Singleton<ActionSystem>
             }
             wrappedDelegates.Remove(key);
         }
-
     }
 }
 

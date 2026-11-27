@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 [System.Serializable]
 public class HeroPerkEffect : Effect
 {
@@ -16,11 +14,22 @@ public class HeroPerkEffect : Effect
         switch (effectType)
         {
             case HeroPerkEffectType.GainCombo:
-                return new AddStatusEffectGA(StatusEffectType.COMBO, amount, new List<CombatantView> { caster });
+                return new AddStatusEffectGA(
+                    StatusEffectType.COMBO,
+                    amount,
+                    new List<CombatantView> { caster }
+                );
+
             case HeroPerkEffectType.Heal:
-                return new HealGA(amount, new List<CombatantView> { caster }, caster);
+                return new HealGA(
+                    amount,
+                    new List<CombatantView> { caster },
+                    caster
+                );
+
             case HeroPerkEffectType.RandomCounter:
                 return new RandomPerkCounterGA(amount, caster);
+
             default:
                 return null;
         }
