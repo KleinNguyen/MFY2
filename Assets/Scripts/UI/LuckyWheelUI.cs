@@ -209,6 +209,7 @@ public class LuckyWheelUI : MonoBehaviour
 
         selectedIndex = Random.Range(0, SliceCount);
         spinning = true;
+        SfxManager.PlaySfx(SfxId.LuckyWheelSpin);
         spinButton.interactable = false;
         continueButton.interactable = false;
         resultText.text = "Spinning...";

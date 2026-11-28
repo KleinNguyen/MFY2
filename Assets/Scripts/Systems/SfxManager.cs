@@ -19,7 +19,8 @@ public enum SfxId
     WeakApplied = 12,
     PoisonApplied = 13,
     Defeat = 16,
-    ArmorBreakApplied = 17
+    ArmorBreakApplied = 17,
+    LuckyWheelSpin = 18
 }
 
 public class SfxManager : MonoBehaviour
