@@ -96,8 +96,35 @@ Key systems include:
 
 ## Requirements
 
-- **Unity 6000.0.84f1**
-- A PC capable of running Unity projects
+### Platform support
+
+The game targets Windows desktop PCs. The following are estimated hardware requirements and have not been formally verified on minimum-spec hardware.
+
+**Minimum**
+
+- **Operating system:** Windows 10 64-bit
+- **CPU:** Intel Core i3-6100 or AMD equivalent
+- **Memory:** 4 GB RAM
+- **Graphics:** DirectX 11-compatible integrated GPU or better
+- **Storage:** 2 GB of free space
+- **Internet:** Not required for offline gameplay
+- **Other:** Mouse and keyboard
+
+**Recommended**
+
+- **Operating system:** Windows 10/11 64-bit
+- **CPU:** Intel Core i5-8400 or AMD Ryzen 5 2600 or better
+- **Memory:** 8 GB RAM
+- **Graphics:** DirectX 11-compatible GPU with 2 GB VRAM or better
+- **Storage:** 4 GB of free space
+- **Internet:** Not required for offline gameplay
+- **Other:** Mouse and keyboard
+
+The listed storage space is a target estimate; the final installed size may vary by build.
+
+### Development requirements
+
+- **Unity:** 6000.0.84f1
 - Visual Studio, JetBrains Rider, or another C#-compatible editor
 
 The project uses Unity's Universal Render Pipeline and the Unity Input System.

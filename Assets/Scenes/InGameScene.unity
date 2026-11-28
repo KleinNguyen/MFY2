@@ -4588,7 +4588,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 200392e08212bd147ade5e2401ddcf87, type: 2}
   - {fileID: 11400000, guid: 200392e08212bd147ade5e2401ddcf87, type: 2}
   mysteryWheel: {fileID: 1148652231}
-  junkCardImage: {fileID: -1184517762903133153, guid: 036de5c04e25e5448b2ad0800290c5aa, type: 3}
+  junkCardImage: {fileID: 8506760808146776978, guid: 93a606c7e14373c48bd8f48a2d296378, type: 3}
 --- !u!1 &973543905
 GameObject:
   m_ObjectHideFlags: 0

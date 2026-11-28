@@ -40,6 +40,11 @@ public class CardView : MonoBehaviour
 
         Card = card;
 
+        bool showCardText = !card.IsUnplayable;
+        title.enabled = showCardText;
+        description.enabled = showCardText;
+        mana.enabled = showCardText;
+
         title.text = card.Title;
         RefreshDescription();
         RefreshManaCost();
