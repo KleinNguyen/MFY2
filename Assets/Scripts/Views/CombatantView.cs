@@ -229,6 +229,7 @@ public class CombatantView : MonoBehaviour
         transform.DOShakePosition(0.2f, 0.5f);
         UpdateHealthText();
     }
+
     public void AddStatusEffect(StatusEffectType type, int stackCount)
     {
         if (type == StatusEffectType.COMBO)
@@ -236,26 +237,33 @@ public class CombatantView : MonoBehaviour
             stackCount = Mathf.Max(0, stackCount);
             if (stackCount == 0) return;
         }
-
-        // Fresh armor can be affected by the next scheduled Armor Break tick.
+    
         if (type == StatusEffectType.ARMOR && stackCount > 0 && GetStatusEffectStacks(StatusEffectType.ARMOR) <= 0)
         {
             armorBreakAppliedToCurrentArmor = false;
         }
-
+    
         statusEffects[type] = GetStatusEffectStacks(type) + stackCount;
+    
+        if (type == StatusEffectType.ARMOR && stackCount > 0 && GetStatusEffectStacks(StatusEffectType.ARMOR_BREAK) > 0)
+        {
+            ReduceCurrentArmorForArmorBreak();
+            armorBreakAppliedToCurrentArmor = true;
+        }
+    
         statusEffectsUI.UpdateStatusEffectUI(type, GetStatusEffectStacks(type));
-
+    
         if (stackCount <= 0) return;
-
+    
         if (type == StatusEffectType.ARMOR_BREAK)
         {
             ReduceCurrentArmorForArmorBreak();
             armorBreakAppliedToCurrentArmor = true;
         }
-
+    
         ShowStatusEffectOverlay(type);
     }
+
     private void ReduceCurrentArmorForArmorBreak()
     {
         int currentArmor = GetStatusEffectStacks(StatusEffectType.ARMOR);
