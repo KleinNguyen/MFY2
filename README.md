@@ -2,11 +2,9 @@
 
 **The Mutant Hero Game** is a turn-based deck-building roguelike built with Unity. Choose one of three mutant heroes, build a combat deck, traverse a branching map, and survive three acts filled with enemies, bosses, shops, rest sites, and elite encounters.
 
-> Repository: [KleinNguyen/TheMutantHeroGame](https://github.com/KleinNguyen/TheMutantHeroGame)
 
-## Screenshots
+<img width="888" height="505" alt="image" src="https://github.com/user-attachments/assets/b0153a22-1223-4868-93c8-13590d3a8f5c" />
 
-Screenshots and gameplay footage can be added here as the project evolves.
 
 ## Gameplay
 
